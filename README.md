@@ -1,0 +1,3 @@
+Author: Russell Toris -- rctoris@wpi.edu
+
+For full documentation, see: http://www.ros.org/wiki/rms

@@ -1,0 +1,57 @@
+-- v0.0.6 --
++ initial stages of experiment logging added
++ study table added
++ condition table added
++ experiments table added
++ study_log table added
++ form/study_log.php script added
++ Study Panel added for admins
++ width and height removed from nav2d.php API
++ 2D Navigation interface updated to use new version of nav2d.php API
++ User main menu updated to only allow for valid studies
++ Callback added to mjpeg_canvas.php API
++ removed some $_SERVER['DOCUMENT_ROOT']
++ login now redirects to the page that required you to login
++ code cleanup
++ URL icon updated
+
+-- v0.0.54 --
++ Change of rosjs GitHub raw file location to use new bundled version
+
+-- v0.0.53 --
++ Minor code cleanup in interface/widget/mjpeg_canvas.php
++ Change of rosjs GitHub raw file location
++ Updated interface/widget/keyboard_teleop.php to use new version of keyboardteleop.js
++ Updated interfaces to use new version of interface/widget/keyboard_teleop.php
++ Update script now also updates the Javascript files
+
+-- v0.0.52 --
++ nav2d.php now accepts a callback to return the Nav2D object
+
+-- v0.0.51 --
++ SQL injection vulnerability patched
+
+-- v0.0.5 --
++ mjpeg_canvas.php now makes use of multi-stream canvas feature
++ basic and simple_nav2d interfaces now use multi-stream MJPEG canvas feature
+
+-- v0.0.4 --
++ Added map2d.js, actionclient.js, and nav2d.js to the list of downloaded JS files
++ Added map2d and nav2d widget types
++ Fixed incorrect variable name in create_error_page (interface/common.inc.php)
++ Fixed whitespace errors in admin panel
+
+-- v0.0.3 --
++ Downloaded Javascript files now stored in a SQL table
+
+-- v0.0.22 --
++ Downloaded Javascript file links changed to new RobotWebTools GitHub
+
+-- v0.0.21 --
++ Fixed bugs in update script
+
+-- v0.0.2 --
++ Site Maintenance tab created
+
+-- v0.0.1 --
++ Initial release
