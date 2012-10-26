@@ -1,0 +1,7 @@
+<package>
+  <description brief="A remote lab management tool for ROS">RMS (Robot Management System) is a remote lab management tool designed for use with controlling ROS enabled robots from the web.</description>
+  <author>Russell Toris</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes="" />
+  <url>http://ros.org/wiki/rms</url>
+</package>

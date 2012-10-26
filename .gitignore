@@ -2,4 +2,7 @@
 .project
 .settings
 .buildpath
-
+build
+www/inc/config.inc.php
+www/js/ros/*.js
+www/js/ros/widgets/*.js

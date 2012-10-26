@@ -156,11 +156,11 @@ CREATE TABLE IF NOT EXISTS `javascript_files` (
 
 INSERT INTO `javascript_files` (`fileid`, `url`, `path`) VALUES
 (1, 'https://raw.github.com/RobotWebTools/rosjs/fuerte-devel/dist/ros_bundle.min.js', 'js/ros/ros_bundle.min.js'),
-(2, 'https://raw.github.com/RobotWebTools/keyboardteleopjs/master/keyboardteleop.js', 'js/ros/widgets/keyboardteleop.js'),
-(3, 'https://raw.github.com/RobotWebTools/mjpegcanvasjs/master/mjpegcanvas.js', 'js/ros/widgets/mjpegcanvas.js'),
-(4, 'https://raw.github.com/RobotWebTools/map2djs/master/map.js', 'js/ros/widgets/map.js'),
-(5, 'https://raw.github.com/RobotWebTools/actionlibjs/master/actionclient.js', 'js/ros/actionclient.js'),
-(6, 'https://raw.github.com/RobotWebTools/nav2djs/master/nav2d.js', 'js/ros/widgets/nav2d.js');
+(2, 'https://raw.github.com/RobotWebTools/keyboardteleopjs/fuerte-devel/keyboardteleop.js', 'js/ros/widgets/keyboardteleop.js'),
+(3, 'https://raw.github.com/RobotWebTools/mjpegcanvasjs/fuerte-devel/mjpegcanvas.js', 'js/ros/widgets/mjpegcanvas.js'),
+(4, 'https://raw.github.com/RobotWebTools/map2djs/fuerte-devel/map.js', 'js/ros/widgets/map.js'),
+(5, 'https://raw.github.com/RobotWebTools/actionlibjs/fuerte-devel/actionclient.js', 'js/ros/actionclient.js'),
+(6, 'https://raw.github.com/RobotWebTools/nav2djs/fuerte-devel/nav2d.js', 'js/ros/widgets/nav2d.js');
 
 -- --------------------------------------------------------
 
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.0.6');
+('0.0.61');
 
 -- --------------------------------------------------------
 

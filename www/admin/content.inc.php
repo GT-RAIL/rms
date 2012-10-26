@@ -850,7 +850,7 @@ function create_maintenance() {
 		}
 
 		// find our the live version
-		$live = parse_init_sql("http://wpi-rail.googlecode.com/svn/trunk/distribution/wpi-rail-ros-pkg/rms_www/rms_web/www/admin/init.sql");
+		$live = parse_init_sql("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/admin/init.sql");
 
 		?>
 		<table>

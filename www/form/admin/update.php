@@ -329,6 +329,30 @@ function update_0_0_54() {
 	// change the version number
 	$sql = "UPDATE version SET version = '0.0.6' WHERE version = '0.0.54'";
 	mysqli_query($db, $sql);
+	update_0_0_6();
+}
+
+/**
+ * A function to update the database schema from 0.0.6 to 0.0.61.
+ */
+function update_0_0_6() {
+	global $db;
+
+	// change the location of ros.js
+	$sql = "UPDATE javascript_files SET url = 'https://raw.github.com/RobotWebTools/keyboardteleopjs/fuerte-devel/keyboardteleop.js' WHERE url = 'https://raw.github.com/RobotWebTools/keyboardteleopjs/master/keyboardteleop.js'";
+	mysqli_query($db, $sql);
+	$sql = "UPDATE javascript_files SET url = 'https://raw.github.com/RobotWebTools/mjpegcanvasjs/fuerte-devel/mjpegcanvas.js' WHERE url = 'https://raw.github.com/RobotWebTools/mjpegcanvasjs/master/mjpegcanvas.js'";
+	mysqli_query($db, $sql);
+	$sql = "UPDATE javascript_files SET url = 'https://raw.github.com/RobotWebTools/map2djs/fuerte-devel/map.js' WHERE url = 'https://raw.github.com/RobotWebTools/map2djs/master/map.js'";
+	mysqli_query($db, $sql);
+	$sql = "UPDATE javascript_files SET url = 'https://raw.github.com/RobotWebTools/actionlibjs/fuerte-devel/actionclient.js' WHERE url = 'https://raw.github.com/RobotWebTools/actionlibjs/master/actionclient.js'";
+	mysqli_query($db, $sql);
+	$sql = "UPDATE javascript_files SET url = 'https://raw.github.com/RobotWebTools/nav2djs/fuerte-devel/nav2d.js' WHERE url = 'https://raw.github.com/RobotWebTools/nav2djs/master/nav2d.js'";
+	mysqli_query($db, $sql);
+
+	// change the version number
+	$sql = "UPDATE version SET version = '0.0.61' WHERE version = '0.0.6'";
+	mysqli_query($db, $sql);
 }
 ?>
 
