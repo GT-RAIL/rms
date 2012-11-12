@@ -46,7 +46,7 @@
 
 body,#preview-popup {
 	font-family: Verdana, Arial, sans-ser;
-	font-size: 11px;
+	font-size: 12px;
 	color: #101010;
 	background-image: url(../img/bg.jpg);
 	background-repeat: repeat;
@@ -115,6 +115,30 @@ header table,footer table {
 	align: center;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(255, 255, 255, .8) url('images/loading.gif') 50% 50%
+		no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+	overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+	display: block;
 }
 
 /* == HEADER == */
@@ -210,13 +234,13 @@ article figure img {
 	font-size: 11px;
 }
 
-#admin-tabs table, #study-tabs table {
+#admin-tabs table,#study-tabs table {
 	width: 100%;
 	border: 0;
 	border-collapse: collapse;
 }
 
-#admin-tabs .add-cell, #study-tabs .add-cell {
+#admin-tabs .add-cell,#study-tabs .add-cell {
 	text-align: right;
 }
 
@@ -280,7 +304,7 @@ form fieldset fieldset label {
 	width: 100%;
 }
 
-form input:not([type=radio]),form textarea {
+form input:not   ([type=radio]   ),form textarea {
 	resize: none;
 	background: #f6f6f6;
 	border: none;
