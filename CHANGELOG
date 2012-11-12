@@ -1,3 +1,8 @@
+-- v0.1.0 --
++ RMS REST API started
++ Login changed to use RMS API
++ Index pages (content pages) changed to use RMS API
+
 -- v0.0.61 --
 + updated to use new Git repositories
 

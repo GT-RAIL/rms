@@ -4,5 +4,6 @@
 .buildpath
 build
 www/inc/config.inc.php
+www/interface/study_f2012
 www/js/ros/*.js
 www/js/ros/widgets/*.js

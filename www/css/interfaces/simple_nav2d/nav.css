@@ -39,20 +39,18 @@
  *********************************************************************/
 
 /* == GENERAL == */
-
 #page {
 	box-shadow: 0px 0px 15px 15px rgba(156, 205, 252, 0.7);
 }
 
 /* == REMOTE LAB INTERFACE == */
-
 #nav-interface table {
 	width: 960px;
 	border: 0;
 	border-collapse: collapse;
 }
 
-#nav-widget, #mjpeg-widget {
+#nav-widget,#mjpeg-widget {
 	width: 480px;
 	height: 360px;
 }
