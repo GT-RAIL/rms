@@ -1,72 +1,204 @@
-/*********************************************************************
- *
- * Software License Agreement (BSD License)
- *
- *  Copyright (c) 2012, Worcester Polytechnic Institute
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of the Worcester Polytechnic Institute nor the 
- *     names of its contributors may be used to endorse or promote 
- *     products derived from this software without specific prior 
- *     written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- *
- *   Author: Russell Toris
- *  Version: September 4, 2012
- *
- *********************************************************************/
+/**
+ * A collection of common Javascript functions used throughout the RMS.
+ * 
+ * @fileOverview A collection of common Javascript functions used throughout the RMS.
+ * @name RMS Common
+ * @author Russell Toris <rctoris@wpi.edu>
+ * @version November, 8 2012
+ */
 
 /**
  * Creates the user menu buttons via JQuery UI.
  */
-function create_menu_buttons() {
-	$(function() {
-		$("a", ".menu_main_menu").button({
-			icons : {
-				primary : 'ui-icon-home'
-			}
-		});
-		$("a", ".menu_account").button({
-			icons : {
-				primary : 'ui-icon-gear'
-			}
-		});
-		$("a", ".menu_admin_panel").button({
-			icons : {
-				primary : 'ui-icon-wrench'
-			}
-		});
-		$("a", ".menu_study_panel").button({
-          icons : {
-              primary : 'ui-icon-person'
-          }
-      });
-		$("a", ".menu_logout").button({
-			icons : {
-				primary : 'ui-icon-power'
-			}
-		});
-	});
+function createMenuButtons() {
+  $(function() {
+    $("a", ".menu-main-menu").button({
+      icons : {
+        primary : 'ui-icon-home'
+      }
+    });
+    $("a", ".menu-account").button({
+      icons : {
+        primary : 'ui-icon-gear'
+      }
+    });
+    $("a", ".menu-admin-panel").button({
+      icons : {
+        primary : 'ui-icon-wrench'
+      }
+    });
+    $("a", ".menu-study-panel").button({
+      icons : {
+        primary : 'ui-icon-person'
+      }
+    });
+    $("a", ".menu-logout").button({
+      icons : {
+        primary : 'ui-icon-power'
+      }
+    });
+  });
+}
+
+/**
+ * Creates a modal overlay with a loading icon. Disable the screen with
+ * removeModalPageLoading().
+ */
+function createModalPageLoading() {
+  // remove any old modals that may exist
+  if ($('#LOADING-DIV')) {
+    $('#LOADING-DIV').remove();
+  }
+
+  $('body').append('<div id="LOADING-DIV" class="modal"></div>');
+  $('body').addClass('loading');
+}
+
+/**
+ * Disable the loading modal overlay.
+ */
+function removeModalPageLoading() {
+  $('#LOADING-DIV').remove();
+  $('body').removeClass('loading');
+}
+
+/**
+ * Creates a displays a modal dialog with the given error message.
+ * 
+ * @param {string}
+ *          message the error message to display
+ */
+function createErrorDialog(message) {
+  // remove any old dialogs that may exist
+  if ($('#ERROR-DIALOG')) {
+    $('#ERROR-DIALOG').remove();
+  }
+
+  // create an error div
+  var html = '<div id="ERROR-DIALOG"><b>';
+  html += '<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>';
+  html += message;
+  html += '</b></div>';
+  $('body').append(html);
+
+  $('#ERROR-DIALOG').dialog({
+    title : 'Error!',
+    draggable : false,
+    resizable : false,
+    dialogClass : 'alert',
+    modal : true,
+    show : 'fade',
+    hide : 'fade',
+    buttons : {
+      Ok : function() {
+        $(this).dialog('close');
+      }
+    }
+  });
+}
+
+/**
+ * Initializes the homepage slideshow.
+ */
+function createSlideshow() {
+  $(function() {
+    // initialize the slideshow
+    $('#slides').slides({
+      preload : true,
+      preloadImage : 'css/images/loading.gif',
+      play : 5000,
+      pause : 3500,
+      hoverPause : true,
+      animationStart : function(current) {
+        $('.caption').animate({
+          bottom : -35
+        }, 100);
+      },
+      animationComplete : function(current) {
+        $('.caption').animate({
+          bottom : 0
+        }, 200);
+      },
+      slidesLoaded : function() {
+        $('.caption').animate({
+          bottom : 0
+        }, 200);
+      }
+    });
+  });
+}
+
+/**
+ * A function to check if the given rosbridge server is online.
+ * 
+ * @param {String}
+ *          host the hostname of the rosbridge server
+ * @param {int}
+ *          port the port of the rosbridge server
+ * @param {function}
+ *          callback the callback function returning if the server is online
+ */
+function rosonline(host, port, callback) {
+  var ros = new ROS('ws://' + host + ':' + port);
+  ros.on('connection', function() {
+    callback(true);
+  });
+  ros.on('error', function() {
+    callback(false);
+  });
+}
+
+/**
+ * Base 64 encode the given string.
+ * 
+ * @param {String}
+ *          string the string to base 64 encode
+ * @returns {String} the base 64 encoded string
+ */
+function base64Encode(string) {
+  var key = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+  // convert to utf8
+  string = string.replace(/\r\n/g, '\n');
+  var utf = '';
+  for ( var n = 0; n < string.length; n++) {
+    var c = string.charCodeAt(n);
+    if (c < 128) {
+      utf += String.fromCharCode(c);
+    } else if ((c > 127) && (c < 2048)) {
+      utf += String.fromCharCode((c >> 6) | 192);
+      utf += String.fromCharCode((c & 63) | 128);
+    } else {
+      utf += String.fromCharCode((c >> 12) | 224);
+      utf += String.fromCharCode(((c >> 6) & 63) | 128);
+      utf += String.fromCharCode((c & 63) | 128);
+    }
+  }
+
+  // create the output buffer
+  var output = '';
+  var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+  var i = 0;
+  // parse and convert the string
+  while (i < utf.length) {
+    chr1 = utf.charCodeAt(i++);
+    chr2 = utf.charCodeAt(i++);
+    chr3 = utf.charCodeAt(i++);
+    enc1 = chr1 >> 2;
+    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+    enc4 = chr3 & 63;
+
+    if (isNaN(chr2)) {
+      enc3 = enc4 = 64;
+    } else if (isNaN(chr3)) {
+      enc4 = 64;
+    }
+
+    // add to the output
+    output = output + key.charAt(enc1) + key.charAt(enc2) + key.charAt(enc3)
+        + key.charAt(enc4);
+  }
+
+  return output;
 }
