@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 05, 2012 at 12:17 PM
--- Server version: 5.5.24
--- PHP Version: 5.3.10-1ubuntu3.2
+-- Generation Time: Nov 14, 2012 at 01:35 PM
+-- Server version: 5.5.28
+-- PHP Version: 5.3.10-1ubuntu3.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `local_rms`
+-- Database: `rms`
 --
 
 -- --------------------------------------------------------
@@ -27,12 +27,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `articles` (
-  `artid` int(16) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the article.',
+  `artid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the article.',
   `title` varchar(255) NOT NULL COMMENT 'Title of the article.',
   `content` text NOT NULL COMMENT 'HTML content of the article.',
-  `pageid` int(8) NOT NULL COMMENT 'The ID of the page for this article to be displayed on.',
-  `pageindex` int(8) NOT NULL COMMENT 'The order of this article on its given page.',
-  PRIMARY KEY (`artid`)
+  `pageid` int(11) NOT NULL COMMENT 'The ID of the page for this article to be displayed on.',
+  `pageindex` int(11) NOT NULL COMMENT 'The order of this article on its given page.',
+  PRIMARY KEY (`artid`),
+  UNIQUE KEY `title` (`title`,`pageid`),
+  KEY `pageid` (`pageid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='HTML content of the site''s articles.' AUTO_INCREMENT=5 ;
 
 --
@@ -52,12 +54,14 @@ INSERT INTO `articles` (`artid`, `title`, `content`, `pageid`, `pageindex`) VALU
 --
 
 CREATE TABLE IF NOT EXISTS `content_pages` (
-  `pageid` int(8) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the page.',
+  `pageid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the page.',
   `title` varchar(255) NOT NULL COMMENT 'The title of the page.',
   `menu_name` varchar(32) NOT NULL COMMENT 'The name of the menu item for this page.',
-  `menu_index` int(8) NOT NULL COMMENT 'The index in the main menu.',
+  `menu_index` int(11) NOT NULL COMMENT 'The index in the main menu.',
   `js` varchar(255) DEFAULT NULL COMMENT 'JS file to be included with this contect page.',
-  PRIMARY KEY (`pageid`)
+  PRIMARY KEY (`pageid`),
+  UNIQUE KEY `title` (`title`),
+  UNIQUE KEY `menu_name` (`menu_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
@@ -76,11 +80,11 @@ INSERT INTO `content_pages` (`pageid`, `title`, `menu_name`, `menu_index`, `js`)
 --
 
 CREATE TABLE IF NOT EXISTS `environments` (
-  `envid` int(8) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the environment.',
+  `envid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the environment.',
   `envaddr` varchar(255) NOT NULL COMMENT 'Address of the robot environment''s ROS server.',
   `type` enum('simulation','physical') NOT NULL COMMENT 'The type of robot environment.',
   `notes` text COMMENT 'Notes about the enironment.',
-  `enabled` int(1) NOT NULL COMMENT 'If this environment is currently enabled.',
+  `enabled` tinyint(1) NOT NULL COMMENT 'If this environment is currently enabled.',
   PRIMARY KEY (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Configuration information for robot environments.' AUTO_INCREMENT=3 ;
 
@@ -103,7 +107,9 @@ CREATE TABLE IF NOT EXISTS `environment_interfaces` (
   `envid` int(11) NOT NULL COMMENT 'Unique identifier for the envionmnet.',
   `intid` int(11) NOT NULL COMMENT 'Unique identifier for the interface.',
   PRIMARY KEY (`pairid`),
-  UNIQUE KEY `envid` (`envid`,`intid`)
+  UNIQUE KEY `envid` (`envid`,`intid`),
+  KEY `envid_2` (`envid`),
+  KEY `intid` (`intid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Matching of interfaces to environments.' AUTO_INCREMENT=3 ;
 
 --
@@ -147,7 +153,8 @@ CREATE TABLE IF NOT EXISTS `javascript_files` (
   `url` varchar(511) NOT NULL COMMENT 'URL to the file that will be downloaded.',
   `path` varchar(511) NOT NULL COMMENT 'Local file path (including the file name) relative to the server root for the file.',
   PRIMARY KEY (`fileid`),
-  UNIQUE KEY `url` (`url`,`path`)
+  UNIQUE KEY `url` (`url`),
+  UNIQUE KEY `path` (`path`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=7 ;
 
 --
@@ -170,11 +177,13 @@ INSERT INTO `javascript_files` (`fileid`, `url`, `path`) VALUES
 
 CREATE TABLE IF NOT EXISTS `keyboard_teleop` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the teleop.',
-  `envid` tinytext,
+  `envid` int(11) NOT NULL,
   `label` varchar(255) NOT NULL COMMENT 'Label for the widget.',
   `throttle` double NOT NULL COMMENT 'Throttle constant for the drive command.',
   `twist` varchar(255) NOT NULL COMMENT 'Twist topic for the drive command.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `envid_2` (`envid`,`label`,`throttle`,`twist`),
+  KEY `envid` (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Keyboard teleoperation information.' AUTO_INCREMENT=3 ;
 
 --
@@ -212,7 +221,9 @@ CREATE TABLE IF NOT EXISTS `maps` (
   `label` varchar(255) NOT NULL COMMENT 'Label for the widget.',
   `topic` varchar(255) NOT NULL COMMENT 'Topic of the map (nav_msgs/OccupancyGrid)',
   `continuous` tinyint(1) NOT NULL COMMENT 'If the map should be continuously loaded or loaded and saved once.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `envid` (`envid`,`label`,`topic`,`continuous`),
+  KEY `envid_2` (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Map 2D widget info.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -228,8 +239,10 @@ CREATE TABLE IF NOT EXISTS `navigations` (
   `mapid` int(11) NOT NULL COMMENT 'ID number for the map widget to use with this nav (in the ''maps'' table).',
   `server_name` varchar(255) NOT NULL COMMENT 'Name of the action server (e.g., /move_base)',
   `action_name` varchar(255) NOT NULL COMMENT 'Basename of the action (e.g., move_base_msgs/MoveBaseAction)',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Nav 2D widget info.' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `envid` (`envid`),
+  KEY `mapid` (`mapid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Nav 2D widget info.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -239,10 +252,11 @@ CREATE TABLE IF NOT EXISTS `navigations` (
 
 CREATE TABLE IF NOT EXISTS `mjpeg_server_streams` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the stream.',
-  `envid` tinytext,
-  `label` tinytext,
+  `envid` int(11) NOT NULL COMMENT 'Unique identifier for the environment.',
+  `label` varchar(255) NOT NULL,
   `topic` varchar(255) NOT NULL COMMENT 'ROS topic name of the video stream.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `envid` (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Connection information for ROS topics published from a MJPEG server.' AUTO_INCREMENT=7 ;
 
 --
@@ -268,7 +282,8 @@ CREATE TABLE IF NOT EXISTS `slideshow` (
   `img` varchar(255) NOT NULL COMMENT 'Name of the file in the img/slides folder.',
   `caption` text NOT NULL COMMENT 'Caption text for the slide.',
   `index` int(11) NOT NULL COMMENT 'Slide index in the slideshow.',
-  PRIMARY KEY (`slideid`)
+  PRIMARY KEY (`slideid`),
+  UNIQUE KEY `img` (`img`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Slides used in the slideshow.' AUTO_INCREMENT=4 ;
 
 --
@@ -287,14 +302,16 @@ INSERT INTO `slideshow` (`slideid`, `img`, `caption`, `index`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user_accounts` (
-  `userid` int(16) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user.',
+  `userid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user.',
   `username` varchar(32) NOT NULL COMMENT 'Username for the user.',
   `password` varchar(255) NOT NULL COMMENT 'Encrypted password for the user.',
   `firstname` varchar(32) NOT NULL COMMENT 'User''s first name.',
   `lastname` varchar(32) NOT NULL COMMENT 'User''s last name.',
   `email` varchar(64) NOT NULL COMMENT 'User''s email address.',
   `type` enum('admin','user') NOT NULL COMMENT 'Type of user.',
-  PRIMARY KEY (`userid`)
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Main user accounts table.' AUTO_INCREMENT=2 ;
 
 --
@@ -320,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.1.0');
+('0.1.1');
 
 -- --------------------------------------------------------
 
@@ -369,11 +386,12 @@ CREATE TABLE IF NOT EXISTS `study` (
 --
 
 CREATE TABLE IF NOT EXISTS `study_log` (
-  `logid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the log entry.',
+  `logid` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the log entry.',
   `expid` int(11) NOT NULL COMMENT 'Unique identifier for the experiment.',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp for the entry.',
   `entry` text NOT NULL COMMENT 'The log entry.',
-  PRIMARY KEY (`logid`)
+  PRIMARY KEY (`logid`),
+  KEY `expid` (`expid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A table to hold log information during studies.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -387,7 +405,10 @@ CREATE TABLE IF NOT EXISTS `conditions` (
   `studyid` int(11) NOT NULL COMMENT 'Unique identifier for the study.',
   `name` varchar(255) NOT NULL COMMENT 'Name of the condition.',
   `intid` int(11) NOT NULL COMMENT 'Unique identifier for the interface used in this condition.',
-  PRIMARY KEY (`condid`)
+  PRIMARY KEY (`condid`),
+  UNIQUE KEY `studyid` (`studyid`,`name`,`intid`),
+  KEY `studyid_2` (`studyid`),
+  KEY `intid` (`intid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of conditions for a given study.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -404,8 +425,75 @@ CREATE TABLE IF NOT EXISTS `experiments` (
   `start` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Start time for the experiment.',
   `end` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'End time for the experiment.',
   PRIMARY KEY (`expid`),
-  UNIQUE KEY `userid` (`userid`,`condid`)
+  UNIQUE KEY `userid` (`userid`,`condid`),
+  UNIQUE KEY `envid` (`envid`,`start`,`end`),
+  KEY `envid_2` (`envid`),
+  KEY `userid_2` (`userid`),
+  KEY `condid` (`condid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Pairs of users and conditons that make up an experimental trial.' AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `articles`
+--
+ALTER TABLE `articles`
+  ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`pageid`) REFERENCES `content_pages` (`pageid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `conditions`
+--
+ALTER TABLE `conditions`
+  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`intid`) REFERENCES `interfaces` (`intid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `conditions_ibfk_1` FOREIGN KEY (`studyid`) REFERENCES `study` (`studyid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `environment_interfaces`
+--
+ALTER TABLE `environment_interfaces`
+  ADD CONSTRAINT `environment_interfaces_ibfk_2` FOREIGN KEY (`intid`) REFERENCES `interfaces` (`intid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `environment_interfaces_ibfk_1` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `experiments`
+--
+ALTER TABLE `experiments`
+  ADD CONSTRAINT `experiments_ibfk_3` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `experiments_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user_accounts` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `experiments_ibfk_2` FOREIGN KEY (`condid`) REFERENCES `conditions` (`condid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `keyboard_teleop`
+--
+ALTER TABLE `keyboard_teleop`
+  ADD CONSTRAINT `keyboard_teleop_ibfk_1` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `maps`
+--
+ALTER TABLE `maps`
+  ADD CONSTRAINT `maps_ibfk_1` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `mjpeg_server_streams`
+--
+ALTER TABLE `mjpeg_server_streams`
+  ADD CONSTRAINT `mjpeg_server_streams_ibfk_1` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `navigations`
+--
+ALTER TABLE `navigations`
+  ADD CONSTRAINT `navigations_ibfk_2` FOREIGN KEY (`mapid`) REFERENCES `maps` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `navigations_ibfk_1` FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `study_log`
+--
+ALTER TABLE `study_log`
+  ADD CONSTRAINT `study_log_ibfk_1` FOREIGN KEY (`expid`) REFERENCES `experiments` (`expid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

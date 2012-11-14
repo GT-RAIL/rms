@@ -1,3 +1,6 @@
+-- v0.1.1 --
++ Constraints added to MySQL tables
+
 -- v0.1.0 --
 + RMS REST API started
 + Login changed to use RMS API

@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 8 2012
+ * @version    November, 14 2012
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -23,8 +23,8 @@ $INIT_SQL_FILE = dirname(__FILE__).'/init.sql';
  */
 function valid_config_fields($array) {
   return isset($array['host']) && isset($array['db']) && isset($array['dbuser'])
-  && isset($array['dbpass']) && isset($array['host']) && isset($array['site-name'])
-  && isset($array['copyright']);
+  && isset($array['dbpass']) && isset($array['site-name']) && isset($array['copyright'])
+  && isset($_POST['google']);
 }
 
 /**
@@ -75,7 +75,7 @@ function upload_database($host, $user, $pass, $name, $fname) {
 function create_config_inc($dbhost, $dbuser, $dbpass, $dbname, $title, $google, $copyright) {
   // create the file
   if(!$f = @fopen(dirname(__FILE__).'/../../inc/config.inc.php', 'w')) {
-    return 'Could not create config inside of folder "inc". Check folder permisions and try again.';
+    return 'Could not create config inside of folder "inc". Check folder permissions and try again.';
   }
 
   // check the google tracking ID
