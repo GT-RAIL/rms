@@ -1,43 +1,43 @@
 <?php
 /*********************************************************************
  *
-* Software License Agreement (BSD License)
-*
-*  Copyright (c) 2012, Worcester Polytechnic Institute
-*  All rights reserved.
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*   * Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
-*   * Redistributions in binary form must reproduce the above
-*     copyright notice, this list of conditions and the following
-*     disclaimer in the documentation and/or other materials provided
-*     with the distribution.
-*   * Neither the name of the Worcester Polytechnic Institute nor the
-*     names of its contributors may be used to endorse or promote
-*     products derived from this software without specific prior
-*     written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-*  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-*  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-*  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-        *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-        *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-*  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-*  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-*  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-*  POSSIBILITY OF SUCH DAMAGE.
-*
-*   Author: Russell Toris
-*  Version: October 5, 2012
-*
-*********************************************************************/
+ * Software License Agreement (BSD License)
+ *
+ *  Copyright (c) 2012, Worcester Polytechnic Institute
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above
+ *     copyright notice, this list of conditions and the following
+ *     disclaimer in the documentation and/or other materials provided
+ *     with the distribution.
+ *   * Neither the name of the Worcester Polytechnic Institute nor the
+ *     names of its contributors may be used to endorse or promote
+ *     products derived from this software without specific prior
+ *     written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ *
+ *   Author: Russell Toris
+ *  Version: October 5, 2012
+ *
+ *********************************************************************/
 ?>
 
 <?php
@@ -363,6 +363,149 @@ function update_0_0_61() {
 
   // change the version number
   $sql = "UPDATE version SET version = '0.1.0' WHERE version = '0.0.61'";
+  mysqli_query($db, $sql);
+
+  update_0_1_0();
+}
+
+/**
+ * A function to update the database schema from 0.1.0 to 0.1.01.
+ */
+function update_0_1_0() {
+  global $db;
+
+  // update articles table
+  $sql = "ALTER TABLE `articles` CHANGE `artid` `artid` INT( 11 ) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the article.',
+          CHANGE `pageid` `pageid` INT( 11 ) NOT NULL COMMENT 'The ID of the page for this article to be displayed on.',
+          CHANGE `pageindex` `pageindex` INT( 11 ) NOT NULL COMMENT 'The order of this article on its given page.';";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `articles` ADD UNIQUE (`title`, `pageid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `articles` ADD INDEX ( `pageid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `articles` ADD FOREIGN KEY ( `pageid` ) REFERENCES `content_pages` (`pageid`) ON DELETE CASCADE ON UPDATE CASCADE ;";
+  mysqli_query($db, $sql);
+
+  // update conditions table
+  $sql = "ALTER TABLE `conditions` ADD UNIQUE (`studyid` ,`name` ,`intid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `conditions` ADD INDEX ( `studyid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `conditions` ADD INDEX ( `intid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `conditions` ADD FOREIGN KEY ( `studyid` ) REFERENCES `study` (`studyid`) ON DELETE CASCADE ON UPDATE CASCADE ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `conditions` ADD FOREIGN KEY ( `intid` ) REFERENCES `interfaces` (`intid`) ON DELETE CASCADE ON UPDATE CASCADE ;";
+  mysqli_query($db, $sql);
+
+  // update content pages table
+  $sql = "ALTER TABLE `content_pages` CHANGE `pageid` `pageid` INT( 11 ) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the page.',
+          CHANGE `menu_index` `menu_index` INT( 11 ) NOT NULL COMMENT 'The index in the main menu.';";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `content_pages` ADD UNIQUE (`title`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `content_pages` ADD UNIQUE (`menu_name`);";
+  mysqli_query($db, $sql);
+
+  // update environments pages table
+  $sql = "ALTER TABLE `environments` CHANGE `envid` `envid` INT( 11 ) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the environment.',
+          CHANGE `enabled` `enabled` BOOLEAN NOT NULL COMMENT 'If this environment is currently enabled.';";
+  mysqli_query($db, $sql);
+
+  // update environment interfaces table
+  $sql = "ALTER TABLE `environment_interfaces` ADD INDEX ( `envid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `environment_interfaces` ADD INDEX ( `intid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `environment_interfaces` ADD FOREIGN KEY ( `envid` ) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `environment_interfaces` ADD FOREIGN KEY ( `intid` ) REFERENCES `interfaces` (`intid`) ON DELETE CASCADE ON UPDATE CASCADE ;";
+  mysqli_query($db, $sql);
+
+  // update experiments table
+  $sql = "ALTER TABLE `experiments` ADD UNIQUE (`envid` ,`start` ,`end`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD INDEX ( `envid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD INDEX ( `userid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD INDEX ( `condid` ) ;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD FOREIGN KEY (`userid`) REFERENCES `user_accounts`(`userid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD FOREIGN KEY (`condid`) REFERENCES `conditions`(`condid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `experiments` ADD FOREIGN KEY (`envid`) REFERENCES `environments`(`envid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  //update javascript files table
+  $sql = "ALTER TABLE javascript_files DROP INDEX url;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `javascript_files` ADD UNIQUE( `url`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `javascript_files` ADD UNIQUE( `path`);";
+  mysqli_query($db, $sql);
+
+  //update keyboard teleop files table
+  $sql = "ALTER TABLE `keyboard_teleop` CHANGE `envid` `envid` INT(11) NULL DEFAULT NULL";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `keyboard_teleop` CHANGE `envid` `envid` INT(11) NOT NULL";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `keyboard_teleop` ADD INDEX( `envid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `keyboard_teleop` ADD UNIQUE( `envid`, `label`, `throttle`, `twist`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `keyboard_teleop` ADD FOREIGN KEY (`envid`) REFERENCES `environments`(`envid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  // update maps table
+  $sql = "ALTER TABLE `maps` ADD UNIQUE( `envid`, `label`, `topic`, `continuous`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `maps` ADD INDEX( `envid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `maps` ADD FOREIGN KEY (`envid`) REFERENCES `environments`(`envid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  // update mjpeg server streams
+  $sql = "ALTER TABLE `mjpeg_server_streams` CHANGE `envid` `envid` TINYTEXT NOT NULL, CHANGE `label` `label` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `mjpeg_server_streams` CHANGE `envid` `envid` INT(11) NOT NULL COMMENT 'Unique identifier for the environment.'";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `mjpeg_server_streams` ADD FOREIGN KEY (`envid`) REFERENCES `environments`(`envid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  // update navigations table
+  $sql = "ALTER TABLE `navigations` ADD INDEX( `envid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `navigations` ADD INDEX( `mapid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `navigations` ADD FOREIGN KEY (`envid`) REFERENCES `environments`(`envid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `navigations` ADD FOREIGN KEY (`mapid`) REFERENCES `maps`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  // update slideshow table
+  $sql = "ALTER TABLE `slideshow` ADD UNIQUE( `img`);";
+  mysqli_query($db, $sql);
+
+  // update study log table
+  $sql = "ALTER TABLE `study_log` CHANGE `logid` `logid` INT(32) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the log entry.';";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `study_log` ADD INDEX( `expid`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `study_log` ADD FOREIGN KEY (`expid`) REFERENCES `experiments`(`expid`) ON DELETE CASCADE ON UPDATE CASCADE;";
+  mysqli_query($db, $sql);
+
+  // update user accounts table
+  $sql = "ALTER TABLE `user_accounts` CHANGE `userid` `userid` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the user.'";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `user_accounts` ADD UNIQUE( `username`);";
+  mysqli_query($db, $sql);
+  $sql = "ALTER TABLE `user_accounts` ADD UNIQUE( `email`);";
+  mysqli_query($db, $sql);
+
+  // change the version number
+  $sql = "UPDATE version SET version = '0.1.1' WHERE version = '0.1.0'";
   mysqli_query($db, $sql);
 }
 ?>

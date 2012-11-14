@@ -32,7 +32,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
       if($slides) {
         $result = create_200_state($result, $slides);
       } else {
-        $result['msg'] = 'No content articles found.';
+        $result['msg'] = 'No slideshow entires found.';
       }
     }
     break;

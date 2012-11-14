@@ -40,7 +40,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
       if($page) {
         $result = create_200_state($result, $page);
       } else {
-        $result['msg'] = 'Article ID "'.$_GET['id'].'" is invalid.';
+        $result['msg'] = 'Content Page ID "'.$_GET['id'].'" is invalid.';
       }
     }
     break;
