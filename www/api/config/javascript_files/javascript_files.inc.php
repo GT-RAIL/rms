@@ -69,7 +69,7 @@ function download_javascript_file($js) {
   // save the file locally
   $path = dirname(__FILE__).'/../../../'.$js['path'];
   if(!($file = @fopen($path, "w+")) || !fputs($file, $data) || !fclose($file)) {
-    return 'Could not write file "'.$js['path'].'". Check folder permisions and try again.';
+    return 'Could not write file "'.$js['path'].'". Check folder permissions and try again.';
   }
 
   // no error
@@ -82,17 +82,13 @@ function download_javascript_file($js) {
  * @return string|boolean A string containing an error message or false if there were no errors
  */
 function download_javascript_files() {
-
-  //return;
   // grab all of the files
-  if(!($files = get_javascript_files())) {
-    return 'No Javascript files found.';
-  }
-
-  // delete each of them
-  foreach ($files as $cur) {
-    if($error = download_javascript_file($cur)) {
-      return $error;
+  if($files = get_javascript_files()) {
+    // delete each of them
+    foreach ($files as $cur) {
+      if($error = download_javascript_file($cur)) {
+        return $error;
+      }
     }
   }
 
@@ -124,14 +120,12 @@ function delete_local_javascript_file($js) {
  */
 function delete_local_javascript_files() {
   // grab all of the files
-  if(!($files = get_javascript_files())) {
-    return 'No Javascript files found.';
-  }
-
-  // delete each of them
-  foreach ($files as $cur) {
-    if($error = delete_local_javascript_file($cur)) {
-      return $error;
+  if($files = get_javascript_files()) {
+    // delete each of them
+    foreach ($files as $cur) {
+      if($error = delete_local_javascript_file($cur)) {
+        return $error;
+      }
     }
   }
 

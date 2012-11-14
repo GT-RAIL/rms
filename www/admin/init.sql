@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.1.0');
+('0.1.01');
 
 -- --------------------------------------------------------
 
