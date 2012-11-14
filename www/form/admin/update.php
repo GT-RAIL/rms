@@ -506,9 +506,7 @@ function update_0_1_0() {
 
   // change the version number
   $sql = "UPDATE version SET version = '0.1.1' WHERE version = '0.1.0'";
-  //mysqli_query($db, $sql);
-
-
+  mysqli_query($db, $sql);
 }
 ?>
 
