@@ -58,7 +58,7 @@ function get_articles_by_pageid($pageid) {
 
   // grab the articles and push them into an array
   $result = array();
-  $sql = sprintf("SELECT * FROM `articles` WHERE `pageid`='%d' ORDER BY `pageindex` DESC"
+  $sql = sprintf("SELECT * FROM `articles` WHERE `pageid`='%d' ORDER BY `pageindex`"
                  , $db->real_escape_string($pageid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
