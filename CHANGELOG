@@ -1,3 +1,6 @@
+-- v0.1.2 --
++ Ordering fixed on articles
+
 -- v0.1.1 --
 + Constraints added to MySQL tables
 

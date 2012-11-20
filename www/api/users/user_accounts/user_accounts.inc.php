@@ -43,7 +43,7 @@ function get_user_account_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE userid='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", $db->real_escape_string($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -57,7 +57,7 @@ function get_user_account_by_id($id) {
 function authenticate($username, $password) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE (username='%s') AND (password='%s')"
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE (`username`='%s') AND (`password`='%s')"
           , $username, $password);
 
   // check if a result was found

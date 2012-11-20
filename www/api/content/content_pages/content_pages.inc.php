@@ -43,7 +43,7 @@ function get_content_page_by_id($id) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `content_pages` WHERE pageid='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `content_pages` WHERE `pageid`='%d'", $db->real_escape_string($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 ?>
