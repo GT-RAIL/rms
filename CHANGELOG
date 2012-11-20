@@ -1,5 +1,6 @@
 -- v0.1.2 --
 + Ordering fixed on articles
++ CSS issues fixed
 
 -- v0.1.1 --
 + Constraints added to MySQL tables
