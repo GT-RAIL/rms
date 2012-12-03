@@ -16,6 +16,48 @@
 $INIT_SQL_FILE = dirname(__FILE__).'/init.sql';
 
 /**
+ * Gets the version number of the RMS database.
+ *
+ * @return string the version number of the RMS database
+ */
+function get_db_version() {
+  global $db;
+
+  $query = mysqli_query($db, "SELECT `version` FROM `version`");
+  $version = mysqli_fetch_array($query);
+
+  return $version['version'];
+}
+
+/**
+ * Parse the init.sql file at the given URL and return the version number.
+ *
+ * @param string $url the URL to the init.sql file
+ * @return string the version number in the init.sql file
+ */
+function get_init_sql_version($url) {
+  // setup CURL to grab the file
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  $data = curl_exec($curl);
+  curl_close($curl);
+
+  // read the file line by line until we find the version
+  $lines = array();
+  $lines = explode("\n", $data);
+  $len = count($lines);
+  for ($i = 0; $i < $len; $i++) {
+    if($lines[$i] === "INSERT INTO `version` (`version`) VALUES") {
+      // break out the version number
+      $v = substr($lines[$i+1], strpos($lines[$i+1], "'")+1);
+      $v = substr($v, 0, strpos($v, "'"));
+      return $v;
+    }
+  }
+}
+
+/**
  * Check if the given array has all of the necessary fields to create a config file.
  *
  * @param array $array The array to check

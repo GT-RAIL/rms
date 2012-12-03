@@ -1,6 +1,6 @@
 <?php
 /**
- * Users API script. Currently, this level of the API contains no useful functions.
+ * System log script. Currently, this level of the API contains no useful functions.
  *
  * Returns a bad request response.
  *
@@ -8,11 +8,11 @@
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    November, 8 2012
- * @package    api.users
+ * @package    api.config.log
  * @link       http://ros.org/wiki/rms
  */
 
-include_once(dirname(__FILE__).'/../api.inc.php');
+include_once(dirname(__FILE__).'/../../api.inc.php');
 
 // JSON response
 header('Content-type: application/json');

@@ -1,6 +1,8 @@
 -- v0.1.2 --
 + Ordering fixed on articles
 + CSS issues fixed
++ Admin panel changed to use new API
++ Log RMS API script added
 
 -- v0.1.1 --
 + Constraints added to MySQL tables

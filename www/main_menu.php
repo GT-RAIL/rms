@@ -58,7 +58,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
 </script>
 </head>
 <body>
-  <?php create_header($session_user, $pagename)?>
+<?php create_header($session_user, $pagename)?>
   <section id="page">
     <section id="articles">
       <div class="line"></div>
@@ -70,58 +70,56 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
       </article>
       <?php
       $query = mysqli_query($db, "SELECT * FROM environments");
-			while($cur = mysqli_fetch_array($query)) {?>
+      while($cur = mysqli_fetch_array($query)) {?>
       <article>
         <div class="center">
           <h3>
-            <?php echo $cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']?>
+          <?php echo $cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']?>
           </h3>
           <script type="text/javascript">
 						rosonline('<?php echo $cur['envaddr']?>', 9090, function(online) {
 							if(online) {
 							  $('#envstatus-<?php echo $cur['envid']?>').html('<b>Available</b>');
 							} else {
-
-							}
-						  $('#envstatus-<?php echo $cur['envid']?>').html('<b>Offline</b>');
-							});
+						    $('#envstatus-<?php echo $cur['envid']?>').html('<b>Offline</b>');
+              }
+					  });
 					</script>
           <div id="envstatus-<?php echo $cur['envid']?>"
             class="environment-status">Acquiring connection...</div>
-          <?php if(strlen($cur['notes']) > 0) {
-            echo $cur['notes'];
-						}?>
+            <?php if(strlen($cur['notes']) > 0) {
+              echo $cur['notes'];
+            }?>
           <div class="line"></div>
 
           <?php
           // check if the environment is enabled
-					if($cur['enabled']) {?>
+          if($cur['enabled']) {?>
           <ul>
-            <?php
-            // go through each interface for this environment
-            $interfaces = mysqli_query($db, "SELECT * FROM environment_interfaces WHERE envid=".$cur['envid']);
-            while($pair = mysqli_fetch_array($interfaces)) {
-              $int = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM interfaces WHERE intid=".$pair['intid']));
-              ?>
+          <?php
+          // go through each interface for this environment
+          $interfaces = mysqli_query($db, "SELECT * FROM environment_interfaces WHERE envid=".$cur['envid']);
+          while($pair = mysqli_fetch_array($interfaces)) {
+            $int = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM interfaces WHERE intid=".$pair['intid']));
+            ?>
             <li><a
               href="environment.php?envid=<?php echo $cur['envid']?>&intid=<?php echo $int['intid']?>">
-                <?php echo $int['name']?>
-            </a></li>
-            <?php
-					}?>
+              <?php echo $int['name']?> </a></li>
+              <?php
+          }?>
           </ul>
           <?php
-					} else {?>
+          } else {?>
           <h3>Environment Disabled</h3>
           <?php
-					}?>
+          }?>
 
         </div>
       </article>
       <?php
-			}?>
+      }?>
       <?php
-			} else {?>
+      } else {?>
       <div class="center">
         <h1>
           Welcome

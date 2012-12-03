@@ -18,5 +18,8 @@ include_once(dirname(__FILE__).'/api.inc.php');
 header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
-echo json_encode(create_404_state(array()));
+$result = create_404_state(array());
+$result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
+
+echo json_encode($result);
 ?>
