@@ -13,6 +13,29 @@
  */
 
 /**
+ * The default password text holder.
+ * @var string
+ */
+$_PASSWORD_HOLDER = '***********';
+
+/**
+ * Create the _DELETE array for the API.
+ * @var array
+ */
+$_DELETE = array();
+if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+  parse_str(file_get_contents('php://input'), $_DELETE);
+}
+/**
+ * Create the _PUT array for the API.
+ * @var array
+ */
+$_PUT = array();
+if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+  parse_str(file_get_contents('php://input'), $_PUT);
+}
+
+/**
  * Creates a default 404 state in the given array. This includes a 'false' in the 'ok' element,
  * 'Unknown request.' in the 'msg' element, and null in the 'data' element. The header is also
  * changed to the 404 state.
@@ -62,5 +85,21 @@ function create_200_state($result_array, $data) {
   $result_array['data'] = $data;
 
   return $result_array;
+}
+
+/**
+ * Get the enum types for the given column in the given table in an array.
+ *
+ * @param string $table the name of the MySQL table
+ * @param string $column the column name inside of the given table
+ * @return array An array containing the enum types for the given column in the given table
+ */
+function get_enum_types($table, $column) {
+  global $db;
+
+  $sql = sprintf("SELECT `column_type` FROM `information_schema`.`columns` WHERE `table_name`='%s' AND column_name='%s'"
+  , $db->real_escape_string($table), $db->real_escape_string($column));
+  $enums = mysqli_fetch_row(mysqli_query($db, $sql));
+  return explode("','", str_replace(array("enum('", "')", "''"), array('', '', "'"), $enums[0]));
 }
 ?>

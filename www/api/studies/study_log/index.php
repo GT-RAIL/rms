@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 12 2012
+ * @version    December, 3 2012
  * @package    api.studies.study_log
  * @link       http://ros.org/wiki/rms
  */
@@ -22,8 +22,7 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])
-&& ($auth = authenticate($_SERVER['PHP_AUTH_USER'], md5($_SERVER['PHP_AUTH_PW']))))  {
+if($auth = authenticate())  {
   // default to the 404 state
   $result = create_404_state(array());
 

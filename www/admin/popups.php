@@ -51,6 +51,8 @@ if (!isset($_SESSION['userid'])) {
 }
 // load the include files
 include_once('../inc/log.inc.php');
+include_once('../api/users/user_accounts/user_accounts.inc.php');
+include_once('../api/robot_environments/environments/environments.inc.php');
 
 // grab the user info from the database
 $user = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM user_accounts WHERE userid = '".$_SESSION['userid']."'"));
@@ -64,9 +66,7 @@ if($user['type'] !== "admin") {
 }
 
 // check the type
-if ($_GET['type'] === "users") {
-  create_user_editor(isset($_GET['id']) ? $_GET['id'] : null);
-} else if ($_GET['type'] === "pages") {
+if ($_GET['type'] === "pages") {
   create_page_editor(isset($_GET['id']) ? $_GET['id'] : null);
 } else if ($_GET['type'] === "environments") {
   create_environment_editor(isset($_GET['id']) ? $_GET['id'] : null);
@@ -94,95 +94,6 @@ if ($_GET['type'] === "users") {
   echo "INVALID TYPE: ".$_GET['type'];
 }
 
-/**
- * A function to echo the HTML for the popup dialog used to create a new user.
- *
- * @param int $id the user ID number to create the popup for, or null if it is a new entry
- */
-function create_user_editor($id) {
-  global $db;
-
-  // see if a user exists with the given id
-  $query = mysqli_query($db, sprintf("SELECT * FROM user_accounts WHERE userid=%d", $db->real_escape_string($id)));
-  if($query) {
-    $cur = mysqli_fetch_array($query);
-  } else {
-    $cur = null;
-	}?>
-
-<p>Complete the following form to create a new user.</p>
-<form action="form/admin/create_user.php" method="POST">
-  <fieldset>
-    <ol>
-
-      <?php if($cur) {// only show the ID for edits?>
-      <li><label for="userid">User ID</label> <input type="text"
-        name="userid" id="userid" value="<?php echo $cur['userid']?>"
-        readonly="readonly" />
-      </li>
-      <?php
-		}?>
-      <li><label for="username">Username</label> <input type="text"
-        name="username" id="username"
-        value="<?php echo $cur['username']?>" placeholder="Username"
-        required />
-      </li>
-      <li><label for="password">Password</label> <?php if($cur) {?> <input
-        type="password" name="password" id="password" value="**********"
-        placeholder="Password" required /> <?php 
-		} else {?> <input type="password" name="password" id="password"
-        placeholder="Password" required /> <?php
-		}?> <label for="password-confirm">Confirm Password</label> <?php if($cur) {?>
-        <input type="password" name="password-confirm"
-        id="password-confirm" value="**********" placeholder="Password"
-        required /> <?php 
-		} else {?> <input type="password" name="password-confirm"
-        id="password-confirm" placeholder="Confirm Password" required />
-        <?php
-		}?></li>
-      <li><label for="firstname">First Name</label> <input type="text"
-        name="firstname" id="firstname"
-        value="<?php echo $cur['firstname']?>" placeholder="First Name"
-        required />
-      </li>
-      <li><label for="lastname">Last Name</label> <input type="text"
-        name="lastname" id="lastname"
-        value="<?php echo $cur['lastname']?>" placeholder="Last Name"
-        required />
-      </li>
-      <li><label for="email">Email</label> <input type="email"
-        name="email" id="email" value="<?php echo $cur['email']?>"
-        placeholder="user@example.com" required />
-      </li>
-      <li><label for="type">Type</label> <select name="type" id="type"
-        required>
-          <?php
-          // grab the types of users
-          $enums = mysqli_fetch_row(mysqli_query($db, "SELECT column_type FROM information_schema.columns WHERE table_name='user_accounts' AND column_name='type'"));
-          $result = str_replace(array("enum('", "')", "''"), array('', '', "'"), $enums[0]);
-          $types = explode("','", $result);
-          foreach ($types as $curtype) {
-            // check if this type is the same
-					if($cur['type'] === $curtype) {?>
-          <option value="<?php echo $curtype?>" selected="selected">
-            <?php echo $curtype?>
-          </option>
-          <?php
-					} else {?>
-          <option value="<?php echo $curtype?>">
-            <?php echo $curtype?>
-          </option>
-          <?php
-					}
-				}?>
-      </select>
-      </li>
-    </ol>
-    <input type="submit" value="Submit" />
-  </fieldset>
-</form>
-<?php
-}
 
 /**
  * A function to echo the HTML for the popup dialog used to create an environment.
@@ -190,77 +101,7 @@ function create_user_editor($id) {
  * @param int $id the envrironment ID number to create the popup for, or null if it is a new entry
  */
 function create_environment_editor($id) {
-  global $db;
-
-  // see if a environment exists with the given id
-  $query = mysqli_query($db, sprintf("SELECT * FROM environments WHERE envid=%d", $db->real_escape_string($id)));
-  if($query) {
-    $cur = mysqli_fetch_array($query);
-  } else {
-    $cur = null;
-	}?>
-
-<p>Complete the following form to create a new environment.</p>
-<form action="form/admin/create_environment.php" method="POST">
-  <fieldset>
-    <ol>
-      <?php if($cur) {// only show the ID for edits?>
-      <li><label for="envid">Environment ID</label> <input type="text"
-        name="envid" id="envid" value="<?php echo $cur['envid']?>"
-        readonly="readonly" />
-      </li>
-      <?php
-		}?>
-      <li><label for="envaddr">Address</label> <input type="text"
-        name="envaddr" placeholder="e.g., myrobot.robot-college.edu"
-        value="<?php echo $cur['envaddr']?>" id="envaddr" required />
-      </li>
-      <li><label for="type">Type</label> <select name="type" id="type"
-        required>
-          <?php
-          // parse out the options
-          $enums = mysqli_fetch_row(mysqli_query($db, "SELECT column_type FROM information_schema.columns WHERE table_name = 'environments' AND column_name = 'type'"));
-          $result = str_replace(array("enum('", "')", "''"), array('', '', "'"), $enums[0]);
-          $types = explode("','", $result);
-          foreach ($types as $curtype) {
-            // check if this type is the same
-					if($cur['type'] === $curtype) {?>
-          <option value="<?php echo $curtype?>" selected="selected">
-            <?php echo $curtype?>
-          </option>
-          <?php
-					} else {?>
-          <option value="<?php echo $curtype?>">
-            <?php echo $curtype?>
-          </option>
-          <?php
-					}
-				}?>
-      </select>
-      </li>
-      <li><label for="notes">Notes (optional)</label> <input type="text"
-        name="notes" id="notes" placeholder="Environment Notes"
-        value="<?php echo $cur['notes']?>">
-      </li>
-      <li><label for="enabled">Enabled</label> <select name="enabled"
-        id="enabled" required>
-          <?php
-				if(!$cur || $cur['enabled']) {?>
-          <option value="0">False</option>
-          <option value="1" selected="selected">True</option>
-          <?php
-				} else {?>
-          <option value="0" selected="selected">False</option>
-          <option value="1">True</option>
-          <?php
-				}?>
-      </select>
-      </li>
-    </ol>
-    <input type="submit" value="Submit" />
-  </fieldset>
-</form>
-<?php
+  echo get_environment_editor_html($id);
 }
 
 /**
@@ -294,7 +135,7 @@ function create_interface_editor($id) {
         value="<?php echo $cur['name']?>" id="name"
         placeholder="e.g., My Cool Interface" required />
       </li>
-      <li><label for="location">Location</label> <?php 
+      <li><label for="location">Location</label> <?php
       // check for unused interface folders
       $dir  = opendir($_SERVER['DOCUMENT_ROOT'].'/interface');
       $files = array();
@@ -589,7 +430,7 @@ function create_page_editor($id) {
 				}?>
       </select>
       </li>
-      <li><?php 
+      <li><?php
       // check for JS files
       $dir  = opendir($_SERVER['DOCUMENT_ROOT'].'/js/content');
       $files = array();
@@ -612,14 +453,14 @@ function create_page_editor($id) {
           </option>
           <?php
 					}?>
-      </select> <?php 
+      </select> <?php
       } else {// put dummy dropdown in?> <label for="holder">Javascript
           File (optional)</label> <select name="holder" id="holder"
         disabled="true"><optionvalue"void">No .js files found in
           js/content/
 
           </option>
-      
+
       </select> <?php
       }?></li>
     </ol>
@@ -748,9 +589,9 @@ function create_slide_editor($id) {
             height="175" />
         </center>
         <div class="line"></div> <label for="img">New Image (optional)</label>
-        <input type="file" name="img" id="img" /> <?php 
+        <input type="file" name="img" id="img" /> <?php
 		} else {?> <label for="img">Upload Image</label> <input type="file"
-        name="img" id="img" required /> <?php 
+        name="img" id="img" required /> <?php
 		}?></li>
       <li><label for="caption">Caption</label> <input type="text"
         name="caption" value="<?php echo $cur['caption']?>" id="caption"

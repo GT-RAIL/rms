@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 30 2012
+ * @version    December, 4 2012
  * @link       http://ros.org/wiki/rms
  */
 
@@ -24,6 +24,7 @@ if (!isset($_SESSION['userid'])) {
 $pagename = 'Admin Panel';
 
 // load the include files
+include_once(dirname(__FILE__).'/api/api.inc.php');
 include_once(dirname(__FILE__).'/api/config/config.inc.php');
 include_once(dirname(__FILE__).'/api/config/javascript_files/javascript_files.inc.php');
 include_once(dirname(__FILE__).'/api/config/log/log.inc.php');
@@ -53,166 +54,238 @@ if($session_user['type'] !== 'admin') {
 <!DOCTYPE html>
 <html>
 <head>
-<?php
-// grab the header information
-import_head();
-import_common_js();
-?>
+<?php import_head()?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
 <script type="text/javascript" src="js/jquery/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="js/ros/ros_bundle.min.js"></script>
 <script type="text/javascript">
-	/**
-	 * The start function creates all of the JQuery UI elements and button callbacks.
-	 */
-	function start() {
-		// create the user menu
-		createMenuButtons();
+  var script = '';
 
-		// create the tabs for the admin page
-		$("#admin-tabs").tabs();
+  /**
+   * The start function creates all of the JQuery UI elements and button callbacks.
+   */
+  function start() {
+    // converts a DOM name attribute to an API script path
+    var nameToAPIScript = function(name) {
+      if(name === 'users') {
+        return 'api/users/user_accounts/';
+      }
+    };
 
-		// create the edit icon buttons
-		$(".edit").button({
-            icons: {primary: "ui-icon-pencil"},
-            text: false
-		});
+    // create the user menu
+    createMenuButtons();
 
-		// edit button callback
-		$("div.edit").click(function(e) {
-			// find the type and ID
-			type = $(e.target).parents("div").parents("div").attr('id');
-			id = $(e.target).parents("div").attr('id');
-			$("#editor-popup").load("admin/popups.php?type=" + type + "&id=" + id);
-			$("#editor-popup").dialog("open");
-		});
+    // create the tabs for the admin page
+    $('#admin-tabs').tabs();
 
-		// create the delete icon buttons
-		$(".delete").button({
-		    icons: {primary: "ui-icon-circle-close"},
-		    text: false
-		});
+    // create the delete icon buttons
+    $('.delete').button({
+        icons: {primary: "ui-icon-circle-close"},
+        text: false
+    });
 
-		// delete button callback
-		$("div.delete").click(function(e) {
-			// find the type and ID
-			type = $(e.target).parents("div").parents("div").attr('id');
-			id = $(e.target).parents("div").attr('id');
-			// create a confirm dialog
-			confirm = $("#confirm-delete-popup").dialog({
-				position: ['center',100],
-				draggable: false,
-				resizable: false,
-				modal: true,
-				show: "blind",
-				width: 300,
-				buttons: {
-					No: function() {
-						$(this).dialog( "close" );
-					},
-					Yes: function() {
-						$.post("form/admin/delete.php", {type: type, id: id},
-						function() {
-							location.reload();
-						});
-					}
-				},
-				autoOpen: false
-			});
-			confirm.html("<p><span class=\"ui-icon ui-icon-alert\" style=\"float:left; margin:0 7px 50px 0;\"></span>Are you sure you want to delete the selected item? This <b>cannot</b> be reversed.</p>");
-			// load the popup
-			$("#confirm-delete-popup").dialog("open");
-		});
+    // delete button callback
+    $('.delete').click(function(e) {
+      // find the type and ID
+      var deleteScript = nameToAPIScript($(e.target).attr('name'));
+      var idString = $(e.target).attr('id');
+      var id = idString.substring(idString.indexOf('-') + 1);
+      // create a confirm dialog
+      var confirm = $('#confirm-delete-popup').dialog({
+        position: ['center',100],
+        draggable: false,
+        resizable: false,
+        modal: true,
+        show: 'blind',
+        width: 300,
+        buttons: {
+          No: function() {
+            $(this).dialog('close');
+          },
+          Yes: function() {
+            createModalPageLoading();
+            // make a delete request
+            $.ajax(deleteScript, {
+              data : 'id=' + id,
+              type : 'DELETE',
+              beforeSend: function (xhr) {
+                // authenticate with the header
+                xhr.setRequestHeader('RMS-Use-Session', 'true');
+              },
+              success : function(data){
+                // success -- go back to the login page for the correct redirect
+                window.location.reload();
+              }
+            });
+          }
+        },
+        autoOpen: false
+      });
+      confirm.html('<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>Are you sure you want to delete the selected item? This <b>cannot</b> be reversed.</p>');
+      // load the popup
+      $('#confirm-delete-popup').dialog("open");
+    });
 
-		// create the add icon buttons
-		$("button", ".add").button({icons: {primary:'ui-icon-plus'}});
+    // create the add icon buttons
+    $('.create-new').button({icons: {primary:'ui-icon-plus'}});
 
-		// creates a popup used to add/edit an entry
-		$("#editor-popup").dialog({
-			position: ['center',100],
-			autoOpen: false,
-			draggable: false,
-			resizable: false,
-			modal: true,
-			show: "blind",
-			width: 700,
-			buttons: {
-				Cancel: function() {
-					$(this).dialog("close");
-				}
-			}
-		});
+    // create the edit icon buttons
+    $('.edit').button({
+      icons: {primary: 'ui-icon-pencil'},
+      text: false
+    });
 
-		// editor (add new ...) button callback
-		$(".editor").click(function(e) {
-			type = $(e.target).parents("div").parents("div").attr('id');
-			$("#editor-popup").load("admin/popups.php?type=" + type);
-			$("#editor-popup").dialog("open");
-		});
+    // creates a popup used to add/edit an entry
+    $('#editor-popup').dialog({
+      position: ['center', 100],
+      autoOpen: false,
+      draggable: false,
+      resizable: false,
+      modal: true,
+      show: 'blind',
+      width: 700,
+      buttons: {
+        Cancel: function() {
+          $(this).dialog('close');
+        }
+      }
+    });
 
-		// make the tables sortable
-		$(".tablesorter").tablesorter({
-			widgets: ['zebra'],
-			headers: {
-				// disable the first two columns (delete/edit)
-				0:{sorter: false}, 1:{sorter: false}
-			}
-    	});
+    // editor button callbacks
+    $('.create-new').click(function(e) {createEditor(e);});
+    $('.edit').click(function(e) {createEditor(e);});
 
-		// creates the preview popup
-		$("#preview-popup").dialog({
-			position: ['center',100],
-			autoOpen: false,
-			draggable: false,
-			resizable: false,
-			modal: true,
-			show: "blind",
-			width: 1050,
-			buttons: {
-				Close: function() {
-					$(this).dialog("close");
-				}
-			}
-		});
-	}
+    // a function to make the correct AJAX call to display an editor
+    var createEditor = function(e) {
+      createModalPageLoading();
 
-	/**
-	 * A function to set the HTML of the 'preview-popup' div with the given article content and title.
-	 *
-	 * @param title {string} the title of the article to preview
-	 * @param content {string} the HTML article content to preview
-	 */
-	function preview(title, content) {
-		// create the HTML
-		$("#preview-popup").html('<section id="page"><article><h2>'+title+'</h2><div class="line"></div><div class="clear">'+content+'</div></article></section>');
-		// open the dialog
-		$("#preview-popup").dialog("open");
+      // grab the type
+      var type = $(e.target).attr('name');
+      script = nameToAPIScript(type);
+      var url = script + '?request=editor';
+
+      // now check if we are getting an ID as well
+      var idString = $(e.target).attr('id');
+      if(idString.indexOf(type + '-') === 0) {
+        var id = idString.substring(idString.indexOf('-') + 1);
+        url += '&id=' + id;
+      }
+
+      // create an AJAX request
+      $.ajax(url, {
+        type : 'GET',
+        beforeSend: function (xhr) {
+          // authenticate with the header
+          xhr.setRequestHeader('RMS-Use-Session', 'true');
+        },
+        success : function(data){
+          $('#editor-popup').html(data.data.html);
+          removeModalPageLoading();
+          $('#editor-popup').dialog('open');
+        }
+      });
+    };
+
+    // make the tables sortable
+    $('.tablesorter').tablesorter({
+      widgets: ['zebra'],
+      headers: {
+        // disable the first two columns (delete/edit)
+        0:{sorter: false},
+        1:{sorter: false}
+      }
+    });
+
+    // creates the preview popup
+    $('#preview-popup').dialog({
+      position: ['center', 100],
+      autoOpen: false,
+      draggable: false,
+      resizable: false,
+      modal: true,
+      show: 'blind',
+      width: 1050,
+      buttons: {
+        Close: function() {
+          $(this).dialog('close');
+        }
+      }
+    });
+  }
+
+  /**
+   * A function to set the HTML of the 'preview-popup' div with the given article content and title.
+   *
+   * @param title {string} the title of the article to preview
+   * @param content {string} the HTML article content to preview
+   */
+  function preview(title, content) {
+    // create the HTML
+    $('#preview-popup').html('<section id="page"><article><h2>'+title+'</h2><div class="line"></div><div class="clear">'+content+'</div></article></section>');
+    // open the dialog
+    $('#preview-popup').dialog('open');
+  }
+
+  /**
+   * The main submit callback for the editor forms. This will make the correct AJAX call for the form.
+   */
+	function submit() {
+     createModalPageLoading();
+
+    // go through each input to build the AJAX request
+    var form = $('#editor-popup').find('form');
+    var ajaxType = 'POST';
+    var putString = '';
+    var formData = new FormData();
+    form.find(':input').each(function(){
+      if($(this).attr('type') !== 'submit') {
+        if($(this).attr('name') === 'id') {
+          ajaxType = 'PUT';
+        }
+
+        // check the password
+        if(!(($(this).attr('name') === 'password' || $(this).attr('name') === 'password-confirm')
+            && $(this).val() === '<?php echo $_PASSWORD_HOLDER?>')) {
+	        if(putString.length > 1) {
+            putString += '&';
+          }
+          putString += $(this).attr('name') + '=' + $(this).val();
+          formData.append($(this).attr('name'), $(this).val());
+        }
+      }
+	  });
+
+    // check if this is a POST or PUT
+    var dataToSubmit = formData;
+    if(ajaxType === 'PUT') {
+      dataToSubmit = putString;
+    }
+
+    // create a AJAX request
+    $.ajax(script, {
+      data : dataToSubmit,
+      cache : false,
+      contentType : false,
+      processData : false,
+      type : ajaxType,
+      beforeSend: function (xhr) {
+        // authenticate with the header
+        xhr.setRequestHeader('RMS-Use-Session', 'true');
+      },
+      success : function(data){
+        // success -- go back to the login page for the correct redirect
+        window.location.reload();
+      },
+      error : function(data){
+        // display the error
+        var response = JSON.parse(data.responseText);
+        removeModalPageLoading();
+        createErrorDialog(response.msg);
+      }
+    });
 	}
 </script>
-
-<?php if(isset($_GET['error'])) { // check if an error was made in one of the forms ?>
-<script type="text/javascript">
-	// error dialog box
-	$(function() {
-		$("#error-message").dialog({
-			position: ['center',100],
-			draggable: false,
-			resizable: false,
-			modal: true,
-			show: "blind",
-			hide: "puff",
-			autoOpen: true,
-			buttons: {
-				// close button
-				Close: function() {
-					$(this).dialog("close");
-				}
-			}
-		});
-	});
-</script>
-<?php }?>
 </head>
 
 <body onload="start()">
@@ -238,78 +311,72 @@ import_common_js();
               </li>
             </ul>
             <div id="users-tab">
-              <div id="users">
-                <div class="center">
-                  <h3>Users</h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Username</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>E-mail</th>
-                      <th>Role</th>
-                    </tr>
-                    <tr>
-                      <td colspan="8"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  // populate the table
-                  $user_accounts = get_user_accounts();
-                  $num_users = count($user_accounts);
-                  for ($i = 0; $i < $num_users; $i++) {
-                    $cur = $user_accounts[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['userid']?>"
-                          class="delete">
-                          <button>Delete</button>
-                        </div>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['userid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['userid']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['username']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['firstname']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['lastname']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['email']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['type']?>
-                      </td>
-                    </tr>
-                    <?php
-                  }?>
-                  </tbody>
+              <div class="center">
+                <h3>Users</h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>E-mail</th>
+                    <th>Role</th>
+                  </tr>
                   <tr>
                     <td colspan="8"><hr />
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="7"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-user">Add User</button>
-                      </div>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $user_accounts = get_user_accounts();
+                $num_users = count($user_accounts);
+                for ($i = 0; $i < $num_users; $i++) {
+                  $cur = $user_accounts[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell">
+                      <button class="delete" name="users"
+                        id="users-<?php echo $cur['userid']?>">Delete</button>
+                    </td>
+                    <td class="edit-cell">
+                      <button class="edit" name="users"
+                        id="users-<?php echo $cur['userid']?>">Edit</button>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['userid']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['username']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['firstname']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['lastname']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['email']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['type']?>
                     </td>
                   </tr>
-                </table>
-              </div>
+                  <?php
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="8"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="7"></td>
+                  <td class="add-cell">
+                    <button class="create-new" id="add-users"
+                      name="users">Add User</button>
+                  </td>
+                </tr>
+              </table>
             </div>
             <div id="site-log-tab">
               <div class="center">
@@ -388,10 +455,9 @@ import_common_js();
                     $cur = $environments[$i];
                     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                     <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['envid']?>" class="delete">
-                          <button>Delete</button>
-                        </div>
+                      <td class="delete-cell">
+                        <button class="delete" name="users"
+                          id="users-<?php echo $cur['envid']?>">Delete</button>
                       </td>
                       <td class="edit-cell"><div
                           id="<?php echo $cur['envid']?>" class="edit">
@@ -409,14 +475,14 @@ import_common_js();
                       <?php
                       if($cur['enabled']) {// check if the environment is enabled?
                         echo '<script type="text/javascript">
-                                 rosonline(\''.$cur['envaddr'].'\', 9090, function(isonline) {
-                                   if(isonline) {
-																     $(\'#envstatus-'.$cur['envid'].'\').html(\'ONLINE\');
-																   } else {
-                                     $(\'#envstatus-'.$cur['envid'].'\').html(\'OFFLINE\');
-																   }
-																 });
-															 </script>';?>
+                                rosonline(\''.$cur['envaddr'].'\', 9090, function(isonline) {
+                                  if(isonline) {
+                                    $(\'#envstatus-'.$cur['envid'].'\').html(\'ONLINE\');
+                                  } else {
+                                    $(\'#envstatus-'.$cur['envid'].'\').html(\'OFFLINE\');
+                                  }
+                                });
+                              </script>';?>
                       <td class="content-cell"><div
                           id="envstatus-<?php echo $cur['envid']?>">Acquiring
                           connection...</div>
@@ -1077,14 +1143,6 @@ import_common_js();
                     </td>
                   </tr>
                 </table>
-
-
-
-
-
-
-
-
               </div>
               <div id="javascript">
                 <div class="center">

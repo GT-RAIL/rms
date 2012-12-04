@@ -55,6 +55,13 @@ function import_common_js() {
   <script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="js/jquery/jquery-ui-1.8.22.custom.min.js"></script>
   ';
+
+  // check for a user
+  if(isset($_SESSION['userid'])) {
+    echo '<script type="text/javascript">
+    				_SESSION_ID = \''.session_id().'\';
+     			</script>';
+  }
 }
 
 /**

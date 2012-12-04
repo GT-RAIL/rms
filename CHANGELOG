@@ -1,8 +1,9 @@
--- v0.1.2 --
+-- v0.2.0 --
 + Ordering fixed on articles
 + CSS issues fixed
 + Admin panel changed to use new API
 + Log RMS API script added
++ TODO//Password encryption changed to SHA1 (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
 
 -- v0.1.1 --
 + Constraints added to MySQL tables

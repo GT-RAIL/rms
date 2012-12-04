@@ -66,7 +66,7 @@ function get_init_sql_version($url) {
 function valid_config_fields($array) {
   return isset($array['host']) && isset($array['db']) && isset($array['dbuser'])
   && isset($array['dbpass']) && isset($array['site-name']) && isset($array['copyright'])
-  && isset($_POST['google']);
+  && isset($array['google']);
 }
 
 /**
