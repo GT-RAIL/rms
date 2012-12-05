@@ -47,7 +47,7 @@ session_start();
 // check if there is a user logged in
 if (!isset($_SESSION['userid'])) {
   // send them to the login page
-  header('Location: login.php?goto='.substr($_SERVER["SCRIPT_NAME"], 1));
+  header('Location: /login?goto='.substr($_SERVER["SCRIPT_NAME"], 1));
   return;
 }
 
@@ -66,7 +66,7 @@ if($user['type'] !== "admin") {
   // report this
   write_to_log($user['username']." attempted to use the study panel.");
   // send the user back to their main menu
-  header('Location: main_menu.php');
+  header('Location: menu/');
   return;
 }
 

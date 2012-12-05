@@ -52,17 +52,17 @@ function create_header($user, $pagename, $path) {
     <header class="clear"><table><tr>
     <td align="left"><h3>'.$user['firstname'].' '.$user['lastname'].'</h3></td>
     <td align="right">
-    <span class="menu-main-menu"><a href="main_menu.php">Main Menu</a></span>&nbsp;
-    <span class="menu-account"><a href="account.php">Account</a></span>&nbsp;';
+    <span class="menu-main-menu"><a href="'.$path.'menu/">Main Menu</a></span>&nbsp;
+    <span class="menu-account"><a href="'.$path.'account/">Account</a></span>&nbsp;';
 
     // check if this is an admin
     if($user['type'] === 'admin') {
       echo '
-      <span class="menu-admin-panel"><a href="admin.php">Admin Panel</a></span>&nbsp;
-      <span class="menu-study-panel"><a href="study.php">Study Panel</a> </span>&nbsp;';
+      <span class="menu-admin-panel"><a href="'.$path.'admin.php">Admin Panel</a></span>&nbsp;
+      <span class="menu-study-panel"><a href="'.$path.'study.php">Study Panel</a> </span>&nbsp;';
     }
     echo '
-    <span class="menu-logout"><a href="form/logout.php">Logout</a></span>&nbsp;
+    <span class="menu-logout"><a href="'.$path.'form/logout.php">Logout</a></span>&nbsp;
     </td></tr></table></header>
     ';
   }

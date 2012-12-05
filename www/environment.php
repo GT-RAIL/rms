@@ -47,7 +47,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/interface/common.inc.php');
 
 // check if there is a user logged in
 if (!isset($_SESSION['userid'])) {
-  header('Location: login.php');
+  header('Location: login/');
 } else {
   // load the include files
   include($_SERVER['DOCUMENT_ROOT'].'/inc/config.inc.php');

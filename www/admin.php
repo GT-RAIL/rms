@@ -16,7 +16,7 @@ session_start();
 
 // check if a user is logged in
 if (!isset($_SESSION['userid'])) {
-  header('Location: login.php?goto='.substr($_SERVER['SCRIPT_NAME'], 1));
+  header('Location: login/?goto='.substr($_SERVER['SCRIPT_NAME'], 1));
   return;
 }
 
@@ -46,7 +46,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
 if($session_user['type'] !== 'admin') {
   write_to_log('WARNING: '.$session_user['username'].' attempted to access the admin panel.');
   // send the user back to their main menu
-  header('Location: main_menu.php');
+  header('Location: /menu');
   return;
 }
 ?>
