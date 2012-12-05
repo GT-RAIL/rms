@@ -40,7 +40,7 @@ $pagename = 'User Login';
     createModalPageLoading();
 
     var formData = new FormData();
-    formData.append('request', $('#request').val());
+    formData.append('request', 'server_session');
     // create a AJAX request
     $.ajax('../api/users/user_accounts/', {
       data : formData,
@@ -78,8 +78,6 @@ $pagename = 'User Login';
           <td>
             <form action="javascript:submit();">
               <fieldset>
-                <input type="hidden" name="request" id="request"
-                  value="server_session" readonly="readonly" />
                 <ol>
                   <li><label for="username">Username</label> <input
                     type="text" name="username" id="username" required

@@ -40,6 +40,15 @@ if($auth = authenticate()) {
               write_to_log('SESSION: '.$auth['username'].' created a new session.');
             }
             break;
+          case 'destroy_session':
+            if(count($_POST) === 1) {
+              // destroy the session
+              unset($_SESSION['userid']);
+              session_destroy();
+              $result = create_200_state($result, null);
+              write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
+            }
+            break;
           default:
             $result['msg'] = $_POST['request'].' request type is invalid.';
             break;

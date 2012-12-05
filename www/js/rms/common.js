@@ -4,7 +4,7 @@
  * @fileOverview A collection of common Javascript functions used throughout the RMS.
  * @name RMS Common
  * @author Russell Toris <rctoris@wpi.edu>
- * @version November, 8 2012
+ * @version December, 5 2012
  */
 
 /**
@@ -41,8 +41,7 @@ function createMenuButtons() {
 }
 
 /**
- * Creates a modal overlay with a loading icon. Disable the screen with
- * removeModalPageLoading().
+ * Creates a modal overlay with a loading icon. Disable the screen with removeModalPageLoading().
  */
 function createModalPageLoading() {
   // remove any old modals that may exist
@@ -66,7 +65,7 @@ function removeModalPageLoading() {
  * Creates a displays a modal dialog with the given error message.
  * 
  * @param {string}
- *          message the error message to display
+ *            message the error message to display
  */
 function createErrorDialog(message) {
   // remove any old dialogs that may exist
@@ -132,11 +131,11 @@ function createSlideshow() {
  * A function to check if the given rosbridge server is online.
  * 
  * @param {String}
- *          host the hostname of the rosbridge server
+ *            host the hostname of the rosbridge server
  * @param {int}
- *          port the port of the rosbridge server
+ *            port the port of the rosbridge server
  * @param {function}
- *          callback the callback function returning if the server is online
+ *            callback the callback function returning if the server is online
  */
 function rosonline(host, port, callback) {
   var ros = new ROS('ws://' + host + ':' + port);
@@ -149,10 +148,36 @@ function rosonline(host, port, callback) {
 }
 
 /**
+ * Makes a logout AJAX request.
+ */
+function logout() {
+  createModalPageLoading();
+
+  // create a AJAX request
+  var formData = new FormData();
+  formData.append('request', 'destroy_session');
+  $.ajax('../../api/users/user_accounts/', {
+    data : formData,
+    cache : false,
+    contentType : false,
+    processData : false,
+    type : 'POST',
+    beforeSend : function(xhr) {
+      // authenticate with the header
+      xhr.setRequestHeader('RMS-Use-Session', 'true');
+    },
+    success : function(data) {
+      // success
+      window.location = '../';
+    }
+  });
+}
+
+/**
  * Base 64 encode the given string.
  * 
  * @param {String}
- *          string the string to base 64 encode
+ *            string the string to base 64 encode
  * @returns {String} the base 64 encoded string
  */
 function base64Encode(string) {

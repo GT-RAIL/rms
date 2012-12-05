@@ -62,7 +62,7 @@ function create_header($user, $pagename, $path) {
       <span class="menu-study-panel"><a href="'.$path.'study.php">Study Panel</a> </span>&nbsp;';
     }
     echo '
-    <span class="menu-logout"><a href="'.$path.'form/logout.php">Logout</a></span>&nbsp;
+    <span class="menu-logout"><a href="javascript:logout();">Logout</a></span>&nbsp;
     </td></tr></table></header>
     ';
   }
