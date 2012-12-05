@@ -70,6 +70,16 @@ if($session_user['type'] !== 'admin') {
     var nameToAPIScript = function(name) {
       if(name === 'users') {
         return 'api/users/user_accounts/';
+      } else if(name === 'environments') {
+        return 'api/robot_environments/environments/';
+      } else if(name === 'interfaces') {
+        return 'api/robot_environments/interfaces/';
+      } else if(name === 'environment-interfaces') {
+        return 'api/robot_environments/';
+      } else if(name === 'widgets') {
+        return 'api/robot_environments/widgets/';
+      } else {
+        return 'UNKNOWN';
       }
     };
 
@@ -425,56 +435,54 @@ if($session_user['type'] !== 'admin') {
               </div>
             </div>
             <div id="environments-tab">
-              <div id="environments">
-                <div class="center">
-                  <h3>Environments</h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Address</th>
-                      <th>Type</th>
-                      <th>Notes</th>
-                      <th>Status</th>
-                    </tr>
-                    <tr>
-                      <td colspan="7"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  // populate the table
-                  $environments = get_environments();
-                  $num_environments = count($environments);
-                  for ($i = 0; $i < $num_environments; $i++) {
-                    $cur = $environments[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell">
-                        <button class="delete" name="users"
-                          id="users-<?php echo $cur['envid']?>">Delete</button>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['envid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['envid']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['envaddr']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['type']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['notes']?>
-                      </td>
-                      <?php
-                      if($cur['enabled']) {// check if the environment is enabled?
-                        echo '<script type="text/javascript">
+              <div class="center">
+                <h3>Environments</h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Address</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                  </tr>
+                  <tr>
+                    <td colspan="7"><hr />
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $environments = get_environments();
+                $num_environments = count($environments);
+                for ($i = 0; $i < $num_environments; $i++) {
+                  $cur = $environments[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell">
+                      <button class="delete" name="environments"
+                        id="environments-<?php echo $cur['envid']?>">Delete</button>
+                    </td>
+                    <td class="edit-cell"><button class="edit"
+                        name="environments"
+                        id="environments-<?php echo $cur['envid']?>">Edit</button>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['envid']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['envaddr']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['type']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['notes']?>
+                    </td>
+                    <?php
+                    if($cur['enabled']) {// check if the environment is enabled?
+                      echo '<script type="text/javascript">
                                 rosonline(\''.$cur['envaddr'].'\', 9090, function(isonline) {
                                   if(isonline) {
                                     $(\'#envstatus-'.$cur['envid'].'\').html(\'ONLINE\');
@@ -483,319 +491,292 @@ if($session_user['type'] !== 'admin') {
                                   }
                                 });
                               </script>';?>
-                      <td class="content-cell"><div
-                          id="envstatus-<?php echo $cur['envid']?>">Acquiring
-                          connection...</div>
-                      </td>
-                      <?php
-                      } else {?>
-                      <td class="content-cell"><div
-                          id="envstatus-<?php echo $cur['envid']?>">DISABLED</div>
-                      </td>
-                      <?php
-                      }?>
-                    </tr>
+                    <td class="content-cell"><div
+                        id="envstatus-<?php echo $cur['envid']?>">Acquiring
+                        connection...</div>
+                    </td>
                     <?php
-                  }?>
-                  </tbody>
-                  <tr>
-                    <td colspan="7"><hr />
+                    } else {?>
+                    <td class="content-cell"><div
+                        id="envstatus-<?php echo $cur['envid']?>">DISABLED</div>
                     </td>
+                    <?php
+                    }?>
                   </tr>
-                  <tr>
-                    <td colspan="6"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-environment">Add
-                          Environment</button>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div id="interfaces">
-                <br /> <br />
-                <div class="center">
-                  <h3>Interface</h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Directory</th>
-                    </tr>
-                    <tr>
-                      <td colspan="5"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
                   <?php
-                  // populate the table
-                  $interfaces = get_interfaces();
-                  $num_interfaces = count($interfaces);
-                  for ($i = 0; $i < $num_interfaces; $i++) {
-                    $cur = $interfaces[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['intid']?>" class="delete">
-                          <button>Delete</button>
-                        </div>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['intid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['intid']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['name']?>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['location']?>
-                      </td>
-                    </tr>
-                    <?php
-                  }?>
-                  </tbody>
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="7"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6"></td>
+                  <td class="add-cell">
+                    <button class="create-new" id="add-environments"
+                      name="environments">Add Environment</button>
+                  </td>
+                </tr>
+              </table>
+              <br /> <br />
+              <div class="center">
+                <h3>Interface</h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Directory</th>
+                  </tr>
                   <tr>
                     <td colspan="5"><hr />
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="4"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-interface">Add
-                          Interface</button>
-                      </div>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $interfaces = get_interfaces();
+                $num_interfaces = count($interfaces);
+                for ($i = 0; $i < $num_interfaces; $i++) {
+                  $cur = $interfaces[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell"><button class="delete"
+                        name="interfaces"
+                        id="interfaces-<?php echo $cur['intid']?>">Delete</button>
+                    </td>
+                    <td class="edit-cell"><button class="edit"
+                        name="interfaces"
+                        id="interfaces-<?php echo $cur['intid']?>">Edit</button>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['intid']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['name']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['location']?>
                     </td>
                   </tr>
-                </table>
-              </div>
-              <div id="environment-interface">
-                <br /> <br />
-                <div class="center">
-                  <h3>Environment-Interface Pairings</h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Environment ID</th>
-                      <th>Interface ID</th>
-                    </tr>
-                    <tr>
-                      <td colspan="5"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
                   <?php
-                  // populate the table
-                  $pairs = get_environment_interfaces();
-                  $num_pairs = count($pairs);
-                  for ($i = 0; $i < $num_pairs; $i++) {
-                    $cur = $pairs[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';
-                    // grab the interface and environment variables
-                    $env = get_environment_by_id($cur['envid']);
-                    $int = get_interface_by_id($cur['intid']);
-                    ?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['pairid']?>"
-                          class="delete">
-                          <button>Delete</button>
-                        </div>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['pairid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['pairid']?>
-                      </td>
-                      <td class="content-cell"><?php echo $env['envid'].': '.$env['envaddr'].
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="5"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4"></td>
+                  <td class="add-cell">
+                    <button class="create-new" id="add-interface"
+                      name="interfaces">Add Interface</button>
+                  </td>
+                </tr>
+              </table>
+              <br /> <br />
+              <div class="center">
+                <h3>Environment-Interface Pairings</h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Environment ID</th>
+                    <th>Interface ID</th>
+                  </tr>
+                  <tr>
+                    <td colspan="5"><hr />
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $pairs = get_environment_interfaces();
+                $num_pairs = count($pairs);
+                for ($i = 0; $i < $num_pairs; $i++) {
+                  $cur = $pairs[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';
+                  // grab the interface and environment variables
+                  $env = get_environment_by_id($cur['envid']);
+                  $int = get_interface_by_id($cur['intid']);
+                  ?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell"><button class="delete"
+                        name="environment-interfaces"
+                        id="environment-interfaces-<?php echo $cur['pairid']?>">Delete</button>
+                    </td>
+                    <td class="edit-cell"><button class="edit"
+                        name="environment-interfaces"
+                        id="environment-interfaces-<?php echo $cur['pairid']?>">Edit</button>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['pairid']?>
+                    </td>
+                    <td class="content-cell"><?php echo $env['envid'].': '.$env['envaddr'].
                                                            ' -- '.$env['type'].' :: '.$env['notes']?>
-                      </td>
-                      <td class="content-cell"><?php echo $int['intid'].': '.$int['name']?>
-                      </td>
-                    </tr>
-                    <?php
-                  }?>
-                  </tbody>
-                  <tr>
-                    <td colspan="5"><hr />
+                    </td>
+                    <td class="content-cell"><?php echo $int['intid'].': '.$int['name']?>
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="4"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor"
-                          id="add-environment-interface">Add Pairing</button>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div id="widgets">
-                <br /> <br />
-                <div class="center">
-                  <h3>Widgets</h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>SQL Table</th>
-                      <th>PHP Script</th>
-                    </tr>
-                    <tr>
-                      <td colspan="6"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
                   <?php
-                  // populate the table
-                  $widgets = get_widgets();
-                  $num_widgets = count($widgets);
-                  for ($i = 0; $i < $num_widgets; $i++) {
-                    $cur = $widgets[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['widgetid']?>"
-                          class="delete">
-                          <button>Delete</button>
-                        </div>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['widgetid']?>"
-                          class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['widgetid']?>
-
-                      </td>
-                      <td class="content-cell"><a
-                        href="#widget<?php echo $cur['widgetid']?>"><?php echo $cur['name']?>
-                      </a>
-                      </td>
-                      <td class="content-cell"><?php echo $cur['table']?>
-
-                      </td>
-                      <td class="content-cell"><?php echo $cur['script']?>
-
-                      </td>
-                    </tr>
-                    <?php
-                  }?>
-                  </tbody>
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="5"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4"></td>
+                  <td class="add-cell">
+                    <button class="create-new"
+                      id="add-environment-interfaces"
+                      name="environment-interfaces">Add Pairing</button>
+                  </td>
+                </tr>
+              </table>
+              <br /> <br />
+              <div class="center">
+                <h3>Widgets</h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>SQL Table</th>
+                    <th>PHP Script</th>
+                  </tr>
                   <tr>
                     <td colspan="6"><hr />
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="5"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-widget">Add
-                          Widget</button>
-                      </div>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $widgets = get_widgets();
+                $num_widgets = count($widgets);
+                for ($i = 0; $i < $num_widgets; $i++) {
+                  $cur = $widgets[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell"><button class="delete"
+                        name="widgets"
+                        id="widgets-<?php echo $cur['widgetid']?>">Delete</button>
+                    </td>
+                    <td class="edit-cell"><button class="edit"
+                        name="widgets"
+                        id="widgets-<?php echo $cur['widgetid']?>">Edit</button>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['widgetid']?>
+
+                    </td>
+                    <td class="content-cell"><a
+                      href="#widget<?php echo $cur['widgetid']?>"><?php echo $cur['name']?>
+                    </a>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['table']?>
+
+                    </td>
+                    <td class="content-cell"><?php echo $cur['script']?>
+
                     </td>
                   </tr>
-                </table>
-              </div>
+                  <?php
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="6"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5"></td>
+                  <td class="add-cell">
+                    <button class="create-new" id="add-widget"
+                      name="widgets">Add Widget</button>
+                  </td>
+                </tr>
+              </table>
               <?php
               // individual widget tables
               foreach ($widgets as $w) {?>
-              <div id="widget-<?php echo $w['widgetid']?>">
-                <br /> <br />
-                <div class="center">
-                  <h3 id="widget<?php echo $w['widgetid']?>">
-                  <?php echo $w['name']?>
-                  </h3>
-                </div>
-                <div class="line"></div>
-                <table class="tablesorter">
-                  <thead>
-                  <?php
-                  // build an array of the column names
-                  $attributes = get_widget_table_columns_by_id($w['widgetid']);
-                  $num_att = count($attributes);?>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <?php
-                      foreach ($attributes as $label) {
-                        echo '<th>'.$label.'</th>';
-                      }?>
-                    </tr>
-                    <tr>
-                      <td colspan="<?php echo ($num_att+2)?>"><hr />
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  // populate the table
-                  $instances = get_widget_instances_by_id($w['widgetid']);
-                  $num_instances = count($instances);
-                  for ($i = 0; $i < $num_instances; $i++) {
-                    $cur = $instances[$i];
-                    $class = ($i % 2 == 0) ? 'even' : 'odd';?>
-                    <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['id']?>" class="delete">
-                          <button>Delete</button>
-                        </div>
-                      </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['id']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
-                      </td>
-                      <?php foreach ($attributes as $label) {?>
-                      <td class="content-cell"><?php echo $cur[$label]?>
-                      </td>
-                      <?php
-                      }?>
-                    </tr>
+              <br /> <br />
+              <div class="center">
+                <h3 id="widget<?php echo $w['widgetid']?>">
+                <?php echo $w['name']?>
+                </h3>
+              </div>
+              <div class="line"></div>
+              <table class="tablesorter">
+                <thead>
+                <?php
+                // build an array of the column names
+                $attributes = get_widget_table_columns_by_id($w['widgetid']);
+                $num_att = count($attributes);?>
+                  <tr>
+                    <th></th>
+                    <th></th>
                     <?php
-                  }?>
-                  </tbody>
+                    foreach ($attributes as $label) {
+                      echo '<th>'.$label.'</th>';
+                    }?>
+                  </tr>
                   <tr>
                     <td colspan="<?php echo ($num_att+2)?>"><hr />
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="<?php echo ($num_att+1)?>"></td>
-                    <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-widget">
-                          Add
-                          <?php echo $w['name']?>
-                        </button>
-                      </div>
+                </thead>
+                <tbody>
+                <?php
+                // populate the table
+                $instances = get_widget_instances_by_id($w['widgetid']);
+                $num_instances = count($instances);
+                for ($i = 0; $i < $num_instances; $i++) {
+                  $cur = $instances[$i];
+                  $class = ($i % 2 == 0) ? 'even' : 'odd';?>
+                  <tr class="<?php echo $class?>">
+                    <td class="delete-cell"><button class="delete"
+                        name="widget-<?php echo $w['widgetid']?>"
+                        id="widget-<?php echo $w['widgetid'].'-'.$cur['id']?>">Delete</button>
                     </td>
+                    <td class="edit-cell"><button class="edit"
+                        name="widget-<?php echo $w['widgetid']?>"
+                        id="widget-<?php echo $w['widgetid'].'-'.$cur['id']?>">Edit</button>
+                    </td>
+                    <?php foreach ($attributes as $label) {?>
+                    <td class="content-cell"><?php echo $cur[$label]?>
+                    </td>
+                    <?php
+                    }?>
                   </tr>
-                </table>
-              </div>
+                  <?php
+                }?>
+                </tbody>
+                <tr>
+                  <td colspan="<?php echo ($num_att+2)?>"><hr />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="<?php echo ($num_att+1)?>"></td>
+                  <td class="add-cell">
+                    <button class="create-new"
+                      id="add-widget-<?php echo $w['widgetid']?>"
+                      name="widget-<?php echo $w['widgetid']?>">
+                      Add
+                      <?php echo $w['name']?>
+                    </button>
+                  </td>
+                </tr>
+              </table>
               <?php
               }?>
             </div>
@@ -1046,9 +1027,7 @@ if($session_user['type'] !== 'admin') {
                     </tr>
                     <tr>
                       <td class=setting-label>Database Password:</td>
-                      <td><?php  for ($i = 0; $i < strlen($dbpass); $i++) {
-                        echo '*';
-                      }?>
+                      <td><?php echo $_PASSWORD_HOLDER?>
                       </td>
                     </tr>
                     <tr>

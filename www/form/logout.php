@@ -44,7 +44,6 @@
 session_start();
 
 include($_SERVER['DOCUMENT_ROOT'].'/inc/config.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/inc/log.inc.php');
 
 // grab the username for the log
 $sql = "SELECT * FROM user_accounts WHERE userid = '".$_SESSION['userid']."'";
@@ -52,7 +51,7 @@ $query = mysqli_query($db, $sql);
 $row = mysqli_fetch_array($query);
 // write this event to the log
 $msg = $row['username']." has logged out.";
-write_to_log($msg, $db);
+//write_to_log($msg, $db);
 
 // unset the session variable and destroy the session
 unset($_SESSION['userid']);

@@ -22,7 +22,7 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate())  {
+if($auth = authenticate()) {
   // default to the 404 state
   $result = create_404_state(array());
 
@@ -37,6 +37,7 @@ if($auth = authenticate())  {
               session_start();
               $_SESSION['userid'] = $auth['userid'];
               $result = create_200_state($result, $auth);
+              write_to_log('SESSION: '.$auth['username'].' created a new session.');
             }
             break;
           default:
@@ -154,6 +155,7 @@ if($auth = authenticate())  {
       }
       break;
     default:
+      write_to_log('SECURITY: '.$auth['username'].' attempted to make a user acccount '.$_SERVER['REQUEST_METHOD'].' request.');
       $result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
       break;
   }

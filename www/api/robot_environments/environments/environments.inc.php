@@ -79,7 +79,7 @@ function get_environment_editor_html($id) {
   }
 
   $result = '<p>Complete the following form to create or edit an environment.</p>
-             <form action="form/admin/create_environment.php" method="POST">
+             <form action="javascript:submit();">
                <fieldset>
                  <ol>';
 

@@ -3,7 +3,8 @@
 + CSS issues fixed
 + Admin panel changed to use new API
 + Log RMS API script added
-+ TODO//Password encryption changed to SHA1 (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
++ Password encryption changed to SHA1 (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
++ Database structure cleaned (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
 
 -- v0.1.1 --
 + Constraints added to MySQL tables
