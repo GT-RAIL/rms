@@ -5,6 +5,8 @@
 + Log RMS API script added
 + Password encryption changed to SHA1 (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
 + Database structure cleaned (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
++ Head include files now allow for relative paths
++ Pages moved to folders with their own index.php
 
 -- v0.1.1 --
 + Constraints added to MySQL tables

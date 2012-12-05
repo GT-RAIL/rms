@@ -10,7 +10,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 14 2012
+ * @version    December, 5 2012
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -30,7 +30,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     // check if this is the initial setup
     if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
       $result = create_401_state(array());
-    } else if(count($_POST) === 7 && valid_config_fields($_POST)) {
+    } else if(valid_config_fields($_POST)) {
       $error = false;
       // check if a file was uploaded
       if(isset($_FILES['sqlfile'])) {
@@ -65,6 +65,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if($error = download_javascript_files()) {
               $result['msg'] = $error;
             } else {
+              include_once(dirname(__FILE__).'/logs/logs.inc.php');
+              write_to_log('INIT: Site created.');
               $result = create_200_state($result, null);
             }
           }

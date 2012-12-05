@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 14 2012
+ * @version    December, 5 2012
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -66,7 +66,7 @@ function get_init_sql_version($url) {
 function valid_config_fields($array) {
   return isset($array['host']) && isset($array['db']) && isset($array['dbuser'])
   && isset($array['dbpass']) && isset($array['site-name']) && isset($array['copyright'])
-  && isset($array['google']);
+  && isset($array['google']) && (count($array) === 7);
 }
 
 /**

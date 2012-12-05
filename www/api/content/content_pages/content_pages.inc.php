@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 8 2012
+ * @version    December, 5 2012
  * @package    api.content.content_pages
  * @link       http://ros.org/wiki/rms
  */
@@ -25,7 +25,7 @@ function get_content_pages() {
 
   // grab the pages and push them into an array
   $result = array();
-  $query = mysqli_query($db, "SELECT * FROM `content_pages` ORDER BY `menu_index`");
+  $query = mysqli_query($db, "SELECT * FROM `content_pages` ORDER BY `index`");
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }

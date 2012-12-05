@@ -312,10 +312,10 @@ CREATE TABLE IF NOT EXISTS `navigations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `slideshow`
+-- Table structure for table `slides`
 --
 
-CREATE TABLE IF NOT EXISTS `slideshow` (
+CREATE TABLE IF NOT EXISTS `slides` (
   `slideid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the slide.',
   `img` varchar(255) NOT NULL COMMENT 'Name of the file in the img/slides folder.',
   `caption` varchar(255) NOT NULL COMMENT 'Caption text for the slide.',
@@ -325,10 +325,10 @@ CREATE TABLE IF NOT EXISTS `slideshow` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Slides used in the slideshow.' AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `slideshow`
+-- Dumping data for table `slides`
 --
 
-INSERT INTO `slideshow` (`slideid`, `img`, `caption`, `index`) VALUES
+INSERT INTO `slides` (`slideid`, `img`, `caption`, `index`) VALUES
 (1, 'youbot_sim.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam.', 0),
 (2, 'pr2.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ', 3),
 (3, 'youbot.jpg', 'Lorem ipsum dolor sit amet.', 5);

@@ -19,12 +19,16 @@ include_once(dirname(__FILE__).'/../api/content/content_pages/content_pages.inc.
 /**
  * A function to echo the HTML for the main header based on the given user and page name. If the
  * user is an admin, the admin menus will be shown.
+ *
+ * @param array|null $user the user SQL array for the current user (or null if none)
+ * @param string $pagename the name of the page
+ * @param string $path the relative path to the base RMS directory
  */
-function create_header($user, $pagename) {
+function create_header($user, $pagename, $path) {
   global $title, $db;
   echo '
   <header class="clear">
-  <figure><img src="img/logo.png" /></figure>
+  <figure><img src="'.$path.'img/logo.png" /></figure>
   <hgroup><h1>'.$title.'</h1><h2>'.$pagename.'</h2></hgroup>
   </header>
   <div id="nav"><center><nav><ul>';
@@ -32,7 +36,7 @@ function create_header($user, $pagename) {
   // list all of the content pages
   $pages = get_content_pages();
   foreach ($pages as $cur) {
-    echo '<li><a href="index.php?pageid='.$cur['pageid'].'">'.$cur['menu_name'].'</a></li>';
+    echo '<li><a href="'.$path.'?pageid='.$cur['pageid'].'">'.$cur['menu'].'</a></li>';
   }
 
   // add the login page if the user is not logged in

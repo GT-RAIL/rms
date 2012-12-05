@@ -7,13 +7,13 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 1 2012
+ * @version    December, 5 2012
  * @link       http://ros.org/wiki/rms
  */
 
 // first check if there is a config file
 if(!file_exists(dirname(__FILE__).'/inc/config.inc.php')) {
-  header('Location: setup.php');
+  header('Location: setup/');
   return;
 }
 
@@ -23,7 +23,7 @@ session_start();
 // load the include files
 include_once(dirname(__FILE__).'/api/content/articles/articles.inc.php');
 include_once(dirname(__FILE__).'/api/content/content_pages/content_pages.inc.php');
-include_once(dirname(__FILE__).'/api/content/slideshow/slideshow.inc.php');
+include_once(dirname(__FILE__).'/api/content/slides/slides.inc.php');
 include_once(dirname(__FILE__).'/api/users/user_accounts/user_accounts.inc.php');
 include_once(dirname(__FILE__).'/inc/config.inc.php');
 include_once(dirname(__FILE__).'/inc/content.inc.php');
@@ -59,7 +59,7 @@ $ishome = $page['pageid'] === $homepage['pageid'];
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head()?>
+<?php import_head('')?>
 <title><?php echo $title." :: ".$page['title']?></title>
 
 <?php if($session_user) {?>
@@ -83,7 +83,7 @@ if($ishome) {?>
 </head>
 
 <body>
-  <?php create_header($session_user, $page['title'])?>
+  <?php create_header($session_user, $page['title'], '')?>
   <section id="page">
     <?php
     // check if this is the homepage
