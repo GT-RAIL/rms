@@ -68,8 +68,6 @@ if($user['type'] !== "admin") {
 // check the type
 if ($_GET['type'] === "pages") {
   create_page_editor(isset($_GET['id']) ? $_GET['id'] : null);
-} else if ($_GET['type'] === "environments") {
-  create_environment_editor(isset($_GET['id']) ? $_GET['id'] : null);
 } else if ($_GET['type'] === "articles") {
   create_article_editor(isset($_GET['id']) ? $_GET['id'] : null);
 } else if ($_GET['type'] === "widgets") {
@@ -86,22 +84,6 @@ if ($_GET['type'] === "pages") {
   create_site_editor();
 } else if ($_GET['type'] === "site-status") {
   create_db_update();
-} else if ($_GET['type'] === "javascript") {
-  create_js_update();
-} else {
-  // report this
-  write_to_log($user['username']." attempted to create an invalid popup type: \"".$_GET['type']."\"");
-  echo "INVALID TYPE: ".$_GET['type'];
-}
-
-
-/**
- * A function to echo the HTML for the popup dialog used to create an environment.
- *
- * @param int $id the envrironment ID number to create the popup for, or null if it is a new entry
- */
-function create_environment_editor($id) {
-  echo get_environment_editor_html($id);
 }
 
 /**
@@ -698,18 +680,4 @@ function create_db_update() {
 <?php
 }
 
-/**
- * A function to echo the HTML for the popup dialog used to update Javascript files.
- */
-function create_js_update() {?>
-<p>By using this form, you will delete all local ROS Javascript files
-  and download the latest versions.</p>
-<form action="../form/admin/setup.php" method="POST">
-  <fieldset>
-    <input type="hidden" name="req" id="req" value="update">
-  </fieldset>
-  <input type="submit" value="Update" />
-</form>
-<?php
-}
 ?>

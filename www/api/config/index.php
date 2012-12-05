@@ -58,17 +58,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else {
           // now delete any old Javascript files
           include_once(dirname(__FILE__).'/javascript_files/javascript_files.inc.php');
-          if($error = delete_local_javascript_files()) {
+          if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
             $result['msg'] = $error;
           } else {
-            // finally, download all the new Javascript files
-            if($error = download_javascript_files()) {
-              $result['msg'] = $error;
-            } else {
-              include_once(dirname(__FILE__).'/logs/logs.inc.php');
-              write_to_log('INIT: Site created.');
-              $result = create_200_state($result, null);
-            }
+            include_once(dirname(__FILE__).'/logs/logs.inc.php');
+            write_to_log('SYSTEM: Site created.');
+            $result = create_200_state($result, null);
           }
         }
       }

@@ -13,6 +13,7 @@
  * @link       http://ros.org/wiki/rms
  */
 
+include_once(dirname(__FILE__).'/../../users/user_accounts/user_accounts.inc.php');
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 
 /**

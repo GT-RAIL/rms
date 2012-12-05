@@ -169,33 +169,43 @@ if($session_user['type'] !== 'admin') {
 
     // a function to make the correct AJAX call to display an editor
     var createEditor = function(e) {
-      createModalPageLoading();
-
-      // grab the type
       var type = $(e.target).attr('name');
-      script = nameToAPIScript(type);
-      var url = script + '?request=editor';
 
-      // now check if we are getting an ID as well
-      var idString = $(e.target).attr('id');
-      if(idString.indexOf(type + '-') === 0) {
-        var id = idString.substring(idString.indexOf('-') + 1);
-        url += '&id=' + id;
-      }
+      // special case --  Javascript updater
+      if(type === 'js-update') {
+        var html = '<p>By using this form, you will delete all local ROS Javascript files and download the latest versions.</p>';
+        html += '<form action="javascript:updateJSRequest();"><input type="submit" value="Update" /></form>';
 
-      // create an AJAX request
-      $.ajax(url, {
-        type : 'GET',
-        beforeSend: function (xhr) {
-          // authenticate with the header
-          xhr.setRequestHeader('RMS-Use-Session', 'true');
-        },
-        success : function(data){
-          $('#editor-popup').html(data.data.html);
-          removeModalPageLoading();
-          $('#editor-popup').dialog('open');
+        $('#editor-popup').html(html);
+        $('#editor-popup').dialog('open');
+      } else {
+        createModalPageLoading();
+
+        // grab the script name
+        script = nameToAPIScript(type);
+        var url = script + '?request=editor';
+
+        // now check if we are getting an ID as well
+        var idString = $(e.target).attr('id');
+        if(idString.indexOf(type + '-') === 0) {
+          var id = idString.substring(idString.indexOf('-') + 1);
+          url += '&id=' + id;
         }
-      });
+
+        // create an AJAX request
+        $.ajax(url, {
+          type : 'GET',
+          beforeSend: function (xhr) {
+            // authenticate with the header
+            xhr.setRequestHeader('RMS-Use-Session', 'true');
+          },
+          success : function(data){
+            $('#editor-popup').html(data.data.html);
+            removeModalPageLoading();
+            $('#editor-popup').dialog('open');
+          }
+        });
+      }
     };
 
     // make the tables sortable
@@ -298,6 +308,38 @@ if($session_user['type'] !== 'admin') {
         }
       });
     }
+	}
+
+  /**
+   * Make an AJAX request to update the Javascript files.
+   */
+	function updateJSRequest() {
+    createModalPageLoading();
+
+    // create a AJAX request
+    var formData = new FormData();
+    formData.append('request', 'update');
+    $.ajax('../api/config/javascript_files/', {
+      data : formData,
+      cache : false,
+      contentType : false,
+      processData : false,
+      type : 'POST',
+      beforeSend: function (xhr) {
+        // authenticate with the header
+        xhr.setRequestHeader('RMS-Use-Session', 'true');
+      },
+      success : function(data){
+        // success
+        window.location.reload();
+      },
+      error : function(data){
+        // display the error
+        var response = JSON.parse(data.responseText);
+        removeModalPageLoading();
+        createErrorDialog(response.msg);
+      }
+    });
 	}
 </script>
 </head>
@@ -1143,7 +1185,7 @@ if($session_user['type'] !== 'admin') {
                     <tr>
                       <td width="33%"></td>
                       <td class=setting-label><?php echo $file['path']?>:</td>
-                      <td><?php echo file_exists(dirname(__FILE__).'/'.$file['path']) ? 'Exists' : '<b>MISSING</b>'?>
+                      <td><?php echo file_exists(dirname(__FILE__).'/../'.$file['path']) ? 'Exists' : '<b>MISSING</b>'?>
                       </td>
                       <td width="33%"></td>
                     </tr>
@@ -1157,10 +1199,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="3"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="update-js">Update ROS
-                          Javascript</button>
-                      </div>
+                      <button class="create-new" id="js-update"
+                        name="js-update">Update ROS Javascript</button>
                     </td>
                   </tr>
                 </table>
@@ -1175,23 +1215,23 @@ if($session_user['type'] !== 'admin') {
                     <tr>
                       <td width="33%" rowspan="4"></td>
                       <td class=setting-label>js/ros:</td>
-                      <td><?php echo is_writable(dirname(__FILE__).'/js/ros') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
+                      <td><?php echo is_writable(dirname(__FILE__).'/../js/ros') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
                       </td>
                       <td width="33%" rowspan="4"></td>
                     </tr>
                     <tr>
                       <td class=setting-label>js/ros/widgets:</td>
-                      <td><?php echo is_writable(dirname(__FILE__).'/js/ros/widgets') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
+                      <td><?php echo is_writable(dirname(__FILE__).'/../js/ros/widgets') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
                       </td>
                     </tr>
                     <tr>
                       <td class=setting-label>inc:</td>
-                      <td><?php echo is_writable(dirname(__FILE__).'/inc') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
+                      <td><?php echo is_writable(dirname(__FILE__).'/../inc') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
                       </td>
                     </tr>
                     <tr>
                       <td class=setting-label>img/slides:</td>
-                      <td><?php echo is_writable(dirname(__FILE__).'/img/slides') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
+                      <td><?php echo is_writable(dirname(__FILE__).'/../img/slides') ? 'Writable' : '<b>UN-WRITABLE</b>'?>
                       </td>
                     </tr>
                   </tbody>
@@ -1210,7 +1250,7 @@ if($session_user['type'] !== 'admin') {
   </section>
 
   <div id="confirm-delete-popup" title="Delete?"></div>
-  <div id="editor-popup" title="Entry Editor"></div>
+  <div id="editor-popup" title="Editor"></div>
   <div id="preview-popup" title="Content Preview"></div>
 
 </html>
