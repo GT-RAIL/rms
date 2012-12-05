@@ -20,12 +20,33 @@ include_once(dirname(__FILE__).'/../../inc/config.inc.php');
  *
  * @return array|null An array of all the environment-interface pair entries, or null if none exist
  */
-function get_environment_interfaces() {
+function get_environment_interface_pairs() {
   global $db;
 
   // grab the entries and push them into an array
   $result = array();
-  $query = mysqli_query($db, "SELECT * FROM `environment_interfaces`");
+  $query = mysqli_query($db, "SELECT * FROM `environment_interface_pairs`");
+  while($cur = mysqli_fetch_assoc($query)) {
+    $result[] = $cur;
+  }
+
+  return (count($result) === 0) ? null : $result;
+}
+
+/**
+ * Get an array of all the environment-interface pair entries for a given environment, or null if none exist.
+ *
+ * @param integer $envid The environment ID number
+ * @return array|null An array of all the environment-interface pair entries, or null if none exist
+ */
+function get_environment_interface_pairs_by_envid($envid) {
+  global $db;
+
+  // grab the entries and push them into an array
+  $result = array();
+  $sql = sprintf( "SELECT * FROM `environment_interface_pairs` WHERE `envid`='%d'"
+  , $db->real_escape_string($envid));
+  $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }

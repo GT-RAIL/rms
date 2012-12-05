@@ -256,7 +256,7 @@ if($session_user['type'] !== 'admin') {
 
         // check the password
         if(!(($(this).attr('name') === 'password' || $(this).attr('name') === 'password-confirm')
-            && $(this).val() === '<?php echo $_PASSWORD_HOLDER?>')) {
+            && $(this).val() === '<?php echo $PASSWORD_HOLDER?>')) {
 	        if(putString.length > 1) {
             putString += '&';
           }
@@ -1027,7 +1027,7 @@ if($session_user['type'] !== 'admin') {
                     </tr>
                     <tr>
                       <td class=setting-label>Database Password:</td>
-                      <td><?php echo $_PASSWORD_HOLDER?>
+                      <td><?php echo $PASSWORD_HOLDER?>
                       </td>
                     </tr>
                     <tr>

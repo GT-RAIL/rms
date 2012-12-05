@@ -14,7 +14,7 @@
 
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 include_once(dirname(__FILE__).'/../../api.inc.php');
-include_once(dirname(__FILE__).'/../../config/log/log.inc.php');
+include_once(dirname(__FILE__).'/../../config/logs/logs.inc.php');
 include_once(dirname(__FILE__).'/user_accounts.inc.php');
 
 // JSON response

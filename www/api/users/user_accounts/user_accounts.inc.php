@@ -21,7 +21,7 @@ include_once(dirname(__FILE__).'/../../api.inc.php');
  *
  * @var string
  */
-$_VALID_SALT_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+$VALID_SALT_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 /**
  * Generate a random 16 character string for salting passwords.
@@ -29,10 +29,10 @@ $_VALID_SALT_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
  * @return string The 16 character salt
  */
 function generate_salt() {
-  global $_VALID_SALT_CHARS;
+  global $VALID_SALT_CHARS;
 
   $salt = '';
-  $valid = strlen($_VALID_SALT_CHARS);
+  $valid = strlen($VALID_SALT_CHARS);
 
   // seed the random number generator
   mt_srand((double)microtime()*1000000);
@@ -40,7 +40,7 @@ function generate_salt() {
   // grab 16 random characters for our salt
   for ($i = 0; $i < 16; $i++)
   {
-    $salt .= $_VALID_SALT_CHARS[mt_rand(0, $valid-1)];
+    $salt .= $VALID_SALT_CHARS[mt_rand(0, $valid-1)];
   }
 
   return $salt;
@@ -318,13 +318,13 @@ function authenticate() {
  * @return string A string containing the HTML of the editor
  */
 function get_user_account_editor_html($id) {
-  global $_PASSWORD_HOLDER;
+  global $PASSWORD_HOLDER;
 
   // see if a user exists with the given id
   $cur = get_user_account_by_id($id);
 
   if($cur) {
-    $password = $_PASSWORD_HOLDER;
+    $password = $PASSWORD_HOLDER;
     $username = $cur['username'];
     $firstname = $cur['firstname'];
     $lastname = $cur['lastname'];

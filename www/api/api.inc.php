@@ -16,7 +16,7 @@
  * The default password text holder.
  * @var string
  */
-$_PASSWORD_HOLDER = '***********';
+$PASSWORD_HOLDER = '***********';
 
 /**
  * Create the _DELETE array for the API.
@@ -101,5 +101,15 @@ function get_enum_types($table, $column) {
   , $db->real_escape_string($table), $db->real_escape_string($column));
   $enums = mysqli_fetch_row(mysqli_query($db, $sql));
   return explode("','", str_replace(array("enum('", "')", "''"), array('', '', "'"), $enums[0]));
+}
+
+/**
+ * Get the current timestamp from the MySQL server.
+ *
+ * @return string The current timestamp from the MySQL server
+ */
+function get_current_timestamp() {
+  $time = mysqli_fetch_array(mysqli_query($db, "SELECT CURRENT_TIMESTAMP()"));
+  return $time['CURRENT_TIMESTAMP()'];
 }
 ?>

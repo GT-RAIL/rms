@@ -41,7 +41,7 @@ function create_header($user, $pagename, $path) {
 
   // add the login page if the user is not logged in
   if(!$user) {
-    echo '<li><a href="login.php">Login</a></li>';
+    echo '<li><a href="'.$path.'login">Login</a></li>';
   }
   echo '
   </ul></nav></center></div>';
