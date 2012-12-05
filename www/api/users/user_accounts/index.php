@@ -44,20 +44,15 @@ if($auth = authenticate()) {
             $result['msg'] = $_POST['request'].' request type is invalid.';
             break;
         }
-      } else if(count($_POST) === 7 && valid_user_account_fields($_POST)) {
+      } else if(valid_user_account_fields($_POST)) {
         if($auth['type'] === 'admin') {
-          // check if the passwords match
-          if($_POST['password'] !== $_POST['password-confirm']) {
-            $result['msg'] = 'ERROR: Passwords do not match.';
+          $error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
+          , $_POST['lastname'], $_POST['email'], $_POST['type']);
+          if($error) {
+            $result['msg'] = $error;
           } else {
-            $error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
-            , $_POST['lastname'], $_POST['email'], $_POST['type']);
-            if($error) {
-              $result['msg'] = $error;
-            } else {
-              write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
-              $result = create_200_state($result, null);
-            }
+            write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
+            $result = create_200_state($result, null);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
@@ -135,21 +130,12 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$_PUT['id'].'.');
           $result = create_401_state($result);
         } else {
-          // check if the passwords match
-          if(isset($_PUT['password']) && isset($_PUT['password-confirm'])
-          && $_PUT['password'] !== $_PUT['password-confirm']) {
-            $result['msg'] = 'ERROR: Passwords do not match.';
+          $error = update_user_account($_PUT);
+          if($error) {
+            $result['msg'] = $error;
           } else {
-            if(isset($_PUT['password-confirm'])) {
-              unset($_PUT['password-confirm']);
-            }
-            $error = update_user_account($_PUT);
-            if($error) {
-              $result['msg'] = $error;
-            } else {
-              write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');
-              $result = create_200_state($result, null);
-            }
+            write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');
+            $result = create_200_state($result, null);
           }
         }
       }

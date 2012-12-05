@@ -53,9 +53,9 @@ function generate_salt() {
  * @return boolean If the given array has all of the necessary fields to create a new user account
  */
 function valid_user_account_fields($array) {
-  return isset($array['username']) && isset($array['password'])
-  && isset($array['password-confirm']) && isset($array['firstname']) && isset($array['lastname'])
-  && isset($array['email']) && isset($array['type']);
+  return isset($array['username']) && isset($array['password']) && isset($array['firstname'])
+  && isset($array['lastname']) && isset($array['email']) && isset($array['type'])
+  && (count($array) === 6);
 }
 
 /**

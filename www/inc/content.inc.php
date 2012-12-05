@@ -58,7 +58,7 @@ function create_header($user, $pagename, $path) {
     // check if this is an admin
     if($user['type'] === 'admin') {
       echo '
-      <span class="menu-admin-panel"><a href="'.$path.'admin.php">Admin Panel</a></span>&nbsp;
+      <span class="menu-admin-panel"><a href="'.$path.'admin/">Admin Panel</a></span>&nbsp;
       <span class="menu-study-panel"><a href="'.$path.'study.php">Study Panel</a> </span>&nbsp;';
     }
     echo '
