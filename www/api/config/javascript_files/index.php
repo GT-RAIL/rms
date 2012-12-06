@@ -30,17 +30,17 @@ if($auth = authenticate()) {
         if($js = get_javascript_files()) {
           $result = create_200_state($js);
         } else {
-          $result = create_404_state();
-          $result['msg'] = 'No Javascript entries found.';
+          $result = create_404_state('No Javascript entries found.');
         }
       } else if(count($_GET) === 1 && isset($_GET['id'])) {
         // now check if the entry was found
         if($js = get_javascript_file_by_id($_GET['id'])) {
           $result = create_200_state($js);
         } else {
-          $result = create_404_state();
-          $result['msg'] = 'Javascript file ID '.$_GET['id'].' is invalid.';
+          $result = create_404_state('Javascript file ID '.$_GET['id'].' is invalid.');
         }
+      } else {
+        $result = create_404_state('Unknown request.');
       }
       break;
     case 'POST':
@@ -51,15 +51,13 @@ if($auth = authenticate()) {
               if(count($_POST === 1)) {
                 // try and do the update
                 if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
-                  $result = create_404_state();
-                  $result['msg'] = $error;
+                  $result = create_404_state($error);
                 } else {
                   write_to_log('SYSTEM: Javascript files updated.');
                   $result = create_200_state(get_current_timestamp());
                 }
               } else {
-                $result = create_404_state();
-                $result['msg'] = 'Too many fields provided.';
+                $result = create_404_state('Too many fields provided.');
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to update the Javascript files.');
@@ -67,14 +65,13 @@ if($auth = authenticate()) {
             }
             break;
           default:
-            $result = create_404_state();
-            $result['msg'] = $_POST['request'].' request type is invalid.';
+            $result = create_404_state($_POST['request'].' request type is invalid.');
             break;
         }
       }
       break;
     default:
-      $result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
+      create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
       break;
   }
 } else {

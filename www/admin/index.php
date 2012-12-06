@@ -200,7 +200,7 @@ if($session_user['type'] !== 'admin') {
             xhr.setRequestHeader('RMS-Use-Session', 'true');
           },
           success : function(data){
-            $('#editor-popup').html(data.data.html);
+            $('#editor-popup').html(data.data);
             removeModalPageLoading();
             $('#editor-popup').dialog('open');
           }

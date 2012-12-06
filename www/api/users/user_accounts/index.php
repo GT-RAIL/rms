@@ -32,37 +32,46 @@ if($auth = authenticate()) {
               // create the session
               session_start();
               $_SESSION['userid'] = $auth['userid'];
-              $result = create_200_state($auth);
               write_to_log('SESSION: '.$auth['username'].' created a new session.');
+              $result = create_200_state(get_current_timestamp());
+            } else {
+              $result = create_404_state('Too many fields provided.');
             }
             break;
           case 'destroy_session':
             if(count($_POST) === 1) {
-              // destroy the session
-              unset($_SESSION['userid']);
-              session_destroy();
-              $result = create_200_state(null);
-              write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
+              if(isset($_SESSION['userid'])) {
+                // destroy the session
+                unset($_SESSION['userid']);
+                session_destroy();
+                write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
+                $result = create_200_state(get_current_timestamp());
+              } else {
+                $result = create_404_state('No session to destroy.');
+              }
+            } else {
+              $result = create_404_state('Too many fields provided.');
             }
             break;
           default:
-            $result['msg'] = $_POST['request'].' request type is invalid.';
+            $result = create_404_state($_POST['request'].' request type is invalid.');
             break;
         }
       } else if(valid_user_account_fields($_POST)) {
         if($auth['type'] === 'admin') {
-          $error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
-          , $_POST['lastname'], $_POST['email'], $_POST['type']);
-          if($error) {
-            $result['msg'] = $error;
+          if($error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
+          , $_POST['lastname'], $_POST['email'], $_POST['type'])) {
+            $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
-            $result = create_200_state(null);
+            $result = create_200_state(get_user_account_by_username($_POST['username']));
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
           $result = create_401_state();
         }
+      } else {
+        $result = create_404_state('Unknown request.');
       }
       break;
     case 'GET':
@@ -78,12 +87,11 @@ if($auth = authenticate()) {
       } else if(count($_GET) === 1 && isset($_GET['id'])) {
         // check the user level
         if($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
-          $user = get_user_account_by_id($_GET['id']);
           // check if it exists
-          if($user) {
+          if($user = get_user_account_by_id($_GET['id'])) {
             $result = create_200_state($user);
           } else {
-            $result['msg'] = 'User with ID '.$_GET['id'].' does not exist.';
+            $result = create_404_state('User with ID '.$_GET['id'].' does not exist.');
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
@@ -92,69 +100,68 @@ if($auth = authenticate()) {
       } else if(isset($_GET['request'])) {
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] !== 'admin') {
+            if($auth['type'] === 'admin') {
+              if(count($_GET) === 1) {
+                $result = create_200_state(get_user_account_editor_html(null));
+              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+                $result = create_200_state(get_user_account_editor_html($_GET['id']));
+              } else {
+                $result = create_404_state('Too many fields provided.');
+              }
+            } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
               $result = create_401_state($result);
-            } else {
-              if(count($_GET) === 1) {
-                $html = array();
-                $html['html'] = get_user_account_editor_html(null);
-                $result = create_200_state($result, $html);
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
-                $html = array();
-                $html['html'] = get_user_account_editor_html($_GET['id']);
-                $result = create_200_state($result, $html);
-              }
             }
             break;
           default:
-            $result['msg'] = $_GET['request'].' request type is invalid.';
+            $result = create_404_state( $_GET['request'].' request type is invalid.');
             break;
         }
+      } else {
+        $result = create_404_state('Unknown request.');
       }
       break;
     case 'DELETE':
       if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] !== 'admin') {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$_DELETE['id'].'.');
-          $result = create_401_state($result);
-        } else {
-          $error = delete_user_account_by_id($_DELETE['id']);
-          if($error) {
-            $result['msg'] = $error;
+        if($auth['type'] === 'admin') {
+          if($error = delete_user_account_by_id($_DELETE['id'])) {
+            $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$_DELETE['id'].'.');
-            $result = create_200_state($result, null);
+            $result = create_200_state(get_current_timestamp());
           }
+        } else {
+          write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$_DELETE['id'].'.');
+          $result = create_401_state();
         }
+      } else {
+        $result = create_404_state('Unknown request.');
       }
       break;
     case 'PUT':
       if(isset($_PUT['id'])) {
-        if($auth['type'] !== 'admin') {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$_PUT['id'].'.');
-          $result = create_401_state($result);
-        } else {
-          $error = update_user_account($_PUT);
-          if($error) {
+        if($auth['type'] === 'admin') {
+          if($error = update_user_account($_PUT)) {
             $result['msg'] = $error;
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');
-            $result = create_200_state($result, null);
+            $result = create_200_state(get_user_account_by_id($_PUT['id']));
           }
+        } else {
+          write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$_PUT['id'].'.');
+          $result = create_401_state();
         }
+      } else {
+        $result = create_404_state('Unknown request.');
       }
       break;
     default:
-      write_to_log('SECURITY: '.$auth['username'].' attempted to make a user acccount '.$_SERVER['REQUEST_METHOD'].' request.');
-      $result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
+      $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
       break;
   }
 } else {
   $result = create_401_state();
 }
-
-
 
 // return the JSON encoding of the result
 echo json_encode($result);

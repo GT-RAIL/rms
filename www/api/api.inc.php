@@ -36,17 +36,18 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 }
 
 /**
- * Creates a default 404 state in an array. This includes a 'false' in the 'ok' element,
- * 'Unknown request.' in the 'msg' element, and null in the 'data' element. The header is also
+ * Creates a default 404 state in an array. This includes a 'false' in the 'ok' element, the given
+ * error message in the 'msg' element, and null in the 'data' element. The header is also
  * changed to the 404 state.
  *
+ * @param string $msg The message to put in the array
  * @return array The filled array
  */
-function create_404_state() {
+function create_404_state($msg) {
   $result_array = array();
 
   $result_array['ok'] = false;
-  $result_array['msg'] = 'Unknown request.';
+  $result_array['msg'] = $msg;
   $result_array['data'] = null;
   header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
 
