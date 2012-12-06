@@ -130,13 +130,13 @@ function get_user_account_by_email($email) {
 /**
  * Create a user account with the given information. Any errors are returned.
  *
- * @param string $username the username
- * @param string $password the raw password
- * @param string $firstname the firstname of the user
- * @param string $lastname the lastname of the user
- * @param string $email the email address of the user
- * @param string $type the type of user
- * @return string|null an error message or null if the create was sucessful
+ * @param string $username The username
+ * @param string $password The raw password
+ * @param string $firstname The firstname of the user
+ * @param string $lastname The lastname of the user
+ * @param string $email The email address of the user
+ * @param string $type The type of user
+ * @return string|null An error message or null if the create was sucessful
  */
 function create_user_account($username, $password, $firstname, $lastname, $email, $type) {
   global $db;
@@ -248,7 +248,7 @@ function update_user_account($fields) {
 }
 
 /**
- * Delete the user array for the user with the given ID. Any errors are returned
+ * Delete the user array for the user with the given ID. Any errors are returned.
  *
  * @param integer $id The user ID number
  * @return string|null an error message or null if the delete was sucessful

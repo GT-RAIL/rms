@@ -273,8 +273,19 @@ if($session_user['type'] !== 'admin') {
   	        if(putString.length > 1) {
               putString += '&';
             }
-            putString += $(this).attr('name') + '=' + $(this).val();
-            formData.append($(this).attr('name'), $(this).val());
+            // check if this is a checkbox (tiny int)
+            if($(this).attr('type') === 'checkbox') {
+              if($(this).is(':checked')) {
+                putString += $(this).attr('name') + '=1';
+                formData.append($(this).attr('name'), 1);
+              } else {
+                putString += $(this).attr('name') + '=0';
+                formData.append($(this).attr('name'), 0);
+              }
+            } else {
+              putString += $(this).attr('name') + '=' + $(this).val();
+              formData.append($(this).attr('name'), $(this).val());
+            }
           }
         }
   	  });

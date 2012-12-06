@@ -142,7 +142,7 @@ if($auth = authenticate()) {
       if(isset($_PUT['id'])) {
         if($auth['type'] === 'admin') {
           if($error = update_user_account($_PUT)) {
-            $result['msg'] = $error;
+            $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');
             $result = create_200_state(get_user_account_by_id($_PUT['id']));

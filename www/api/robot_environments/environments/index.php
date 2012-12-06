@@ -24,6 +24,25 @@ header('Cache-Control: no-cache, must-revalidate');
 // check for authorization
 if($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST':
+      // check if we are creating a new entry
+      if(valid_environment_fields($_POST)) {
+        if($auth['type'] === 'admin') {
+          if($error = create_environment($_POST['protocol'], $_POST['envaddr'], $_POST['port']
+          , $_POST['type'], $_POST['notes'], $_POST['enabled'])) {
+            $result = create_404_state($error);
+          } else {
+            write_to_log('EDIT: '.$auth['username'].' created environment '.$_POST['envaddr'].'.');
+            $result = create_200_state($_POST);
+          }
+        } else {
+          write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment.');
+          $result = create_401_state();
+        }
+      } else {
+        $result = create_404_state('Unknown request.');
+      }
+      break;
     case 'GET':
       if(isset($_GET['request'])) {
         // create an editor
@@ -45,6 +64,40 @@ if($auth = authenticate()) {
           default:
             $result = create_404_state($_GET['request'].' request type is invalid.');
             break;
+        }
+      } else {
+        $result = create_404_state('Unknown request.');
+      }
+      break;
+    case 'DELETE':
+      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if($auth['type'] === 'admin') {
+          if($error = delete_environment_by_id($_DELETE['id'])) {
+            $result = create_404_state($error);
+          } else {
+            write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$_DELETE['id'].'.');
+            $result = create_200_state(get_current_timestamp());
+          }
+        } else {
+          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$_DELETE['id'].'.');
+          $result = create_401_state();
+        }
+      } else {
+        $result = create_404_state('Unknown request.');
+      }
+      break;
+    case 'PUT':
+      if(isset($_PUT['id'])) {
+        if($auth['type'] === 'admin') {
+          if($error = update_environment($_PUT)) {
+            $result = create_404_state($error);
+          } else {
+            write_to_log('EDIT: '.$auth['username'].' modified environment ID '.$_PUT['id'].'.');
+            $result = create_200_state(get_environment_by_id($_PUT['id']));
+          }
+        } else {
+          write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment ID '.$_PUT['id'].'.');
+          $result = create_401_state();
         }
       } else {
         $result = create_404_state('Unknown request.');
