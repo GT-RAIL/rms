@@ -24,7 +24,7 @@ header('Cache-Control: no-cache, must-revalidate');
 // check for authorization
 if($auth = authenticate()) {
   // default to the 404 state
-  $result = create_404_state(array());
+  $result = create_404_state();
 
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
@@ -36,7 +36,7 @@ if($auth = authenticate()) {
               // create the session
               session_start();
               $_SESSION['userid'] = $auth['userid'];
-              $result = create_200_state($result, $auth);
+              $result = create_200_state($auth);
               write_to_log('SESSION: '.$auth['username'].' created a new session.');
             }
             break;
@@ -45,7 +45,7 @@ if($auth = authenticate()) {
               // destroy the session
               unset($_SESSION['userid']);
               session_destroy();
-              $result = create_200_state($result, null);
+              $result = create_200_state(null);
               write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
             }
             break;
@@ -61,11 +61,11 @@ if($auth = authenticate()) {
             $result['msg'] = $error;
           } else {
             write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
-            $result = create_200_state($result, null);
+            $result = create_200_state(null);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
-          $result = create_401_state($result);
+          $result = create_401_state();
         }
       }
       break;
@@ -74,10 +74,10 @@ if($auth = authenticate()) {
         // check the user level
         if($auth['type'] === 'admin') {
           // we authenticated so we know at least one user exists
-          $result = create_200_state($result, get_user_accounts());
+          $result = create_200_state(get_user_accounts());
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
-          $result = create_401_state(array());
+          $result = create_401_state();
         }
       } else if(count($_GET) === 1 && isset($_GET['id'])) {
         // check the user level
@@ -85,13 +85,13 @@ if($auth = authenticate()) {
           $user = get_user_account_by_id($_GET['id']);
           // check if it exists
           if($user) {
-            $result = create_200_state($result, $user);
+            $result = create_200_state($user);
           } else {
             $result['msg'] = 'User with ID '.$_GET['id'].' does not exist.';
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
-          $result = create_401_state(array());
+          $result = create_401_state();
         }
       } else if(isset($_GET['request'])) {
         switch ($_GET['request']) {
@@ -155,9 +155,10 @@ if($auth = authenticate()) {
       break;
   }
 } else {
-  // default to the 401 state if no auth was given
-  $result = create_401_state(array());
+  $result = create_401_state();
 }
+
+
 
 // return the JSON encoding of the result
 echo json_encode($result);

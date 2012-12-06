@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 8 2012
+ * @version    December, 6 2012
  * @package    api
  * @link       http://ros.org/wiki/rms
  */
@@ -36,14 +36,15 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 }
 
 /**
- * Creates a default 404 state in the given array. This includes a 'false' in the 'ok' element,
+ * Creates a default 404 state in an array. This includes a 'false' in the 'ok' element,
  * 'Unknown request.' in the 'msg' element, and null in the 'data' element. The header is also
  * changed to the 404 state.
  *
- * @param array $result_array The result array to populate with default 404 information
- * @return array The filled $result_array
+ * @return array The filled array
  */
-function create_404_state($result_array) {
+function create_404_state() {
+  $result_array = array();
+
   $result_array['ok'] = false;
   $result_array['msg'] = 'Unknown request.';
   $result_array['data'] = null;
@@ -53,14 +54,15 @@ function create_404_state($result_array) {
 }
 
 /**
- * Creates a default 401 state in the given array. This includes a 'false' in the 'ok' element,
+ * Creates a default 401 state in an array. This includes a 'false' in the 'ok' element,
  * 'Insufficient authorization.' in the 'msg' element, and null in the 'data' element. The header is
  * also changed to the 401 state.
  *
- * @param array $result_array The result array to populate with default 401 information
- * @return array The filled $result_array
+ * @return array The filled array
  */
-function create_401_state($result_array) {
+function create_401_state() {
+  $result_array = array();
+
   $result_array['ok'] = false;
   $result_array['msg'] = 'Insufficient authorization.';
   $result_array['data'] = null;
@@ -70,20 +72,21 @@ function create_401_state($result_array) {
 }
 
 /**
- * Creates a default 200 state in the given array. This includes a 'true' in the 'ok' element,
+ * Creates a default 200 state in an array. This includes a 'true' in the 'ok' element,
  * 'Success.' in the 'msg' element, and $data in the 'data' element. The header is also changed to
  * the 200 state.
  *
- * @param array $result_array The result array to populate with default 200 information
  * @param object $data The data to place in the 'data' element of the array
- * @return array The filled $result_array
+ * @return array The filled array
  */
-function create_200_state($result_array, $data) {
-  header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
+function create_200_state($data) {
+  $result_array = array();
+
   $result_array['ok'] = true;
   $result_array['msg'] = 'Success.';
   $result_array['data'] = $data;
 
+  header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
   return $result_array;
 }
 
@@ -109,6 +112,8 @@ function get_enum_types($table, $column) {
  * @return string The current timestamp from the MySQL server
  */
 function get_current_timestamp() {
+  global $db;
+
   $time = mysqli_fetch_array(mysqli_query($db, "SELECT CURRENT_TIMESTAMP()"));
   return $time['CURRENT_TIMESTAMP()'];
 }

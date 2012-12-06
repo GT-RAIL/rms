@@ -17,7 +17,7 @@ session_start();
 
 // check if a user is logged in
 if (!isset($_SESSION['userid'])) {
-  header('Location: login/?goto=admin');
+  header('Location: ../login/?goto=admin');
   return;
 }
 

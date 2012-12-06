@@ -8,6 +8,7 @@
 + Database structure cleaned (NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER)
 + Head include files now allow for relative paths
 + Pages moved to folders with their own index.php
++ Port and protocol added to environments
 
 -- v0.1.1 --
 + Constraints added to MySQL tables

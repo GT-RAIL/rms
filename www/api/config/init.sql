@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 05, 2012 at 08:54 AM
+-- Generation Time: Dec 06, 2012
 -- Server version: 5.5.28
 -- PHP Version: 5.3.10-1ubuntu3.4
 
@@ -98,7 +98,9 @@ INSERT INTO `content_pages` (`pageid`, `title`, `menu`, `index`, `js`) VALUES
 
 CREATE TABLE IF NOT EXISTS `environments` (
   `envid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the environment.',
+  `protocol` enum('ws://','wss://') NOT NULL COMMENT 'WebSocket server protocol.',
   `envaddr` varchar(255) NOT NULL COMMENT 'Address of the robot environment''s ROS server.',
+  `port` int(11) NOT NULL COMMENT 'Port of the rosbridge server.',
   `type` enum('simulation','physical') NOT NULL COMMENT 'The type of robot environment.',
   `notes` varchar(255) NOT NULL COMMENT 'Notes about the enironment.',
   `enabled` tinyint(1) NOT NULL COMMENT 'If this environment is currently enabled.',
@@ -109,9 +111,9 @@ CREATE TABLE IF NOT EXISTS `environments` (
 -- Dumping data for table `environments`
 --
 
-INSERT INTO `environments` (`envid`, `envaddr`, `type`, `notes`, `enabled`) VALUES
-(1, 'localhost', 'simulation', 'YouBot simulator.', 1),
-(2, 'localhost', 'simulation', 'PR2 Simulator.', 1);
+INSERT INTO `environments` (`envid`, `protocol`, `envaddr`, `port`, `type`, `notes`, `enabled`) VALUES
+(1, 'ws://', 'localhost', 9090, 'simulation', 'YouBot simulator.', 1),
+(2, 'ws://', 'localhost', 9090, 'simulation', 'PR2 Simulator.', 1);
 
 -- --------------------------------------------------------
 
