@@ -84,7 +84,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
           <?php echo $cur['envid'].': '.$cur['envaddr'].' -- '.$cur['type']?>
           </h3>
           <script type="text/javascript">
-						rosonline('<?php echo $cur['envaddr']?>', 9090, function(online) {
+						rosonline('<?php echo $cur['protocol']?>', '<?php echo $cur['envaddr']?>', <?php echo $cur['port']?>, function(online) {
 							if(online) {
 							  $('#envstatus-<?php echo $cur['envid']?>').html('<b>Available</b>');
 							} else {

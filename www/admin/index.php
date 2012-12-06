@@ -491,13 +491,15 @@ if($session_user['type'] !== 'admin') {
                     <th></th>
                     <th></th>
                     <th>ID</th>
+                    <th>Protocol</th>
                     <th>Address</th>
+                    <th>Port</th>
                     <th>Type</th>
                     <th>Notes</th>
                     <th>Status</th>
                   </tr>
                   <tr>
-                    <td colspan="7"><hr />
+                    <td colspan="9"><hr />
                     </td>
                   </tr>
                 </thead>
@@ -520,7 +522,11 @@ if($session_user['type'] !== 'admin') {
                     </td>
                     <td class="content-cell"><?php echo $cur['envid']?>
                     </td>
+                    <td class="content-cell"><?php echo $cur['protocol']?>
+                    </td>
                     <td class="content-cell"><?php echo $cur['envaddr']?>
+                    </td>
+                    <td class="content-cell"><?php echo $cur['port']?>
                     </td>
                     <td class="content-cell"><?php echo $cur['type']?>
                     </td>
@@ -529,7 +535,7 @@ if($session_user['type'] !== 'admin') {
                     <?php
                     if($cur['enabled']) {// check if the environment is enabled?
                       echo '<script type="text/javascript">
-                                rosonline(\''.$cur['envaddr'].'\', 9090, function(isonline) {
+                                rosonline(\''.$cur['protocol'].'\', \''.$cur['envaddr'].'\', '.$cur['port'].', function(isonline) {
                                   if(isonline) {
                                     $(\'#envstatus-'.$cur['envid'].'\').html(\'ONLINE\');
                                   } else {
@@ -553,11 +559,11 @@ if($session_user['type'] !== 'admin') {
                 }?>
                 </tbody>
                 <tr>
-                  <td colspan="7"><hr />
+                  <td colspan="9"><hr />
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="6"></td>
+                  <td colspan="8"></td>
                   <td class="add-cell">
                     <button class="create-new" id="add-environments"
                       name="environments">Add Environment</button>

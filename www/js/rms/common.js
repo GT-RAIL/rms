@@ -128,8 +128,10 @@ function createSlideshow() {
 }
 
 /**
- * A function to check if the given rosbridge server is online.
+ * A function to check if the given rosbridge server is online
  * 
+ * @param {String}
+ *            protocol the protocol to use
  * @param {String}
  *            host the hostname of the rosbridge server
  * @param {int}
@@ -137,8 +139,8 @@ function createSlideshow() {
  * @param {function}
  *            callback the callback function returning if the server is online
  */
-function rosonline(host, port, callback) {
-  var ros = new ROS('ws://' + host + ':' + port);
+function rosonline(protocol, host, port, callback) {
+  var ros = new ROS(protocol + host + ':' + port);
   ros.on('connection', function() {
     callback(true);
   });

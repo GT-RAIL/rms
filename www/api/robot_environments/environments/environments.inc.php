@@ -47,6 +47,15 @@ function get_environment_by_id($id) {
 }
 
 /**
+ * Get the enum types for protocols in an array.
+ *
+ * @return array An array containing the enum types for protocols
+ */
+function get_protocol_types() {
+  return get_enum_types('environments', 'protocol');
+}
+
+/**
  * Get the enum types for environments in an array.
  *
  * @return array An array containing the enum types for environments
@@ -67,12 +76,16 @@ function get_environment_editor_html($id) {
   $cur = get_environment_by_id($id);
 
   if($cur) {
+    $protocol = $cur['protocol'];
     $envaddr = $cur['envaddr'];
+    $port = $cur['port'];
     $type = $cur['type'];
     $notes = $cur['notes'];
     $enabled = ($cur['enabled'] === '0') ? '' : 'checked';
   } else {
+    $protocol = '';
     $envaddr = '';
+    $port = '';
     $type = '';
     $notes = '';
     $enabled = 'checked';
@@ -87,8 +100,25 @@ function get_environment_editor_html($id) {
   $result .=  ($cur) ? '<li><label for="envid">Environment ID</label><input type="text" name="envid"
                              id="envid" value="'.$cur['envid'].'" readonly="readonly" /></li>' : '';
 
+
+  // grab the protocols
   $result .= '<li>
-              <label for="envaddr">Username</label>
+                <label for="protocol">Protocol</label>
+                <select name="protocol" id="protocol" required>';
+  $protocols = get_protocol_types();
+  foreach ($protocols as $curprot) {
+    // check if this type is the same
+    if($type === $curprot) {
+      $result .= '<option value="'.$curprot.'" selected="selected">'.$curprot.'</option>';
+    } else {
+      $result .= '<option value="'.$curprot.'">'.$curprot.'</option>';
+    }
+  }
+
+  $result .= '  </select>
+              </li>
+              <li>
+              <label for="envaddr">Address</label>
               <input type="text" name="envaddr" id="envaddr" value="'.$envaddr.'"
                placeholder="e.g., myrobot.robot-college.edu" required />
             </li>
@@ -108,8 +138,9 @@ function get_environment_editor_html($id) {
   }
 
   $result .= '      </select>
+                  </li>
                   <li>
-                    <label for="notes">Notes (optional)</label>
+                    <label for="notes">Notes</label>
                     <input type="text" name="notes" id="notes" value="'.$notes.'"
                      placeholder="Environment notes" />
                   </li>
