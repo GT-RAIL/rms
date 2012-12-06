@@ -159,7 +159,6 @@ $dbpass = \''.$dbpass.'\';
 $dbname = \''.$dbname.'\';
 $db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname)
 or DIE(\'Connection has failed. Please try again later.\');
-$GLOBALS[\'db\'] = $db;
 
 // Google Analytics tracking ID -- unset if no tracking is being used.
 '.$google_tracking_id.'
@@ -177,60 +176,5 @@ $designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell
 
   // everything went fine, no errors
   return false;
-}
-
-function init_site_config($fields) {
-  global $INIT_SQL_FILE;
-
-  // check the config fields
-  if(valid_config_fields($fields)) {
-    // check if a file was uploaded
-    if(isset($_FILES['sqlfile'])) {
-      // check for an error
-      if($_FILES['sqlfile']['error'] !== 0 && $_FILES['sqlfile']['error'] !== 4) {
-        $result = create_404_state();
-        $result['msg'] = 'PHP file upload returned with error code '.$_FILES['sqlfile']['error'].'.';
-        return $result;
-      } else {
-        // if a blank file name was given, we just use the init SQL file
-        $sqlfile = ($_FILES['sqlfile']['tmp_name'] === '') ? $INIT_SQL_FILE
-        : $_FILES['sqlfile']['tmp_name'];
-      }
-    } else {
-      $sqlfile = $INIT_SQL_FILE;
-    }
-
-    // try to upload the database
-    if($error = upload_database($_POST['host'], $_POST['dbuser'], $_POST['dbpass'] , $_POST['db'], $sqlfile)) {
-      $result = create_404_state();
-      $result['msg'] = $error;
-    } else {
-      // now create the config file
-      if($error = create_config_inc($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
-      , $_POST['db'], $_POST['site-name'], $_POST['google'], $_POST['copyright'])) {
-        $result = create_404_state();
-        $result['msg'] = $error;
-      } else {
-        // now delete any old Javascript files and download the new ones
-        include_once(dirname(__FILE__).'/javascript_files/javascript_files.inc.php');
-        if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
-          $result = create_404_state();
-          $result['msg'] = $error;
-        } else {
-          include_once(dirname(__FILE__).'/logs/logs.inc.php');
-          write_to_log('SYSTEM: Site created.');
-          // return the timestamp
-          $data = array();
-          $data['timestamp'] = get_current_timestamp();
-          $result = create_200_state($data);
-        }
-      }
-    }
-  } else {
-    $result = create_404_state();
-    $result['msg'] = 'Incomplete list of required fields.';
-  }
-
-  return $result;
 }
 ?>
