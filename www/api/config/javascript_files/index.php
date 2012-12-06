@@ -45,19 +45,21 @@ if($auth = authenticate()) {
       break;
     case 'POST':
       if(isset($_POST['request'])) {
-        $result = process_post_request($post);
         switch ($_POST['request']) {
           case 'update':
             if($auth['type'] === 'admin') {
-              // try and do the update
-              if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
-                $result = create_404_state();
-                $result['msg'] = $error;
+              if(count($_POST === 1)) {
+                // try and do the update
+                if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
+                  $result = create_404_state();
+                  $result['msg'] = $error;
+                } else {
+                  write_to_log('SYSTEM: Javascript files updated.');
+                  $result = create_200_state(get_current_timestamp());
+                }
               } else {
-                write_to_log('SYSTEM: Javascript files updated.');
-                $data = array();
-                $data['timestamp'] = get_current_timestamp();
-                $result = create_200_state($data);
+                $result = create_404_state();
+                $result['msg'] = 'Too many fields provided.';
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to update the Javascript files.');

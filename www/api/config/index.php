@@ -64,9 +64,7 @@ if(!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
             include_once(dirname(__FILE__).'/logs/logs.inc.php');
             write_to_log('SYSTEM: Site created.');
             // return the timestamp
-            $data = array();
-            $data['timestamp'] = get_current_timestamp();
-            $result = create_200_state($data);
+            $result = create_200_state(get_current_timestamp());
           }
         }
       }
