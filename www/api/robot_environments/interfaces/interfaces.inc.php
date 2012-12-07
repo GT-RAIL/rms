@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 30 2012
+ * @version    December, 7 2012
  * @package    api.robot_environments.interfaces
  * @link       http://ros.org/wiki/rms
  */
@@ -78,6 +78,11 @@ function get_interface_by_location($location) {
 function create_interface($name, $location) {
   global $db;
 
+  // make sure it does not already exist
+  if(get_interface_by_location($location)) {
+    return 'ERROR: Interface with location '.$location.' already exists';
+  }
+
   // insert into the database
   $sql = sprintf("INSERT INTO `interfaces` (`name`, `location`) VALUES ('%s', '%s')",
   $db->real_escape_string($name), $db->real_escape_string($location));
@@ -105,7 +110,7 @@ function update_interface($fields) {
   // build the SQL string
   $sql = "";
   $num_fields = 0;
-  // check for the user
+  // check for the interface
   if(!($interface = get_interface_by_id($fields['id']))) {
     return 'ERROR: Interface ID '.$id.' does not exist';
   }

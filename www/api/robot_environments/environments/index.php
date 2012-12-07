@@ -32,8 +32,18 @@ if($auth = authenticate()) {
           , $_POST['type'], $_POST['notes'], $_POST['enabled'])) {
             $result = create_404_state($error);
           } else {
+            // the most recent entry is the one we just created (auto increment)
+            $all = get_environments();
+            $max_id = -1;
+            $data = null;
+            foreach ($all as $cur) {
+              if($cur['envid'] > $max_id) {
+                $max_id = $cur['envid'];
+                $data = $cur;
+              }
+            }
             write_to_log('EDIT: '.$auth['username'].' created environment '.$_POST['envaddr'].'.');
-            $result = create_200_state($_POST);
+            $result = create_200_state($data);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment.');

@@ -101,7 +101,7 @@ if($session_user['type'] !== 'admin') {
       // find the type and ID
       var deleteScript = nameToAPIScript($(e.target).attr('name'));
       var idString = $(e.target).attr('id');
-      var id = idString.substring(idString.indexOf('-') + 1);
+      var id = idString.substring(idString.lastIndexOf('-') + 1);
       // create a confirm dialog
       var confirm = $('#confirm-delete-popup').dialog({
         position: ['center',100],
@@ -187,8 +187,8 @@ if($session_user['type'] !== 'admin') {
 
         // now check if we are getting an ID as well
         var idString = $(e.target).attr('id');
-        if(idString.indexOf(type + '-') === 0) {
-          var id = idString.substring(idString.indexOf('-') + 1);
+        if(idString.lastIndexOf(type + '-') === 0) {
+          var id = idString.substring(idString.lastIndexOf('-') + 1);
           url += '&id=' + id;
         }
 
@@ -684,7 +684,7 @@ if($session_user['type'] !== 'admin') {
                     <td class="content-cell"><?php echo $env['envid'].': '.$env['envaddr'].
                                                            ' -- '.$env['type'].' :: '.$env['notes']?>
                     </td>
-                    <td class="content-cell"><?php echo $int['intid'].': '.$int['name']?>
+                    <td class="content-cell"><?php echo $int['intid'].': '.$int['name'].' -- api/robot_environments/interfaces/'.$int['location']?>
                     </td>
                   </tr>
                   <?php
