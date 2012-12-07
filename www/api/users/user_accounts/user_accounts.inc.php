@@ -175,7 +175,7 @@ function update_user_account($fields) {
   global $db;
 
   if(!isset($fields['id'])) {
-    return 'ERROR: ID filed missing in update';
+    return 'ERROR: ID field missing in update';
   }
 
   // build the SQL string
@@ -183,7 +183,7 @@ function update_user_account($fields) {
   $num_fields = 0;
   // check for the user
   if(!($user = get_user_account_by_id($fields['id']))) {
-    return 'ERROR: User ID '.$id.' does not exist';
+    return 'ERROR: User ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id

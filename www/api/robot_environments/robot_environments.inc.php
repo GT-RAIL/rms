@@ -130,7 +130,7 @@ function update_environment_interface_pair($fields) {
   global $db;
 
   if(!isset($fields['id'])) {
-    return 'ERROR: ID filed missing in update';
+    return 'ERROR: ID field missing in update';
   }
 
   // build the SQL string

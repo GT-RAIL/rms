@@ -112,7 +112,7 @@ function update_interface($fields) {
   global $db;
 
   if(!isset($fields['id'])) {
-    return 'ERROR: ID filed missing in update';
+    return 'ERROR: ID field missing in update';
   }
 
   // build the SQL string
@@ -120,7 +120,7 @@ function update_interface($fields) {
   $num_fields = 0;
   // check for the interface
   if(!($interface = get_interface_by_id($fields['id']))) {
-    return 'ERROR: Interface ID '.$id.' does not exist';
+    return 'ERROR: Interface ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id

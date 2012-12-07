@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    December, 7 2012
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -79,6 +79,9 @@ if($session_user['type'] !== 'admin') {
         return '../api/robot_environments/';
       } else if(name === 'widgets') {
         return '../api/robot_environments/widgets/';
+      } else if(name.indexOf('widget-') === 0) {
+        var id = name.substring(name.indexOf('-') + 1);
+        return '../api/robot_environments/widgets/?widgetid=' + id;
       } else {
         return 'UNKNOWN';
       }
@@ -102,6 +105,16 @@ if($session_user['type'] !== 'admin') {
       var deleteScript = nameToAPIScript($(e.target).attr('name'));
       var idString = $(e.target).attr('id');
       var id = idString.substring(idString.lastIndexOf('-') + 1);
+
+      // special case -- generic delete script
+      var dataToDelete = '';
+      if(deleteScript.indexOf('?') > 0) {
+        var widgetID = deleteScript.substring(deleteScript.indexOf('=') + 1);
+        dataToDelete += 'widgetid=' + widgetID + '&';
+        deleteScript = deleteScript.substring(0, deleteScript.indexOf('?'));
+      }
+      dataToDelete += 'id=' + id;
+
       // create a confirm dialog
       var confirm = $('#confirm-delete-popup').dialog({
         position: ['center',100],
@@ -118,7 +131,7 @@ if($session_user['type'] !== 'admin') {
             createModalPageLoading();
             // make a delete request
             $.ajax(deleteScript, {
-              data : 'id=' + id,
+              data : dataToDelete,
               type : 'DELETE',
               beforeSend: function (xhr) {
                 // authenticate with the header
@@ -183,7 +196,13 @@ if($session_user['type'] !== 'admin') {
 
         // grab the script name
         script = nameToAPIScript(type);
-        var url = script + '?request=editor';
+        // special case -- generic widget editor
+        if(script.indexOf('?') > 0) {
+          var id = script.substring(script.indexOf('=') + 1);
+          var url = script.substring(0, script.indexOf('?'))  + '?request=editor&widgetid=' + id;
+        } else {
+          var url = script + '?request=editor';
+        }
 
         // now check if we are getting an ID as well
         var idString = $(e.target).attr('id');
@@ -290,6 +309,15 @@ if($session_user['type'] !== 'admin') {
         }
   	  });
 
+      // special case -- generic widget editor
+      var finalScript = script;
+      if(script.indexOf('?') > 0) {
+        finalScript = script.substring(0, script.indexOf('?'));
+        var id = script.substring(script.indexOf('=') + 1);
+        putString += '&widgetid=' + id;
+        formData.append('widgetid', id);
+      }
+
       // check if this is a POST or PUT
       var dataToSubmit = formData;
       if(ajaxType === 'PUT') {
@@ -297,7 +325,7 @@ if($session_user['type'] !== 'admin') {
       }
 
       // create a AJAX request
-      $.ajax(script, {
+      $.ajax(finalScript, {
         data : dataToSubmit,
         cache : false,
         contentType : false,
@@ -790,7 +818,13 @@ if($session_user['type'] !== 'admin') {
                     <th></th>
                     <?php
                     foreach ($attributes as $label) {
-                      echo '<th>'.$label.'</th>';
+                      if($label === 'id') {
+                        echo '<th>ID</th>';
+                      } else if($label === 'envid') {
+                        echo '<th>Environment</th>';
+                      } else {
+                        echo '<th>'.$label.'</th>';
+                      }
                     }?>
                   </tr>
                   <tr>
@@ -801,7 +835,7 @@ if($session_user['type'] !== 'admin') {
                 <tbody>
                 <?php
                 // populate the table
-                $instances = get_widget_instances_by_id($w['widgetid']);
+                $instances = get_widget_instances_by_widgetid($w['widgetid']);
                 $num_instances = count($instances);
                 for ($i = 0; $i < $num_instances; $i++) {
                   $cur = $instances[$i];
@@ -815,10 +849,15 @@ if($session_user['type'] !== 'admin') {
                         name="widget-<?php echo $w['widgetid']?>"
                         id="widget-<?php echo $w['widgetid'].'-'.$cur['id']?>">Edit</button>
                     </td>
-                    <?php foreach ($attributes as $label) {?>
-                    <td class="content-cell"><?php echo $cur[$label]?>
-                    </td>
                     <?php
+                    foreach ($attributes as $label) {
+                      if($label === 'envid') {
+                        $env = get_environment_by_id($cur[$label]);
+                        echo '<td class="content-cell">'.$env['envid'].': '.$env['envaddr'].
+                              ' -- '.$env['type'].' :: '.$env['notes'].'</td>';
+                      } else {
+                        echo '<td class="content-cell">'.$cur[$label].'</td>';
+                      }
                     }?>
                   </tr>
                   <?php

@@ -97,7 +97,7 @@ function update_environment($fields) {
   global $db;
 
   if(!isset($fields['id'])) {
-    return 'ERROR: ID filed missing in update';
+    return 'ERROR: ID field missing in update';
   }
 
   // build the SQL string
@@ -105,7 +105,7 @@ function update_environment($fields) {
   $num_fields = 0;
   // check for the user
   if(!($environment = get_environment_by_id($fields['id']))) {
-    return 'ERROR: Environment ID '.$id.' does not exist';
+    return 'ERROR: Environment ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id

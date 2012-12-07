@@ -105,14 +105,14 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
           <ul>
           <?php
           // go through each interface for this environment
-          $pairs = get_environment_interface_pairs_by_envid($cur['envid']);
-          foreach ($pairs as $pair) {
-            $int = get_interface_by_id($pair['intid']);
-            ?>
+          if($pairs = get_environment_interface_pairs_by_envid($cur['envid'])) {
+            foreach ($pairs as $pair) {
+              $int = get_interface_by_id($pair['intid']);?>
             <li><a
               href="../environment.php?envid=<?php echo $cur['envid']?>&intid=<?php echo $int['intid']?>">
               <?php echo $int['name']?> </a></li>
               <?php
+            }
           }?>
           </ul>
           <?php
