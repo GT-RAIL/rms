@@ -82,14 +82,14 @@ if($auth = authenticate()) {
     case 'DELETE':
       if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
         if($auth['type'] === 'admin') {
-          if($error = delete_environment_by_id($_DELETE['id'])) {
+          if($error = delete_widget_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$_DELETE['id'].'.');
+            write_to_log('EDIT: '.$auth['username'].' deleted widget ID '.$_DELETE['id'].'.');
             $result = create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$_DELETE['id'].'.');
+          write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget ID '.$_DELETE['id'].'.');
           $result = create_401_state();
         }
       } else {

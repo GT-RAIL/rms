@@ -58,7 +58,7 @@ function get_interface_by_id($id) {
 /**
  * Get the interface array for the interface with the given location, or null if none exist.
  *
- * @param string $id The interface ID location inside of the api/robot_environments/interfaces directory
+ * @param string $location The interface location inside of the api/robot_environments/interfaces directory
  * @return array|null An array of the interface's SQL entry or null if none exist
  */
 function get_interface_by_location($location) {
@@ -82,14 +82,22 @@ function create_interface($name, $location) {
   if(get_interface_by_location($location)) {
     return 'ERROR: Interface with location '.$location.' already exists';
   }
+  // now check if that location is valid
+  $locations = get_unused_interface_locations();
+  foreach ($locations as $l) {
+    if($location === $l) {
+      // insert into the database
+      $sql = sprintf("INSERT INTO `interfaces` (`name`, `location`) VALUES ('%s', '%s')",
+      $db->real_escape_string($name), $db->real_escape_string($location));
+      mysqli_query($db, $sql);
 
-  // insert into the database
-  $sql = sprintf("INSERT INTO `interfaces` (`name`, `location`) VALUES ('%s', '%s')",
-  $db->real_escape_string($name), $db->real_escape_string($location));
-  mysqli_query($db, $sql);
+      // no error
+      return null;
+    }
+  }
 
-  // no error
-  return null;
+  // location not valid
+  return 'ERROR: Interface location '.$location.' is not valid';
 }
 
 /**
@@ -228,7 +236,7 @@ function get_interface_editor_html($id) {
 
   $result .= '<li>
               <label for="name">Name</label>
-              <input type="text" name="name" id="envaddr" value="'.$name.'"
+              <input type="text" name="name" id="name" value="'.$name.'"
                placeholder="e.g., My Cool Interface" required />
             </li>
             <li>';
@@ -257,7 +265,7 @@ function get_interface_editor_html($id) {
   } else {
     // put dummy dropdown in
     $result .= '      <label for="location-dummy">Location</label>
-                      <select name="location-dummy" id="location-dummy" disabled="true">
+                      <select name="location-dummy" id="location-dummy" disabled="disabled">
                         <option value="void">No unused locations found in "api/robot_environments/interfaces"</option>
                       </select>
                     </li>

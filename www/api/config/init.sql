@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `experiments` (
 CREATE TABLE IF NOT EXISTS `interfaces` (
   `intid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the interface.',
   `name` varchar(255) NOT NULL COMMENT 'Name of the interface (for use in menus).',
-  `location` varchar(255) NOT NULL COMMENT 'Directory name within the interface folder.',
+  `location` varchar(255) NOT NULL COMMENT 'Directory name within the interface API folder.',
   PRIMARY KEY (`intid`),
   UNIQUE KEY `location` (`location`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Information about the different interface types.' AUTO_INCREMENT=3 ;
@@ -418,22 +418,23 @@ INSERT INTO `version` (`version`) VALUES
 
 CREATE TABLE IF NOT EXISTS `widgets` (
   `widgetid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the widget.',
-  `script` varchar(255) NOT NULL COMMENT 'PHP script to create the widget HTML. The ''init'' function will be called with a valid table entry.',
-  `table` varchar(255) NOT NULL COMMENT 'The SQL table containing information for an instance of this widget. ',
   `name` varchar(255) NOT NULL COMMENT 'Name of the widget.',
+  `table` varchar(255) NOT NULL COMMENT 'The SQL table containing information for an instance of this widget. ',
+  `script` varchar(255) NOT NULL COMMENT 'PHP script to create the widget HTML.',
   PRIMARY KEY (`widgetid`),
-  UNIQUE KEY `script` (`script`)
+  UNIQUE KEY `script` (`script`),
+  UNIQUE KEY `table` (`table`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='RRL Widgets.' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `widgets`
 --
 
-INSERT INTO `widgets` (`widgetid`, `script`, `table`, `name`) VALUES
-(1, 'mjpeg_canvas', 'mjpeg_streams', 'MJPEG Stream'),
-(2, 'keyboard_teleoperations', 'keyboard_teleoperations', 'Keyboard Teleop'),
-(3, 'map2d', 'maps', 'Map 2D'),
-(4, 'nav2d', 'navigations', '2D Navigation');
+INSERT INTO `widgets` (`widgetid`, `name`, `table`, `script`) VALUES
+(1, 'MJPEG Stream', 'mjpeg_streams', 'mjpeg_canvas'),
+(2, 'Keyboard Teleop', 'keyboard_teleoperations', 'keyboard_teleoperations'),
+(3, 'Map 2D', 'maps', 'map2d'),
+(4, '2D Navigation', 'navigations', 'nav2d');
 
 --
 -- Constraints for dumped tables

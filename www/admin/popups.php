@@ -1,79 +1,4 @@
 <?php
-/**
- * A function to echo the HTML for the popup dialog used to create a new environment-interface pairing.
- *
- * @param int $id the environment-interface pair ID number to create the popup for, or null if it is a new entry
- */
-function create_environment_interface_editor($id) {
-  global $db;
-
-  // see if a pair exists with the given id
-  $query = mysqli_query($db, sprintf("SELECT * FROM environment_interfaces WHERE pairid=%d", $db->real_escape_string($id)));
-  if($query) {
-    $cur = mysqli_fetch_array($query);
-  } else {
-    $cur = null;
-	}?>
-
-<p>Complete the following form to create a new environment-interface
-  pairings.</p>
-<form action="form/admin/create_environment_interface_pair.php"
-  method="POST">
-  <fieldset>
-    <ol>
-      <?php if($cur) {// only show the ID for edits?>
-      <li><label for="intid">Pair ID</label> <input type="text"
-        name="pairid" id="pairid" value="<?php echo $cur['pairid']?>"
-        readonly="readonly" />
-      </li>
-      <?php
-		}?>
-      <li><label for="envid">Environment</label><select name="envid"
-        id="envid" required>
-          <?php
-          // grab all environments
-          $env_query = mysqli_query($db, "SELECT * FROM environments");
-          while($cur_env = mysqli_fetch_array($env_query)) {
-            $selected = "";
-            // check if this envid is the same
-            if($cur['envid'] === $cur_env['envid']){
-              $selected = "selected=\"selected\"";
-					}?>
-          <option value="<?php echo $cur_env['envid']?>"
-          <?php echo $selected?>>
-            <?php echo $cur_env['envid'].": ".$cur_env['envaddr']." -- ".$cur_env['type']." :: ".$cur_env['notes']?>
-          </option>
-          <?php
-          }
-          ?>
-      </select>
-      </li>
-      <li><label for="intid">Interface</label><select name="intid"
-        id="intid" required>
-          <?php
-          // grab all environments
-          $int_query = mysqli_query($db, "SELECT * FROM interfaces");
-          while($cur_int = mysqli_fetch_array($int_query)) {
-            $selected = "";
-            // check if this envid is the same
-            if($cur['intid'] === $cur_int['intid']){
-              $selected = "selected=\"selected\"";
-					}?>
-          <option value="<?php echo $cur_int['intid']?>"
-          <?php echo $selected?>>
-            <?php echo $cur_int['intid'].": ".$cur_int['name']?>
-          </option>
-          <?php
-          }
-          ?>
-      </select>
-      </li>
-    </ol>
-    <input type="submit" value="Submit" />
-  </fieldset>
-</form>
-<?php
-}
 
 /**
  * A function to echo the HTML for the popup dialog used to create a new widget.
@@ -89,19 +14,19 @@ function create_widget_editor($id) {
     $cur = mysqli_fetch_array($query);
   } else {
     $cur = null;
-	}?>
+  }?>
 
 <p>Complete the following form to create a new widget.</p>
 <form action="form/admin/create_widget.php" method="POST">
   <fieldset>
     <ol>
-      <?php if($cur) {// only show the ID for edits?>
+    <?php if($cur) {// only show the ID for edits?>
       <li><label for="widgetid">Widget ID</label> <input type="text"
         name="widgetid" id="widgetid"
         value="<?php echo $cur['widgetid']?>" readonly="readonly" />
       </li>
       <?php
-		}?>
+    }?>
       <li><label for="name">Name</label> <input type="text" name="name"
         placeholder="e.g., My Cool Widget"
         value="<?php echo $cur['name']?>" id="name" required />
@@ -118,7 +43,7 @@ function create_widget_editor($id) {
     <input type="submit" value="Submit" />
   </fieldset>
 </form>
-<?php
+    <?php
 }
 
 /**
@@ -136,7 +61,7 @@ function create_widget_id_editor($widgetid, $id) {
     $cur = mysqli_fetch_array(mysqli_query($db, sprintf("SELECT * FROM ".$widget['table']." WHERE id=%d", $db->real_escape_string($id))));
   } else {
     $cur = null;
-	}?>
+  }?>
 
 <p>
   Complete the following form to create a new
@@ -148,53 +73,53 @@ function create_widget_id_editor($widgetid, $id) {
     <ol>
       <input type="hidden" name="widgetid"
         value="<?php echo $widgetid?>" id="widgetid" readonly="readonly" />
-      <?php if($cur) {// only show the ID for edits?>
+        <?php if($cur) {// only show the ID for edits?>
       <li><label for="id">ID</label> <input type="text" name="id"
         id="id" value="<?php echo $cur['id']?>" readonly="readonly" />
       </li>
       <?php
-	}
-	// get each attribute
-	$query = mysqli_query($db, "SHOW COLUMNS FROM ".$widget['table']);
-	while($labels = mysqli_fetch_array($query)) {
-	  $label = $labels['Field'];
-	  // do not add the ID filed
-					if (strcmp($label, "envid") === 0) {?>
+        }
+        // get each attribute
+        $query = mysqli_query($db, "SHOW COLUMNS FROM ".$widget['table']);
+        while($labels = mysqli_fetch_array($query)) {
+          $label = $labels['Field'];
+          // do not add the ID filed
+          if (strcmp($label, "envid") === 0) {?>
       <li><label for="envid">Environment</label><select name="envid"
         id="envid" required>
-          <?php
-          // grab all environments
-          $env_query = mysqli_query($db, "SELECT * FROM environments");
-          while($cur_env = mysqli_fetch_array($env_query)) {
-            $selected = "";
-            // check if this envid is the same
-            if($cur['envid'] === $cur_env['envid']){
-              $selected = "selected=\"selected\"";
-					}?>
+        <?php
+        // grab all environments
+        $env_query = mysqli_query($db, "SELECT * FROM environments");
+        while($cur_env = mysqli_fetch_array($env_query)) {
+          $selected = "";
+          // check if this envid is the same
+          if($cur['envid'] === $cur_env['envid']){
+            $selected = "selected=\"selected\"";
+          }?>
           <option value="<?php echo $cur_env['envid']?>"
           <?php echo $selected?>>
             <?php echo $cur_env['envid'].": ".$cur_env['envaddr']." -- ".$cur_env['type']." :: ".$cur_env['notes']?>
           </option>
           <?php
-          }
-          ?>
+        }
+        ?>
       </select>
       </li>
       <?php
-					} else if (strcmp($label, "id") != 0) {?>
-      <li><label for="<?php echo $label?>"> <?php echo $label?>
-      </label> <input type="text" name="<?php echo $label?>"
+          } else if (strcmp($label, "id") != 0) {?>
+      <li><label for="<?php echo $label?>"> <?php echo $label?> </label>
+        <input type="text" name="<?php echo $label?>"
         value="<?php echo $cur[$label]?>" id="<?php echo $label?>"
         required />
       </li>
       <?php
-					}
-				}?>
+          }
+        }?>
     </ol>
     <input type="submit" value="Submit" />
   </fieldset>
 </form>
-<?php
+        <?php
 }
 
 /**
@@ -211,19 +136,19 @@ function create_page_editor($id) {
     $cur = mysqli_fetch_array($query);
   } else {
     $cur = null;
-	}?>
+  }?>
 
 <p>Complete the following form to create a new content page.</p>
 <form action="form/admin/create_page.php" method="POST">
   <fieldset>
     <ol>
-      <?php if($cur) {// only show the ID for edits?>
+    <?php if($cur) {// only show the ID for edits?>
       <li><label for="pageid">Page ID</label> <input type="text"
         name="pageid" id="pageid" value="<?php echo $cur['pageid']?>"
         readonly="readonly" />
       </li>
       <?php
-		}?>
+    }?>
       <li><label for="title">Title</label> <input type="text"
         name="title" value="<?php echo $cur['title']?>" " id="title"
         placeholder="e.g., My New Page" required />
@@ -234,18 +159,18 @@ function create_page_editor($id) {
       </li>
       <li><label for="menu_index">Menu Index</label> <select
         name="menu_index" id="menu_index" required>
-          <?php
-          for($i = 0; $i < 20; $i++) {
-            $selected = "";
-            // check if this index is the same
-            if($cur['menu_index'] === $i){
-              $selected = "selected=\"selected\"";
-					}?>
+        <?php
+        for($i = 0; $i < 20; $i++) {
+          $selected = "";
+          // check if this index is the same
+          if($cur['menu_index'] === $i){
+            $selected = "selected=\"selected\"";
+          }?>
           <option value="<?php echo $i?>"<?php echo $selected?>\>
-            <?php echo $i?>
+          <?php echo $i?>
           </option>
           <?php
-				}?>
+        }?>
       </select>
       </li>
       <li><?php
@@ -253,8 +178,8 @@ function create_page_editor($id) {
       $dir  = opendir($_SERVER['DOCUMENT_ROOT'].'/js/content');
       $files = array();
       while ($f = readdir($dir))
-        if(substr($f, strlen($f)-3) === ".js")
-        $files[] = $f;
+      if(substr($f, strlen($f)-3) === ".js")
+      $files[] = $f;
       if(count($files) > 0) {?> <label for="js">Javascript File
           (optional)</label> <select name="js" id="js">
           <option value="none">none</option>
@@ -265,12 +190,12 @@ function create_page_editor($id) {
             // check if this file is the same
             if(strcmp($cur['js'], $f) === 0) {
               $selected = "selected=\"selected\"";
-						}?>
+            }?>
           <option value="<?php echo $f?>" <?php echo $selected?>>
-            <?php echo $f?>
+          <?php echo $f?>
           </option>
           <?php
-					}?>
+          }?>
       </select> <?php
       } else {// put dummy dropdown in?> <label for="holder">Javascript
           File (optional)</label> <select name="holder" id="holder"
@@ -285,7 +210,7 @@ function create_page_editor($id) {
     <input type="submit" value="Submit" />
   </fieldset>
 </form>
-<?php
+      <?php
 }
 
 /**
@@ -302,19 +227,19 @@ function create_article_editor($id) {
     $cur = mysqli_fetch_array($query);
   } else {
     $cur = null;
-	}?>
+  }?>
 
 <p>Complete the following form to create a new content article.</p>
 <form action="form/admin/create_article.php" method="POST">
   <fieldset>
     <ol>
-      <?php if($cur) {// only show the ID for edits?>
+    <?php if($cur) {// only show the ID for edits?>
       <li><label for="artid">Page ID</label> <input type="text"
         name="artid" id="artid" value="<?php echo $cur['artid']?>"
         readonly="readonly" />
       </li>
       <?php
-		}?>
+    }?>
       <li><label for="title">Title</label> <input type="text"
         name="title" value="<?php echo $cur['title']?>" id="title"
         placeholder="e.g., My Content" required />
@@ -329,44 +254,44 @@ function create_article_editor($id) {
       </li>
       <li><label for="pageid">Page</label> <select name="pageid"
         id="pageid" required>
-          <?php
-          // grab all of the page names
-          $query = mysqli_query($db, "SELECT pageid, title FROM content_pages ORDER BY pageid");
-          while($curpage = mysqli_fetch_array($query)) {
-            $selected = "";
-            // check if this page is the same
-            if($curpage['pageid'] === $cur['pageid']) {
-              $selected = "selected=\"selected\"";
-					}?>
+        <?php
+        // grab all of the page names
+        $query = mysqli_query($db, "SELECT pageid, title FROM content_pages ORDER BY pageid");
+        while($curpage = mysqli_fetch_array($query)) {
+          $selected = "";
+          // check if this page is the same
+          if($curpage['pageid'] === $cur['pageid']) {
+            $selected = "selected=\"selected\"";
+          }?>
           <option value="<?php echo $curpage['pageid']?>"
           <?php echo $selected?>>
             <?php echo $curpage['title']?>
           </option>
           <?php
-				}?>
+        }?>
       </select>
       </li>
       <li><label for="pageindex">Page-Index</label> <select
         name="pageindex" id="pageindex" required>
-          <?php
-          for($i = 0; $i < 20; $i++) {
-            $selected = "";
-            // check if this index is the same
-            if($cur['pageindex'] === $i) {
-              $selected = "selected=\"selected\"";
-					}?>
+        <?php
+        for($i = 0; $i < 20; $i++) {
+          $selected = "";
+          // check if this index is the same
+          if($cur['pageindex'] === $i) {
+            $selected = "selected=\"selected\"";
+          }?>
           <option value="<?php echo $i?>" <?php echo $selected?>>
-            <?php echo $i?>
+          <?php echo $i?>
           </option>
           <?php
-				}?>
+        }?>
       </select>
       </li>
     </ol>
     <input type="submit" value="Submit" />
   </fieldset>
 </form>
-<?php
+        <?php
 }
 
 /**
@@ -383,7 +308,7 @@ function create_slide_editor($id) {
     $cur = mysqli_fetch_array($query);
   } else {
     $cur = null;
-	}?>
+  }?>
 
 <p>Complete the following form to create a new slide.</p>
 <form action="form/admin/create_slide.php" method="POST"
@@ -391,13 +316,13 @@ function create_slide_editor($id) {
   <fieldset>
     <ol>
 
-      <?php if($cur) {// only show the ID for edits?>
+    <?php if($cur) {// only show the ID for edits?>
       <li><label for="slideid">Slide ID</label> <input type="text"
         name="slideid" id="slideid" value="<?php echo $cur['slideid']?>"
         readonly="readonly" />
       </li>
       <?php
-		}?>
+    }?>
       <li><?php if($cur) {// check if we can display a preview?> <label
         for="imgdisplay">Current Image</label> <input type="text"
         name="imgdisplay" value="<?php echo $cur['img']?>"
@@ -408,41 +333,42 @@ function create_slide_editor($id) {
         </center>
         <div class="line"></div> <label for="img">New Image (optional)</label>
         <input type="file" name="img" id="img" /> <?php
-		} else {?> <label for="img">Upload Image</label> <input type="file"
-        name="img" id="img" required /> <?php
-		}?></li>
+      } else {?> <label for="img">Upload Image</label> <input
+        type="file" name="img" id="img" required /> <?php
+      }?>
+      </li>
       <li><label for="caption">Caption</label> <input type="text"
         name="caption" value="<?php echo $cur['caption']?>" id="caption"
         placeholder="e.g., A Robot being Awesome" required />
       </li>
       <li><label for="index">Slide-Index</label> <select name="index"
         id="index" required>
-          <?php
-          for($i = 0; $i < 10; $i++) {
-            $selected = "";
-            // check if this index is the same
-            if($cur['index'] === $i) {
-              $selected = "selected=\"selected\"";
-					}?>
+        <?php
+        for($i = 0; $i < 10; $i++) {
+          $selected = "";
+          // check if this index is the same
+          if($cur['index'] === $i) {
+            $selected = "selected=\"selected\"";
+          }?>
           <option value="<?php echo $i?>" <?php echo $selected?>>
-            <?php echo $i?>
+          <?php echo $i?>
           </option>
           <?php
-				}?>
+        }?>
       </select>
       </li>
     </ol>
     <input type="submit" value="Submit" />
   </fieldset>
 </form>
-<?php
+        <?php
 }
 
 /**
  * A function to echo the HTML for the popup dialog used to edit the site settings.
  */
 function create_site_editor() {
-	global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright;?>
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright;?>
 
 <p>Complete the following form to edit the site settings.</p>
 <form action="../form/admin/setup.php" method="POST">
@@ -492,22 +418,22 @@ function create_site_editor() {
   </fieldset>
   <input type="submit" value="Submit" />
 </form>
-<?php
+  <?php
 }
 
 /**
  * A function to echo the HTML for the popup dialog used to update the database.
  */
 function create_db_update() {
-	global $db;?>
+  global $db;?>
 
 <p>By using this form, you will update your RMS database to the current
   schema version.</p>
 <form action="../form/admin/update.php" method="POST">
   <fieldset>
-    <?php
-    $query = mysqli_query($db, "SELECT * FROM version");
-	$v = mysqli_fetch_array($query);?>
+  <?php
+  $query = mysqli_query($db, "SELECT * FROM version");
+  $v = mysqli_fetch_array($query);?>
     <input type="hidden" name="version" id="version"
       value="<?php echo $v['version']?>">
   </fieldset>

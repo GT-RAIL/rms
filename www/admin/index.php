@@ -716,7 +716,7 @@ if($session_user['type'] !== 'admin') {
                     <th>ID</th>
                     <th>Name</th>
                     <th>SQL Table</th>
-                    <th>PHP Script</th>
+                    <th>PHP Script Location</th>
                   </tr>
                   <tr>
                     <td colspan="6"><hr />
