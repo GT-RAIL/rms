@@ -16,7 +16,7 @@ include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 include_once(dirname(__FILE__).'/../../api.inc.php');
 
 /**
- * Check if the given array has all of the necessary fields to create a environment.
+ * Check if the given array has all of the necessary fields to create an environment.
  *
  * @param array $array The array to check
  * @return boolean If the given array has all of the necessary fields to create a new environment
@@ -86,7 +86,7 @@ function create_environment($protocol, $envaddr, $port, $type, $notes, $enabled)
 }
 
 /**
- * Update an environment account with the given information inside of the array. The array should be indexed
+ * Update an environment with the given information inside of the array. The array should be indexed
  * by the SQL column names. The ID field must be contained inside of the array with the index 'id'.
  * Any errors are returned.
  *
@@ -113,7 +113,7 @@ function update_environment($fields) {
   if(isset($fields['envid'])) {
     $num_fields++;
     if($fields['envid'] !== $environment['envid'] && get_environment_by_id($fields['envid'])) {
-      return 'ERROR: Environment ID '.$fields['userid'].' already exists';
+      return 'ERROR: Environment ID '.$fields['envid'].' already exists';
     } else {
       $id_to_set = $fields['envid'];
     }
