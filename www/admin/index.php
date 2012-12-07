@@ -82,6 +82,12 @@ if($session_user['type'] !== 'admin') {
       } else if(name.indexOf('widget-') === 0) {
         var id = name.substring(name.indexOf('-') + 1);
         return '../api/robot_environments/widgets/?widgetid=' + id;
+      } else if(name === 'slides') {
+        return '../api/content/slides/';
+      } else if(name === 'pages') {
+        return '../api/content/content_pages/';
+      } else if(name === 'articles') {
+        return '../api/content/articles/';
       } else {
         return 'UNKNOWN';
       }
@@ -912,16 +918,13 @@ if($session_user['type'] !== 'admin') {
                     $cur = $slides[$i];
                     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                     <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['slideid']?>"
-                          class="delete">
-                          <button>Delete</button>
-                        </div>
+                      <td class="delete-cell"><button class="delete"
+                          name="slides"
+                          id="slides-<?php echo $cur['slideid']?>">Delete</button>
                       </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['slideid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
+                      <td class="edit-cell"><button class="edit"
+                          name="slides"
+                          id="slides-<?php echo $cur['slideid']?>">Edit</button>
                       </td>
                       <td class="content-cell"><?php echo $cur['slideid']?>
                       </td>
@@ -943,8 +946,8 @@ if($session_user['type'] !== 'admin') {
                     <td colspan="5"></td>
                     <td class="add-cell">
                       <div class="add">
-                        <button class="editor" id="add-article">Add
-                          Slide</button>
+                        <button class="create-new" id="add-slides"
+                          name="slides">Add Slide</button>
                       </div>
                     </td>
                   </tr>
@@ -981,24 +984,21 @@ if($session_user['type'] !== 'admin') {
                     $cur = $pages[$i];
                     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                     <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['pageid']?>"
-                          class="delete">
-                          <button>Delete</button>
-                        </div>
+                      <td class="delete-cell"><button class="delete"
+                          name="pages"
+                          id="pages-<?php echo $cur['pageid']?>">Delete</button>
                       </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['pageid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
+                      <td class="edit-cell"><button class="edit"
+                          name="pages"
+                          id="pages-<?php echo $cur['pageid']?>">Edit</button>
                       </td>
                       <td class="content-cell"><?php echo $cur['pageid']?>
                       </td>
                       <td class="content-cell"><?php echo $cur['title']?>
                       </td>
-                      <td class="content-cell"><?php echo $cur['menu_name']?>
+                      <td class="content-cell"><?php echo $cur['menu']?>
                       </td>
-                      <td class="content-cell"><?php echo $cur['menu_index']?>
+                      <td class="content-cell"><?php echo $cur['index']?>
                       </td>
                       <?php
                       if($cur['js']) {
@@ -1018,7 +1018,8 @@ if($session_user['type'] !== 'admin') {
                     <td colspan="6"></td>
                     <td class="add-cell">
                       <div class="add">
-                        <button class="editor" id="add-page">Add Page</button>
+                        <button class="create-new" id="add-pages"
+                          name="pages">Add Page</button>
                       </div>
                     </td>
                   </tr>
@@ -1039,7 +1040,7 @@ if($session_user['type'] !== 'admin') {
                       <th>Title</th>
                       <th>Content</th>
                       <th>Page</th>
-                      <th>Page-Index</th>
+                      <th>Index</th>
                     </tr>
                     <tr>
                       <td colspan="7"><hr />
@@ -1055,15 +1056,13 @@ if($session_user['type'] !== 'admin') {
                     $cur = $articles[$i];
                     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                     <tr class="<?php echo $class?>">
-                      <td class="delete-cell"><div
-                          id="<?php echo $cur['artid']?>" class="delete">
-                          <button>Delete</button>
-                        </div>
+                      <td class="delete-cell"><button class="delete"
+                          name="articles"
+                          id="articles-<?php echo $cur['artid']?>">Delete</button>
                       </td>
-                      <td class="edit-cell"><div
-                          id="<?php echo $cur['artid']?>" class="edit">
-                          <button>Edit</button>
-                        </div>
+                      <td class="edit-cell"><button class="edit"
+                          name="articles"
+                          id="articles-<?php echo $cur['artid']?>">Edit</button>
                       </td>
                       <td class="content-cell"><?php echo $cur['artid']?>
                       </td>
@@ -1078,9 +1077,9 @@ if($session_user['type'] !== 'admin') {
                       }
                       // grab the page name from the database
                       $res = get_content_page_by_id($cur['pageid']);?>
-                      <td class="content-cell"><?php echo $res['title']?>
+                      <td class="content-cell"><?php echo $cur['pageid'].': '.$res['title']?>
                       </td>
-                      <td class="content-cell"><?php echo $cur['pageindex']?>
+                      <td class="content-cell"><?php echo $cur['index']?>
                       </td>
                     </tr>
                     <?php
@@ -1094,8 +1093,8 @@ if($session_user['type'] !== 'admin') {
                     <td colspan="6"></td>
                     <td class="add-cell">
                       <div class="add">
-                        <button class="editor" id="add-article">Add
-                          Article</button>
+                        <button class="create-new" id="add-articles"
+                          name="articles">Add Article</button>
                       </div>
                     </td>
                   </tr>
