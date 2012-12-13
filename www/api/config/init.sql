@@ -286,11 +286,11 @@ CREATE TABLE IF NOT EXISTS `mjpeg_streams` (
 --
 
 INSERT INTO `mjpeg_streams` (`id`, `envid`, `label`, `topic`) VALUES
-(1, 1, 'Overhead South View', '/overhead_south/image_raw'),
-(2, 1, 'Overhead North View', '/overhead_north/image_raw'),
+(1, 1, 'Overhead East View', '/logitech_9000_camera1/image_raw'),
+(2, 1, 'Overhead West View', '/logitech_9000_camera2/image_raw'),
 (3, 1, 'Robot View', '/youbot_base_kinect/youbot_base_kinect/rgb/image_raw'),
-(4, 2, 'Overhead South View', '/overhead_south/image_raw'),
-(5, 2, 'Overhead North View', '/overhead_north/image_raw'),
+(4, 2, 'Overhead East View', '/logitech_9000_camera1/image_raw'),
+(5, 2, 'Overhead West View', '/logitech_9000_camera2/image_raw'),
 (6, 2, 'Robot View', '/prosilica/image_raw');
 
 -- --------------------------------------------------------
@@ -432,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `widgets` (
 
 INSERT INTO `widgets` (`widgetid`, `name`, `table`, `script`) VALUES
 (1, 'MJPEG Stream', 'mjpeg_streams', 'mjpeg_canvas'),
-(2, 'Keyboard Teleop', 'keyboard_teleoperations', 'keyboard_teleoperations'),
+(2, 'Keyboard Teleop', 'keyboard_teleoperations', 'keyboard_teleoperation'),
 (3, 'Map 2D', 'maps', 'map2d'),
 (4, '2D Navigation', 'navigations', 'nav2d');
 

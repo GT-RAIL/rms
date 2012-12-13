@@ -1,42 +1,9 @@
-/*********************************************************************
+/**
+ * The main style sheet for RMS.
  *
- * Software License Agreement (BSD License)
- *
- *  Copyright (c) 2012, Worcester Polytechnic Institute
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of the Worcester Polytechnic Institute nor the 
- *     names of its contributors may be used to endorse or promote 
- *     products derived from this software without specific prior 
- *     written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- *
- *   Author: Russell Toris
- *  Version: October 9, 2012
- *
- *********************************************************************/
+ *  Author: Russell Toris
+ * Version: December 13, 2012
+ */
 
 /* == GENERAL == */
 * {
@@ -44,18 +11,14 @@
   padding: 0;
 }
 
-body,#preview-popup {
+body, #preview-popup {
   font-family: Verdana, Arial, sans-ser;
   font-size: 12px;
   color: #101010;
-  background-image: url(../img/bg.jpg);
-  background-repeat: repeat;
-  background-color: #101010;
-  background-attachment: fixed;
-  background-position: center top;
+  background: #101010 url(images/bg.jpg) repeat fixed center top;
 }
 
-h1,h2,h3 {
+h1, h2, h3 {
   font-variant: small-caps;
 }
 
@@ -70,34 +33,34 @@ h2 {
   text-shadow: 0px 2px 6px #f6f6f6;
 }
 
-h3,form legend {
+h3 {
   font-size: 18px;
   text-shadow: 0 0 3px #f6f6f6;
 }
 
 p {
   line-height: 1.5em;
-  padding-bottom: 1em;
+  padding: 0 0 1em 0;
   text-align: justify;
   text-justify: inter-word;
 }
 
-article,nav ul li a,figure,#slides img {
+article, nav ul li a, figure, #slides img {
   border-radius: 10px;
 }
 
-header,footer,article,section,hgroup,nav,figure {
+header, footer, article, section, hgroup, nav, figure {
   display: block;
 }
 
-header table,footer table {
+header table, footer table {
   width: 100%;
 }
 
 .line {
   height: 1px;
   background-color: #022056;
-  border-bottom: 1px solid #0b3e6f;
+  border: 0 0 1px 0 solid #0b3e6f;
   margin: 1em 0;
   overflow: hidden;
 }
@@ -129,14 +92,10 @@ header table,footer table {
 	no-repeat;
 }
 
-/* When the body has the loading class, we turn
-the scrollbar off with overflow:hidden */
 body.loading {
 	overflow: hidden;
 }
 
-/* Anytime the body has the loading class, our
-modal element will be visible */
 body.loading .modal {
 	display: block;
 }
@@ -144,17 +103,12 @@ body.loading .modal {
 /* == HEADER == */
 header {
   background: rgba(255, 255, 255, 0.25);
-  border-top: 1px solid #333;
-  border-left: 1px solid #333;
-  border-right: 1px solid #333;
+  border-top: 1px 1px 0 1px solid #333;
   width: 980px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 5px 10px 5px 10px;
 }
 
 header figure {
@@ -197,89 +151,20 @@ nav ul li a:hover {
 
 /* == PAGE == */
 #page {
-  margin-bottom: 10px;
   background: rgba(10, 10, 10, 0.8);
   width: 980px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
   border-radius: 0 0 10px 10px;
   padding: 10px;
-  box-shadow: 0px 0px 15px 5px #aaa;
-}
-
-/* == ARTICLES == */
-article {
-  background: rgba(156, 205, 252, 0.7);
-  margin: 10px 0;
-  padding: 20px;
-  border: 1px solid #022056;
-}
-
-article figure {
-  float: right;
-  border: 3px solid #0b3e6f;
-  margin-left: 15px;
-  overflow: hidden;
-}
-
-article figure img {
-  margin-bottom: -5px;
-}
-
-/* == CONTROL PANELS == */
-#log-container {
-  max-height: 500px;
-  overflow-y: scroll;
-  font-size: 11px;
-}
-
-#admin-tabs table, #study-tabs table {
-  width: 100%;
-  border: 0;
-  border-collapse: collapse;
-}
-
-#admin-tabs .add-cell, #study-tabs .add-cell {
-  text-align: right;
-}
-
-table tr td.edit-cell,table tr td.delete-cell {
-  width: 29px;
-}
-
-table td.content-cell {
-  border-left: 1px solid #aaaaaa;
-  padding-left: 3px;
-}
-
-.content-preview,.setting-label {
-  text-align: right;
-}
-
-.setting-label {
-  padding-right: 20px;
-}
-
-/* == FOOTER == */
-footer td {
-  color: #f6f6f6;
-  font-size: 10px;
-}
-
-footer a {
-  color: #9ccdfc;
+  box-shadow: 0px 0px 15px 5px #aaaaaa;
 }
 
 /* == FORM == */
 form fieldset {
   border: none;
-}
-
-form legend {
-  font-weight: bold;
-  font-size: 18px;
-  padding-bottom: 10px;
 }
 
 form ol li {
@@ -289,7 +174,7 @@ form ol li {
   line-height: 30px;
   list-style: none;
   padding: 5px 10px;
-  margin-bottom: 2px;
+  margin: 0 0 2px 0;
 }
 
 form label {
@@ -304,7 +189,7 @@ form fieldset fieldset label {
   width: 100%;
 }
 
-form input:not([type=radio]),form textarea {
+form input:not([type=radio]), form textarea {
   resize: none;
   background: #f6f6f6;
   border: none;
@@ -315,7 +200,7 @@ form input:not([type=radio]),form textarea {
   width: 60%;
 }
 
-form input[type=submit],form input[type=button] {
+form input[type=submit], form input[type=button] {
   background: #096ac8;
   border: none;
   border-radius: 15px;
@@ -330,7 +215,7 @@ form input[type=submit],form input[type=button] {
   font-style: normal;
 }
 
-form input[type=submit]:hover,form input[type=button]:hover {
+form input[type=submit]:hover, form input[type=button]:hover {
   background: #022056;
   cursor: pointer;
 }
@@ -338,13 +223,11 @@ form input[type=submit]:hover,form input[type=button]:hover {
 /* == SLIDESHOW == */
 #slides {
   background: rgba(240, 240, 240, 0.7);
-  padding-top: 5px;
-  padding-bottom: 17px;
-  margin-left: -10px;
-  margin-right: -10px;
+  padding: 5px 0 17px 0;
+  margin: 0 -10px 0 -10px;
 }
 
-.slides_container,.slides_container div.slide {
+.slides_container, .slides_container div.slide {
   width: 800px;
 }
 
@@ -374,7 +257,7 @@ form input[type=submit]:hover,form input[type=button]:hover {
   display: block;
   width: 12px;
   height: 0;
-  padding-top: 12px;
+  padding: 12px 0 0 0;
   background-image: url(images/pagination.png);
   background-position: 0 0;
   float: left;
@@ -401,8 +284,27 @@ form input[type=submit]:hover,form input[type=button]:hover {
   bottom: 0;
 }
 
+/* == ARTICLES == */
+article {
+  background: rgba(156, 205, 252, 0.7);
+  margin: 10px 0;
+  padding: 20px;
+  border: 1px solid #022056;
+}
+
+article figure {
+  float: right;
+  border: 3px solid #0b3e6f;
+  margin-left: 15px;
+  overflow: hidden;
+}
+
+article figure img {
+  margin-bottom: -5px;
+}
+
 /* == TABLE == */
-table,table th {
+table, table th {
   text-align: left;
 }
 
@@ -419,7 +321,7 @@ table.tablesorter thead tr .header {
   background-image: url(images/sort.gif);
   background-repeat: no-repeat;
   background-position: center right;
-  padding-right: 12px;
+  padding: 0 12px 0 0;
   cursor: pointer;
 }
 
@@ -431,4 +333,44 @@ table.tablesorter thead tr .headerSortUp {
 table.tablesorter thead tr .headerSortDown {
   background-image: url(images/desc.gif);
   background-repeat: no-repeat;
+}
+
+/* == CONTROL PANELS == */
+#log-container {
+  max-height: 500px;
+  overflow-y: scroll;
+  font-size: 11px;
+}
+
+#admin-tabs table {
+  width: 100%;
+  border: 0;
+  border-collapse: collapse;
+}
+
+table tr td.edit-cell, table tr td.delete-cell {
+  width: 29px;
+}
+
+table tr td.add-cell {
+  text-align: right;  
+}
+
+table td.content-cell {
+  border-left: 1px solid #aaaaaa;
+  padding: 0 0 0 3px;
+}
+
+.content-preview {
+  text-align: right;
+}
+
+/* == FOOTER == */
+footer td {
+  color: #f6f6f6;
+  font-size: 10px;
+}
+
+footer a {
+  color: #9ccdfc;
 }

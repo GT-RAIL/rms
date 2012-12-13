@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 7 2012
+ * @version    December, 12 2012
  * @package    api.robot_environments
  * @link       http://ros.org/wiki/rms
  */
@@ -16,6 +16,10 @@
 include_once(dirname(__FILE__).'/../../inc/config.inc.php');
 include_once(dirname(__FILE__).'/environments/environments.inc.php');
 include_once(dirname(__FILE__).'/interfaces/interfaces.inc.php');
+include_once(dirname(__FILE__).'/widgets/widgets.inc.php');
+include_once(dirname(__FILE__).'/robot_environment.php');
+include_once(dirname(__FILE__).'/../../inc/content.inc.php');
+include_once(dirname(__FILE__).'/../../inc/head.inc.php');
 
 /**
  * Check if the given array has all of the necessary fields to create an environment-interface pair.
@@ -271,5 +275,74 @@ function get_environment_interface_pair_editor_html($id) {
              </form>';
 
   return $result;
+}
+
+/**
+ * Create an error page with the given message. This will echo the full HTML for the page.
+ *
+ * @param string $error The error message to display on the page
+ * @param array $user The user account SQL entry used to create the user menu
+ */
+function create_error_page($error, $user) {
+  global $title;
+  $pagename = 'Invalid Connection';
+  $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
+  $path = $prot.$_SERVER['HTTP_HOST'].'/';
+
+  echo '
+<!DOCTYPE html>
+<html>
+  <head>';
+  import_head($path);
+  echo '
+    <script type="text/javascript">createMenuButtons();</script>
+    <title>'.$title.' :: '.$pagename.'</title>
+  </head>
+  <body>';
+  create_header($user, $pagename, $path);
+  echo'
+    <section id="page"><article>
+        <div class="center">
+          <br /> <br /> <br /> <br /> <br />
+          <h2>ERROR: '.$error.'</h2>
+          <br /> <br /> <br /> <br /> <br />
+        </div></article>';
+  create_footer($path);
+  echo '
+    </section>
+  </body>
+</html>
+';
+}
+
+/**
+ * Genereate the interface for the given environment. This will echo the entire HTML for the page.
+ *
+ * @param integer $userid The user ID of the user that is currently logged in
+ * @param integer $envid The environment ID to generate an interface for
+ * @param integer $intid The interface ID
+ */
+function generate_environment_interface($userid, $envid, $intid) {
+  // grab what we need
+  if(!$interface = get_interface_by_id($intid)) {
+    create_error_page('Invalid interface number provided.', get_user_account_by_id($userid));
+  } else if(!get_environment_by_id($envid)) {
+    create_error_page('Invalid environment number provided.', get_user_account_by_id($userid));
+  } else if(!get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
+    create_error_page('Invalid pairing between the interface and the environment.', get_user_account_by_id($userid));
+  } else if(!file_exists(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php')) {
+    create_error_page(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php does not exist!', get_user_account_by_id($userid));
+  } else {
+    // include the file
+    include_once(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php');
+
+    // now check for the correct function
+    if(!function_exists('generate')) {
+      create_error_page('Interface script does not implement the required function.', $user);
+    } else {
+      // good to go, lets create the interface!
+      generate(new robot_environment($userid, $envid, $intid));
+    }
+  }
 }
 ?>

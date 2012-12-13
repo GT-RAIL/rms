@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 7 2012
+ * @version    December, 12 2012
  * @package    api.robot_environments
  * @link       http://ros.org/wiki/rms
  */
@@ -59,6 +59,14 @@ if($auth = authenticate()) {
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment-interface pair editor.');
               $result = create_401_state($result);
+            }
+            break;
+          case'generate':
+            if(count($_GET) === 3 && isset($_GET['envid']) && isset($_GET['intid'])) {
+              generate_environment_interface($auth['userid'], $_GET['envid'], $_GET['intid']);
+              return;
+            } else {
+              $result = create_404_state('Incompatible fields provided.');
             }
             break;
           default:

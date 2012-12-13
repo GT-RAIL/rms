@@ -60,7 +60,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
    *          envid the experiment's environment ID number
    */
 	function beginStudy(expid, intid, envid) {
-		window.location = '../environment.php?expid='+expid+'&intid='+intid+'&envid='+envid;
+		window.location = '../connection/?expid='+expid+'&intid='+intid+'&envid='+envid;
 	}
 </script>
 </head>
@@ -109,7 +109,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
             foreach ($pairs as $pair) {
               $int = get_interface_by_id($pair['intid']);?>
             <li><a
-              href="../environment.php?envid=<?php echo $cur['envid']?>&intid=<?php echo $int['intid']?>">
+              href="../connection/?envid=<?php echo $cur['envid']?>&intid=<?php echo $int['intid']?>">
               <?php echo $int['name']?> </a></li>
               <?php
             }
