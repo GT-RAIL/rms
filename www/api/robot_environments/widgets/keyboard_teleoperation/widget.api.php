@@ -11,9 +11,6 @@
  * @link       http://ros.org/wiki/rms
  */
 
-include_once(dirname(__FILE__).'/../../../../inc/config.inc.php');
-include_once(dirname(__FILE__).'/../../environments/environments.inc.php');
-
 /**
  * Create the HTML and Javascript needed for a keyboard telop widget with an associated speed slider.
  * This creates two divs with IDs of speed-label and speed-slider. Custom CSS can be used to change

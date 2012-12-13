@@ -10,9 +10,13 @@
  * @link       http://ros.org/wiki/rms
  */
 
+/**
+ * Generate the HTML for the interface. All HTML is echoed.
+ * @param robot_environment $re The associated robot_environment object for this interface
+ */
 function generate($re) {
   // lets begin by checking if we have an MJPEG widget and a keyboard at the very least
-  if(!$mjpeg = $re->get_widgets_by_name('MJPEG Stream')) {
+  if(!$re->get_widgets_by_name('MJPEG Stream')) {
     create_error_page('No MJPEG streams found.', $re->get_user_account());
   } else if(!$teleop = $re->get_widgets_by_name('Keyboard Teleop')) {
     create_error_page('No Keyboard Teloperation settings found.', $re->get_user_account());
@@ -30,30 +34,29 @@ function generate($re) {
   	alert('Lost communication with ROS.');
   });
 </script>
-
 </head>
 <body>
   <section id="page">
     <section id="basic-interface">
       <table class="center">
         <tr>
-          <td colspan="3"><div id="main-widget" class="widget">
+          <td colspan="3"><div id="main-widget">
           <?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 800, 600, 2)?>
             </div></td>
         </tr>
         <tr>
-          <td width="33%"><div id="south-west-widget" class="widget">
+          <td width="33%"><div id="south-west-widget">
           <?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200, 1)?>
             </div>
           </td>
           <td width="33%">
-            <div id="control-widget" class="widget">
+            <div id="control-widget">
               <div id="speed-container">
               <?php echo create_keyboard_teleop_with_slider($teleop[0])?>
               </div>
             </div>
           </td>
-          <td width="33%"><div id="south-east-widget" class="widget">
+          <td width="33%"><div id="south-east-widget">
           <?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200)?>
             </div>
           </td>

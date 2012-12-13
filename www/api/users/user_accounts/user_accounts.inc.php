@@ -94,7 +94,6 @@ function get_user_accounts() {
 function get_user_account_by_id($id) {
   global $db;
 
-
   $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", $db->real_escape_string($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
