@@ -110,11 +110,11 @@ if($auth = authenticate()) {
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
-              $result = create_401_state($result);
+              $result = create_401_state();
             }
             break;
           default:
-            $result = create_404_state( $_GET['request'].' request type is invalid.');
+            $result = create_404_state($_GET['request'].' request type is invalid.');
             break;
         }
       } else {

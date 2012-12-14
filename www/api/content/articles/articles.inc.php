@@ -13,6 +13,7 @@
  * @link       http://ros.org/wiki/rms
  */
 
+include_once(dirname(__FILE__).'/../content_pages/content_pages.inc.php');
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 
 /**
@@ -99,5 +100,86 @@ function create_page_articles_html($page) {
   $html .= '</section>';
 
   return $html;
+}
+
+/**
+ * Get the HTML for an editor used to create or edit the given article entry. If this is not an
+ * edit, null can be given as the ID. An invalid ID is the same as giving a null ID.
+ *
+ * @param integer|null $id the ID of the article to edit, or null if a new entry is being made
+ * @return string A string containing the HTML of the editor
+ */
+function get_article_editor_html($id) {
+  // see if an article exists with the given id
+  $cur = get_article_by_id($id);
+
+  if($cur) {
+    $title = $cur['title'];
+    $content = $cur['content'];
+    $pageid = $cur['pageid'];
+    $index = $cur['index'];
+  } else {
+    $title = '';
+    $content = '';
+    $pageid = '';
+    $index = '';
+  }
+
+  $result = '<p>Complete the following form to create or edit an article.</p>
+             <form action="javascript:submit();"><fieldset>
+               <ol>';
+
+  // only show the ID for edits
+  $result .=  ($cur) ? '<li><label for="id">Article ID</label><input type="text" name="id"
+                             id="id" value="'.$cur['artid'].'" readonly="readonly" /></li>' : '';
+
+  $result .= '<li>
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="'.$title.'"
+                 placeholder="e.g., My Content" required />
+              </li>
+              <li>
+                <label for="content">Content</label>
+                <textarea name="content" id="content" rows="10"
+                 placeholder="<p>Put your HTML code here.</p>">'.htmlentities($content).'</textarea>
+                <div class="content-preview">
+                  <a href="javascript:preview();">Preview</a>
+                </div>
+              </li>
+              <li>
+                <label for="pageid">Page</label>
+                <select name="pageid" id="pageid" required>';
+
+  // grab all of the pages
+  $pages = get_content_pages();
+  foreach ($pages as $curpage) {
+    // check if this type is the same
+    if($pageid === $curpage['pageid']) {
+      $result .= '<option value="'.$curpage['pageid'].'" selected="selected">'.$curpage['pageid'].': '.$curpage['title'].'</option>';
+    } else {
+      $result .= '<option value="'.$curpage['pageid'].'">'.$curpage['pageid'].': '.$curpage['title'].'</option>';
+    }
+  }
+ $result .= '  </select>
+             </li>
+             <li>
+               <label for="index">Index</label>
+               <select name="index" id="index" required>';
+  // create enough to index 15 articles
+  for($i = 0; $i < 25; $i++) {
+    $selected = ($index === strval($i)) ? 'selected="selected" ' : '';
+    $result .=  '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+  }
+  $result .= '</select></li>';
+
+
+
+  $result .= '      </select>
+                  </li></ol>
+                  <input type="submit" value="Submit" />
+                </fieldset>
+              </form>';
+
+  return $result;
 }
 ?>

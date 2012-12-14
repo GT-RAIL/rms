@@ -58,7 +58,7 @@ if($auth = authenticate()) {
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment-interface pair editor.');
-              $result = create_401_state($result);
+              $result = create_401_state();
             }
             break;
           case'generate':

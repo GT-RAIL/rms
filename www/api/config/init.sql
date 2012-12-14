@@ -331,9 +331,9 @@ CREATE TABLE IF NOT EXISTS `slides` (
 --
 
 INSERT INTO `slides` (`slideid`, `img`, `caption`, `index`) VALUES
-(1, 'youbot_sim.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam.', 0),
+(1, 'youbot.jpg', 'Lorem ipsum dolor sit amet.', 5),
 (2, 'pr2.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ', 3),
-(3, 'youbot.jpg', 'Lorem ipsum dolor sit amet.', 5);
+(3, 'youbot_sim.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam.', 0);
 
 -- --------------------------------------------------------
 

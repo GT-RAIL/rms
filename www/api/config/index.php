@@ -33,7 +33,6 @@ if(!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
       if(isset($_FILES['sqlfile'])) {
         // check for an error
         if($_FILES['sqlfile']['error'] !== 0 && $_FILES['sqlfile']['error'] !== 4) {
-          $result = create_404_state();
           $error = 'PHP file upload returned with error code '.$_FILES['sqlfile']['error'].'.';
         } else {
           // if a blank file name was given, we just use the init SQL file

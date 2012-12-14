@@ -107,9 +107,17 @@ if($session_user['type'] !== 'admin') {
 
     // delete button callback
     $('.delete').click(function(e) {
+      // find the button
+      var b;
+      if($(e.target).is('button')) {
+        b = $(e.target);
+      } else {
+        b = $(e.target).parent('button');
+      }
+
       // find the type and ID
-      var deleteScript = nameToAPIScript($(e.target).attr('name'));
-      var idString = $(e.target).attr('id');
+      var deleteScript = nameToAPIScript(b.attr('name'));
+      var idString = b.attr('id');
       var id = idString.substring(idString.lastIndexOf('-') + 1);
 
       // special case -- generic delete script
@@ -188,7 +196,15 @@ if($session_user['type'] !== 'admin') {
 
     // a function to make the correct AJAX call to display an editor
     var createEditor = function(e) {
-      var type = $(e.target).attr('name');
+      // find the button
+      var b;
+      if($(e.target).is('button')) {
+        b = $(e.target);
+      } else {
+        b = $(e.target).parent('button');
+      }
+
+      var type = b.attr('name');
 
       // special case --  Javascript updater
       if(type === 'js-update') {
@@ -211,7 +227,7 @@ if($session_user['type'] !== 'admin') {
         }
 
         // now check if we are getting an ID as well
-        var idString = $(e.target).attr('id');
+        var idString = b.attr('id');
         if(idString.lastIndexOf(type + '-') === 0) {
           var id = idString.substring(idString.lastIndexOf('-') + 1);
           url += '&id=' + id;
@@ -261,14 +277,19 @@ if($session_user['type'] !== 'admin') {
   }
 
   /**
-   * A function to set the HTML of the 'preview-popup' div with the given article content and title.
-   *
-   * @param title {string} the title of the article to preview
-   * @param content {string} the HTML article content to preview
+   * A function to set the HTML of the 'preview-popup'.
    */
-  function preview(title, content) {
+  function preview() {
+    var title = $('#title').val();
+    var content = $('#content').val();
     // create the HTML
-    $('#preview-popup').html('<section id="page"><article><h2>'+title+'</h2><div class="line"></div><div class="clear">'+content+'</div></article></section>');
+    $('#preview-popup').html('<section id="page"><article><h2>'+$('#title').val()+'</h2><div class="line"></div><div class="clear">'+$('#content').val()+'</div></article></section>');
+    // fix image links
+    $('#preview-popup').find('img').each(function(){
+      if($(this).attr('src').indexOf('img/') === 0) {
+        $(this).attr('src', '../' + $(this).attr('src'));
+      }
+    });
     // open the dialog
     $('#preview-popup').dialog('open');
   }
@@ -278,6 +299,32 @@ if($session_user['type'] !== 'admin') {
    */
 	function submit() {
      createModalPageLoading();
+
+     // the actual function to make the request
+     var makeRequest = function(url, dataToSubmit, ajaxType, onSuccess) {
+       // create a AJAX request
+       $.ajax(url, {
+         data : dataToSubmit,
+         cache : false,
+         contentType : false,
+         processData : false,
+         type : ajaxType,
+         beforeSend: function (xhr) {
+           // authenticate with the header
+           xhr.setRequestHeader('RMS-Use-Session', 'true');
+         },
+         success : function(data) {
+           onSuccess(data);
+         },
+         error : function(data) {
+           // display the error
+           var response = JSON.parse(data.responseText);
+           removeModalPageLoading();
+           createErrorDialog(response.msg);
+         }
+       });
+     };
+
      // check the password
      if($('#password').val() !== $('#password-confirm').val()) {
        removeModalPageLoading();
@@ -288,8 +335,19 @@ if($session_user['type'] !== 'admin') {
       var ajaxType = 'POST';
       var putString = '';
       var formData = new FormData();
+      // used for changing slideshow images
+      var putFile = {field: '', file: null};
       form.find(':input').each(function(){
-        if($(this).attr('type') !== 'submit' && $(this).attr('name') !== 'password-confirm') {
+        if($(this).attr('type') === 'file') {
+          // do the file upload
+          var file = $(this)[0].files[0];
+          if(file) {
+            hasFile = true;
+            formData.append($(this).attr('name'), file);
+            putFile.field = $(this).attr('name');
+            putFile.file = file;
+          }
+        } else if($(this).attr('type') !== 'submit' && $(this).attr('name') !== 'password-confirm') {
           if($(this).attr('name') === 'id') {
             ajaxType = 'PUT';
           }
@@ -328,30 +386,19 @@ if($session_user['type'] !== 'admin') {
       var dataToSubmit = formData;
       if(ajaxType === 'PUT') {
         dataToSubmit = putString;
+
+        // check if we have a file request
+        if(putFile.file) {
+          // make a request to upload the file first
+          var uploadData = new FormData();
+          uploadData.append(putFile.field, putFile.file);
+          makeRequest(finalScript, uploadData, 'POST', function(data){});
+
+          dataToSubmit += '&' + putFile.field + '=' + putFile.file.name;
+        }
       }
 
-      // create a AJAX request
-      $.ajax(finalScript, {
-        data : dataToSubmit,
-        cache : false,
-        contentType : false,
-        processData : false,
-        type : ajaxType,
-        beforeSend: function (xhr) {
-          // authenticate with the header
-          xhr.setRequestHeader('RMS-Use-Session', 'true');
-        },
-        success : function(data){
-          // success -- go back to the login page for the correct redirect
-          window.location.reload();
-        },
-        error : function(data){
-          // display the error
-          var response = JSON.parse(data.responseText);
-          removeModalPageLoading();
-          createErrorDialog(response.msg);
-        }
-      });
+      makeRequest(finalScript, dataToSubmit, ajaxType, function(data){window.location.reload();});
     }
 	}
 

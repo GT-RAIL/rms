@@ -84,7 +84,7 @@ if($auth = authenticate()) {
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get a widget editor.');
-              $result = create_401_state($result);
+              $result = create_401_state();
             }
             break;
           default:
