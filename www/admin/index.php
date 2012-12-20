@@ -50,6 +50,14 @@ if($session_user['type'] !== 'admin') {
   header('Location: /menu');
   return;
 }
+
+// grab the database version
+$db_version = get_db_version();
+// grab the code version
+$prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
+$code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
+// find our the live version
+$live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/admin/init.sql");
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +96,7 @@ if($session_user['type'] !== 'admin') {
         return '../api/content/content_pages/';
       } else if(name === 'articles') {
         return '../api/content/articles/';
-      } else if(name === 'settings') {
+      } else if(name === 'settings' || name === 'db-update') {
         return '../api/config/';
       } else {
         return 'UNKNOWN';
@@ -208,14 +216,20 @@ if($session_user['type'] !== 'admin') {
 
       var type = b.attr('name');
 
-      // special case --  Javascript updater
+      // special cases --  Javascript updater and DB updater
       if(type === 'js-update') {
         var html = '<p>By using this form, you will delete all local ROS Javascript files and download the latest versions.</p>';
         html += '<form action="javascript:updateJSRequest();"><input type="submit" value="Update" /></form>';
 
         $('#editor-popup').html(html);
         $('#editor-popup').dialog('open');
-      } else {
+      } else if(type === 'db-update') {
+        var html = '<p>By using this form, you will update the RMS database to version <?php echo $code_version?>.</p>';
+        html += '<form action="javascript:updateDBRequest();"><input type="submit" value="Update" /></form>';
+
+        $('#editor-popup').html(html);
+        $('#editor-popup').dialog('open');
+      }else {
         createModalPageLoading();
 
         // grab the script name
@@ -420,6 +434,38 @@ if($session_user['type'] !== 'admin') {
     var formData = new FormData();
     formData.append('request', 'update');
     $.ajax('../api/config/javascript_files/', {
+      data : formData,
+      cache : false,
+      contentType : false,
+      processData : false,
+      type : 'POST',
+      beforeSend: function (xhr) {
+        // authenticate with the header
+        xhr.setRequestHeader('RMS-Use-Session', 'true');
+      },
+      success : function(data){
+        // success
+        window.location.reload();
+      },
+      error : function(data){
+        // display the error
+        var response = JSON.parse(data.responseText);
+        removeModalPageLoading();
+        createErrorDialog(response.msg);
+      }
+    });
+	}
+
+	/**
+   * Make an AJAX request to update the RMS database.
+   */
+	function updateDBRequest() {
+    createModalPageLoading();
+
+    // create a AJAX request
+    var formData = new FormData();
+    formData.append('request', 'update');
+    $.ajax('../api/config/', {
       data : formData,
       cache : false,
       contentType : false,
@@ -1204,7 +1250,7 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="3"></td>
                     <td class="add-cell">
-                      <button class=create-new id="add-site"
+                      <button class="create-new" id="add-site"
                         name="settings">Edit Settings</button>
                     </td>
                   </tr>
@@ -1217,19 +1263,7 @@ if($session_user['type'] !== 'admin') {
                   <h3>Site Status</h3>
                 </div>
                 <div class=line></div>
-                <?php
-                // grab the database version
-                $db_version = get_db_version();
-                // grab the code version
-                $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
-                $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
-                // find our the live version
-                $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/admin/init.sql");
-
-                // check if an update is needed
-                $disable = ($db_version < $live_version) ? '' : 'disabled="disabled"';
-                ?>
-
+                <?php $disable = ($db_version < $live_version) ? '' : 'disabled="disabled"' // check if an update is needed?>
                 <table>
                   <tbody>
                     <tr>
@@ -1263,8 +1297,9 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="3"></td>
                     <td class="add-cell">
-                      <button class="editor" id="update-db"
-                      <?php echo $disable?>>Run Database Update</button>
+                      <button class="create-new" id="update-db"
+                        name="db-update" <?php echo $disable?>>Run
+                        Database Update</button>
                     </td>
                   </tr>
                 </table>

@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 6 2012
+ * @version    December, 20 2012
  * @package    api.config.javascript_files
  * @link       http://ros.org/wiki/rms
  */
@@ -53,7 +53,7 @@ if($auth = authenticate()) {
                 if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
                   $result = create_404_state($error);
                 } else {
-                  write_to_log('SYSTEM: Javascript files updated.');
+                  write_to_log('SYSTEM: '.$auth['username'].' upedated the Javascript files.');
                   $result = create_200_state(get_current_timestamp());
                 }
               } else {

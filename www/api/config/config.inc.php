@@ -179,6 +179,30 @@ $designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell
 }
 
 /**
+ * Update the RMS database to the latest code version. Any errors are returned.
+ *
+ * @return string|null an error message or null if the update was sucessful
+ */
+function run_database_update() {
+  // get the code version
+  $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
+  $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
+
+  // loop through until we are up to date
+  while(get_db_version() < $code_version) {
+    // build the function name
+    $function  = 'update_'.get_db_version();
+    $function= str_replace('.', '_', $function);
+    if($error = $function()) {
+      return $error;
+    }
+  }
+
+  // no errors
+  return null;
+}
+
+/**
  * Update the site settings with the given information inside of the array. Any errors are returned.
  *
  * @return string|null an error message or null if the update was sucessful

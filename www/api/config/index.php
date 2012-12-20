@@ -81,6 +81,31 @@ if(!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
     // only admins can use this script
     if($auth['type'] === 'admin') {
       switch ($_SERVER['REQUEST_METHOD']) {
+        case 'POST':
+          if(isset($_POST['request'])) {
+            switch ($_POST['request']) {
+              // check for the editor request
+              case 'update':
+                if(count($_POST) === 1) {
+                  // try and do the update
+                  if($error = run_database_update()) {
+                    $result = create_404_state($error);
+                  } else {
+                    write_to_log('SYSTEM: '.$auth['username'].' updated the database.');
+                    $result = create_200_state(get_db_version());
+                  }
+                } else {
+                  $result = create_404_state('Too many fields provided.');
+                }
+                break;
+              default:
+                $result = create_404_state($_GET['request'].' request type is invalid.');
+                break;
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
         case 'GET':
           if(isset($_GET['request'])) {
             switch ($_GET['request']) {
