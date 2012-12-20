@@ -205,6 +205,7 @@ function run_database_update() {
 /**
  * Update the site settings with the given information inside of the array. Any errors are returned.
  *
+ * @param array $fields The fields to update
  * @return string|null an error message or null if the update was sucessful
  */
 function update_site_settings($fields) {

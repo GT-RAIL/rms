@@ -51,6 +51,7 @@ function get_study_log_by_id($id) {
  * Get an array of all study log entires in the database with the given experiment ID number or null
  * if none exist.
  *
+ * @param integer $expid The experiment ID number
  * @return array|null The array of study log entries or null if none exist.
  */
 function get_study_logs_by_expid($expid) {
