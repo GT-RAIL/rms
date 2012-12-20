@@ -133,6 +133,33 @@ function get_widget_instances_by_widgetid($widgetid) {
 }
 
 /**
+ * Get an array of the instances of the given widget for the given environment, or null if none exist.
+ *
+ * @param integer $widgetid The widget ID number
+ * @param integer $envid The environment ID number
+ * @return array|null An array of the widget's instances or null if none exist
+ */
+function get_widget_instances_by_widgetid_and_envid($widgetid, $envid) {
+  global $db;
+
+  // check the widget
+  if($w = get_widget_by_id($widgetid)) {
+    // grab the entries and push them into an array
+    $result = array();
+    $sql = sprintf("SELECT * FROM `%s` WHERE `envid`='%d'", $db->real_escape_string($w['table'])
+    , $db->real_escape_string($envid));
+    $query = mysqli_query($db, $sql);
+    while($cur = mysqli_fetch_assoc($query)) {
+      $result[] = $cur;
+    }
+    return (count($result) === 0) ? null : $result;
+  }
+
+  // none found
+  return null;
+}
+
+/**
  * Get the widget instance array for the widget with the given IDs, or null if none exist.
  *
  * @param integer $widgetid The widget ID number to get the instance from

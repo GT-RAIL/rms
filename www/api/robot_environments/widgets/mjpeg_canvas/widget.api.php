@@ -44,8 +44,10 @@ function get_mjpeg_streams_by_envid($envid) {
  * @param integer $width The width of the canvas/stream
  * @param integer $height The height of the canvas/stream
  * @param integer $default The index of the default stream (0 by default)
+ * @param string|null $cb The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (default is null)
+ * @return string The HTML to create the widget and the slider
  */
-function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 0) {
+function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 0, $cb = null) {
   // check the information
   if(!$environment = get_environment_by_id($envid)) {
     return '<h2>Invalid Environment Provided</h2>';
@@ -97,7 +99,16 @@ function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 
     });
 
     mjpeg.on(\'error\', function(){});
-  </script>';
+  ';
+
+  // check the callback
+  if($cb) {
+      $result .= $cb.'(mjpeg);
+      ';
+  }
+
+  $result .= '</script>
+  ';
 
   return $result;
 }

@@ -58,8 +58,11 @@
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
 <li class="method public "><a href="#method___construct" title="__construct :: Creates a robot_environment using the given information."><span class="description">Creates a robot_environment using the given information.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_authorized" title="authorized :: Checks if the current user is authorized for this interface/environment."><span class="description">Checks if the current user is authorized for this interface/environment.</span><pre>authorized()</pre></a></li>
 <li class="method public "><a href="#method_create_head" title="create_head :: Create common parts of the HTML head section."><span class="description">Create common parts of the HTML head section.</span><pre>create_head()</pre></a></li>
+<li class="method public "><a href="#method_create_study_head" title="create_study_head :: Create common parts of the HTML head section for a study session."><span class="description">Create common parts of the HTML head section for a study session.</span><pre>create_study_head()</pre></a></li>
 <li class="method public "><a href="#method_get_envid" title="get_envid :: Get the environment ID for the associated environment."><span class="description">Get the environment ID for the associated environment.</span><pre>get_envid()</pre></a></li>
+<li class="method public "><a href="#method_get_experiment" title="get_experiment :: Get the experiment SQL entry found for the user, or null if none exist."><span class="description">Get the experiment SQL entry found for the user, or null if none exist.</span><pre>get_experiment()</pre></a></li>
 <li class="method public "><a href="#method_get_intid" title="get_intid :: Get the interface ID for the associated interface."><span class="description">Get the interface ID for the associated interface.</span><pre>get_intid()</pre></a></li>
 <li class="method public "><a href="#method_get_user_account" title="get_user_account :: Get the user account SQL array for the user that is currently logged in."><span class="description">Get the user account SQL array for the user that is currently logged in.</span><pre>get_user_account()</pre></a></li>
 <li class="method public "><a href="#method_get_widgets_by_name" title="get_widgets_by_name :: Get an array of all widgets for this robot environment/interface with the given widget name."><span class="description">Get an array of all widgets for this robot environment/interface with the given widget name.</span><pre>get_widgets_by_name()</pre></a></li>
@@ -73,9 +76,10 @@
 <li class="nav-header private">» Private
                     <ul>
 <li class="property private "><a href="#property_environment" title="$environment :: The environment SQL array for the current environment."><span class="description">The environment SQL array for the current environment.</span><pre>$environment</pre></a></li>
+<li class="property private "><a href="#property_experiment" title="$experiment :: The experiment SQL entry for any valid experiments found for the given user at this time."><span class="description">The experiment SQL entry for any valid experiments found for the given user at this time.</span><pre>$experiment</pre></a></li>
 <li class="property private "><a href="#property_interface" title="$interface :: The interface SQL array for the current interface."><span class="description">The interface SQL array for the current interface.</span><pre>$interface</pre></a></li>
 <li class="property private "><a href="#property_user_account" title="$user_account :: The user account SQL array for the current user."><span class="description">The user account SQL array for the current user.</span><pre>$user_account</pre></a></li>
-<li class="property private "><a href="#property_widgets" title="$widgets :: The an array of arrays of SQL widget entries."><span class="description">The an array of arrays of SQL widget entries.</span><pre>$widgets</pre></a></li>
+<li class="property private "><a href="#property_widgets" title="$widgets :: The array of arrays of SQL widget entries."><span class="description">The array of arrays of SQL widget entries.</span><pre>$widgets</pre></a></li>
 </ul>
 </li>
 </ul>
@@ -137,6 +141,18 @@ such as widget lists, ROS.JS connections, etc.</p>
 <code>integer</code><p>The ID of the interface to use</p></div>
 </div></div>
 </div>
+<a id="method_authorized"></a><div class="element clickable method public method_authorized" data-toggle="collapse" data-target=".method_authorized .collapse">
+<h2>Checks if the current user is authorized for this interface/environment.</h2>
+<pre>authorized() : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>An authorized user
+is either an admin or a regular user how has a valid experiment session now.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>If the current user is authorized for this interface/environment</div>
+</div></div>
+</div>
 <a id="method_create_head"></a><div class="element clickable method public method_create_head" data-toggle="collapse" data-target=".method_create_head .collapse">
 <h2>Create common parts of the HTML head section.</h2>
 <pre>create_head() </pre>
@@ -144,6 +160,19 @@ such as widget lists, ROS.JS connections, etc.</p>
 <div class="row collapse"><div class="detail-description"><div class="long_description"><p>This includes metadata, common RMS CSS files,
 all widget and RMS Javascript files, and a custom style.css class if it exists in the interface.
 All HTML will be echoed.</p></div></div></div>
+</div>
+<a id="method_create_study_head"></a><div class="element clickable method public method_create_study_head" data-toggle="collapse" data-target=".method_create_study_head .collapse">
+<h2>Create common parts of the HTML head section for a study session.</h2>
+<pre>create_study_head() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"><p>If the current user has a
+valid experiment at this time, this function will create three JavaScript global variables.
+The first, _EXPID, contains the experiment ID number for this user. The second, _TIME, is
+the time remaining in microseconds remaining in their session at the time the page was loaded.
+The final, _END, is the interval ID for the JavaScript time user to indicate the session is over.
+This will go off in _TIME microseconds and will call a function called 'endStudy' if one exists.
+All HTML will be echoed and should be placed in the HEAD section. If no valid experiment is found
+for this user, nothing will be echoed.</p></div></div></div>
 </div>
 <a id="method_get_envid"></a><div class="element clickable method public method_get_envid" data-toggle="collapse" data-target=".method_get_envid .collapse">
 <h2>Get the environment ID for the associated environment.</h2>
@@ -154,6 +183,17 @@ All HTML will be echoed.</p></div></div></div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>integer</code>The environment ID</div>
+</div></div>
+</div>
+<a id="method_get_experiment"></a><div class="element clickable method public method_get_experiment" data-toggle="collapse" data-target=".method_get_experiment .collapse">
+<h2>Get the experiment SQL entry found for the user, or null if none exist.</h2>
+<pre>get_experiment() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>the experiment SQL entry found for the user, or null if none exist</div>
 </div></div>
 </div>
 <a id="method_get_intid"></a><div class="element clickable method public method_get_intid" data-toggle="collapse" data-target=".method_get_intid .collapse">
@@ -209,6 +249,13 @@ HEAD section. All HTML will be echoed.</p></div></div></div>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="property_experiment"> </a><div class="element clickable property private property_experiment" data-toggle="collapse" data-target=".property_experiment .collapse">
+<h2>The experiment SQL entry for any valid experiments found for the given user at this time.</h2>
+<pre>$experiment : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"><p>This
+will be set to null if such an experiment does not exist.</p></div></div></div>
+</div>
 <a id="property_interface"> </a><div class="element clickable property private property_interface" data-toggle="collapse" data-target=".property_interface .collapse">
 <h2>The interface SQL array for the current interface.</h2>
 <pre>$interface : array</pre>
@@ -222,7 +269,7 @@ HEAD section. All HTML will be echoed.</p></div></div></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="property_widgets"> </a><div class="element clickable property private property_widgets" data-toggle="collapse" data-target=".property_widgets .collapse">
-<h2>The an array of arrays of SQL widget entries.</h2>
+<h2>The array of arrays of SQL widget entries.</h2>
 <pre>$widgets : array</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"><p>The first array is indexed by widget name. The
@@ -235,7 +282,7 @@ inner array is indexed only by numbers.</p></div></div></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2012-12-20T13:21:08-05:00.<br></footer></div>
+            generated on 2012-12-20T15:53:01-05:00.<br></footer></div>
 </div>
 </body>
 </html>

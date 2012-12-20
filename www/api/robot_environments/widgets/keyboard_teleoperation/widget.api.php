@@ -19,9 +19,10 @@
  * will need to echo it in the appropriate spot.
  *
  * @param array $teleop The SQL entry for the teleop we are creating (this can be easily found in the interface's robot_environment object)
+ * @param string|null $cb The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (default is null)
  * @return string The HTML to create the widget and the slider
  */
-function create_keyboard_teleop_with_slider($teleop) {
+function create_keyboard_teleop_with_slider($teleop, $cb = null) {
   $result = '
 <div id="speed-label"></div>
 <div id="speed-slider"></div>
@@ -44,8 +45,16 @@ function create_keyboard_teleop_with_slider($teleop) {
 			}
 		});
 		$("#speed-label").html("<h3>Speed: "+($("#speed-slider").slider("value"))+"%</h3>");
-</script>
-';
+		';
+
+  // check the callback
+  if($cb) {
+      $result .= $cb.'(teleop);
+      ';
+  }
+
+  $result .= '</script>
+  ';
 
   return $result;
 }

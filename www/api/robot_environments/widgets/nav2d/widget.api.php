@@ -21,9 +21,11 @@ include_once(dirname(__FILE__).'/../map2d/widget.api.php');
  * @param array $nav2d The SQL entry for the navigation we are creating (this can be easily found in the interface's robot_environment object)
  * @param integer $width The width of the widget
  * @param integer $height The hight of the widget
+ * @param string|null $img The image to use instead of the raw map or null if no image is being used (defual is null)
+ * @param string|null $cb The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (defual is null)
  * @return string The HTML to create the map object
  */
-function create_nav2d($nav2d, $width, $height) {
+function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
   // check the map
   if(!$map2d = get_map_by_id($nav2d['mapid'])) {
     return '<h2>Navigation has invalid map ID.</h2>';
@@ -34,7 +36,7 @@ function create_nav2d($nav2d, $width, $height) {
     $id = time() + rand(0, time());
 
     $result = '
-<canvas id="nav-'.$id.'" width="480" height="360"></canvas>
+<canvas id="nav-'.$id.'" width="'.$width.'" height="'.$height.'"></canvas>
 
 <script type="text/javascript">
 	var nav = new Nav2D({
@@ -43,9 +45,16 @@ function create_nav2d($nav2d, $width, $height) {
 		actionName : \''.$nav2d['action'].'\',
 		mapTopic : \''.$map2d['topic'].'\',
 		canvasID : \'nav-'.$id.'\'
+		'.(($img) ? ', image : \''.$img.'\'' : '' ).'
 	});
-</script>
-';
+  ';
+  // check the callback
+  if($cb) {
+      $result .= $cb.'(nav);
+      ';
+  }
+  $result .= '</script>
+  ';
 
     return $result;
   }

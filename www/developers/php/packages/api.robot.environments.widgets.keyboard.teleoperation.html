@@ -88,7 +88,7 @@
 <i class="icon-custom icon-function"></i> Functions</h3>
 <a id="function_create_keyboard_teleop_with_slider"></a><div class="element clickable function  function_create_keyboard_teleop_with_slider" data-toggle="collapse" data-target=".function_create_keyboard_teleop_with_slider .collapse">
 <h2>Create the HTML and Javascript needed for a keyboard telop widget with an associated speed slider.</h2>
-<pre>create_keyboard_teleop_with_slider(array $teleop) : string</pre>
+<pre>create_keyboard_teleop_with_slider(array $teleop, string | null $cb) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>This creates two divs with IDs of speed-label and speed-slider. Custom CSS can be used to change
@@ -99,6 +99,10 @@ will need to echo it in the appropriate spot.</p></div>
 <div class="subelement argument">
 <h4>$teleop</h4>
 <code>array</code><p>The SQL entry for the teleop we are creating (this can be easily found in the interface's robot_environment object)</p>
+</div>
+<div class="subelement argument">
+<h4>$cb</h4>
+<code>string</code><code>null</code><p>The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (default is null)</p>
 </div>
 <h3>Returns</h3>
 <div class="subelement response">
@@ -111,7 +115,7 @@ will need to echo it in the appropriate spot.</p></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2012-12-20T13:21:08-05:00.<br></footer></div>
+            generated on 2012-12-20T15:53:01-05:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -25,6 +25,8 @@ function generate($re) {
     create_error_page('No Keyboard Teloperation settings found.', $re->get_user_account());
   } else if(!$nav2d = $re->get_widgets_by_name('2D Navigation')) {
     create_error_page('No 2D Navaigation settings found.', $re->get_user_account());
+  } else if(!$re->authorized()) {
+    create_error_page('Invalid experiment for the current user.', $re->get_user_account());
   } else { // here we can spit out the HTML for our interface ?>
 <!DOCTYPE html>
 <html>

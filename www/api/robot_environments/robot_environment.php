@@ -10,10 +10,13 @@
  * @link       http://ros.org/wiki/rms
  */
 
+include_once(dirname(__FILE__).'/../api.inc.php');
 include_once(dirname(__FILE__).'/../config/javascript_files/javascript_files.inc.php');
 include_once(dirname(__FILE__).'/../users/user_accounts/user_accounts.inc.php');
+include_once(dirname(__FILE__).'/../user_studies/experiments/experiments.inc.php');
 include_once(dirname(__FILE__).'/environments/environments.inc.php');
 include_once(dirname(__FILE__).'/interfaces/interfaces.inc.php');
+include_once(dirname(__FILE__).'/../../inc/config.inc.php');
 include_once(dirname(__FILE__).'/../../inc/content.inc.php');
 include_once(dirname(__FILE__).'/../../inc/head.inc.php');
 
@@ -47,11 +50,18 @@ class robot_environment {
   private $interface;
 
   /**
-   * The an array of arrays of SQL widget entries. The first array is indexed by widget name. The
+   * The array of arrays of SQL widget entries. The first array is indexed by widget name. The
    * inner array is indexed only by numbers.
    * @var array
    */
   private $widgets;
+
+  /**
+   * The experiment SQL entry for any valid experiments found for the given user at this time. This
+   * will be set to null if such an experiment does not exist.
+   * @var array|null
+   */
+  private $experiment;
 
   /**
    * Creates a robot_environment using the given information.
@@ -65,11 +75,14 @@ class robot_environment {
     $this->environment = get_environment_by_id($envid);
     $this->interface = get_interface_by_id($intid);
 
+    // check for an experiment
+    $this->experiment = get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid);
+
     // generate the widget list
     $this->widgets = array();
     $all = get_widgets();
     foreach ($all as $cur) {
-      if($cur_all = get_widget_instances_by_widgetid($cur['widgetid'])) {
+      if($cur_all = get_widget_instances_by_widgetid_and_envid($cur['widgetid'], $envid)) {
         $this->widgets[$cur['name']] = $cur_all;
 
         // include all of the widget scripts
@@ -119,6 +132,25 @@ class robot_environment {
   }
 
   /**
+   * Get the experiment SQL entry found for the user, or null if none exist.
+   *
+   * @return array the experiment SQL entry found for the user, or null if none exist
+   */
+  function get_experiment() {
+    return $this->experiment;
+  }
+
+  /**
+   * Checks if the current user is authorized for this interface/environment. An authorized user
+   * is either an admin or a regular user how has a valid experiment session now.
+   *
+   * @return boolean If the current user is authorized for this interface/environment
+   */
+  function authorized() {
+    return $this->user_account['type'] === 'admin' || $this->experiment;
+  }
+
+  /**
    * Create common parts of the HTML head section. This includes metadata, common RMS CSS files,
    * all widget and RMS Javascript files, and a custom style.css class if it exists in the interface.
    * All HTML will be echoed.
@@ -141,6 +173,42 @@ class robot_environment {
     $js = get_javascript_files();
     foreach ($js as $file) {
       echo '<script type="text/javascript" src="'.$path.$file['path'].'"></script>
+      ';
+    }
+    // get the study script
+    echo '<script type="text/javascript" src="'.$path.'js/rms/study.js"></script>';
+  }
+
+  /**
+   * Create common parts of the HTML head section for a study session. If the current user has a
+   * valid experiment at this time, this function will create three JavaScript global variables.
+   * The first, _EXPID, contains the experiment ID number for this user. The second, _TIME, is
+   * the time remaining in microseconds remaining in their session at the time the page was loaded.
+   * The final, _END, is the interval ID for the JavaScript time user to indicate the session is over.
+   * This will go off in _TIME microseconds and will call a function called 'endStudy' if one exists.
+   * All HTML will be echoed and should be placed in the HEAD section. If no valid experiment is found
+   * for this user, nothing will be echoed.
+   */
+  function create_study_head() {
+    global $db;
+
+    // check for an experiment
+    if($this->experiment) {
+      // get the time difference
+      $sql = sprintf("SELECT UNIX_TIMESTAMP('%s') - UNIX_TIMESTAMP('%s') AS time"
+      , $db->real_escape_string($this->experiment['end']), $db->real_escape_string(get_current_timestamp()));
+      $diff = mysqli_fetch_array(mysqli_query($db, $sql));
+
+      echo '
+      <script type="text/javascript">
+        _EXPID = '.$this->experiment['expid'].';
+        _TIME = '.($diff['time']*1000).';
+        _END = setInterval(function() {
+          if(typeof endStudy == \'function\') {
+            endStudy();
+          }
+         }, _TIME);
+      </script>
       ';
     }
   }

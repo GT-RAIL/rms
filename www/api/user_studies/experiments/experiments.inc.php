@@ -14,6 +14,7 @@
  */
 
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
+include_once(dirname(__FILE__).'/../conditions/conditions.inc.php');
 
 /**
  * Get an array of all experiment entires in the database or null if none exist.
@@ -65,5 +66,36 @@ function get_experiments_by_userid($userid) {
   }
 
   return (count($result) === 0) ? null : $result;
+}
+
+/**
+ * Get the experiment for the given user with the given interface and environment. A valid experiment
+ * means that this call is made during their allocated timeslot.
+ *
+ * @param integer $intid The interface ID number
+ * @param integer $userid The user ID number
+ * @param integer $envid The environment ID number
+ * @return array|null The valid experiment found or null if none exist
+ */
+function get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid) {
+  global $db;
+
+  // grab the experiments within the current time
+  $timestamp = $db->real_escape_string(get_current_timestamp());
+  $sql = sprintf("SELECT * FROM `experiments` WHERE (`userid`='%d' AND `end`>'%s' AND `start`<'%s')"
+  , $db->real_escape_string($userid), $timestamp, $timestamp);
+  $query = mysqli_query($db, $sql);
+  while($cur = mysqli_fetch_assoc($query)) {
+    // check the fields
+    if($cur['envid'] === $envid
+    && ($condition = get_condition_by_id($cur['condid']))
+    && $condition['intid'] === $intid) {
+      // found a match
+      return $cur;
+    }
+  }
+
+  // none found
+  return null;
 }
 ?>
