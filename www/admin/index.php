@@ -347,7 +347,8 @@ if($session_user['type'] !== 'admin') {
             putFile.field = $(this).attr('name');
             putFile.file = file;
           }
-        } else if($(this).attr('type') !== 'submit' && $(this).attr('name') !== 'password-confirm') {
+        } else if($(this).attr('type') !== 'submit' && $(this).attr('name') !== 'password-confirm'
+          && $(this).attr('name') !== 'js-dummy') {
           if($(this).attr('name') === 'id') {
             ajaxType = 'PUT';
           }

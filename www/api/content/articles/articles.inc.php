@@ -8,13 +8,25 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 20 2012
+ * @version    December, 20 2012
  * @package    api.content.articles
  * @link       http://ros.org/wiki/rms
  */
 
 include_once(dirname(__FILE__).'/../content_pages/content_pages.inc.php');
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
+
+/**
+ * Check if the given array has all of the necessary fields to create an article.
+ *
+ * @param array $array The array to check
+ * @return boolean If the given array has all of the necessary fields to create a new article
+ */
+function valid_article_fields($array) {
+  return isset($array['title']) && isset($array['content']) && isset($array['pageid'])
+  && isset($array['index']) && (count($array) === 4);
+}
+
 
 /**
  * Get all content article entries in the database or null if none exist.
@@ -49,6 +61,31 @@ function get_article_by_id($id) {
 }
 
 /**
+ * Get the content article array for the article with the given title on the given page, or null if
+ * none exist.
+ *
+ * @param string $title The article title
+ * @param integer $pageid The page ID number
+ * @return array|null An array of the article's SQL entry or null if none exist
+ */
+function get_article_by_title_and_pageid($title, $pageid) {
+  global $db;
+
+  // get all the articles on that page
+  if($articles = get_articles_by_pageid($pageid)) {
+    // now check all of them
+    foreach ($articles as $a) {
+      if($a['title'] === $title) {
+        return $a;
+      }
+    }
+  }
+
+  // none found
+  return null;
+}
+
+/**
  * Get all content articles for the page with the given ID, or null if none exist.
  *
  * @param integer $pageid The page ID number
@@ -60,13 +97,142 @@ function get_articles_by_pageid($pageid) {
   // grab the articles and push them into an array
   $result = array();
   $sql = sprintf("SELECT * FROM `articles` WHERE `pageid`='%d' ORDER BY `index`"
-                 , $db->real_escape_string($pageid));
+  , $db->real_escape_string($pageid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
   return (count($result) === 0) ? null : $result;
+}
+
+/**
+ * Create an article with the given information. Any errors are returned.
+ *
+ * @param string $title The title of the article
+ * @param string $content The HTML of the article's content
+ * @param integer $pageid The ID number of the page this article belongs to
+ * @param integer $index The index on the page for this article
+ * @return string|null An error message or null if the create was sucessful
+ */
+function create_article($title, $content, $pageid, $index) {
+  global $db;
+
+  // check if the page ID is valid
+  if(!get_content_page_by_id($pageid)) {
+    return 'ERROR: Content page with ID '.$pageid.' does not exist.';
+  } else if(get_article_by_title_and_pageid($title, $pageid)) {
+    // make sure it does not already exist
+    return 'ERROR: Article page with title '.$title.' already exists on page ID '.$pageid.'.';
+  }
+
+  // insert into the database
+  $sql = sprintf("INSERT INTO `articles` (`title`, `content`, `pageid`, `index`) VALUES ('%s', '%s', '%d', '%d')"
+  , $db->real_escape_string($title), $db->real_escape_string($content), $db->real_escape_string($pageid)
+  , $db->real_escape_string($index));
+  mysqli_query($db, $sql);
+
+  // no error
+  return null;
+}
+
+/**
+ * Update an article with the given information inside of the array. The array should be indexed
+ * by the SQL column names. The ID field must be contained inside of the array with the index 'id'.
+ * Any errors are returned.
+ *
+ * @param array $fields the fields to update including the article ID number
+ * @return string|null an error message or null if the update was sucessful
+ */
+function update_article($fields) {
+  global $db;
+
+  if(!isset($fields['id'])) {
+    return 'ERROR: ID field missing in update.';
+  }
+
+  // build the SQL string
+  $sql = "";
+  $num_fields = 0;
+  // check for the user
+  if(!($article = get_article_by_id($fields['id']))) {
+    return 'ERROR: Article page ID '.$fields['id'].' does not exist.';
+  }
+
+  // check if we are changing the id
+  $id_to_set = $article['artid'];
+  if(isset($fields['artid'])) {
+    $num_fields++;
+    if($fields['artid'] !== $article['artid'] && get_article_by_id($fields['artid'])) {
+      return 'ERROR: Article ID '.$fields['artid'].' already exists';
+    } else {
+      $id_to_set = $fields['artid'];
+    }
+  }
+  $sql .= sprintf(" `artid`='%d'", $db->real_escape_string($id_to_set));
+
+  // check for each update
+  if(isset($fields['pageid'])) {
+    $num_fields++;
+    if(!get_content_page_by_id($fields['pageid'])) {
+      return 'ERROR: Content page ID "'.$fields['pageid'].'" does not exist.';
+    }
+    $sql .= sprintf(", `pageid`='%d'", $db->real_escape_string($fields['pageid']));
+  }
+  if(isset($fields['title'])) {
+    $num_fields++;
+    // check if we changed pages or if the article name exists on the same page already
+    if((isset($fields['pageid']) && $fields['pageid'] !== $article['pageid'] && get_article_by_title_and_pageid($fields['title'], $fields['pageid']))
+    || ($fields['title'] !== $article['title'] && get_article_by_title_and_pageid($fields['title'], $article['pageid']))) {
+      return 'ERROR: Article page with title '.$fields['title'].' already exists.';
+    }
+    $sql .= sprintf(", `title`='%s'", $db->real_escape_string($fields['title']));
+  }
+  if(isset($fields['content'])) {
+    $num_fields++;
+    $sql .= sprintf(", `content`='%s'", $db->real_escape_string($fields['content']));
+  }
+  if(isset($fields['index'])) {
+    $num_fields++;
+    $sql .= sprintf(", `index`='%d'", $db->real_escape_string($fields['index']));
+  }
+
+  // check to see if there were too many fields or if we do not need to update
+  if($num_fields !== (count($fields) - 1)) {
+    return 'ERROR: Too many fields given.';
+  } else if ($num_fields === 0) {
+    // nothing to update
+    return null;
+  }
+
+  // we can now run the update
+  $sql = sprintf("UPDATE `articles` SET ".$sql." WHERE `artid`='%d'"
+  , $db->real_escape_string($fields['id']));
+  mysqli_query($db, $sql);
+
+  // no error
+  return null;
+}
+
+/**
+ * Delete the article array for the article with the given ID. Any errors are returned.
+ *
+ * @param integer $id The article ID number
+ * @return string|null an error message or null if the delete was sucessful
+ */
+function delete_article_by_id($id) {
+  global $db;
+
+  // see if the article exists
+  if(get_article_by_id($id)) {
+    // delete it
+    $sql = sprintf("DELETE FROM `articles` WHERE `artid`='%d'", $db->real_escape_string($id));
+    mysqli_query($db, $sql);
+    // no error
+    return null;
+  } else {
+    return 'ERROR: Article ID '.$id.' does not exist';
+  }
 }
 
 /**
@@ -160,7 +326,7 @@ function get_article_editor_html($id) {
       $result .= '<option value="'.$curpage['pageid'].'">'.$curpage['pageid'].': '.$curpage['title'].'</option>';
     }
   }
- $result .= '  </select>
+  $result .= '  </select>
              </li>
              <li>
                <label for="index">Index</label>

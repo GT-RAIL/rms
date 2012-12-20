@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 13 2012
+ * @version    December, 20 2012
  * @package    api.content.slides
  * @link       http://ros.org/wiki/rms
  */
