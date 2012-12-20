@@ -177,4 +177,141 @@ $designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell
   // everything went fine, no errors
   return false;
 }
+
+/**
+ * Update the site settings with the given information inside of the array. Any errors are returned.
+ *
+ * @return string|null an error message or null if the update was sucessful
+ */
+function update_site_settings($fields) {
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright;
+
+  // check the fields
+  $num_fields = 0;
+  if(isset($fields['host'])) {
+    $num_fields++;
+    $new_dbhost = $fields['host'];
+  } else {
+    $new_dbhost = $dbhost;
+  }
+  if(isset($fields['db'])) {
+    $num_fields++;
+    $new_dbname = $fields['db'];
+  } else {
+    $new_dbname = $dbname;
+  }
+  if(isset($fields['dbuser'])) {
+    $num_fields++;
+    $new_dbuser = $fields['dbuser'];
+  } else {
+    $new_dbuser = $dbuser;
+  }
+  if(isset($fields['password'])) {
+    $num_fields++;
+    $new_dbpass = $fields['password'];
+  } else {
+    $new_dbpass = $dbpass;
+  }
+  if(isset($fields['site-name'])) {
+    $num_fields++;
+    $new_title = $fields['site-name'];
+  } else {
+    $new_title = $title;
+  }
+  if(isset($fields['google'])) {
+    $num_fields++;
+    $new_google = $fields['google'];
+  } else {
+    $new_google = $google_tracking_id;
+  }
+  if(isset($fields['copyright'])) {
+    $num_fields++;
+    $new_copyright= $fields['copyright'];
+  } else {
+    $new_copyright = $copyright;
+  }
+
+  // check to see if there were too many fields or if we do not need to update
+  if($num_fields !== count($fields)) {
+    return 'ERROR: Too many fields given.';
+  } else if ($num_fields === 0) {
+    // nothing to update
+    return null;
+  }
+
+  // cleanup the old file
+  if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
+    unlink(dirname(__FILE__).'/../../inc/config.inc.php');
+  }
+  // we can now run the update
+  if($error =  create_config_inc($new_dbhost, $new_dbuser, $new_dbpass, $new_dbname, $new_title, $new_google, $new_copyright)) {
+    return $error;
+  } else {
+    // no error
+    return null;
+  }
+}
+
+/**
+ * Get the HTML for an editor used to edit site wide settings.
+ *
+ * @return string A string containing the HTML of the editor
+ */
+function get_site_settings_editor_html() {
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright, $PASSWORD_HOLDER;
+
+  $result = '<p>Complete the following form to edit the site settings.</p>
+             <form action="javascript:submit();"><fieldset>
+               <h3>MySQL Database Information</h3>
+               <ol>
+                 <li>
+                  <label for="host">Database Host</label>
+                  <input type="text" name="host" id="host" value="'.$dbhost.'"
+                   placeholder="e.g., localhost" required />
+                </li>
+                <li>
+                  <label for="db">Database Name</label>
+                  <input type="text" name="db" id="db" value="'.$dbname.'"
+                   placeholder="e.g., my_remote_lab" required />
+                </li>
+                <li>
+                  <label for="dbuser">Database Username</label>
+                  <input type="text" name="dbuser" id="dbuser" value="'.$dbuser.'"
+                   placeholder="username" required />
+              </li>
+              <li>
+                <label for="password">Database Password</label>
+                <input type="password" name="password" id="password" value="'.$PASSWORD_HOLDER.'"
+                 placeholder="Password" required />
+                <label for="password-confirm">Confirm Database Password</label>
+                <input type="password" name="password-confirm" id="password-confirm"
+                 value="'.$PASSWORD_HOLDER.'" placeholder="Confirm Password" required />
+              </li>
+            </ol>
+          </fieldset>
+          <fieldset>
+            <br />
+            <h3>Site Information</h3>
+            <ol>
+              <li>
+                <label for="site-name">Site Name</label>
+                <input type="text" name="site-name" id="site-name" value="'.$title.'"
+                 placeholder="e.g., My Awesome Title" required />
+              </li>
+              <li>
+                <label for="google">Google Analytics (optional)</label>
+                <input type="text" name="google" id="google" value="'.$google_tracking_id.'"
+                 placeholder="(optional)" />
+              </li>
+              <li><label for="copyright">Copyright Message</label>
+              <input type="text" name="copyright" id="copyright" value="'.substr($copyright, 6).'"
+               placeholder="e.g., 2012 My Robot College" required />
+              </li>
+            </ol>
+          </fieldset>
+        <input type="submit" value="Submit" />
+      </form>';
+
+  return $result;
+}
 ?>

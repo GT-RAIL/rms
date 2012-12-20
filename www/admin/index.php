@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 7 2012
+ * @version    December, 20 2012
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -88,6 +88,8 @@ if($session_user['type'] !== 'admin') {
         return '../api/content/content_pages/';
       } else if(name === 'articles') {
         return '../api/content/articles/';
+      } else if(name === 'settings') {
+        return '../api/config/';
       } else {
         return 'UNKNOWN';
       }
@@ -381,6 +383,11 @@ if($session_user['type'] !== 'admin') {
         var id = script.substring(script.indexOf('=') + 1);
         putString += '&widgetid=' + id;
         formData.append('widgetid', id);
+      }
+
+      // special case -- site settings editor
+      if(finalScript === '../api/config/') {
+        ajaxType = 'PUT';
       }
 
       // check if this is a POST or PUT
@@ -993,10 +1000,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="5"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="create-new" id="add-slides"
-                          name="slides">Add Slide</button>
-                      </div>
+                      <button class="create-new" id="add-slides"
+                        name="slides">Add Slide</button>
                     </td>
                   </tr>
                 </table>
@@ -1065,10 +1070,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="6"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="create-new" id="add-pages"
-                          name="pages">Add Page</button>
-                      </div>
+                      <button class="create-new" id="add-pages"
+                        name="pages">Add Page</button>
                     </td>
                   </tr>
                 </table>
@@ -1140,10 +1143,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="6"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="create-new" id="add-articles"
-                          name="articles">Add Article</button>
-                      </div>
+                      <button class="create-new" id="add-articles"
+                        name="articles">Add Article</button>
                     </td>
                   </tr>
                 </table>
@@ -1203,10 +1204,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="3"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="add-site">Edit
-                          Settings</button>
-                      </div>
+                      <button class=create-new id="add-site"
+                        name="settings">Edit Settings</button>
                     </td>
                   </tr>
                 </table>
@@ -1264,10 +1263,8 @@ if($session_user['type'] !== 'admin') {
                   <tr>
                     <td colspan="3"></td>
                     <td class="add-cell">
-                      <div class="add">
-                        <button class="editor" id="update-db"
-                        <?php echo $disable?>>Run Database Update</button>
-                      </div>
+                      <button class="editor" id="update-db"
+                      <?php echo $disable?>>Run Database Update</button>
                     </td>
                   </tr>
                 </table>

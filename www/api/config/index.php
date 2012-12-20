@@ -10,7 +10,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 6 2012
+ * @version    December, 20 2012
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -74,16 +74,54 @@ if(!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
 } else {
   // load the normal include files
   include_once(dirname(__FILE__).'/../../inc/config.inc.php');
+  include_once(dirname(__FILE__).'/logs/logs.inc.php');
   include_once(dirname(__FILE__).'/../users/user_accounts/user_accounts.inc.php');
 
   if($auth = authenticate()) {
     // only admins can use this script
     if($auth['type'] === 'admin') {
-      $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+      switch ($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+          if(isset($_GET['request'])) {
+            switch ($_GET['request']) {
+              // check for the editor request
+              case 'editor':
+                if(count($_GET) === 1) {
+                  $result = create_200_state(get_site_settings_editor_html());
+                } else {
+                  $result = create_404_state('Too many fields provided.');
+                }
+                break;
+              default:
+                $result = create_404_state($_GET['request'].' request type is invalid.');
+                break;
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
+        case 'PUT':
+          if(count($_PUT) > 0) {
+            if($error = update_site_settings($_PUT)) {
+              $result = create_404_state($error);
+            } else {
+              write_to_log('SYSTEM: '.$auth['username'].' modified the site settings.');
+              $result = create_200_state(get_current_timestamp());
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
+        default:
+          $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+          break;
+      }
+
     } else {
+      write_to_log('SECURITY: '.$auth['username'].' attempted to use the config script.');
       $result = create_401_state();
     }
-  }else {
+  } else {
     $result = create_401_state();
   }
 }
