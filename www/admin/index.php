@@ -172,7 +172,7 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
       });
       confirm.html('<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>Are you sure you want to delete the selected item? This <b>cannot</b> be reversed.</p>');
       // load the popup
-      $('#confirm-delete-popup').dialog("open");
+      $('#confirm-delete-popup').dialog('open');
     });
 
     // create the add icon buttons
@@ -1387,5 +1387,4 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
   <div id="confirm-delete-popup" title="Delete?"></div>
   <div id="editor-popup" title="Editor"></div>
   <div id="preview-popup" title="Content Preview"></div>
-
 </html>
