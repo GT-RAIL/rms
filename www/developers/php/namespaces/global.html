@@ -86,11 +86,12 @@ header is used to authenticate.</p></div>
 </div>
 <a id="function_cleanse"></a><div class="element clickable function  function_cleanse" data-toggle="collapse" data-target=".function_cleanse .collapse">
 <h2>Cleanse the given input string for use in an SQL query.</h2>
-<pre>cleanse(string $input, boolean $html) : string</pre>
+<pre>cleanse(string $input, boolean $html, boolean $sprintf) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>This will perform things such as escape
-character checks and HTML scrubbing (if enabled).</p></div>
+character checks and HTML scrubbing (if enabled). By default, the string is formated for use in an
+sprintf function (i.e., percetange signs are esacped by '%%').</p></div>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$input</h4>
@@ -99,6 +100,9 @@ character checks and HTML scrubbing (if enabled).</p></div>
 <h4>$html</h4>
 <code>boolean</code><p>If HTML scrubbing (conversion to HTML entities) should be performed (default = true)</p>
 </div>
+<div class="subelement argument">
+<h4>$sprintf</h4>
+<code>boolean</code><p>If percentage signs should be esacped for use in a sprintf function</p></div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code>The cleansed string</div>
@@ -2254,7 +2258,7 @@ such as widget lists, ROS.JS connections, etc.</p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2012-12-28T10:40:56-05:00.<br></footer></div>
+            generated on 2012-12-28T10:49:32-05:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -307,7 +307,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/api.inc.php" hash="661d69d881504b1f87573666abe51e42" package="api">
+  <file path="api/api.inc.php" hash="8120edf38b645e3ec4bc5bd1defa2a7c" package="api">
     <docblock line="2">
       <description><![CDATA[Common include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>A set of useful functions used within the RMS API.</p>]]></long-description>
@@ -318,123 +318,132 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <tag line="2" name="package" description="api"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
-    <function namespace="global" line="46" package="api">
+    <function namespace="global" line="48" package="api">
       <name>cleanse</name>
       <full_name>\cleanse</full_name>
       <docblock line="38">
         <description><![CDATA[Cleanse the given input string for use in an SQL query.]]></description>
         <long-description><![CDATA[<p>This will perform things such as escape
-character checks and HTML scrubbing (if enabled).</p>]]></long-description>
+character checks and HTML scrubbing (if enabled). By default, the string is formated for use in an
+sprintf function (i.e., percetange signs are esacped by '%%').</p>]]></long-description>
         <tag line="38" name="param" description="The input string to cleanse" type="string" variable="$input">
           <type by_reference="false">string</type>
         </tag>
         <tag line="38" name="param" description="If HTML scrubbing (conversion to HTML entities) should be performed (default = true)" type="boolean" variable="$html">
           <type by_reference="false">boolean</type>
         </tag>
+        <tag line="38" name="param" description="If percentage signs should be esacped for use in a sprintf function" type="boolean" variable="$sprintf">
+          <type by_reference="false">boolean</type>
+        </tag>
         <tag line="38" name="return" description="The cleansed string" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="46">
+      <argument line="48">
         <name>$input</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="46">
+      <argument line="48">
         <name>$html</name>
         <default><![CDATA[true]]></default>
         <type/>
       </argument>
+      <argument line="48">
+        <name>$sprintf</name>
+        <default><![CDATA[true]]></default>
+        <type/>
+      </argument>
     </function>
-    <function namespace="global" line="73" package="api">
+    <function namespace="global" line="78" package="api">
       <name>create_404_state</name>
       <full_name>\create_404_state</full_name>
-      <docblock line="65">
+      <docblock line="70">
         <description><![CDATA[Creates a default 404 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'false' in the 'ok' element, the given
 error message in the 'msg' element, and null in the 'data' element. The header is also
 changed to the 404 state.</p>]]></long-description>
-        <tag line="65" name="param" description="The message to put in the array" type="string" variable="$msg">
+        <tag line="70" name="param" description="The message to put in the array" type="string" variable="$msg">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="65" name="return" description="The filled array" type="array">
+        <tag line="70" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="73">
+      <argument line="78">
         <name>$msg</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="91" package="api">
+    <function namespace="global" line="96" package="api">
       <name>create_401_state</name>
       <full_name>\create_401_state</full_name>
-      <docblock line="84">
+      <docblock line="89">
         <description><![CDATA[Creates a default 401 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'false' in the 'ok' element,
 'Insufficient authorization.' in the 'msg' element, and null in the 'data' element. The header is
 also changed to the 401 state.</p>]]></long-description>
-        <tag line="84" name="return" description="The filled array" type="array">
+        <tag line="89" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="110" package="api">
+    <function namespace="global" line="115" package="api">
       <name>create_200_state</name>
       <full_name>\create_200_state</full_name>
-      <docblock line="102">
+      <docblock line="107">
         <description><![CDATA[Creates a default 200 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'true' in the 'ok' element,
 'Success.' in the 'msg' element, and $data in the 'data' element. The header is also changed to
 the 200 state.</p>]]></long-description>
-        <tag line="102" name="param" description="The data to place in the 'data' element of the array" type="object" variable="$data">
+        <tag line="107" name="param" description="The data to place in the 'data' element of the array" type="object" variable="$data">
           <type by_reference="false">object</type>
         </tag>
-        <tag line="102" name="return" description="The filled array" type="array">
+        <tag line="107" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="110">
+      <argument line="115">
         <name>$data</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="128" package="api">
+    <function namespace="global" line="133" package="api">
       <name>get_enum_types</name>
       <full_name>\get_enum_types</full_name>
-      <docblock line="121">
+      <docblock line="126">
         <description><![CDATA[Get the enum types for the given column in the given table in an array.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="121" name="param" description="the name of the MySQL table" type="string" variable="$table">
+        <tag line="126" name="param" description="the name of the MySQL table" type="string" variable="$table">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="121" name="param" description="the column name inside of the given table" type="string" variable="$column">
+        <tag line="126" name="param" description="the column name inside of the given table" type="string" variable="$column">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="121" name="return" description="An array containing the enum types for the given column in the given table" type="array">
+        <tag line="126" name="return" description="An array containing the enum types for the given column in the given table" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="128">
+      <argument line="133">
         <name>$table</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="128">
+      <argument line="133">
         <name>$column</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="143" package="api">
+    <function namespace="global" line="148" package="api">
       <name>get_current_timestamp</name>
       <full_name>\get_current_timestamp</full_name>
-      <docblock line="138">
+      <docblock line="143">
         <description><![CDATA[Get the current timestamp from the MySQL server.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="138" name="return" description="The current timestamp from the MySQL server" type="string">
+        <tag line="143" name="return" description="The current timestamp from the MySQL server" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
