@@ -78,7 +78,7 @@ function get_widgets() {
 function get_widget_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `widgets` WHERE `widgetid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `widgets` WHERE `widgetid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -94,7 +94,7 @@ function get_widget_table_columns_by_id($id) {
   // check the widget
   if($w = get_widget_by_id($id)) {
     $columns = array();
-    $sql = sprintf("SHOW COLUMNS FROM `%s`", $db->real_escape_string($w['table']));
+    $sql = sprintf("SHOW COLUMNS FROM `%s`", cleanse($w['table']));
     $query = mysqli_query($db, $sql);
     // fill the array
     while($cur = mysqli_fetch_array($query)) {
@@ -120,7 +120,7 @@ function get_widget_instances_by_widgetid($widgetid) {
   if($w = get_widget_by_id($widgetid)) {
     // grab the entries and push them into an array
     $result = array();
-    $sql = sprintf("SELECT * FROM `%s`", $db->real_escape_string($w['table']));
+    $sql = sprintf("SELECT * FROM `%s`", cleanse($w['table']));
     $query = mysqli_query($db, $sql);
     while($cur = mysqli_fetch_assoc($query)) {
       $result[] = $cur;
@@ -146,8 +146,8 @@ function get_widget_instances_by_widgetid_and_envid($widgetid, $envid) {
   if($w = get_widget_by_id($widgetid)) {
     // grab the entries and push them into an array
     $result = array();
-    $sql = sprintf("SELECT * FROM `%s` WHERE `envid`='%d'", $db->real_escape_string($w['table'])
-    , $db->real_escape_string($envid));
+    $sql = sprintf("SELECT * FROM `%s` WHERE `envid`='%d'", cleanse($w['table'])
+    , cleanse($envid));
     $query = mysqli_query($db, $sql);
     while($cur = mysqli_fetch_assoc($query)) {
       $result[] = $cur;
@@ -173,8 +173,8 @@ function get_widget_instance_by_widgetid_and_id($widgetid, $id) {
   if($w = get_widget_by_id($widgetid)) {
     // return what we find
     $result = array();
-    $sql = sprintf("SELECT * FROM `%s` WHERE `id`='%d'", $db->real_escape_string($w['table']),
-    $db->real_escape_string($id));
+    $sql = sprintf("SELECT * FROM `%s` WHERE `id`='%d'", cleanse($w['table']),
+    cleanse($id));
     return  mysqli_fetch_assoc(mysqli_query($db, $sql));
   }
 
@@ -191,7 +191,7 @@ function get_widget_instance_by_widgetid_and_id($widgetid, $id) {
 function get_widget_by_script($script) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `widgets` WHERE `script`='%s'", $db->real_escape_string($script));
+  $sql = sprintf("SELECT * FROM `widgets` WHERE `script`='%s'", cleanse($script));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -204,7 +204,7 @@ function get_widget_by_script($script) {
 function get_widget_by_table($table) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `widgets` WHERE `table`='%s'", $db->real_escape_string($table));
+  $sql = sprintf("SELECT * FROM `widgets` WHERE `table`='%s'", cleanse($table));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -235,7 +235,7 @@ function create_widget($name, $table, $script) {
         if($script === $s) {
           // insert into the database
           $sql = sprintf("INSERT INTO `widgets` (`name`, `table`, `script`) VALUES ('%s', '%s', '%s')",
-          $db->real_escape_string($name), $db->real_escape_string($table), $db->real_escape_string($script));
+          cleanse($name), cleanse($table), cleanse($script));
           mysqli_query($db, $sql);
 
           // no error
@@ -263,7 +263,7 @@ function create_widget_instance($entries) {
   // check the widget
   if($widget = get_widget_by_id($entries['widgetid'])) {
     // create the insertion string
-    $sql = sprintf("INSERT INTO `%s` (", $db->real_escape_string($widget['table']));
+    $sql = sprintf("INSERT INTO `%s` (", cleanse($widget['table']));
     $insert = "";
     $values = "";
     $fields = get_widget_table_columns_by_id($entries['widgetid']);
@@ -273,8 +273,8 @@ function create_widget_instance($entries) {
         return 'ERROR: Environment ID '.$entries[$f].' does not exist';
       }
       if($f !== 'id') {
-        $insert .= sprintf("`%s`, ", $db->real_escape_string($f));
-        $values .= sprintf("'%s', ", $db->real_escape_string($entries[$f]));
+        $insert .= sprintf("`%s`, ", cleanse($f));
+        $values .= sprintf("'%s', ", cleanse($entries[$f]));
       }
     }
     // ignore the last ', '
@@ -322,12 +322,12 @@ function update_widget($fields) {
       $id_to_set = $fields['widgetid'];
     }
   }
-  $sql .= sprintf(" `widgetid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `widgetid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['name'])) {
     $num_fields++;
-    $sql .= sprintf(", `name`='%s'", $db->real_escape_string($fields['name']));
+    $sql .= sprintf(", `name`='%s'", cleanse($fields['name']));
   }
   if(isset($fields['table'])) {
     $num_fields++;
@@ -347,7 +347,7 @@ function update_widget($fields) {
         }
       }
     }
-    $sql .= sprintf(", `table`='%s'", $db->real_escape_string($fields['table']));
+    $sql .= sprintf(", `table`='%s'", cleanse($fields['table']));
   }
   if(isset($fields['script'])) {
     $num_fields++;
@@ -367,7 +367,7 @@ function update_widget($fields) {
         }
       }
     }
-    $sql .= sprintf(", `script`='%s'", $db->real_escape_string($fields['script']));
+    $sql .= sprintf(", `script`='%s'", cleanse($fields['script']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -380,7 +380,7 @@ function update_widget($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `widgets` SET ".$sql." WHERE `widgetid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -425,7 +425,7 @@ function update_widget_instance($fields) {
       $id_to_set = $fields['id'];
     }
   }
-  $sql .= sprintf(" `id`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `id`='%d'", cleanse($id_to_set));
 
   // check for each update
   $columns = get_widget_table_columns_by_id($fields['widgetid']);
@@ -436,7 +436,7 @@ function update_widget_instance($fields) {
         return 'ERROR: Environment ID '.$fields[$c].' does not exist';
       }
       $num_fields++;
-      $sql .= sprintf(", `%s`='%s'", $db->real_escape_string($c), $db->real_escape_string($fields[$c]));
+      $sql .= sprintf(", `%s`='%s'", cleanse($c), cleanse($fields[$c]));
     }
   }
 
@@ -449,8 +449,8 @@ function update_widget_instance($fields) {
   }
 
   // we can now run the update
-  $sql = sprintf("UPDATE `%s` SET ".$sql." WHERE `id`='%d'", $db->real_escape_string($widget['table'])
-  , $db->real_escape_string($fields['id']));
+  $sql = sprintf("UPDATE `%s` SET ".$sql." WHERE `id`='%d'", cleanse($widget['table'])
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -469,7 +469,7 @@ function delete_widget_by_id($id) {
   // see if the widget exists
   if(get_widget_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `widgets` WHERE `widgetid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `widgets` WHERE `widgetid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;
@@ -494,8 +494,8 @@ function delete_widget_instance_by_widgetid_and_id($widgetid, $id) {
     $table = $widget['table'];
     if(get_widget_instance_by_widgetid_and_id($widgetid, $id)) {
       // delete it
-      $sql = sprintf("DELETE FROM `%s` WHERE `id`='%d'", $db->real_escape_string($widget['table']),
-      $db->real_escape_string($id));
+      $sql = sprintf("DELETE FROM `%s` WHERE `id`='%d'", cleanse($widget['table']),
+      cleanse($id));
       mysqli_query($db, $sql);
       // no error
       return null;
@@ -540,7 +540,7 @@ function get_unused_widget_tables() {
   $valid = array();
   $query = mysqli_query($db, "SHOW TABLES");
   while($table = mysqli_fetch_array($query)) {
-    $sql = sprintf("SHOW COLUMNS FROM `%s`", $db->real_escape_string($table[0]));
+    $sql = sprintf("SHOW COLUMNS FROM `%s`", cleanse($table[0]));
     $field_query = mysqli_query($db, $sql);
     $found_envid = false;
     $found_label = false;

@@ -44,7 +44,7 @@ function get_experiment_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `experiments` WHERE `expid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `experiments` WHERE `expid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -59,7 +59,7 @@ function get_experiments_by_userid($userid) {
 
   // grab the javascript entries and push them into an array
   $result = array();
-  $sql = sprintf("SELECT * FROM `experiments` WHERE `userid`='%d'", $db->real_escape_string($userid));
+  $sql = sprintf("SELECT * FROM `experiments` WHERE `userid`='%d'", cleanse($userid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
@@ -81,9 +81,9 @@ function get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid)
   global $db;
 
   // grab the experiments within the current time
-  $timestamp = $db->real_escape_string(get_current_timestamp());
+  $timestamp = cleanse(get_current_timestamp());
   $sql = sprintf("SELECT * FROM `experiments` WHERE (`userid`='%d' AND `end`>'%s' AND `start`<'%s')"
-  , $db->real_escape_string($userid), $timestamp, $timestamp);
+  , cleanse($userid), $timestamp, $timestamp);
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     // check the fields

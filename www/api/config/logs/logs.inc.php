@@ -44,8 +44,7 @@ function write_to_log($message) {
   if($message !== '') {
     // insert the message into the database
     $sql = sprintf("INSERT INTO `logs` (`uri`, `addr`, `entry`) VALUES ('%s','%s','%s')"
-    , $db->real_escape_string($_SERVER['REQUEST_URI']), $db->real_escape_string($_SERVER['REMOTE_ADDR'])
-    , $db->real_escape_string($message));
+    , cleanse($_SERVER['REQUEST_URI']), cleanse($_SERVER['REMOTE_ADDR']), cleanse($message));
     mysqli_query($db, $sql);
   }
 }

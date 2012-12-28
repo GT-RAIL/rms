@@ -36,6 +36,33 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 }
 
 /**
+ * Cleanse the given input string for use in an SQL query. This will perform things such as escape
+ * character checks and HTML scrubbing (if enabled).
+ *
+ * @param string $input The input string to cleanse
+ * @param boolean $html If HTML scrubbing (conversion to HTML entities) should be performed (default = true)
+ * @return string The cleansed string
+ */
+function cleanse($input, $html = true) {
+  global $db;
+
+  if($html) {
+    $cleansed = htmlentities($input, ENT_QUOTES);
+  } else {
+    $cleansed = $input;
+  }
+
+  // trim the string
+  $cleansed = trim($cleansed);
+  // run a escape check
+  $cleansed = $db->real_escape_string($cleansed);
+  // escape percentage signs
+  $cleansed = addcslashes($cleansed, '%');
+
+  return $cleansed;
+}
+
+/**
  * Creates a default 404 state in an array. This includes a 'false' in the 'ok' element, the given
  * error message in the 'msg' element, and null in the 'data' element. The header is also
  * changed to the 404 state.
@@ -102,7 +129,8 @@ function get_enum_types($table, $column) {
   global $db;
 
   $sql = sprintf("SELECT `column_type` FROM `information_schema`.`columns` WHERE `table_name`='%s' AND column_name='%s'"
-  , $db->real_escape_string($table), $db->real_escape_string($column));
+  , cleanse($table), cleanse($column));
+
   $enums = mysqli_fetch_row(mysqli_query($db, $sql));
   return explode("','", str_replace(array("enum('", "')", "''"), array('', '', "'"), $enums[0]));
 }

@@ -58,7 +58,7 @@ function get_environment_interface_pairs() {
 function get_environment_interface_pair_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `environment_interface_pairs` WHERE `pairid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `environment_interface_pairs` WHERE `pairid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -74,7 +74,7 @@ function get_environment_interface_pairs_by_envid($envid) {
   // grab the entries and push them into an array
   $result = array();
   $sql = sprintf( "SELECT * FROM `environment_interface_pairs` WHERE `envid`='%d'"
-  , $db->real_escape_string($envid));
+  , cleanse($envid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
@@ -94,7 +94,7 @@ function get_environment_interface_pair_by_envid_and_intid($envid, $intid) {
   global $db;
 
   $sql = sprintf("SELECT * FROM `environment_interface_pairs` WHERE (`envid`='%d') AND (`intid`='%d')",
-  $db->real_escape_string($envid), $db->real_escape_string($intid));
+  cleanse($envid), cleanse($intid));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -115,7 +115,7 @@ function create_environment_interface_pair($envid, $intid) {
 
   // insert into the database
   $sql = sprintf("INSERT INTO `environment_interface_pairs` (`envid`, `intid`) VALUES ('%d', '%d')",
-  $db->real_escape_string($envid), $db->real_escape_string($intid));
+  cleanse($envid), cleanse($intid));
   mysqli_query($db, $sql);
 
   // no error
@@ -155,16 +155,16 @@ function update_environment_interface_pair($fields) {
       $id_to_set = $fields['pairid'];
     }
   }
-  $sql .= sprintf(" `pairid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `pairid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['envid'])) {
     $num_fields++;
-    $sql .= sprintf(", `envid`='%d'", $db->real_escape_string($fields['envid']));
+    $sql .= sprintf(", `envid`='%d'", cleanse($fields['envid']));
   }
   if(isset($fields['intid'])) {
     $num_fields++;
-    $sql .= sprintf(", `intid`='%d'", $db->real_escape_string($fields['intid']));
+    $sql .= sprintf(", `intid`='%d'", cleanse($fields['intid']));
   }
 
   // check to make sure the pair does not exist already
@@ -184,7 +184,7 @@ function update_environment_interface_pair($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `environment_interface_pairs` SET ".$sql." WHERE `pairid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -203,7 +203,7 @@ function delete_environment_interface_pair_by_id($id) {
   // see if the pair exists
   if(get_environment_interface_pair_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `environment_interface_pairs` WHERE `pairid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `environment_interface_pairs` WHERE `pairid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

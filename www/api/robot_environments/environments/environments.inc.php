@@ -54,7 +54,7 @@ function get_environments() {
 function get_environment_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `environments` WHERE `envid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `environments` WHERE `envid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -76,9 +76,9 @@ function create_environment($protocol, $envaddr, $port, $type, $notes, $enabled)
   $sql = sprintf("INSERT INTO `environments`
                  (`protocol`, `envaddr`, `port`, `type`, `notes`, `enabled`)
                  VALUES
-                 ('%s', '%s', '%d', '%s', '%s', '%d')", $db->real_escape_string($protocol),
-  $db->real_escape_string($envaddr), $db->real_escape_string($port), $db->real_escape_string($type),
-  $db->real_escape_string($notes), $db->real_escape_string($enabled));
+                 ('%s', '%s', '%d', '%s', '%s', '%d')", cleanse($protocol),
+  cleanse($envaddr), cleanse($port), cleanse($type),
+  cleanse($notes), cleanse($enabled));
   mysqli_query($db, $sql);
 
   // no error
@@ -118,32 +118,32 @@ function update_environment($fields) {
       $id_to_set = $fields['envid'];
     }
   }
-  $sql .= sprintf(" `envid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `envid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['protocol'])) {
     $num_fields++;
-    $sql .= sprintf(", `protocol`='%s'", $db->real_escape_string($fields['protocol']));
+    $sql .= sprintf(", `protocol`='%s'", cleanse($fields['protocol']));
   }
   if(isset($fields['envaddr'])) {
     $num_fields++;
-    $sql .= sprintf(", `envaddr`='%s'", $db->real_escape_string($fields['envaddr']));
+    $sql .= sprintf(", `envaddr`='%s'", cleanse($fields['envaddr']));
   }
   if(isset($fields['port'])) {
     $num_fields++;
-    $sql .= sprintf(", `port`='%d'", $db->real_escape_string($fields['port']));
+    $sql .= sprintf(", `port`='%d'", cleanse($fields['port']));
   }
   if(isset($fields['type'])) {
     $num_fields++;
-    $sql .= sprintf(", `type`='%s'", $db->real_escape_string($fields['type']));
+    $sql .= sprintf(", `type`='%s'", cleanse($fields['type']));
   }
   if(isset($fields['notes'])) {
     $num_fields++;
-    $sql .= sprintf(", `notes`='%s'", $db->real_escape_string($fields['notes']));
+    $sql .= sprintf(", `notes`='%s'", cleanse($fields['notes']));
   }
   if(isset($fields['enabled'])) {
     $num_fields++;
-    $sql .= sprintf(", `enabled`='%d'", $db->real_escape_string($fields['enabled']));
+    $sql .= sprintf(", `enabled`='%d'", cleanse($fields['enabled']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -156,7 +156,7 @@ function update_environment($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `environments` SET ".$sql." WHERE `envid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -175,7 +175,7 @@ function delete_environment_by_id($id) {
   // see if the environment exists
   if(get_environment_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `environments` WHERE `envid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `environments` WHERE `envid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

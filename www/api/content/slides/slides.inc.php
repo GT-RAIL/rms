@@ -54,7 +54,7 @@ function get_slide_by_id($id) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `slides` WHERE `slideid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `slides` WHERE `slideid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -68,7 +68,7 @@ function get_slide_by_img($img) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `slides` WHERE `img`='%s'", $db->real_escape_string($img));
+  $sql = sprintf("SELECT * FROM `slides` WHERE `img`='%s'", cleanse($img));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -92,7 +92,7 @@ function create_slide($caption, $index, $fname, $tmp_file_location) {
   } else {
     // insert into the database
     $sql = sprintf("INSERT INTO `slides` (`img`, `caption`, `index`) VALUES ('%s', '%s', '%d')",
-    $db->real_escape_string($fname), $db->real_escape_string($caption), $db->real_escape_string($index));
+    cleanse($fname), cleanse($caption), cleanse($index));
     mysqli_query($db, $sql);
 
     // no error
@@ -162,16 +162,16 @@ function update_slide($fields) {
       $id_to_set = $fields['slideid'];
     }
   }
-  $sql .= sprintf(" `slideid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `slideid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['caption'])) {
     $num_fields++;
-    $sql .= sprintf(", `caption`='%s'", $db->real_escape_string($fields['caption']));
+    $sql .= sprintf(", `caption`='%s'", cleanse($fields['caption']));
   }
   if(isset($fields['index'])) {
     $num_fields++;
-    $sql .= sprintf(", `index`='%d'", $db->real_escape_string($fields['index']));
+    $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
 
   // do the file check
@@ -187,7 +187,7 @@ function update_slide($fields) {
       if(file_exists($file)) {
         unlink($file);
       }
-      $sql .= sprintf(", `img`='%s'", $db->real_escape_string($fields['img']));
+      $sql .= sprintf(", `img`='%s'", cleanse($fields['img']));
     }
   }
 
@@ -201,7 +201,7 @@ function update_slide($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `slides` SET ".$sql." WHERE `slideid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -226,7 +226,7 @@ function delete_slide_by_id($id) {
     }
 
     // delete it
-    $sql = sprintf("DELETE FROM `slides` WHERE `slideid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `slides` WHERE `slideid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

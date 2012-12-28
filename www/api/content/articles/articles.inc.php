@@ -56,7 +56,7 @@ function get_article_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `articles` WHERE `artid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `articles` WHERE `artid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -97,7 +97,7 @@ function get_articles_by_pageid($pageid) {
   // grab the articles and push them into an array
   $result = array();
   $sql = sprintf("SELECT * FROM `articles` WHERE `pageid`='%d' ORDER BY `index`"
-  , $db->real_escape_string($pageid));
+  , cleanse($pageid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
@@ -128,8 +128,7 @@ function create_article($title, $content, $pageid, $index) {
 
   // insert into the database
   $sql = sprintf("INSERT INTO `articles` (`title`, `content`, `pageid`, `index`) VALUES ('%s', '%s', '%d', '%d')"
-  , $db->real_escape_string($title), $db->real_escape_string($content), $db->real_escape_string($pageid)
-  , $db->real_escape_string($index));
+  , cleanse($title), cleanse($content, false), cleanse($pageid), cleanse($index));
   mysqli_query($db, $sql);
 
   // no error
@@ -169,7 +168,7 @@ function update_article($fields) {
       $id_to_set = $fields['artid'];
     }
   }
-  $sql .= sprintf(" `artid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `artid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['pageid'])) {
@@ -177,7 +176,7 @@ function update_article($fields) {
     if(!get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID "'.$fields['pageid'].'" does not exist.';
     }
-    $sql .= sprintf(", `pageid`='%d'", $db->real_escape_string($fields['pageid']));
+    $sql .= sprintf(", `pageid`='%d'", cleanse($fields['pageid']));
   }
   if(isset($fields['title'])) {
     $num_fields++;
@@ -186,15 +185,15 @@ function update_article($fields) {
     || ($fields['title'] !== $article['title'] && get_article_by_title_and_pageid($fields['title'], $article['pageid']))) {
       return 'ERROR: Article page with title '.$fields['title'].' already exists.';
     }
-    $sql .= sprintf(", `title`='%s'", $db->real_escape_string($fields['title']));
+    $sql .= sprintf(", `title`='%s'", cleanse($fields['title']));
   }
   if(isset($fields['content'])) {
     $num_fields++;
-    $sql .= sprintf(", `content`='%s'", $db->real_escape_string($fields['content']));
+    $sql .= sprintf(", `content`='%s'", cleanse($fields['content'], false));
   }
   if(isset($fields['index'])) {
     $num_fields++;
-    $sql .= sprintf(", `index`='%d'", $db->real_escape_string($fields['index']));
+    $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -206,8 +205,7 @@ function update_article($fields) {
   }
 
   // we can now run the update
-  $sql = sprintf("UPDATE `articles` SET ".$sql." WHERE `artid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  $sql = sprintf("UPDATE `articles` SET ".$sql." WHERE `artid`='%d'", cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -226,7 +224,7 @@ function delete_article_by_id($id) {
   // see if the article exists
   if(get_article_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `articles` WHERE `artid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `articles` WHERE `artid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

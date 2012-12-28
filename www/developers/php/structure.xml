@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a10" title="RMS PHP API">
-  <file path="api/users/user_accounts/user_accounts.inc.php" hash="f2431c6a23179a56f7b0b305e88d2b52" package="api\users\user\accounts">
+  <file path="api/users/user_accounts/user_accounts.inc.php" hash="fe91bc7f1f0504febf6c6d4559ef1359" package="api\users\user\accounts">
     <docblock line="2">
       <description><![CDATA[User accounts include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to user accounts via PHP function calls. Used throughout RMS and
@@ -191,78 +191,78 @@ within the RMS API.</p>]]></long-description>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="173" package="api\users\user\accounts">
+    <function namespace="global" line="172" package="api\users\user\accounts">
       <name>update_user_account</name>
       <full_name>\update_user_account</full_name>
-      <docblock line="165">
+      <docblock line="164">
         <description><![CDATA[Update a user account with the given information inside of the array.]]></description>
         <long-description><![CDATA[<p>The array should be indexed
 by the SQL column names. The ID field must be contained inside of the array with the index 'id'.
 Any errors are returned.</p>]]></long-description>
-        <tag line="165" name="param" description="the fields to update including the user ID number" type="array" variable="$fields">
+        <tag line="164" name="param" description="the fields to update including the user ID number" type="array" variable="$fields">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="165" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="164" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="173">
+      <argument line="172">
         <name>$fields</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="255" package="api\users\user\accounts">
+    <function namespace="global" line="254" package="api\users\user\accounts">
       <name>delete_user_account_by_id</name>
       <full_name>\delete_user_account_by_id</full_name>
-      <docblock line="249">
+      <docblock line="248">
         <description><![CDATA[Delete the user array for the user with the given ID.]]></description>
         <long-description><![CDATA[<p>Any errors are returned.</p>]]></long-description>
-        <tag line="249" name="param" description="The user ID number" type="integer" variable="$id">
+        <tag line="248" name="param" description="The user ID number" type="integer" variable="$id">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="249" name="return" description="an error message or null if the delete was sucessful" type="string|null">
+        <tag line="248" name="return" description="an error message or null if the delete was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="255">
+      <argument line="254">
         <name>$id</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="277" package="api\users\user\accounts">
+    <function namespace="global" line="276" package="api\users\user\accounts">
       <name>authenticate</name>
       <full_name>\authenticate</full_name>
-      <docblock line="270">
+      <docblock line="269">
         <description><![CDATA[Check for valid authorization.]]></description>
         <long-description><![CDATA[<p>If the RMS-Use-Session HTTP header is set to true, then session
 information will be used for authorization. If this is not the case, then the HTTP Authentication
 header is used to authenticate.</p>]]></long-description>
-        <tag line="270" name="return" description="The authenticated user or null if none exist" type="array|null">
+        <tag line="269" name="return" description="The authenticated user or null if none exist" type="array|null">
           <type by_reference="false">array</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="319" package="api\users\user\accounts">
+    <function namespace="global" line="317" package="api\users\user\accounts">
       <name>get_user_account_editor_html</name>
       <full_name>\get_user_account_editor_html</full_name>
-      <docblock line="312">
+      <docblock line="310">
         <description><![CDATA[Get the HTML for an editor used to create or edit the given user account entry.]]></description>
         <long-description><![CDATA[<p>If this is not an
 edit, null can be given as the ID. An invalid ID is the same as giving a null ID.</p>]]></long-description>
-        <tag line="312" name="param" description="the ID of the user account to edit, or null if a new entry is being made" type="integer|null" variable="$id">
+        <tag line="310" name="param" description="the ID of the user account to edit, or null if a new entry is being made" type="integer|null" variable="$id">
           <type by_reference="false">integer</type>
           <type by_reference="false">null</type>
         </tag>
-        <tag line="312" name="return" description="A string containing the HTML of the editor" type="string">
+        <tag line="310" name="return" description="A string containing the HTML of the editor" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="319">
+      <argument line="317">
         <name>$id</name>
         <default><![CDATA[]]></default>
         <type/>
@@ -307,7 +307,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/api.inc.php" hash="1012adf792bf8992170092b120254606" package="api">
+  <file path="api/api.inc.php" hash="661d69d881504b1f87573666abe51e42" package="api">
     <docblock line="2">
       <description><![CDATA[Common include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>A set of useful functions used within the RMS API.</p>]]></long-description>
@@ -319,100 +319,128 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
     <function namespace="global" line="46" package="api">
+      <name>cleanse</name>
+      <full_name>\cleanse</full_name>
+      <docblock line="38">
+        <description><![CDATA[Cleanse the given input string for use in an SQL query.]]></description>
+        <long-description><![CDATA[<p>This will perform things such as escape
+character checks and HTML scrubbing (if enabled).</p>]]></long-description>
+        <tag line="38" name="param" description="The input string to cleanse" type="string" variable="$input">
+          <type by_reference="false">string</type>
+        </tag>
+        <tag line="38" name="param" description="If HTML scrubbing (conversion to HTML entities) should be performed (default = true)" type="boolean" variable="$html">
+          <type by_reference="false">boolean</type>
+        </tag>
+        <tag line="38" name="return" description="The cleansed string" type="string">
+          <type by_reference="false">string</type>
+        </tag>
+      </docblock>
+      <argument line="46">
+        <name>$input</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+      <argument line="46">
+        <name>$html</name>
+        <default><![CDATA[true]]></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="73" package="api">
       <name>create_404_state</name>
       <full_name>\create_404_state</full_name>
-      <docblock line="38">
+      <docblock line="65">
         <description><![CDATA[Creates a default 404 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'false' in the 'ok' element, the given
 error message in the 'msg' element, and null in the 'data' element. The header is also
 changed to the 404 state.</p>]]></long-description>
-        <tag line="38" name="param" description="The message to put in the array" type="string" variable="$msg">
+        <tag line="65" name="param" description="The message to put in the array" type="string" variable="$msg">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="38" name="return" description="The filled array" type="array">
+        <tag line="65" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="46">
+      <argument line="73">
         <name>$msg</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="64" package="api">
+    <function namespace="global" line="91" package="api">
       <name>create_401_state</name>
       <full_name>\create_401_state</full_name>
-      <docblock line="57">
+      <docblock line="84">
         <description><![CDATA[Creates a default 401 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'false' in the 'ok' element,
 'Insufficient authorization.' in the 'msg' element, and null in the 'data' element. The header is
 also changed to the 401 state.</p>]]></long-description>
-        <tag line="57" name="return" description="The filled array" type="array">
+        <tag line="84" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="83" package="api">
+    <function namespace="global" line="110" package="api">
       <name>create_200_state</name>
       <full_name>\create_200_state</full_name>
-      <docblock line="75">
+      <docblock line="102">
         <description><![CDATA[Creates a default 200 state in an array.]]></description>
         <long-description><![CDATA[<p>This includes a 'true' in the 'ok' element,
 'Success.' in the 'msg' element, and $data in the 'data' element. The header is also changed to
 the 200 state.</p>]]></long-description>
-        <tag line="75" name="param" description="The data to place in the 'data' element of the array" type="object" variable="$data">
+        <tag line="102" name="param" description="The data to place in the 'data' element of the array" type="object" variable="$data">
           <type by_reference="false">object</type>
         </tag>
-        <tag line="75" name="return" description="The filled array" type="array">
+        <tag line="102" name="return" description="The filled array" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="83">
+      <argument line="110">
         <name>$data</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="101" package="api">
+    <function namespace="global" line="128" package="api">
       <name>get_enum_types</name>
       <full_name>\get_enum_types</full_name>
-      <docblock line="94">
+      <docblock line="121">
         <description><![CDATA[Get the enum types for the given column in the given table in an array.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="94" name="param" description="the name of the MySQL table" type="string" variable="$table">
+        <tag line="121" name="param" description="the name of the MySQL table" type="string" variable="$table">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="94" name="param" description="the column name inside of the given table" type="string" variable="$column">
+        <tag line="121" name="param" description="the column name inside of the given table" type="string" variable="$column">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="94" name="return" description="An array containing the enum types for the given column in the given table" type="array">
+        <tag line="121" name="return" description="An array containing the enum types for the given column in the given table" type="array">
           <type by_reference="false">array</type>
         </tag>
       </docblock>
-      <argument line="101">
+      <argument line="128">
         <name>$table</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="101">
+      <argument line="128">
         <name>$column</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="115" package="api">
+    <function namespace="global" line="143" package="api">
       <name>get_current_timestamp</name>
       <full_name>\get_current_timestamp</full_name>
-      <docblock line="110">
+      <docblock line="138">
         <description><![CDATA[Get the current timestamp from the MySQL server.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="110" name="return" description="The current timestamp from the MySQL server" type="string">
+        <tag line="138" name="return" description="The current timestamp from the MySQL server" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
     </function>
   </file>
-  <file path="api/content/content_pages/content_pages.inc.php" hash="b012a90d531e9d2f2d6f83e764ec12ed" package="api\content\content\pages">
+  <file path="api/content/content_pages/content_pages.inc.php" hash="b0134542c66e3ebd9dec8262435ed6ff" package="api\content\content\pages">
     <docblock line="2">
       <description><![CDATA[Content page include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to content pages via PHP function calls. Used throughout RMS and
@@ -651,7 +679,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/content/slides/slides.inc.php" hash="6dc61ae900b225642c039b85c3abcfdb" package="api\content\slides">
+  <file path="api/content/slides/slides.inc.php" hash="d0b3059fa3212a3bd4391436a498374a" package="api\content\slides">
     <docblock line="2">
       <description><![CDATA[Slideshow include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to slideshow slides via PHP function calls. Used throughout RMS and
@@ -931,7 +959,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/content/articles/articles.inc.php" hash="8c3c8e132831a4cf5cc25fe03ef18537" package="api\content\articles">
+  <file path="api/content/articles/articles.inc.php" hash="36457c0282e630ea13f45ed9c33b5ae4" package="api\content\articles">
     <docblock line="2">
       <description><![CDATA[Article include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to content articles via PHP function calls. Used throughout RMS and
@@ -1093,102 +1121,102 @@ none exist.]]></description>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="147" package="api\content\articles">
+    <function namespace="global" line="146" package="api\content\articles">
       <name>update_article</name>
       <full_name>\update_article</full_name>
-      <docblock line="139">
+      <docblock line="138">
         <description><![CDATA[Update an article with the given information inside of the array.]]></description>
         <long-description><![CDATA[<p>The array should be indexed
 by the SQL column names. The ID field must be contained inside of the array with the index 'id'.
 Any errors are returned.</p>]]></long-description>
-        <tag line="139" name="param" description="the fields to update including the article ID number" type="array" variable="$fields">
+        <tag line="138" name="param" description="the fields to update including the article ID number" type="array" variable="$fields">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="139" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="138" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="147">
+      <argument line="146">
         <name>$fields</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="223" package="api\content\articles">
+    <function namespace="global" line="221" package="api\content\articles">
       <name>delete_article_by_id</name>
       <full_name>\delete_article_by_id</full_name>
-      <docblock line="217">
+      <docblock line="215">
         <description><![CDATA[Delete the article array for the article with the given ID.]]></description>
         <long-description><![CDATA[<p>Any errors are returned.</p>]]></long-description>
-        <tag line="217" name="param" description="The article ID number" type="integer" variable="$id">
+        <tag line="215" name="param" description="The article ID number" type="integer" variable="$id">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="217" name="return" description="an error message or null if the delete was sucessful" type="string|null">
+        <tag line="215" name="return" description="an error message or null if the delete was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="223">
+      <argument line="221">
         <name>$id</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="244" package="api\content\articles">
+    <function namespace="global" line="242" package="api\content\articles">
       <name>create_article_html</name>
       <full_name>\create_article_html</full_name>
-      <docblock line="238">
+      <docblock line="236">
         <description><![CDATA[Get the HTML for creating the given article.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="238" name="param" description="The article SQL entry to generate HTML for" type="array" variable="$article">
+        <tag line="236" name="param" description="The article SQL entry to generate HTML for" type="array" variable="$article">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="238" name="return" description="The HTML for the article" type="string">
+        <tag line="236" name="return" description="The HTML for the article" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="244">
+      <argument line="242">
         <name>$article</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="259" package="api\content\articles">
+    <function namespace="global" line="257" package="api\content\articles">
       <name>create_page_articles_html</name>
       <full_name>\create_page_articles_html</full_name>
-      <docblock line="253">
+      <docblock line="251">
         <description><![CDATA[Get the HTML for creating the article section for the given page.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="253" name="param" description="The content page SQL entry to generate HTML for" type="array" variable="$page">
+        <tag line="251" name="param" description="The content page SQL entry to generate HTML for" type="array" variable="$page">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="253" name="return" description="The HTML for the article section for the given page" type="string">
+        <tag line="251" name="return" description="The HTML for the article section for the given page" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="259">
+      <argument line="257">
         <name>$page</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="278" package="api\content\articles">
+    <function namespace="global" line="276" package="api\content\articles">
       <name>get_article_editor_html</name>
       <full_name>\get_article_editor_html</full_name>
-      <docblock line="271">
+      <docblock line="269">
         <description><![CDATA[Get the HTML for an editor used to create or edit the given article entry.]]></description>
         <long-description><![CDATA[<p>If this is not an
 edit, null can be given as the ID. An invalid ID is the same as giving a null ID.</p>]]></long-description>
-        <tag line="271" name="param" description="the ID of the article to edit, or null if a new entry is being made" type="integer|null" variable="$id">
+        <tag line="269" name="param" description="the ID of the article to edit, or null if a new entry is being made" type="integer|null" variable="$id">
           <type by_reference="false">integer</type>
           <type by_reference="false">null</type>
         </tag>
-        <tag line="271" name="return" description="A string containing the HTML of the editor" type="string">
+        <tag line="269" name="return" description="A string containing the HTML of the editor" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="278">
+      <argument line="276">
         <name>$id</name>
         <default><![CDATA[]]></default>
         <type/>
@@ -1222,7 +1250,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/config/logs/logs.inc.php" hash="885f358cdec53a4c57110f864d04a75b" package="api\config\logs">
+  <file path="api/config/logs/logs.inc.php" hash="6614090e04f902eaf4683f704d7a0136" package="api\config\logs">
     <docblock line="2">
       <description><![CDATA[System log include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to the system log. Used throughout RMS and within the RMS API.</p>]]></long-description>
@@ -1282,7 +1310,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/config/config.inc.php" hash="46992f429316442cbd1ee41386451597" package="api\config">
+  <file path="api/config/config.inc.php" hash="016a991bb8437d541dfc57a5af8fae2d" package="api\config">
     <docblock line="2">
       <description><![CDATA[Configuration include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to system settings and configuration files. Used throughout RMS and
@@ -1478,39 +1506,39 @@ within the RMS API.</p>]]></long-description>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="211" package="api\config">
+    <function namespace="global" line="216" package="api\config">
       <name>update_site_settings</name>
       <full_name>\update_site_settings</full_name>
-      <docblock line="205">
+      <docblock line="210">
         <description><![CDATA[Update the site settings with the given information inside of the array.]]></description>
         <long-description><![CDATA[<p>Any errors are returned.</p>]]></long-description>
-        <tag line="205" name="param" description="The fields to update" type="array" variable="$fields">
+        <tag line="210" name="param" description="The fields to update" type="array" variable="$fields">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="205" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="210" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="211">
+      <argument line="216">
         <name>$fields</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="285" package="api\config">
+    <function namespace="global" line="290" package="api\config">
       <name>get_site_settings_editor_html</name>
       <full_name>\get_site_settings_editor_html</full_name>
-      <docblock line="280">
+      <docblock line="285">
         <description><![CDATA[Get the HTML for an editor used to edit site wide settings.]]></description>
         <long-description><![CDATA[]]></long-description>
-        <tag line="280" name="return" description="A string containing the HTML of the editor" type="string">
+        <tag line="285" name="return" description="A string containing the HTML of the editor" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
     </function>
   </file>
-  <file path="api/config/javascript_files/javascript_files.inc.php" hash="2f5d2c184c2214875dcf2e1e3c73446f" package="api\config\javascript\files">
+  <file path="api/config/javascript_files/javascript_files.inc.php" hash="d90e9b91b9419b89e1dc0d557ab7c2d4" package="api\config\javascript\files">
     <docblock line="2">
       <description><![CDATA[Javascript include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to Javascript URLs and files via PHP function calls. Used throughout
@@ -1682,7 +1710,7 @@ setup.</p>]]></long-description>
       <name/>
     </include>
   </file>
-  <file path="api/user_studies/study_logs/study_logs.inc.php" hash="f155e6fcfde3fc679f35b62eff486b99" package="api\user\studies\study\logs">
+  <file path="api/user_studies/study_logs/study_logs.inc.php" hash="cba57694373385cfc05ced67efaf709b" package="api\user\studies\study\logs">
     <docblock line="2">
       <description><![CDATA[Study log include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to study log entries via PHP function calls. Used throughout RMS and
@@ -1775,7 +1803,7 @@ if none exist.]]></description>
       <name/>
     </include>
   </file>
-  <file path="api/user_studies/experiments/experiments.inc.php" hash="a8bc07d803d624305e08726c0555f553" package="api\user\studies\experiments">
+  <file path="api/user_studies/experiments/experiments.inc.php" hash="94e290bf1276c88a69a042e279ce147b" package="api\user\studies\experiments">
     <docblock line="2">
       <description><![CDATA[Experiments include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to experiment entries via PHP function calls. Used throughout RMS
@@ -1907,7 +1935,7 @@ means that this call is made during their allocated timeslot.</p>]]></long-descr
       <name/>
     </include>
   </file>
-  <file path="api/user_studies/studies/studies.inc.php" hash="1addf5af00963aef1831fc4b74767ed7" package="api\user\studies\studies">
+  <file path="api/user_studies/studies/studies.inc.php" hash="85cc828f685e1ee090fc6b6b26a6a655" package="api\user\studies\studies">
     <docblock line="2">
       <description><![CDATA[Study include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to study entries via PHP function calls. Used throughout RMS and
@@ -2003,7 +2031,7 @@ within the RMS API.</p>]]></long-description>
       <name/>
     </include>
   </file>
-  <file path="api/user_studies/conditions/conditions.inc.php" hash="ee9c906d3e30a7cff3ad3fdc346e7139" package="api\user\studies\conditions">
+  <file path="api/user_studies/conditions/conditions.inc.php" hash="b3fdb80b5969ff72d38231bc5836965f" package="api\user\studies\conditions">
     <docblock line="2">
       <description><![CDATA[Conditions include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to condition entries via PHP function calls. Used throughout RMS and
@@ -2126,7 +2154,7 @@ widget, and one keyboard widget are required for this interface to load.</p>]]><
       </argument>
     </function>
   </file>
-  <file path="api/robot_environments/interfaces/interfaces.inc.php" hash="d02bf2b177c43bbd4dd352dd3ec0d606" package="api\robot\environments\interfaces">
+  <file path="api/robot_environments/interfaces/interfaces.inc.php" hash="2f34fda992bde9830efb8fb1b6eb8f75" package="api\robot\environments\interfaces">
     <docblock line="2">
       <description><![CDATA[Interface include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to interfaces. Used throughout RMS and within the RMS API.</p>]]></long-description>
@@ -2340,7 +2368,7 @@ edit, null can be given as the ID.</p>]]></long-description>
       <name/>
     </include>
   </file>
-  <file path="api/robot_environments/robot_environments.inc.php" hash="a402b39f582b41b377ba68ab45a3f712" package="api\robot\environments">
+  <file path="api/robot_environments/robot_environments.inc.php" hash="88e7ea4fb85dedba5a3bcfd021d2cb63" package="api\robot\environments">
     <docblock line="2">
       <description><![CDATA[Robot environment include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to robot environments. Used throughout RMS and within the RMS API.
@@ -2623,7 +2651,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       </argument>
     </function>
   </file>
-  <file path="api/robot_environments/robot_environment.php" hash="f0b98fc3c0cd370d6b359322de4d99a9" package="api\robot\environments">
+  <file path="api/robot_environments/robot_environment.php" hash="f3278652549c5fab297c0e83300580f1" package="api\robot\environments">
     <docblock line="2">
       <description><![CDATA[A PHP object to store information useful when generating an interface.]]></description>
       <long-description><![CDATA[]]></long-description>
@@ -3054,7 +3082,7 @@ will need to echo it in the appropriate spot.</p>]]></long-description>
       <name/>
     </include>
   </file>
-  <file path="api/robot_environments/widgets/widgets.inc.php" hash="128ba4cb5c1632de0d942bda057926a6" package="api\robot\environments\widgets">
+  <file path="api/robot_environments/widgets/widgets.inc.php" hash="fe3512a0ee5c31b739ecf1b2505c029e" package="api\robot\environments\widgets">
     <docblock line="2">
       <description><![CDATA[Widget include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to widgets. Used throughout RMS and within the RMS API.</p>]]></long-description>
@@ -3505,7 +3533,7 @@ edit, null can be given as the ID.</p>]]></long-description>
       </argument>
     </function>
   </file>
-  <file path="api/robot_environments/widgets/mjpeg_canvas/widget.api.php" hash="e0a3781a09b34435c31cdccd1746ff22" package="api\robot\environments\widgets\mjpeg\canvas">
+  <file path="api/robot_environments/widgets/mjpeg_canvas/widget.api.php" hash="3a585eac6001564935344283f504607e" package="api\robot\environments\widgets\mjpeg\canvas">
     <docblock line="2">
       <description><![CDATA[Keyboard Teleop API script.]]></description>
       <long-description><![CDATA[<p>This allows the creation of Keyboard Teleop widgets using RMS SQL
@@ -3543,54 +3571,54 @@ entires. This is used throughout interface creation.</p>]]></long-description>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="50" package="api\robot\environments\widgets\mjpeg\canvas">
+    <function namespace="global" line="49" package="api\robot\environments\widgets\mjpeg\canvas">
       <name>create_multi_mjpeg_canvas_by_envid</name>
       <full_name>\create_multi_mjpeg_canvas_by_envid</full_name>
-      <docblock line="38">
+      <docblock line="37">
         <description><![CDATA[Create the HTML and Javascript needed to create a multi-stream MJPEG canvas with the given information.]]></description>
         <long-description><![CDATA[<p>This will create an HTML5 canvas element to render on and thus should be placed in the BODY section
 of the HTML. Note that this returns the HTML, you will need to echo it in the appropriate spot.</p>]]></long-description>
-        <tag line="38" name="param" description="The environment to get the list of MJPEG streams from" type="integer" variable="$envid">
+        <tag line="37" name="param" description="The environment to get the list of MJPEG streams from" type="integer" variable="$envid">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="38" name="param" description="The width of the canvas/stream" type="integer" variable="$width">
+        <tag line="37" name="param" description="The width of the canvas/stream" type="integer" variable="$width">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="38" name="param" description="The height of the canvas/stream" type="integer" variable="$height">
+        <tag line="37" name="param" description="The height of the canvas/stream" type="integer" variable="$height">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="38" name="param" description="The index of the default stream (0 by default)" type="integer" variable="$default">
+        <tag line="37" name="param" description="The index of the default stream (0 by default)" type="integer" variable="$default">
           <type by_reference="false">integer</type>
         </tag>
-        <tag line="38" name="param" description="The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (default is null)" type="string|null" variable="$cb">
+        <tag line="37" name="param" description="The name of a JavaScript function that will be called once the widget is created or null if no callback is being used (default is null)" type="string|null" variable="$cb">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
-        <tag line="38" name="return" description="The HTML to create the widget and the slider" type="string">
+        <tag line="37" name="return" description="The HTML to create the widget and the slider" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="50">
+      <argument line="49">
         <name>$envid</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="50">
+      <argument line="49">
         <name>$width</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="50">
+      <argument line="49">
         <name>$height</name>
         <default><![CDATA[]]></default>
         <type/>
       </argument>
-      <argument line="50">
+      <argument line="49">
         <name>$default</name>
         <default><![CDATA[0]]></default>
         <type/>
       </argument>
-      <argument line="50">
+      <argument line="49">
         <name>$cb</name>
         <default><![CDATA[null]]></default>
         <type/>
@@ -3640,7 +3668,7 @@ of the HTML. Note that this returns the HTML, you will need to echo it in the ap
       <name/>
     </include>
   </file>
-  <file path="api/robot_environments/widgets/map2d/widget.api.php" hash="8c330df3fd2263ee298bc8ff96b9ed3d" package="api\robot\environments\widgets\map2d">
+  <file path="api/robot_environments/widgets/map2d/widget.api.php" hash="7c725c61866846a3ca2ca56d224aec9a" package="api\robot\environments\widgets\map2d">
     <docblock line="2">
       <description><![CDATA[Map2D API script.]]></description>
       <long-description><![CDATA[<p>This allows the creation of Map2D widgets using RMS SQL entires. This is used
@@ -3718,7 +3746,7 @@ the HTML, you will need to echo it in the appropriate spot.</p>]]></long-descrip
       <name/>
     </include>
   </file>
-  <file path="api/robot_environments/environments/environments.inc.php" hash="7f66fb7e44685178307b00c5305118d1" package="api\robot\environments\environments">
+  <file path="api/robot_environments/environments/environments.inc.php" hash="5772d32f176fa366d831024526015df2" package="api\robot\environments\environments">
     <docblock line="2">
       <description><![CDATA[Environment include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>Allows read and write access to environments. Used throughout RMS and within the RMS API.</p>]]></long-description>
@@ -4230,7 +4258,7 @@ this is just a regular user, then only their scheduled study environments will b
       <name/>
     </include>
   </file>
-  <file path="admin/index.php" hash="9c4426777b6415fa3119926c41a0073c" package="admin">
+  <file path="admin/index.php" hash="8d2efdffc6b839e93778084c05f6d9d1" package="admin">
     <docblock line="2">
       <description><![CDATA[Main admin panel for the RMS.]]></description>
       <long-description><![CDATA[<p>The main admin panel allows read/write access to most of the RMS database via a GUI.</p>]]></long-description>

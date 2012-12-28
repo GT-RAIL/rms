@@ -54,7 +54,7 @@ function get_content_page_by_id($id) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `content_pages` WHERE `pageid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `content_pages` WHERE `pageid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -68,7 +68,7 @@ function get_content_page_by_title($title) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `content_pages` WHERE `title`='%s'", $db->real_escape_string($title));
+  $sql = sprintf("SELECT * FROM `content_pages` WHERE `title`='%s'", cleanse($title));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -92,11 +92,11 @@ function create_content_page($title, $menu, $index, $js) {
   // insert into the database
   if(!$js || $js === 'NULL') {
     $sql = sprintf("INSERT INTO `content_pages` (`title`, `menu`, `index`) VALUES ('%s', '%s', '%d')"
-    , $db->real_escape_string($title), $db->real_escape_string($menu), $db->real_escape_string($index));
+    , cleanse($title), cleanse($menu), cleanse($index));
   } else {
     $sql = sprintf("INSERT INTO `content_pages` (`title`, `menu`, `index`, `js`) VALUES ('%s', '%s', '%d', '%s')"
-    , $db->real_escape_string($title), $db->real_escape_string($menu), $db->real_escape_string($index)
-    , $db->real_escape_string($js));
+    , cleanse($title), cleanse($menu), cleanse($index)
+    , cleanse($js));
   }
   mysqli_query($db, $sql);
 
@@ -137,7 +137,7 @@ function update_content_page($fields) {
       $id_to_set = $fields['pageid'];
     }
   }
-  $sql .= sprintf(" `pageid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `pageid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['title'])) {
@@ -145,15 +145,15 @@ function update_content_page($fields) {
     if($fields['title'] !== $page['title'] && get_content_page_by_title($fields['title'])) {
       return 'ERROR: Content page title "'.$fields['title'].'" already exists.';
     }
-    $sql .= sprintf(", `title`='%s'", $db->real_escape_string($fields['title']));
+    $sql .= sprintf(", `title`='%s'", cleanse($fields['title']));
   }
   if(isset($fields['menu'])) {
     $num_fields++;
-    $sql .= sprintf(", `menu`='%s'", $db->real_escape_string($fields['menu']));
+    $sql .= sprintf(", `menu`='%s'", cleanse($fields['menu']));
   }
   if(isset($fields['index'])) {
     $num_fields++;
-    $sql .= sprintf(", `index`='%d'", $db->real_escape_string($fields['index']));
+    $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
   if(isset($fields['js'])) {
     $num_fields++;
@@ -161,7 +161,7 @@ function update_content_page($fields) {
     if($fields['js'] === 'NULL') {
       $sql .= sprintf(", `js`=NULL");
     } else {
-      $sql .= sprintf(", `js`='%s'", $db->real_escape_string($fields['js']));
+      $sql .= sprintf(", `js`='%s'", cleanse($fields['js']));
     }
   }
 
@@ -175,7 +175,7 @@ function update_content_page($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `content_pages` SET ".$sql." WHERE `pageid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -194,7 +194,7 @@ function delete_content_page_by_id($id) {
   // see if the content page exists
   if(get_content_page_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `content_pages` WHERE `pageid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `content_pages` WHERE `pageid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

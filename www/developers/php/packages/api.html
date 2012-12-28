@@ -157,6 +157,7 @@
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_cleanse" title="cleanse :: Cleanse the given input string for use in an SQL query."><span class="description">Cleanse the given input string for use in an SQL query.</span><pre>cleanse</pre></a></li>
 <li class="function  "><a href="#function_create_200_state" title="create_200_state :: Creates a default 200 state in an array."><span class="description">Creates a default 200 state in an array.</span><pre>create_200_state</pre></a></li>
 <li class="function  "><a href="#function_create_401_state" title="create_401_state :: Creates a default 401 state in an array."><span class="description">Creates a default 401 state in an array.</span><pre>create_401_state</pre></a></li>
 <li class="function  "><a href="#function_create_404_state" title="create_404_state :: Creates a default 404 state in an array."><span class="description">Creates a default 404 state in an array.</span><pre>create_404_state</pre></a></li>
@@ -171,6 +172,26 @@
 <div class="package-indent">
 <h3>
 <i class="icon-custom icon-function"></i> Functions</h3>
+<a id="function_cleanse"></a><div class="element clickable function  function_cleanse" data-toggle="collapse" data-target=".function_cleanse .collapse">
+<h2>Cleanse the given input string for use in an SQL query.</h2>
+<pre>cleanse(string $input, boolean $html) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This will perform things such as escape
+character checks and HTML scrubbing (if enabled).</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$input</h4>
+<code>string</code><p>The input string to cleanse</p></div>
+<div class="subelement argument">
+<h4>$html</h4>
+<code>boolean</code><p>If HTML scrubbing (conversion to HTML entities) should be performed (default = true)</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The cleansed string</div>
+</div></div>
+</div>
 <a id="function_create_200_state"></a><div class="element clickable function  function_create_200_state" data-toggle="collapse" data-target=".function_create_200_state .collapse">
 <h2>Creates a default 200 state in an array.</h2>
 <pre>create_200_state(object $data) : array</pre>
@@ -2748,7 +2769,7 @@ Any errors are returned.</p></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2012-12-20T15:53:01-05:00.<br></footer></div>
+            generated on 2012-12-28T10:40:56-05:00.<br></footer></div>
 </div>
 </body>
 </html>

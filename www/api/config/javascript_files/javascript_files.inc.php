@@ -44,7 +44,7 @@ function get_javascript_file_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `javascript_files` WHERE `fileid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `javascript_files` WHERE `fileid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 

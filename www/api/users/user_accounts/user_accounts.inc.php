@@ -94,7 +94,7 @@ function get_user_accounts() {
 function get_user_account_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -108,7 +108,7 @@ function get_user_account_by_username($username) {
   global $db;
 
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", $db->real_escape_string($username));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", cleanse($username));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -122,7 +122,7 @@ function get_user_account_by_email($email) {
   global $db;
 
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `email`='%s'", $db->real_escape_string($email));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `email`='%s'", cleanse($email));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -148,14 +148,13 @@ function create_user_account($username, $password, $firstname, $lastname, $email
   }
 
   // generate a salt string
-  $salt = $db->real_escape_string(generate_salt());
+  $salt = cleanse(generate_salt());
   // now insert into the database
   $sql = sprintf("INSERT INTO `user_accounts`
                  (`username`, `password`, `salt`, `firstname`, `lastname`, `email`, `type`)
                  VALUES
-                 ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", $db->real_escape_string($username),
-  sha1($db->real_escape_string($password).$salt), $salt, $db->real_escape_string($firstname),
-  $db->real_escape_string($lastname), $db->real_escape_string($email), $db->real_escape_string($type));
+                 ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", cleanse($username),
+  sha1(cleanse($password).$salt), $salt, cleanse($firstname), cleanse($lastname), cleanse($email), cleanse($type));
   mysqli_query($db, $sql);
 
   // no error
@@ -195,7 +194,7 @@ function update_user_account($fields) {
       $id_to_set = $fields['userid'];
     }
   }
-  $sql .= sprintf(" `userid`='%d'", $db->real_escape_string($id_to_set));
+  $sql .= sprintf(" `userid`='%d'", cleanse($id_to_set));
 
   // check for each update
   if(isset($fields['username'])) {
@@ -203,30 +202,30 @@ function update_user_account($fields) {
     if ($fields['username'] !== $user['username'] && get_user_account_by_username($fields['username'])) {
       return 'ERROR: User "'.$fields['username'].'" already exists';
     }
-    $sql .= sprintf(", `username`='%s'", $db->real_escape_string($fields['username']));
+    $sql .= sprintf(", `username`='%s'", cleanse($fields['username']));
   }
   if(isset($fields['email'])) {
     $num_fields++;
     if($fields['email'] !== $user['email'] && get_user_account_by_email($fields['email'])) {
       return 'ERROR: Email address "'.$fields['email'].'" already exists';
     }
-    $sql .= sprintf(", `email`='%s'", $db->real_escape_string($fields['email']));
+    $sql .= sprintf(", `email`='%s'", cleanse($fields['email']));
   }
   if(isset($fields['firstname'])) {
     $num_fields++;
-    $sql .= sprintf(", `firstname`='%s'", $db->real_escape_string($fields['firstname']));
+    $sql .= sprintf(", `firstname`='%s'", cleanse($fields['firstname']));
   }
   if(isset($fields['lastname'])) {
     $num_fields++;
-    $sql .= sprintf(", `lastname`='%s'", $db->real_escape_string($fields['lastname']));
+    $sql .= sprintf(", `lastname`='%s'", cleanse($fields['lastname']));
   }
   if(isset($fields['password'])) {
     $num_fields++;
-    $sql .= sprintf(", `password`='%s'", sha1($db->real_escape_string($fields['password']).$user['salt']));
+    $sql .= sprintf(", `password`='%s'", sha1(cleanse($fields['password']).$user['salt']));
   }
   if(isset($fields['type'])) {
     $num_fields++;
-    $sql .= sprintf(", `type`='%s'", $db->real_escape_string($fields['type']));
+    $sql .= sprintf(", `type`='%s'", cleanse($fields['type']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -239,7 +238,7 @@ function update_user_account($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `user_accounts` SET ".$sql." WHERE `userid`='%d'"
-  , $db->real_escape_string($fields['id']));
+  , cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -258,7 +257,7 @@ function delete_user_account_by_id($id) {
   // see if the account exists
   if(get_user_account_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `user_accounts` WHERE `userid`='%d'", $db->real_escape_string($id));
+    $sql = sprintf("DELETE FROM `user_accounts` WHERE `userid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;
@@ -293,8 +292,7 @@ function authenticate() {
     $password = $_SERVER['PHP_AUTH_PW'];
 
     // grab the username
-    $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'"
-    , $db->real_escape_string($username));
+    $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", cleanse($username));
 
     // check if a result was found
     $query = mysqli_query($db, $sql);
