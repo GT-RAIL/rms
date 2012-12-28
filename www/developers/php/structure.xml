@@ -307,7 +307,7 @@ edit, null can be given as the ID. An invalid ID is the same as giving a null ID
       <name/>
     </include>
   </file>
-  <file path="api/api.inc.php" hash="8120edf38b645e3ec4bc5bd1defa2a7c" package="api">
+  <file path="api/api.inc.php" hash="317c00c1e66981490425abdd674c6b88" package="api">
     <docblock line="2">
       <description><![CDATA[Common include functions for the RMS API.]]></description>
       <long-description><![CDATA[<p>A set of useful functions used within the RMS API.</p>]]></long-description>
@@ -332,7 +332,7 @@ sprintf function (i.e., percetange signs are esacped by '%%').</p>]]></long-desc
         <tag line="38" name="param" description="If HTML scrubbing (conversion to HTML entities) should be performed (default = true)" type="boolean" variable="$html">
           <type by_reference="false">boolean</type>
         </tag>
-        <tag line="38" name="param" description="If percentage signs should be esacped for use in a sprintf function" type="boolean" variable="$sprintf">
+        <tag line="38" name="param" description="If percentage signs should be esacped for use in a sprintf function (default = true)" type="boolean" variable="$sprintf">
           <type by_reference="false">boolean</type>
         </tag>
         <tag line="38" name="return" description="The cleansed string" type="string">

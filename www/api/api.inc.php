@@ -42,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
  *
  * @param string $input The input string to cleanse
  * @param boolean $html If HTML scrubbing (conversion to HTML entities) should be performed (default = true)
- * @param boolean $sprintf If percentage signs should be esacped for use in a sprintf function
+ * @param boolean $sprintf If percentage signs should be esacped for use in a sprintf function (default = true)
  * @return string The cleansed string
  */
 function cleanse($input, $html = true, $sprintf = true) {
