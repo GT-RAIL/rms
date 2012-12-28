@@ -37,13 +37,15 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
 /**
  * Cleanse the given input string for use in an SQL query. This will perform things such as escape
- * character checks and HTML scrubbing (if enabled).
+ * character checks and HTML scrubbing (if enabled). By default, the string is formated for use in an
+ * sprintf function (i.e., percetange signs are esacped by '%%').
  *
  * @param string $input The input string to cleanse
  * @param boolean $html If HTML scrubbing (conversion to HTML entities) should be performed (default = true)
+ * @param boolean $sprintf If percentage signs should be esacped for use in a sprintf function
  * @return string The cleansed string
  */
-function cleanse($input, $html = true) {
+function cleanse($input, $html = true, $sprintf = true) {
   global $db;
 
   if($html) {
@@ -56,8 +58,11 @@ function cleanse($input, $html = true) {
   $cleansed = trim($cleansed);
   // run a escape check
   $cleansed = $db->real_escape_string($cleansed);
-  // escape percentage signs
-  $cleansed = addcslashes($cleansed, '%');
+
+  if($sprintf) {
+    // escape percentage signs
+    $cleansed = str_replace('%', '%%', $cleansed);
+  }
 
   return $cleansed;
 }

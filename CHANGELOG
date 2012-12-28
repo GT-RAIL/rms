@@ -10,6 +10,7 @@
 + Pages moved to folders with their own index.php
 + Port and protocol added to environments
 + All interfaces ported to new API
++ SQL cleanse function added
 
 -- v0.1.1 --
 + Constraints added to MySQL tables
