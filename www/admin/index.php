@@ -385,7 +385,7 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
             } else {
               // escape the '&'
               putString += $(this).attr('name') + '=' + $(this).val().replace('&', '%26');
-              formData.append($(this).attr('name'), $(this).val().replace('&', '%26'));
+              formData.append($(this).attr('name'), $(this).val());
             }
           }
         }
