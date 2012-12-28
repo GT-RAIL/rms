@@ -383,8 +383,9 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
                 formData.append($(this).attr('name'), 0);
               }
             } else {
-              putString += $(this).attr('name') + '=' + $(this).val();
-              formData.append($(this).attr('name'), $(this).val());
+              // escape the '&'
+              putString += $(this).attr('name') + '=' + $(this).val().replace('&', '%26');
+              formData.append($(this).attr('name'), $(this).val().replace('&', '%26'));
             }
           }
         }
