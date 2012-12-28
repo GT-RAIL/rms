@@ -188,6 +188,11 @@ function run_database_update() {
   $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
   $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
 
+
+  if(get_db_version() < '0.2.0') {
+    return 'ERROR: Version '.$code_version.' is not backwards compatible with version '.get_db_version().'.';
+  }
+
   // loop through until we are up to date
   while(get_db_version() < $code_version) {
     // build the function name
