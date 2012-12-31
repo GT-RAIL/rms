@@ -19,12 +19,16 @@ include_once(dirname(__FILE__).'/../api/content/content_pages/content_pages.inc.
 /**
  * A function to echo the HTML for the main header based on the given user and page name. If the
  * user is an admin, the admin menus will be shown.
+ *
+ * @param array|null $user the user SQL array for the current user (or null if none)
+ * @param string $pagename the name of the page
+ * @param string $path the relative path to the base RMS directory
  */
-function create_header($user, $pagename) {
+function create_header($user, $pagename, $path) {
   global $title, $db;
   echo '
   <header class="clear">
-  <figure><img src="img/logo.png" /></figure>
+  <figure><img src="'.$path.'img/logo.png" /></figure>
   <hgroup><h1>'.$title.'</h1><h2>'.$pagename.'</h2></hgroup>
   </header>
   <div id="nav"><center><nav><ul>';
@@ -32,12 +36,12 @@ function create_header($user, $pagename) {
   // list all of the content pages
   $pages = get_content_pages();
   foreach ($pages as $cur) {
-    echo '<li><a href="index.php?pageid='.$cur['pageid'].'">'.$cur['menu_name'].'</a></li>';
+    echo '<li><a href="'.$path.'?pageid='.$cur['pageid'].'">'.$cur['menu'].'</a></li>';
   }
 
   // add the login page if the user is not logged in
   if(!$user) {
-    echo '<li><a href="login.php">Login</a></li>';
+    echo '<li><a href="'.$path.'login">Login</a></li>';
   }
   echo '
   </ul></nav></center></div>';
@@ -48,17 +52,17 @@ function create_header($user, $pagename) {
     <header class="clear"><table><tr>
     <td align="left"><h3>'.$user['firstname'].' '.$user['lastname'].'</h3></td>
     <td align="right">
-    <span class="menu-main-menu"><a href="main_menu.php">Main Menu</a></span>&nbsp;
-    <span class="menu-account"><a href="account.php">Account</a></span>&nbsp;';
+    <span class="menu-main-menu"><a href="'.$path.'menu/">Main Menu</a></span>&nbsp;
+    <span class="menu-account"><a href="'.$path.'account/">Account</a></span>&nbsp;';
 
     // check if this is an admin
     if($user['type'] === 'admin') {
       echo '
-      <span class="menu-admin-panel"><a href="admin.php">Admin Panel</a></span>&nbsp;
-      <span class="menu-study-panel"><a href="study.php">Study Panel</a> </span>&nbsp;';
+      <span class="menu-admin-panel"><a href="'.$path.'admin/">Admin Panel</a></span>&nbsp;
+      <span class="menu-study-panel"><a href="'.$path.'study/">Study Panel</a> </span>&nbsp;';
     }
     echo '
-    <span class="menu-logout"><a href="form/logout.php">Logout</a></span>&nbsp;
+    <span class="menu-logout"><a href="javascript:logout();">Logout</a></span>&nbsp;
     </td></tr></table></header>
     ';
   }

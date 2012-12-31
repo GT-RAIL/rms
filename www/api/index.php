@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 8 2012
+ * @version    December, 6 2012
  * @package    api
  * @link       http://ros.org/wiki/rms
  */
@@ -18,5 +18,12 @@ include_once(dirname(__FILE__).'/api.inc.php');
 header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
-echo json_encode(create_404_state(array()));
+// check for authorization
+if($auth = authenticate()) {
+  $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+} else {
+  $result = create_401_state();
+}
+
+echo json_encode($result);
 ?>

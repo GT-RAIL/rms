@@ -10,7 +10,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 14 2012
+ * @version    December, 20 2012
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -22,17 +22,14 @@ include_once(dirname(__FILE__).'/config.inc.php');
 header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
-// default to the error state
-$result = create_404_state(array());
-
-switch ($_SERVER['REQUEST_METHOD']) {
-  case 'POST':
-    // check if this is the initial setup
-    if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
-      $result = create_401_state(array());
-    } else if(count($_POST) === 7 && valid_config_fields($_POST)) {
-      $error = false;
+// check if this is initial site setup
+if(!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
+  // we only take POST requests at this point
+  if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // check the config fields
+    if(valid_config_fields($_POST)) {
       // check if a file was uploaded
+      $error = false;
       if(isset($_FILES['sqlfile'])) {
         // check for an error
         if($_FILES['sqlfile']['error'] !== 0 && $_FILES['sqlfile']['error'] !== 4) {
@@ -47,36 +44,111 @@ switch ($_SERVER['REQUEST_METHOD']) {
       }
 
       // try to upload the database
-      if($error || ($error = upload_database($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
-      , $_POST['db'], $sqlfile))) {
-        $result['msg'] = $error;
+      if($error || $error = upload_database($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
+      , $_POST['db'], $sqlfile)) {
+        $result = create_404_state($error);
       } else {
         // now create the config file
         if($error = create_config_inc($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
         , $_POST['db'], $_POST['site-name'], $_POST['google'], $_POST['copyright'])) {
-          $result['msg'] = $error;
+          $result = create_404_state($error);
         } else {
-          // now delete any old Javascript files
+          // now delete any old Javascript files and download the new ones
           include_once(dirname(__FILE__).'/javascript_files/javascript_files.inc.php');
-          if($error = delete_local_javascript_files()) {
-            $result['msg'] = $error;
+          if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
+            $result = create_404_state($error);
           } else {
-            // finally, download all the new Javascript files
-            if($error = download_javascript_files()) {
-              $result['msg'] = $error;
-            } else {
-              $result = create_200_state($result, null);
-            }
+            include_once(dirname(__FILE__).'/logs/logs.inc.php');
+            write_to_log('SYSTEM: Site created.');
+            // return the timestamp
+            $result = create_200_state(get_current_timestamp());
           }
         }
       }
     } else {
-      $result['msg'] = 'Incomplete list of required fields.';
+      $result = create_404_state('Incomplete list of required fields.');
     }
-    break;
-  default:
-    $result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
-    break;
+  } else {
+    $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+  }
+} else {
+  // load the normal include files
+  include_once(dirname(__FILE__).'/../../inc/config.inc.php');
+  include_once(dirname(__FILE__).'/logs/logs.inc.php');
+  include_once(dirname(__FILE__).'/../users/user_accounts/user_accounts.inc.php');
+
+  if($auth = authenticate()) {
+    // only admins can use this script
+    if($auth['type'] === 'admin') {
+      switch ($_SERVER['REQUEST_METHOD']) {
+        case 'POST':
+          if(isset($_POST['request'])) {
+            switch ($_POST['request']) {
+              // check for the editor request
+              case 'update':
+                if(count($_POST) === 1) {
+                  // try and do the update
+                  if($error = run_database_update()) {
+                    $result = create_404_state($error);
+                  } else {
+                    write_to_log('SYSTEM: '.$auth['username'].' updated the database.');
+                    $result = create_200_state(get_db_version());
+                  }
+                } else {
+                  $result = create_404_state('Too many fields provided.');
+                }
+                break;
+              default:
+                $result = create_404_state($_GET['request'].' request type is invalid.');
+                break;
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
+        case 'GET':
+          if(isset($_GET['request'])) {
+            switch ($_GET['request']) {
+              // check for the editor request
+              case 'editor':
+                if(count($_GET) === 1) {
+                  $result = create_200_state(get_site_settings_editor_html());
+                } else {
+                  $result = create_404_state('Too many fields provided.');
+                }
+                break;
+              default:
+                $result = create_404_state($_GET['request'].' request type is invalid.');
+                break;
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
+        case 'PUT':
+          if(count($_PUT) > 0) {
+            if($error = update_site_settings($_PUT)) {
+              $result = create_404_state($error);
+            } else {
+              write_to_log('SYSTEM: '.$auth['username'].' modified the site settings.');
+              $result = create_200_state(get_current_timestamp());
+            }
+          } else {
+            $result = create_404_state('Unknown request.');
+          }
+          break;
+        default:
+          $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+          break;
+      }
+
+    } else {
+      write_to_log('SECURITY: '.$auth['username'].' attempted to use the config script.');
+      $result = create_401_state();
+    }
+  } else {
+    $result = create_401_state();
+  }
 }
 
 // return the JSON encoding of the result

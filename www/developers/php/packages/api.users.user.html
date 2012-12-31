@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>RMS PHP API » api\users\user</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">RMS PHP API</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/api.html"><i class="icon-folder-open"></i> api</a></li>
+<li><a href="../packages/inc.html"><i class="icon-folder-open"></i> inc</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">0</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<span class="empty-package"><i class="icon-folder-close"></i>user</span><ul class="nav nav-list nav-packages"><li>
+<a href="../packages/api.users.user.accounts.html" title="accounts"><i class="icon-folder-open"></i>accounts</a><ul class="nav nav-list nav-packages"></ul>
+</li></ul>
+</li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li><a href="../packages/api.html">api</a></li>
+<li>
+<span class="divider">\</span><a href="../packages/api.users.html">users</a>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../packages/api.users.user.html">user</a>
+</li>
+</li></ul>
+<div class="package-indent">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li><a href="../packages/api.html">api</a></li>
+<li>
+<span class="divider">\</span><a href="../packages/api.users.html">users</a>
+</li>
+<li>
+<span class="divider">\</span><a href="../packages/api.users.user.html">user</a>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../packages/api.users.user.accounts.html">accounts</a>
+</li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-function"></i> Functions</h3>
+<a id="function_authenticate"></a><div class="element clickable function  function_authenticate" data-toggle="collapse" data-target=".function_authenticate .collapse">
+<h2>Check for valid authorization.</h2>
+<pre>authenticate() : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If the RMS-Use-Session HTTP header is set to true, then session
+information will be used for authorization. If this is not the case, then the HTTP Authentication
+header is used to authenticate.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>The authenticated user or null if none exist</div>
+</div></div>
+</div>
+<a id="function_create_user_account"></a><div class="element clickable function  function_create_user_account" data-toggle="collapse" data-target=".function_create_user_account .collapse">
+<h2>Create a user account with the given information.</h2>
+<pre>create_user_account(string $username, string $password, string $firstname, string $lastname, string $email, string $type) : string | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Any errors are returned.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$username</h4>
+<code>string</code><p>The username</p></div>
+<div class="subelement argument">
+<h4>$password</h4>
+<code>string</code><p>The raw password</p></div>
+<div class="subelement argument">
+<h4>$firstname</h4>
+<code>string</code><p>The firstname of the user</p></div>
+<div class="subelement argument">
+<h4>$lastname</h4>
+<code>string</code><p>The lastname of the user</p></div>
+<div class="subelement argument">
+<h4>$email</h4>
+<code>string</code><p>The email address of the user</p></div>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>The type of user</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>null</code>An error message or null if the create was sucessful</div>
+</div></div>
+</div>
+<a id="function_delete_user_account_by_id"></a><div class="element clickable function  function_delete_user_account_by_id" data-toggle="collapse" data-target=".function_delete_user_account_by_id .collapse">
+<h2>Delete the user array for the user with the given ID.</h2>
+<pre>delete_user_account_by_id(integer $id) : string | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Any errors are returned.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The user ID number</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>null</code>an error message or null if the delete was sucessful</div>
+</div></div>
+</div>
+<a id="function_generate_salt"></a><div class="element clickable function  function_generate_salt" data-toggle="collapse" data-target=".function_generate_salt .collapse">
+<h2>Generate a random 16 character string for salting passwords.</h2>
+<pre>generate_salt() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The 16 character salt</div>
+</div></div>
+</div>
+<a id="function_get_user_account_by_email"></a><div class="element clickable function  function_get_user_account_by_email" data-toggle="collapse" data-target=".function_get_user_account_by_email .collapse">
+<h2>Get the user array for the user with the given email, or null if none exist.</h2>
+<pre>get_user_account_by_email(string $email) : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$email</h4>
+<code>string</code><p>The email</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>An array of the user's SQL entry or null if none exist</div>
+</div></div>
+</div>
+<a id="function_get_user_account_by_id"></a><div class="element clickable function  function_get_user_account_by_id" data-toggle="collapse" data-target=".function_get_user_account_by_id .collapse">
+<h2>Get the user array for the user with the given ID, or null if none exist.</h2>
+<pre>get_user_account_by_id(integer $id) : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><p>The user ID number</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>An array of the user's SQL entry or null if none exist</div>
+</div></div>
+</div>
+<a id="function_get_user_account_by_username"></a><div class="element clickable function  function_get_user_account_by_username" data-toggle="collapse" data-target=".function_get_user_account_by_username .collapse">
+<h2>Get the user array for the user with the given username, or null if none exist.</h2>
+<pre>get_user_account_by_username(string $username) : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$username</h4>
+<code>string</code><p>The username</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>An array of the user's SQL entry or null if none exist</div>
+</div></div>
+</div>
+<a id="function_get_user_account_editor_html"></a><div class="element clickable function  function_get_user_account_editor_html" data-toggle="collapse" data-target=".function_get_user_account_editor_html .collapse">
+<h2>Get the HTML for an editor used to create or edit the given user account entry.</h2>
+<pre>get_user_account_editor_html(integer | null $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If this is not an
+edit, null can be given as the ID. An invalid ID is the same as giving a null ID.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>integer</code><code>null</code><p>the ID of the user account to edit, or null if a new entry is being made</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>A string containing the HTML of the editor</div>
+</div></div>
+</div>
+<a id="function_get_user_account_types"></a><div class="element clickable function  function_get_user_account_types" data-toggle="collapse" data-target=".function_get_user_account_types .collapse">
+<h2>Get the enum types for user accounts in an array.</h2>
+<pre>get_user_account_types() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>An array containing the enum types for users</div>
+</div></div>
+</div>
+<a id="function_get_user_accounts"></a><div class="element clickable function  function_get_user_accounts" data-toggle="collapse" data-target=".function_get_user_accounts .collapse">
+<h2>Get an array of all the user accounts in the system, or null if none exist.</h2>
+<pre>get_user_accounts() : array | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>null</code>An array of all the user accounts in the system, or null if none exist</div>
+</div></div>
+</div>
+<a id="function_update_user_account"></a><div class="element clickable function  function_update_user_account" data-toggle="collapse" data-target=".function_update_user_account .collapse">
+<h2>Update a user account with the given information inside of the array.</h2>
+<pre>update_user_account(array $fields) : string | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The array should be indexed
+by the SQL column names. The ID field must be contained inside of the array with the index 'id'.
+Any errors are returned.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$fields</h4>
+<code>array</code><p>the fields to update including the user ID number</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>null</code>an error message or null if the update was sucessful</div>
+</div></div>
+</div>
+<a id="function_valid_user_account_fields"></a><div class="element clickable function  function_valid_user_account_fields" data-toggle="collapse" data-target=".function_valid_user_account_fields .collapse">
+<h2>Check if the given array has all of the necessary fields to create a new user account.</h2>
+<pre>valid_user_account_fields(array $array) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$array</h4>
+<code>array</code><p>The array to check</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>boolean</code>If the given array has all of the necessary fields to create a new user account</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
+            generated on 2012-12-28T10:51:16-05:00.<br></footer></div>
+</div>
+</body>
+</html>
