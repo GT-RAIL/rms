@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    December, 30 2012
  * @package    api.user_studies.study_logs
  * @link       http://ros.org/wiki/rms
  */
@@ -25,7 +25,7 @@ function get_study_logs() {
 
   // grab the javascript entries and push them into an array
   $result = array();
-  $query = mysqli_query($db, "SELECT * FROM `study_log`");
+  $query = mysqli_query($db, "SELECT * FROM `study_logs`");
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
@@ -43,7 +43,7 @@ function get_study_log_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `study_log` WHERE `logid`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `study_logs` WHERE `logid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -59,7 +59,7 @@ function get_study_logs_by_expid($expid) {
 
   // grab the javascript entries and push them into an array
   $result = array();
-  $sql = sprintf("SELECT * FROM `study_log` WHERE `expid`='%d'", cleanse($expid));
+  $sql = sprintf("SELECT * FROM `study_logs` WHERE `expid`='%d'", cleanse($expid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;

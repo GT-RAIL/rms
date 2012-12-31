@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 6 2012
+ * @version    December, 30 2012
  * @package    api.users.user_accounts
  * @link       http://ros.org/wiki/rms
  */
@@ -64,7 +64,11 @@ if($auth = authenticate()) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
-            $result = create_200_state(get_user_account_by_username($_POST['username']));
+            $account = get_user_account_by_username($_POST['username']);
+            // remove the password info
+            unset($account['password']);
+            unset($account['salt']);
+            $result = create_200_state($account);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
@@ -79,6 +83,12 @@ if($auth = authenticate()) {
         // check the user level
         if($auth['type'] === 'admin') {
           // we authenticated so we know at least one user exists
+          $accounts = get_user_accounts();
+          // remove the password info
+          foreach ($accounts as $account) {
+            unset($account['password']);
+            unset($account['salt']);
+          }
           $result = create_200_state(get_user_accounts());
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
@@ -89,6 +99,9 @@ if($auth = authenticate()) {
         if($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
           // check if it exists
           if($user = get_user_account_by_id($_GET['id'])) {
+            // remove the password info
+            unset($user['password']);
+            unset($user['salt']);
             $result = create_200_state($user);
           } else {
             $result = create_404_state('User with ID '.$_GET['id'].' does not exist.');
@@ -145,7 +158,11 @@ if($auth = authenticate()) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');
-            $result = create_200_state(get_user_account_by_id($_PUT['id']));
+            $account = get_user_account_by_id($_PUT['id']);
+            // remove the password info
+            unset($account['password']);
+            unset($account['salt']);
+            $result = create_200_state($account);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$_PUT['id'].'.');
