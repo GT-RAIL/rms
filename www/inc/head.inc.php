@@ -7,23 +7,25 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 12 2012
+ * @version    December, 5 2012
  * @package    inc
  * @link       http://ros.org/wiki/rms
  */
 
-if(file_exists(dirname(__FILE__).'/inc/config.inc.php')) {
+if(file_exists(dirname(__FILE__).'/config.inc.php')) {
   include_once(dirname(__FILE__).'/config.inc.php');
 }
 
 /**
  * A function to echo the HTML for the HEAD section of the HTML document. This includes metadata,
  * common CSS and Javascript files, and the Google Analytics code if it exists.
+ *
+ * @param string $path the relative path to the base RMS directory
  */
-function import_head() {
+function import_head($path) {
   import_meta();
-  import_common_css();
-  import_common_js();
+  import_common_css($path);
+  import_common_js($path);
   import_analytics();
 }
 
@@ -38,22 +40,26 @@ function import_meta() {
 
 /**
  * A function to echo the HTML to import common CSS files.
+ *
+ * @param string $path the relative path to the base RMS directory
  */
-function import_common_css() {
+function import_common_css($path) {
   echo '
-  <link rel="stylesheet" type="text/css" href="css/common.css" />
-  <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.22.custom.css" />
+  <link rel="stylesheet" type="text/css" href="'.$path.'css/common.css" />
+  <link rel="stylesheet" type="text/css" href="'.$path.'css/jquery-ui-1.8.22.custom.css" />
   ';
 }
 
 /**
  * A function to echo the HTML to import common JS files.
+ *
+ * @param string $path the relative path to the base RMS directory
  */
-function import_common_js() {
+function import_common_js($path) {
   echo '
-  <script type="text/javascript" src="js/rms/common.js"></script>
-  <script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
-  <script type="text/javascript" src="js/jquery/jquery-ui-1.8.22.custom.min.js"></script>
+  <script type="text/javascript" src="'.$path.'js/rms/common.js"></script>
+  <script type="text/javascript" src="'.$path.'js/jquery/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="'.$path.'js/jquery/jquery-ui-1.8.22.custom.min.js"></script>
   ';
 }
 

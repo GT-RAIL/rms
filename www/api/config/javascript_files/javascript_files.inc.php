@@ -8,11 +8,12 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 8 2012
+ * @version    December, 6 2012
  * @package    api.config.javascript_files
  * @link       http://ros.org/wiki/rms
  */
 
+include_once(dirname(__FILE__).'/../../users/user_accounts/user_accounts.inc.php');
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 
 /**
@@ -43,7 +44,7 @@ function get_javascript_file_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `javascript_files` WHERE fileid='%d'", $db->real_escape_string($id));
+  $sql = sprintf("SELECT * FROM `javascript_files` WHERE `fileid`='%d'", cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
