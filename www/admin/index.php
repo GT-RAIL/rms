@@ -57,7 +57,7 @@ $db_version = get_db_version();
 $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
 // find our the live version
-$live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/admin/init.sql");
+$live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/api/config/init.sql");
 ?>
 
 <!DOCTYPE html>

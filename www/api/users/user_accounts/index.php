@@ -119,7 +119,7 @@ if($auth = authenticate()) {
               } else if(count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_user_account_editor_html($_GET['id']));
               } else {
-                $result = create_404_state('Too many fields provided.');
+                $result = create_404_state('Unknown request.');
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
@@ -127,7 +127,7 @@ if($auth = authenticate()) {
             }
             break;
           default:
-            $result = create_404_state($_GET['request'].' request type is invalid.');
+            $result = create_404_state('Unknown request.');
             break;
         }
       } else {
