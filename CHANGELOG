@@ -1,3 +1,6 @@
+-- v0.2.1 --
++ Bug patched to allow for apostrophes in config settings
+
 -- v0.2.0 --
 + CHANGES IN v0.2.0 ARE NOT BACKWARDS COMPATIBLE WITH RMS v0.1.1 OR EARLIER
 + Ordering fixed on articles

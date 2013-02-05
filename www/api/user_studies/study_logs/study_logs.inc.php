@@ -67,4 +67,22 @@ function get_study_logs_by_expid($expid) {
 
   return (count($result) === 0) ? null : $result;
 }
+
+/**
+ * Create an entry in the study log for the given experiment.
+ *
+ * @param integer $expid The experiment ID number
+ * @param string $entry The log entry
+ */
+function create_study_log($expid, $entry) {
+global $db;
+
+  // don't log an empty message
+  if($message !== '') {
+    // insert the message into the database
+    $sql = sprintf("INSERT INTO `study_logs` (`expid`, `entry`) VALUES ('%d','%s')"
+    , cleanse($expid), cleanse($entry));
+    mysqli_query($db, $sql);
+  }
+}
 ?>

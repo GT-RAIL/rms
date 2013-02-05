@@ -164,8 +164,8 @@ or DIE(\'Connection has failed. Please try again later.\');
 '.$google_tracking_id.'
 
 // site copyright and design information
-$copyright = \'&copy '.$copyright.'\';
-$title = \''.$title.'\';
+$copyright = \'&copy '.addslashes($copyright).'\';
+$title = \''.addslashes($title).'\';
 // original site design information
 $designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
 ?>
