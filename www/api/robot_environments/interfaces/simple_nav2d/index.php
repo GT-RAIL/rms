@@ -5,7 +5,7 @@
  * widget, and one keyboard widget are required for this interface to load.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 13 2012
  * @package    api.robot_environments.interfaces.simple_nav2d

@@ -6,7 +6,7 @@
  * within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 6 2012
  * @package    api.config
@@ -14,6 +14,7 @@
  */
 
 include_once(dirname(__FILE__).'/../api.inc.php');
+include_once(dirname(__FILE__).'/update.inc.php');
 
 /**
  * The complete file name/path for the init SQL file.
@@ -145,7 +146,7 @@ function create_config_inc($dbhost, $dbuser, $dbpass, $dbname, $title, $google, 
   * should not be edited by hand.
   *
   * @author     Auto Generated via Setup Script
-  * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
   * @license    BSD -- see LICENSE file
   * @version    '.$today['month'].' '.$today['mday'].', '.$today['year'].'
   * @package    inc
@@ -164,8 +165,8 @@ or DIE(\'Connection has failed. Please try again later.\');
 '.$google_tracking_id.'
 
 // site copyright and design information
-$copyright = \'&copy '.$copyright.'\';
-$title = \''.$title.'\';
+$copyright = \'&copy '.addslashes($copyright).'\';
+$title = \''.addslashes($title).'\';
 // original site design information
 $designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
 ?>

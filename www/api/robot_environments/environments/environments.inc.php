@@ -5,7 +5,7 @@
  * Allows read and write access to environments. Used throughout RMS and within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    November, 30 2012
  * @package    api.robot_environments.environments

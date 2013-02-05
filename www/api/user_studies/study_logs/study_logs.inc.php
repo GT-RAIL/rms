@@ -6,9 +6,9 @@
  * within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 30 2012
+ * @version    February, 4 2013
  * @package    api.user_studies.study_logs
  * @link       http://ros.org/wiki/rms
  */
@@ -66,5 +66,23 @@ function get_study_logs_by_expid($expid) {
   }
 
   return (count($result) === 0) ? null : $result;
+}
+
+/**
+ * Create an entry in the study log for the given experiment.
+ *
+ * @param integer $expid The experiment ID number
+ * @param string $entry The log entry
+ */
+function create_study_log($expid, $entry) {
+global $db;
+
+  // don't log an empty message
+  if($message !== '') {
+    // insert the message into the database
+    $sql = sprintf("INSERT INTO `study_logs` (`expid`, `entry`) VALUES ('%d','%s')"
+    , cleanse($expid), cleanse($entry));
+    mysqli_query($db, $sql);
+  }
 }
 ?>
