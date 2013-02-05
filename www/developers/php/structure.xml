@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a12" title="RMS PHP API">
-  <file path="admin/index.php" hash="300f098d0a7d470d1559dcf1ceffc68a" package="admin">
+  <file path="admin/index.php" hash="ff01de5034dd9c91e2998a93ab9ea22a" package="admin">
     <docblock line="2">
       <description>Main admin panel for the RMS.</description>
       <long-description>&lt;p&gt;The main admin panel allows read/write access to most of the RMS database via a GUI.&lt;/p&gt;</long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 20 2012"/>
+      <tag line="2" name="version" description="February, 5 2013"/>
       <tag line="2" name="package" description="admin"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
@@ -1234,7 +1234,35 @@ RMS and within the RMS API.&lt;/p&gt;</long-description>
       <name/>
     </include>
   </file>
-  <file path="api/config/config.inc.php" hash="ce8c6dbbb25fd8999ee067dc64cda6de" package="api\config">
+  <file path="api/config/update.inc.php" hash="c7c3b5072fa95029380b9bd7f5fe524e" package="api\config">
+    <docblock line="2">
+      <description>Update functions for the RMS API.</description>
+      <long-description>&lt;p&gt;The update include script has functions for updating the RMS database. These should only be used
+through the run_database_update function inside of config.inc.php.&lt;/p&gt;</long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 5 2013"/>
+      <tag line="2" name="package" description="api.config"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+    <include line="16" type="Include Once" package="Default">
+      <name/>
+    </include>
+    <function namespace="global" line="23" package="api\config">
+      <name>update_0_2_0</name>
+      <full_name>\update_0_2_0</full_name>
+      <docblock line="18">
+        <description>Update the RMS database from version 2.0.0 to version 2.1.0.</description>
+        <long-description></long-description>
+        <tag line="18" name="return" description="an error message or null if the update was sucessful" type="string|null">
+          <type by_reference="false">string</type>
+          <type by_reference="false">null</type>
+        </tag>
+      </docblock>
+    </function>
+  </file>
+  <file path="api/config/config.inc.php" hash="43268bf422937790a94de756189ff9ae" package="api\config">
     <docblock line="2">
       <description>Configuration include functions for the RMS API.</description>
       <long-description>&lt;p&gt;Allows read and write access to system settings and configuration files. Used throughout RMS and
@@ -1249,214 +1277,217 @@ within the RMS API.&lt;/p&gt;</long-description>
     <include line="16" type="Include Once" package="Default">
       <name/>
     </include>
-    <function namespace="global" line="29" package="api\config">
+    <include line="17" type="Include Once" package="Default">
+      <name/>
+    </include>
+    <function namespace="global" line="30" package="api\config">
       <name>get_db_version</name>
       <full_name>\get_db_version</full_name>
-      <docblock line="24">
+      <docblock line="25">
         <description>Gets the version number of the RMS database.</description>
         <long-description></long-description>
-        <tag line="24" name="return" description="the version number of the RMS database" type="string">
+        <tag line="25" name="return" description="the version number of the RMS database" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="44" package="api\config">
+    <function namespace="global" line="45" package="api\config">
       <name>get_init_sql_version</name>
       <full_name>\get_init_sql_version</full_name>
-      <docblock line="38">
+      <docblock line="39">
         <description>Parse the init.sql file at the given URL and return the version number.</description>
         <long-description></long-description>
-        <tag line="38" name="param" description="the URL to the init.sql file" type="string" variable="$url">
+        <tag line="39" name="param" description="the URL to the init.sql file" type="string" variable="$url">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="38" name="return" description="the version number in the init.sql file" type="string">
+        <tag line="39" name="return" description="the version number in the init.sql file" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="44">
+      <argument line="45">
         <name>$url</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="72" package="api\config">
+    <function namespace="global" line="73" package="api\config">
       <name>valid_config_fields</name>
       <full_name>\valid_config_fields</full_name>
-      <docblock line="66">
+      <docblock line="67">
         <description>Check if the given array has all of the necessary fields to create a config file.</description>
         <long-description></long-description>
-        <tag line="66" name="param" description="The array to check" type="array" variable="$array">
+        <tag line="67" name="param" description="The array to check" type="array" variable="$array">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="66" name="return" description="If the given array has all of the necessary fields to create a config file" type="boolean">
+        <tag line="67" name="return" description="If the given array has all of the necessary fields to create a config file" type="boolean">
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="72">
+      <argument line="73">
         <name>$array</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="88" package="api\config">
+    <function namespace="global" line="89" package="api\config">
       <name>upload_database</name>
       <full_name>\upload_database</full_name>
-      <docblock line="78">
+      <docblock line="79">
         <description>Upload the multi-statement SQL file to the given database.</description>
         <long-description></long-description>
-        <tag line="78" name="param" description="The hostname of the MySQL server" type="string" variable="$host">
+        <tag line="79" name="param" description="The hostname of the MySQL server" type="string" variable="$host">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="78" name="param" description="The username for the MySQL server" type="string" variable="$user">
+        <tag line="79" name="param" description="The username for the MySQL server" type="string" variable="$user">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="78" name="param" description="The password for the MySQL server" type="string" variable="$pass">
+        <tag line="79" name="param" description="The password for the MySQL server" type="string" variable="$pass">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="78" name="param" description="The database name to use" type="string" variable="$name">
+        <tag line="79" name="param" description="The database name to use" type="string" variable="$name">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="78" name="param" description="The file name to upload" type="string" variable="$fname">
+        <tag line="79" name="param" description="The file name to upload" type="string" variable="$fname">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="78" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
+        <tag line="79" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
           <type by_reference="false">string</type>
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="88">
+      <argument line="89">
         <name>$host</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="88">
+      <argument line="89">
         <name>$user</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="88">
+      <argument line="89">
         <name>$pass</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="88">
+      <argument line="89">
         <name>$name</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="88">
+      <argument line="89">
         <name>$fname</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="123" package="api\config">
+    <function namespace="global" line="124" package="api\config">
       <name>create_config_inc</name>
       <full_name>\create_config_inc</full_name>
-      <docblock line="111">
+      <docblock line="112">
         <description>Write the configuration file with the given information into 'inc/'.</description>
         <long-description></long-description>
-        <tag line="111" name="param" description="The hostname of the MySQL server" type="\unknown_type" variable="$dbhost">
+        <tag line="112" name="param" description="The hostname of the MySQL server" type="\unknown_type" variable="$dbhost">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="param" description="The username for the MySQL server" type="\unknown_type" variable="$dbuser">
+        <tag line="112" name="param" description="The username for the MySQL server" type="\unknown_type" variable="$dbuser">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="param" description="The password for the MySQL server" type="\unknown_type" variable="$dbpass">
+        <tag line="112" name="param" description="The password for the MySQL server" type="\unknown_type" variable="$dbpass">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="param" description="The database name to use" type="\unknown_type" variable="$dbname">
+        <tag line="112" name="param" description="The database name to use" type="\unknown_type" variable="$dbname">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="param" description="The title of the website" type="\unknown_type" variable="$title">
+        <tag line="112" name="param" description="The title of the website" type="\unknown_type" variable="$title">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="param" description="The Google Analytics ID number or the empty string if there is none" type="string" variable="$google">
+        <tag line="112" name="param" description="The Google Analytics ID number or the empty string if there is none" type="string" variable="$google">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="111" name="param" description="The copyright message to use" type="\unknown_type" variable="$copyright">
+        <tag line="112" name="param" description="The copyright message to use" type="\unknown_type" variable="$copyright">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="111" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
+        <tag line="112" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
           <type by_reference="false">string</type>
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="123">
+      <argument line="124">
         <name>$dbhost</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$dbuser</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$dbpass</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$dbname</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$title</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$google</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="123">
+      <argument line="124">
         <name>$copyright</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="186" package="api\config">
+    <function namespace="global" line="187" package="api\config">
       <name>run_database_update</name>
       <full_name>\run_database_update</full_name>
-      <docblock line="181">
+      <docblock line="182">
         <description>Update the RMS database to the latest code version.</description>
         <long-description>&lt;p&gt;Any errors are returned.&lt;/p&gt;</long-description>
-        <tag line="181" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="182" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="216" package="api\config">
+    <function namespace="global" line="217" package="api\config">
       <name>update_site_settings</name>
       <full_name>\update_site_settings</full_name>
-      <docblock line="210">
+      <docblock line="211">
         <description>Update the site settings with the given information inside of the array.</description>
         <long-description>&lt;p&gt;Any errors are returned.&lt;/p&gt;</long-description>
-        <tag line="210" name="param" description="The fields to update" type="array" variable="$fields">
+        <tag line="211" name="param" description="The fields to update" type="array" variable="$fields">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="210" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="211" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="216">
+      <argument line="217">
         <name>$fields</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="290" package="api\config">
+    <function namespace="global" line="291" package="api\config">
       <name>get_site_settings_editor_html</name>
       <full_name>\get_site_settings_editor_html</full_name>
-      <docblock line="285">
+      <docblock line="286">
         <description>Get the HTML for an editor used to edit site wide settings.</description>
         <long-description></long-description>
-        <tag line="285" name="return" description="A string containing the HTML of the editor" type="string">
+        <tag line="286" name="return" description="A string containing the HTML of the editor" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
@@ -1498,7 +1529,7 @@ setup.&lt;/p&gt;</long-description>
       <name/>
     </include>
   </file>
-  <file path="api/user_studies/study_logs/study_logs.inc.php" hash="b775c21b2a78544352256a4a053f06ed" package="api\user\studies\study\logs">
+  <file path="api/user_studies/study_logs/study_logs.inc.php" hash="fea729cbcca2f379ca419ba1cb63bcd9" package="api\user\studies\study\logs">
     <docblock line="2">
       <description>Study log include functions for the RMS API.</description>
       <long-description>&lt;p&gt;Allows read and write access to study log entries via PHP function calls. Used throughout RMS and
@@ -1506,7 +1537,7 @@ within the RMS API.&lt;/p&gt;</long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 30 2012"/>
+      <tag line="2" name="version" description="February, 4 2013"/>
       <tag line="2" name="package" description="api.user_studies.study_logs"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
@@ -1591,14 +1622,14 @@ if none exist.</description>
       </argument>
     </function>
   </file>
-  <file path="api/user_studies/study_logs/index.php" hash="d077bf34c805d624aac96fced976dd03" package="api\user\studies\study\logs">
+  <file path="api/user_studies/study_logs/index.php" hash="d184d1b6082a99a6bdb497fbab1d47ec" package="api\user\studies\study\logs">
     <docblock line="2">
       <description>Study log script for the RMS API.</description>
       <long-description>&lt;p&gt;Allows read and write access to study log entries via the RMS API.&lt;/p&gt;</long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 30 2012"/>
+      <tag line="2" name="version" description="February, 4 2013"/>
       <tag line="2" name="package" description="api.user_studies.study_logs"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>

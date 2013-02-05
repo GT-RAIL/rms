@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 20 2012
+ * @version    February, 5 2013
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -1264,7 +1264,7 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
                   <h3>Site Status</h3>
                 </div>
                 <div class=line></div>
-                <?php $disable = ($db_version < $live_version) ? '' : 'disabled="disabled"' // check if an update is needed?>
+                <?php $disable = ($db_version < $code_version) ? '' : 'disabled="disabled"' // check if an update is needed?>
                 <table>
                   <tbody>
                     <tr>

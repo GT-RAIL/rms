@@ -14,6 +14,7 @@
  */
 
 include_once(dirname(__FILE__).'/../api.inc.php');
+include_once(dirname(__FILE__).'/update.inc.php');
 
 /**
  * The complete file name/path for the init SQL file.
