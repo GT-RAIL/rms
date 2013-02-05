@@ -5,9 +5,9 @@
  * The main admin panel allows read/write access to most of the RMS database via a GUI.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 20 2012
+ * @version    February, 5 2013
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -57,7 +57,7 @@ $db_version = get_db_version();
 $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
 // find our the live version
-$live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte-devel/www/api/config/init.sql");
+$live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/groovy-devel/www/api/config/init.sql");
 ?>
 
 <!DOCTYPE html>
@@ -1264,7 +1264,7 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/fuerte
                   <h3>Site Status</h3>
                 </div>
                 <div class=line></div>
-                <?php $disable = ($db_version < $live_version) ? '' : 'disabled="disabled"' // check if an update is needed?>
+                <?php $disable = ($db_version < $code_version) ? '' : 'disabled="disabled"' // check if an update is needed?>
                 <table>
                   <tbody>
                     <tr>

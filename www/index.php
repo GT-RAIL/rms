@@ -5,7 +5,7 @@
  * The index page will load either the default hompage, or the content page specified in the URL.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 5 2012
  * @link       http://ros.org/wiki/rms
