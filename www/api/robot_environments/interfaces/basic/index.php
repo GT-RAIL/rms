@@ -3,7 +3,7 @@
  * A basic interface to display 1 or more MJPEG streams and basic keyboard teleoperation control.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 13 2012
  * @package    api.robot_environments.interfaces.basic

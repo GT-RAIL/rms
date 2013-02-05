@@ -3,7 +3,7 @@
  * A PHP object to store information useful when generating an interface.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 12 2012
  * @package    api.robot_environments
@@ -25,7 +25,7 @@ include_once(dirname(__FILE__).'/../../inc/head.inc.php');
  * such as widget lists, ROS.JS connections, etc.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
- * @copyright  2012 Russell Toris, Worcester Polytechnic Institute
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
  * @version    December, 12 2012
  * @package    api.robot_environments
