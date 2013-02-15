@@ -6,7 +6,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 13 2012
+ * @version    February, 14 2013
  * @package    api.robot_environments.widgets.nav2d
  * @link       http://ros.org/wiki/rms
  */
@@ -30,8 +30,6 @@ function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
   if(!$map2d = get_map_by_id($nav2d['mapid'])) {
     return '<h2>Navigation has invalid map ID.</h2>';
   } else {
-    $continuous = ($map2d['continuous']) ? ', continuous : true' : '';
-
     // create the widget with a unique ID
     $id = time() + rand(0, time());
 
@@ -46,6 +44,7 @@ function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
 		mapTopic : \''.$map2d['topic'].'\',
 		canvasID : \'nav-'.$id.'\'
 		'.(($img) ? ', image : \''.$img.'\'' : '' ).'
+		'.(($map2d['continuous'] !== '0') ? ', continuous : true' : '' ).'
 	});
   ';
   // check the callback
