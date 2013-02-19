@@ -8,13 +8,16 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 6 2012
+ * @version    February, 19 2013
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
 
 include_once(dirname(__FILE__).'/../api.inc.php');
-include_once(dirname(__FILE__).'/update.inc.php');
+// only include update if we have a config file already
+if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
+	include_once(dirname(__FILE__).'/update.inc.php');
+}
 
 /**
  * The complete file name/path for the init SQL file.
