@@ -1,6 +1,8 @@
 -- Development --
 + Bug patched to correctly take into account a map's "continuous" flag
 + Bug patched to only include the update script if a config file already exists in initial setup
++ Three.js now included with RMS
++ Package names fixed in redirect index.php scripts
 
 -- v0.2.1 --
 + Bug patched to allow for apostrophes in config settings
