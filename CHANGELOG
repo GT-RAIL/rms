@@ -5,6 +5,7 @@
 + Package names fixed in redirect index.php scripts
 + Interactivemarkersjs added to javascript_files
 + interactive_markers added as a widget type
++ Example interactive marker interface added
 
 -- v0.2.1 --
 + Bug patched to allow for apostrophes in config settings

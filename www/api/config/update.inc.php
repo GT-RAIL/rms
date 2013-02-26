@@ -26,16 +26,20 @@ function update_0_2_1() {
   // add interactivemarkersjs
   $sql = "
           INSERT INTO `javascript_files` (`url`, `path`) VALUES
-            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 
-             'js/ros/widgets/improxy.js'),
-            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/imthree.js', 
-             'js/ros/widgets/imthree.js'),
-            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/markersthree.js', 
-             'js/ros/widgets/markersthree.js'),
             ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/tfclient.js', 
              'js/ros/widgets/tfclient.js'),
+            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/markersthree.js', 
+             'js/ros/widgets/markersthree.js'),
+            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/imthree.js', 
+             'js/ros/widgets/imthree.js'),
+            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 
+             'js/ros/widgets/improxy.js'),
             ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/threeinteraction.js', 
-             'js/ros/widgets/threeinteraction.js')
+             'js/ros/widgets/threeinteraction.js'),
+            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosAxisHelper.js', 
+             'js/ros/RosAxisHelper.js'),
+            ('https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosOrbitControls.js', 
+             'js/ros/RosOrbitControls.js')
          ";
   // try the update
   if(!mysqli_query($db, $sql)) {
@@ -76,6 +80,13 @@ function update_0_2_1() {
           VALUES
           ('Interactive Markers', 'interactive_markers', 'interactive_markers')
          ";
+  // try the update
+  if(!mysqli_query($db, $sql)) {
+    return mysqli_error($db);
+  }
+  
+  // "install" the example interface
+  $sql = "INSERT INTO `interfaces` (`name`, `location`) VALUES ('Interactive Markers', 'markers')";
   // try the update
   if(!mysqli_query($db, $sql)) {
     return mysqli_error($db);

@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `interfaces` (
   `location` varchar(255) NOT NULL COMMENT 'Directory name within the interface API folder.',
   PRIMARY KEY (`intid`),
   UNIQUE KEY `location` (`location`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Information about the different interface types.' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Information about the different interface types.' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `interfaces`
@@ -180,7 +180,8 @@ CREATE TABLE IF NOT EXISTS `interfaces` (
 
 INSERT INTO `interfaces` (`intid`, `name`, `location`) VALUES
 (1, 'Basic Teleop', 'basic'),
-(2, 'Nav2D Interface', 'simple_nav2d');
+(2, 'Nav2D Interface', 'simple_nav2d'),
+(3, 'Interactive Markers', 'markers');
 
 -- --------------------------------------------------------
 
@@ -195,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `javascript_files` (
   PRIMARY KEY (`fileid`),
   UNIQUE KEY `url` (`url`),
   UNIQUE KEY `path` (`path`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `javascript_files`
@@ -208,11 +209,13 @@ INSERT INTO `javascript_files` (`fileid`, `url`, `path`) VALUES
 (4, 'https://raw.github.com/RobotWebTools/map2djs/groovy-devel/map.js', 'js/ros/widgets/map.js'),
 (5, 'https://raw.github.com/RobotWebTools/actionlibjs/groovy-devel/actionclient.js', 'js/ros/actionclient.js'),
 (6, 'https://raw.github.com/RobotWebTools/nav2djs/groovy-devel/nav2d.js', 'js/ros/widgets/nav2d.js'),
-(7, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 'js/ros/widgets/improxy.js'),
-(8, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/imthree.js', 'js/ros/widgets/imthree.js'),
-(9, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/markersthree.js', 'js/ros/widgets/markersthree.js'),
-(10, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/tfclient.js', 'js/ros/widgets/tfclient.js'),
-(11, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/threeinteraction.js', 'js/ros/widgets/threeinteraction.js');
+(7, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/tfclient.js', 'js/ros/widgets/tfclient.js'),
+(8, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/markersthree.js', 'js/ros/widgets/markersthree.js'),
+(9, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/imthree.js', 'js/ros/widgets/imthree.js'),
+(10, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 'js/ros/widgets/improxy.js'),
+(11, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/threeinteraction.js', 'js/ros/widgets/threeinteraction.js'),
+(12, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosAxisHelper.js', 'js/ros/RosAxisHelper.js'),
+(13, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosOrbitControls.js', 'js/ros/RosOrbitControls.js');
 
 -- --------------------------------------------------------
 
