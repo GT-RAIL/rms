@@ -25,9 +25,9 @@ function add_interactive_markers_to_global_scene($im) {
   var tfClient = new TfClient({
     ros : ros,
     fixedFrame : \''.$im['fixed_frame'].'\',
-    angularThres : 1.5,
-    transThres : 0.01,
-    rate : 15.0
+    angularThres : 0.5,
+    transThres : 0.001,
+    rate : 29.0
   });
   var imClient = new ImProxy.Client(window._RMSDISPLAY.ros, tfClient);
   var meshBaseUrl = \'http://\' + location.hostname + \'/resources/\';
