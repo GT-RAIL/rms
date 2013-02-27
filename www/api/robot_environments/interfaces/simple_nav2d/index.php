@@ -12,7 +12,6 @@
  * @link       http://ros.org/wiki/rms
  */
 
-
 /**
  * Generate the HTML for the interface. All HTML is echoed.
  * @param robot_environment $re The associated robot_environment object for this interface

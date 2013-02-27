@@ -1,6 +1,12 @@
--- Development --
+-- v0.2.11 --
 + Bug patched to correctly take into account a map's "continuous" flag
 + Bug patched to only include the update script if a config file already exists in initial setup
++ Three.js now included with RMS
++ Package names fixed in redirect index.php scripts
++ Interactivemarkersjs added to javascript_files
++ interactive_markers added as a widget type
++ Example interactive marker interface added
++ PR2 model added
 
 -- v0.2.1 --
 + Bug patched to allow for apostrophes in config settings

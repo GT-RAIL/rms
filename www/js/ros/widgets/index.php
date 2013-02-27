@@ -5,8 +5,8 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
- * @package    inc
+ * @version    February, 26 2013
+ * @package    js.ros.widgets
  * @link       http://ros.org/wiki/rms
  */
 
