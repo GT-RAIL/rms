@@ -4540,18 +4540,6 @@ common CSS and Javascript files, and the Google Analytics code if it exists.&lt;
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="resources/pr2_description/meshes/_sensors/index.php" hash="2c1290cb155817838b9f35a01232de03" package="resources\pr2\description\meshes\sensors">
-    <docblock line="2">
-      <description>Basic redirect script to prevent peaking at the directory structure.</description>
-      <long-description></long-description>
-      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
-      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
-      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="February, 26 2013"/>
-      <tag line="2" name="package" description="resources.pr2_description.meshes.sensors"/>
-      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
-    </docblock>
-  </file>
   <file path="resources/pr2_description/meshes/torso_v0/index.php" hash="7d25472398c3eee183f4c83997e03ba9" package="resources\pr2\description\meshes\torso\v0">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
@@ -4956,7 +4944,6 @@ this is just a regular user, then only their scheduled study environments will b
           <package name="head" full_name="resources\pr2\description\meshes\head">
             <package name="v0" full_name="resources\pr2\description\meshes\head\v0"/>
           </package>
-          <package name="sensors" full_name="resources\pr2\description\meshes\sensors"/>
           <package name="shoulder" full_name="resources\pr2\description\meshes\shoulder">
             <package name="v0" full_name="resources\pr2\description\meshes\shoulder\v0"/>
           </package>
