@@ -6,6 +6,7 @@
 + Interactivemarkersjs added to javascript_files
 + interactive_markers added as a widget type
 + Example interactive marker interface added
++ PR2 model added
 
 -- v0.2.1 --
 + Bug patched to allow for apostrophes in config settings

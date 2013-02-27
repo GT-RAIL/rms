@@ -65,67 +65,68 @@ THREE.ColladaLoader = function ( overrideMaterial_ ) {
 	var TO_RADIANS = Math.PI / 180;
 
 	function load ( url, readyCallback, progressCallback ) {
-
-		var length = 0;
-
-		if ( document.implementation && document.implementation.createDocument ) {
-
-			var request = new XMLHttpRequest();
-
-			request.onreadystatechange = function() {
-
-				if( request.readyState == 4 ) {
-
-					if( request.status == 0 || request.status == 200 ) {
-
-
-						if ( request.responseXML ) {
-
-							readyCallbackFunc = readyCallback;
-							parse( request.responseXML, undefined, url );
-
-						} else if ( request.responseText ) {
-
-							readyCallbackFunc = readyCallback;
-							var xmlParser = new DOMParser();
-							var responseXML = xmlParser.parseFromString( request.responseText, "application/xml" );
-							parse( responseXML, undefined, url );
-
-						} else {
-
-							console.error( "ColladaLoader: Empty or non-existing file (" + url + ")" );
-
-						}
-
-					}
-
-				} else if ( request.readyState == 3 ) {
-
-					if ( progressCallback ) {
-
-						if ( length == 0 ) {
-
-							length = request.getResponseHeader( "Content-Length" );
-
-						}
-
-						progressCallback( { total: length, loaded: request.responseText.length } );
-
-					}
-
-				}
-
-			}
-
-			request.open( "GET", url, true );
-			request.send( null );
-
-		} else {
-
-			alert( "Don't know how to parse XML!" );
-
-		}
-
+	  // only load dae files
+	  if(url.indexOf('dae', url.length - 3) !== -1 ) {
+  		var length = 0;
+  
+  		if ( document.implementation && document.implementation.createDocument ) {
+  
+  			var request = new XMLHttpRequest();
+  
+  			request.onreadystatechange = function() {
+  
+  				if( request.readyState == 4 ) {
+  
+  					if( request.status == 0 || request.status == 200 ) {
+  
+  
+  						if ( request.responseXML ) {
+  
+  							readyCallbackFunc = readyCallback;
+  							parse( request.responseXML, undefined, url );
+  
+  						} else if ( request.responseText ) {
+  
+  							readyCallbackFunc = readyCallback;
+  							var xmlParser = new DOMParser();
+  							var responseXML = xmlParser.parseFromString( request.responseText, "application/xml" );
+  							parse( responseXML, undefined, url );
+  
+  						} else {
+  
+  							console.error( "ColladaLoader: Empty or non-existing file (" + url + ")" );
+  
+  						}
+  
+  					}
+  
+  				} else if ( request.readyState == 3 ) {
+  
+  					if ( progressCallback ) {
+  
+  						if ( length == 0 ) {
+  
+  							length = request.getResponseHeader( "Content-Length" );
+  
+  						}
+  
+  						progressCallback( { total: length, loaded: request.responseText.length } );
+  
+  					}
+  
+  				}
+  
+  			}
+  
+  			request.open( "GET", url, true );
+  			request.send( null );
+  
+  		} else {
+  
+  			alert( "Don't know how to parse XML!" );
+  
+  		}
+	  }
 	};
 
 	function parse( doc, callBack, url ) {
