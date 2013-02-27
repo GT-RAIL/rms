@@ -21,7 +21,11 @@
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Packages</a></li>
 <li><a href="../packages/api.html"><i class="icon-folder-open"></i> api</a></li>
+<li><a href="../packages/css.html"><i class="icon-folder-open"></i> css</a></li>
+<li><a href="../packages/img.html"><i class="icon-folder-open"></i> img</a></li>
 <li><a href="../packages/inc.html"><i class="icon-folder-open"></i> inc</a></li>
+<li><a href="../packages/js.html"><i class="icon-folder-open"></i> js</a></li>
+<li><a href="../packages/resources.html"><i class="icon-folder-open"></i> resources</a></li>
 </ul>
 </li>
 <li class="dropdown" id="charts-menu">
@@ -71,6 +75,25 @@
 <div class="namespace-indent">
 <h3>
 <i class="icon-custom icon-function"></i> Functions</h3>
+<a id="function_add_interactive_markers_to_global_scene"></a><div class="element clickable function  function_add_interactive_markers_to_global_scene" data-toggle="collapse" data-target=".function_add_interactive_markers_to_global_scene .collapse">
+<h2>Create the Javascript needed for a given Interactive Markers widget.</h2>
+<pre>add_interactive_markers_to_global_scene(array $im) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>The Javascript will <em>NOT</em> be
+wrapped in its own <script> tag. This should be placed somewhere in an existing JavaScript
+section after you have created a RMSDisplay. Note that this returns the JavaScript, you will need
+to echo it in the appropriate spot.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$im</h4>
+<code>array</code><p>The SQL entry for the interactive marker we are creating (this can be easily found in the interface's robot_environment object)</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The HTML to create the map object</div>
+</div></div>
+</div>
 <a id="function_authenticate"></a><div class="element clickable function  function_authenticate" data-toggle="collapse" data-target=".function_authenticate .collapse">
 <h2>Check for valid authorization.</h2>
 <pre>authenticate() : array | null</pre>
@@ -810,6 +833,18 @@ the array. Any errors are returned.</p></div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code><code>boolean</code>A string containing an error message or false if there were no errors</div>
+</div></div>
+</div>
+<a id="function_generate"></a><div class="element clickable function  function_generate" data-toggle="collapse" data-target=".function_generate .collapse">
+<h2>Generate the HTML for the interface.</h2>
+<pre>generate(<a href="../classes/robot_environment.html">\robot_environment</a> $re) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>All HTML is echoed.</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$re</h4>
+<code><a href="../classes/robot_environment.html">\robot_environment</a></code><p>The associated robot_environment object for this interface</p></div>
 </div></div>
 </div>
 <a id="function_generate"></a><div class="element clickable function  function_generate" data-toggle="collapse" data-target=".function_generate .collapse">
@@ -1892,6 +1927,17 @@ common CSS and Javascript files, and the Google Analytics code if it exists.</p>
 <code>string</code><code>null</code>an error message or null if the update was sucessful</div>
 </div></div>
 </div>
+<a id="function_update_0_2_1"></a><div class="element clickable function  function_update_0_2_1" data-toggle="collapse" data-target=".function_update_0_2_1 .collapse">
+<h2>Update the RMS database from version 2.0.1 to version 2.1.11.</h2>
+<pre>update_0_2_1() : string | null</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>null</code>an error message or null if the update was sucessful</div>
+</div></div>
+</div>
 <a id="function_update_article"></a><div class="element clickable function  function_update_article" data-toggle="collapse" data-target=".function_update_article .collapse">
 <h2>Update an article with the given information inside of the array.</h2>
 <pre>update_article(array $fields) : string | null</pre>
@@ -2285,7 +2331,7 @@ such as widget lists, ROS.JS connections, etc.</p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-02-05T11:17:38-08:00.<br></footer></div>
+            generated on 2013-02-26T17:01:24-08:00.<br></footer></div>
 </div>
 </body>
 </html>

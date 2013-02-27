@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a12" title="RMS PHP API">
-  <file path="admin/index.php" hash="ff01de5034dd9c91e2998a93ab9ea22a" package="admin">
+  <file path="admin/index.php" hash="5aceca4c4ec1c74462d6c877a1a3a68e" package="admin">
     <docblock line="2">
       <description>Main admin panel for the RMS.</description>
       <long-description>&lt;p&gt;The main admin panel allows read/write access to most of the RMS database via a GUI.&lt;/p&gt;</long-description>
@@ -1234,7 +1234,7 @@ RMS and within the RMS API.&lt;/p&gt;</long-description>
       <name/>
     </include>
   </file>
-  <file path="api/config/update.inc.php" hash="c7c3b5072fa95029380b9bd7f5fe524e" package="api\config">
+  <file path="api/config/update.inc.php" hash="4e8bf5557b057f462deb2531ba8f427f" package="api\config">
     <docblock line="2">
       <description>Update functions for the RMS API.</description>
       <long-description>&lt;p&gt;The update include script has functions for updating the RMS database. These should only be used
@@ -1242,7 +1242,7 @@ through the run_database_update function inside of config.inc.php.&lt;/p&gt;</lo
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="February, 5 2013"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
       <tag line="2" name="package" description="api.config"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
@@ -1250,10 +1250,10 @@ through the run_database_update function inside of config.inc.php.&lt;/p&gt;</lo
       <name/>
     </include>
     <function namespace="global" line="23" package="api\config">
-      <name>update_0_2_0</name>
-      <full_name>\update_0_2_0</full_name>
+      <name>update_0_2_1</name>
+      <full_name>\update_0_2_1</full_name>
       <docblock line="18">
-        <description>Update the RMS database from version 2.0.0 to version 2.1.0.</description>
+        <description>Update the RMS database from version 2.0.1 to version 2.1.11.</description>
         <long-description></long-description>
         <tag line="18" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
@@ -1261,8 +1261,20 @@ through the run_database_update function inside of config.inc.php.&lt;/p&gt;</lo
         </tag>
       </docblock>
     </function>
+    <function namespace="global" line="108" package="api\config">
+      <name>update_0_2_0</name>
+      <full_name>\update_0_2_0</full_name>
+      <docblock line="103">
+        <description>Update the RMS database from version 2.0.0 to version 2.1.0.</description>
+        <long-description></long-description>
+        <tag line="103" name="return" description="an error message or null if the update was sucessful" type="string|null">
+          <type by_reference="false">string</type>
+          <type by_reference="false">null</type>
+        </tag>
+      </docblock>
+    </function>
   </file>
-  <file path="api/config/config.inc.php" hash="43268bf422937790a94de756189ff9ae" package="api\config">
+  <file path="api/config/config.inc.php" hash="18d828b88e30f255af40911f9d600303" package="api\config">
     <docblock line="2">
       <description>Configuration include functions for the RMS API.</description>
       <long-description>&lt;p&gt;Allows read and write access to system settings and configuration files. Used throughout RMS and
@@ -1270,224 +1282,224 @@ within the RMS API.&lt;/p&gt;</long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 6 2012"/>
+      <tag line="2" name="version" description="February, 19 2013"/>
       <tag line="2" name="package" description="api.config"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
     <include line="16" type="Include Once" package="Default">
       <name/>
     </include>
-    <include line="17" type="Include Once" package="Default">
+    <include line="19" type="Include Once" package="Default">
       <name/>
     </include>
-    <function namespace="global" line="30" package="api\config">
+    <function namespace="global" line="33" package="api\config">
       <name>get_db_version</name>
       <full_name>\get_db_version</full_name>
-      <docblock line="25">
+      <docblock line="28">
         <description>Gets the version number of the RMS database.</description>
         <long-description></long-description>
-        <tag line="25" name="return" description="the version number of the RMS database" type="string">
+        <tag line="28" name="return" description="the version number of the RMS database" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="45" package="api\config">
+    <function namespace="global" line="48" package="api\config">
       <name>get_init_sql_version</name>
       <full_name>\get_init_sql_version</full_name>
-      <docblock line="39">
+      <docblock line="42">
         <description>Parse the init.sql file at the given URL and return the version number.</description>
         <long-description></long-description>
-        <tag line="39" name="param" description="the URL to the init.sql file" type="string" variable="$url">
+        <tag line="42" name="param" description="the URL to the init.sql file" type="string" variable="$url">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="39" name="return" description="the version number in the init.sql file" type="string">
+        <tag line="42" name="return" description="the version number in the init.sql file" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="45">
+      <argument line="48">
         <name>$url</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="73" package="api\config">
+    <function namespace="global" line="76" package="api\config">
       <name>valid_config_fields</name>
       <full_name>\valid_config_fields</full_name>
-      <docblock line="67">
+      <docblock line="70">
         <description>Check if the given array has all of the necessary fields to create a config file.</description>
         <long-description></long-description>
-        <tag line="67" name="param" description="The array to check" type="array" variable="$array">
+        <tag line="70" name="param" description="The array to check" type="array" variable="$array">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="67" name="return" description="If the given array has all of the necessary fields to create a config file" type="boolean">
+        <tag line="70" name="return" description="If the given array has all of the necessary fields to create a config file" type="boolean">
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="73">
+      <argument line="76">
         <name>$array</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="89" package="api\config">
+    <function namespace="global" line="92" package="api\config">
       <name>upload_database</name>
       <full_name>\upload_database</full_name>
-      <docblock line="79">
+      <docblock line="82">
         <description>Upload the multi-statement SQL file to the given database.</description>
         <long-description></long-description>
-        <tag line="79" name="param" description="The hostname of the MySQL server" type="string" variable="$host">
+        <tag line="82" name="param" description="The hostname of the MySQL server" type="string" variable="$host">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="79" name="param" description="The username for the MySQL server" type="string" variable="$user">
+        <tag line="82" name="param" description="The username for the MySQL server" type="string" variable="$user">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="79" name="param" description="The password for the MySQL server" type="string" variable="$pass">
+        <tag line="82" name="param" description="The password for the MySQL server" type="string" variable="$pass">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="79" name="param" description="The database name to use" type="string" variable="$name">
+        <tag line="82" name="param" description="The database name to use" type="string" variable="$name">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="79" name="param" description="The file name to upload" type="string" variable="$fname">
+        <tag line="82" name="param" description="The file name to upload" type="string" variable="$fname">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="79" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
+        <tag line="82" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
           <type by_reference="false">string</type>
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="89">
+      <argument line="92">
         <name>$host</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="89">
+      <argument line="92">
         <name>$user</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="89">
+      <argument line="92">
         <name>$pass</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="89">
+      <argument line="92">
         <name>$name</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="89">
+      <argument line="92">
         <name>$fname</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="124" package="api\config">
+    <function namespace="global" line="127" package="api\config">
       <name>create_config_inc</name>
       <full_name>\create_config_inc</full_name>
-      <docblock line="112">
+      <docblock line="115">
         <description>Write the configuration file with the given information into 'inc/'.</description>
         <long-description></long-description>
-        <tag line="112" name="param" description="The hostname of the MySQL server" type="\unknown_type" variable="$dbhost">
+        <tag line="115" name="param" description="The hostname of the MySQL server" type="\unknown_type" variable="$dbhost">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="param" description="The username for the MySQL server" type="\unknown_type" variable="$dbuser">
+        <tag line="115" name="param" description="The username for the MySQL server" type="\unknown_type" variable="$dbuser">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="param" description="The password for the MySQL server" type="\unknown_type" variable="$dbpass">
+        <tag line="115" name="param" description="The password for the MySQL server" type="\unknown_type" variable="$dbpass">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="param" description="The database name to use" type="\unknown_type" variable="$dbname">
+        <tag line="115" name="param" description="The database name to use" type="\unknown_type" variable="$dbname">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="param" description="The title of the website" type="\unknown_type" variable="$title">
+        <tag line="115" name="param" description="The title of the website" type="\unknown_type" variable="$title">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="param" description="The Google Analytics ID number or the empty string if there is none" type="string" variable="$google">
+        <tag line="115" name="param" description="The Google Analytics ID number or the empty string if there is none" type="string" variable="$google">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="112" name="param" description="The copyright message to use" type="\unknown_type" variable="$copyright">
+        <tag line="115" name="param" description="The copyright message to use" type="\unknown_type" variable="$copyright">
           <type by_reference="false">\unknown_type</type>
         </tag>
-        <tag line="112" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
+        <tag line="115" name="return" description="A string containing an error message or false if there were no errors" type="string|boolean">
           <type by_reference="false">string</type>
           <type by_reference="false">boolean</type>
         </tag>
       </docblock>
-      <argument line="124">
+      <argument line="127">
         <name>$dbhost</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$dbuser</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$dbpass</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$dbname</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$title</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$google</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="124">
+      <argument line="127">
         <name>$copyright</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="187" package="api\config">
+    <function namespace="global" line="190" package="api\config">
       <name>run_database_update</name>
       <full_name>\run_database_update</full_name>
-      <docblock line="182">
+      <docblock line="185">
         <description>Update the RMS database to the latest code version.</description>
         <long-description>&lt;p&gt;Any errors are returned.&lt;/p&gt;</long-description>
-        <tag line="182" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="185" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="217" package="api\config">
+    <function namespace="global" line="220" package="api\config">
       <name>update_site_settings</name>
       <full_name>\update_site_settings</full_name>
-      <docblock line="211">
+      <docblock line="214">
         <description>Update the site settings with the given information inside of the array.</description>
         <long-description>&lt;p&gt;Any errors are returned.&lt;/p&gt;</long-description>
-        <tag line="211" name="param" description="The fields to update" type="array" variable="$fields">
+        <tag line="214" name="param" description="The fields to update" type="array" variable="$fields">
           <type by_reference="false">array</type>
         </tag>
-        <tag line="211" name="return" description="an error message or null if the update was sucessful" type="string|null">
+        <tag line="214" name="return" description="an error message or null if the update was sucessful" type="string|null">
           <type by_reference="false">string</type>
           <type by_reference="false">null</type>
         </tag>
       </docblock>
-      <argument line="217">
+      <argument line="220">
         <name>$fields</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="291" package="api\config">
+    <function namespace="global" line="294" package="api\config">
       <name>get_site_settings_editor_html</name>
       <full_name>\get_site_settings_editor_html</full_name>
-      <docblock line="286">
+      <docblock line="289">
         <description>Get the HTML for an editor used to edit site wide settings.</description>
         <long-description></long-description>
-        <tag line="286" name="return" description="A string containing the HTML of the editor" type="string">
+        <tag line="289" name="return" description="A string containing the HTML of the editor" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
@@ -2700,7 +2712,7 @@ edit, null can be given as the ID.&lt;/p&gt;</long-description>
       </argument>
     </function>
   </file>
-  <file path="api/robot_environments/widgets/nav2d/widget.api.php" hash="fed5fb62eb698c62ce6c748e2451c0dd" package="api\robot\environments\widgets\nav2d">
+  <file path="api/robot_environments/widgets/nav2d/widget.api.php" hash="7151c38e7c3a856d025e756788d942db" package="api\robot\environments\widgets\nav2d">
     <docblock line="2">
       <description>Nav2D API script.</description>
       <long-description>&lt;p&gt;This allows the creation of Nav2D widgets using RMS SQL entires. This is used
@@ -2708,7 +2720,7 @@ throughout interface creation.&lt;/p&gt;</long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 13 2012"/>
+      <tag line="2" name="version" description="February, 14 2013"/>
       <tag line="2" name="package" description="api.robot_environments.widgets.nav2d"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
@@ -2891,6 +2903,58 @@ of the HTML. Note that this returns the HTML, you will need to echo it in the ap
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
       <tag line="2" name="version" description="December, 12 2012"/>
       <tag line="2" name="package" description="api.robot_environments.widgets.mjpeg_canvas"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+    <include line="15" type="Include Once" package="Default">
+      <name/>
+    </include>
+  </file>
+  <file path="api/robot_environments/widgets/interactive_markers/widget.api.php" hash="4bb431365e446375c5e15a1fdc173cab" package="api\robot\environments\widgets\interactive\markers">
+    <docblock line="2">
+      <description>Interactive Markers API script.</description>
+      <long-description>&lt;p&gt;This allows the creation of Interactive Markers widgets using RMS
+SQL entires. This is used throughout interface creation.&lt;/p&gt;</long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="api.robot_environments.widgets.interactive_markers"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+    <function namespace="global" line="23" package="api\robot\environments\widgets\interactive\markers">
+      <name>add_interactive_markers_to_global_scene</name>
+      <full_name>\add_interactive_markers_to_global_scene</full_name>
+      <docblock line="14">
+        <description>Create the Javascript needed for a given Interactive Markers widget.</description>
+        <long-description>&lt;p&gt;The Javascript will &lt;em&gt;NOT&lt;/em&gt; be
+wrapped in its own &lt;script&gt; tag. This should be placed somewhere in an existing JavaScript
+section after you have created a RMSDisplay. Note that this returns the JavaScript, you will need
+to echo it in the appropriate spot.&lt;/p&gt;</long-description>
+        <tag line="14" name="param" description="The SQL entry for the interactive marker we are creating (this can be easily found in the interface's robot_environment object)" type="array" variable="$im">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="14" name="return" description="The HTML to create the map object" type="string">
+          <type by_reference="false">string</type>
+        </tag>
+      </docblock>
+      <argument line="23">
+        <name>$im</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+  </file>
+  <file path="api/robot_environments/widgets/interactive_markers/index.php" hash="b50945810ad6ab0ba13831d1a56bcc65" package="api\robot\environments\widgets\interactive\markers">
+    <docblock line="2">
+      <description>Default Interactive Markers script.</description>
+      <long-description>&lt;p&gt;Currently, this level of the API contains no useful functions.&lt;/p&gt;
+
+&lt;p&gt;Returns a bad request response.&lt;/p&gt;</long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2012"/>
+      <tag line="2" name="package" description="api.robot_environments.widgets.interactive_markers"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
     <include line="15" type="Include Once" package="Default">
@@ -3280,7 +3344,7 @@ edit, null can be given as the ID.&lt;/p&gt;</long-description>
       </argument>
     </function>
   </file>
-  <file path="api/robot_environments/interfaces/simple_nav2d/index.php" hash="e458f147030da79202e03d85e67d4e99" package="api\robot\environments\interfaces\simple\nav2d">
+  <file path="api/robot_environments/interfaces/simple_nav2d/index.php" hash="cf590f7405d99b68031065d7fc82e70e" package="api\robot\environments\interfaces\simple\nav2d">
     <docblock line="2">
       <description>The simple_nav2d interface is an interface implementation that allows for three widget types:
 a MJPEG canvas widget, a nav2d widget, and a keyboard teleop widget.</description>
@@ -3293,17 +3357,17 @@ widget, and one keyboard widget are required for this interface to load.&lt;/p&g
       <tag line="2" name="package" description="api.robot_environments.interfaces.simple_nav2d"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
-    <function namespace="global" line="20" package="api\robot\environments\interfaces\simple\nav2d">
+    <function namespace="global" line="19" package="api\robot\environments\interfaces\simple\nav2d">
       <name>generate</name>
       <full_name>\generate</full_name>
-      <docblock line="16">
+      <docblock line="15">
         <description>Generate the HTML for the interface.</description>
         <long-description>&lt;p&gt;All HTML is echoed.&lt;/p&gt;</long-description>
-        <tag line="16" name="param" description="The associated robot_environment object for this interface" type="\robot_environment" variable="$re">
+        <tag line="15" name="param" description="The associated robot_environment object for this interface" type="\robot_environment" variable="$re">
           <type by_reference="false">\robot_environment</type>
         </tag>
       </docblock>
-      <argument line="20">
+      <argument line="19">
         <name>$re</name>
         <default></default>
         <type/>
@@ -3333,6 +3397,35 @@ widget, and one keyboard widget are required for this interface to load.&lt;/p&g
     <include line="18" type="Include Once" package="Default">
       <name/>
     </include>
+  </file>
+  <file path="api/robot_environments/interfaces/markers/index.php" hash="d8c3376c711dc0173fb2fc85f4d5e44f" package="api\robot\environments\interfaces\markers">
+    <docblock line="2">
+      <description>A basic interface to display a set of interactive markers with camera feeds and keybaord
+teleoperation.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="api.robot_environments.interfaces.markers"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+    <function namespace="global" line="18" package="api\robot\environments\interfaces\markers">
+      <name>generate</name>
+      <full_name>\generate</full_name>
+      <docblock line="14">
+        <description>Generate the HTML for the interface.</description>
+        <long-description>&lt;p&gt;All HTML is echoed.&lt;/p&gt;</long-description>
+        <tag line="14" name="param" description="The associated robot_environment object for this interface" type="\robot_environment" variable="$re">
+          <type by_reference="false">\robot_environment</type>
+        </tag>
+      </docblock>
+      <argument line="18">
+        <name>$re</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
   </file>
   <file path="api/robot_environments/environments/index.php" hash="ee58887942b314345244552a2a30f6c8" package="api\robot\environments\environments">
     <docblock line="2">
@@ -3597,7 +3690,7 @@ interfaces and environments. Used throughout RMS and within the RMS API.&lt;/p&g
       <name/>
     </include>
   </file>
-  <file path="api/robot_environments/robot_environment.php" hash="590e3e6b678862cdd5ffc5307de2bf89" package="api\robot\environments">
+  <file path="api/robot_environments/robot_environment.php" hash="2ab2948dad4d7c8f1b2a5ab7d8fe5180" package="api\robot\environments">
     <docblock line="2">
       <description>A PHP object to store information useful when generating an interface.</description>
       <long-description></long-description>
@@ -3649,7 +3742,7 @@ such as widget lists, ROS.JS connections, etc.</description>
         <tag line="23" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
         <tag line="23" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
         <tag line="23" name="license" description="BSD -- see LICENSE file"/>
-        <tag line="23" name="version" description="December, 12 2012"/>
+        <tag line="23" name="version" description="February, 26 2013"/>
         <tag line="23" name="package" description="api.robot_environments"/>
       </docblock>
       <property final="false" static="false" visibility="private" line="38" namespace="global" package="Default">
@@ -3827,10 +3920,10 @@ all widget and RMS Javascript files, and a custom style.css class if it exists i
 All HTML will be echoed.&lt;/p&gt;</long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="192" package="api\robot\environments">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="202" package="api\robot\environments">
         <name>create_study_head</name>
         <full_name>create_study_head</full_name>
-        <docblock line="182">
+        <docblock line="192">
           <description>Create common parts of the HTML head section for a study session.</description>
           <long-description>&lt;p&gt;If the current user has a
 valid experiment at this time, this function will create three JavaScript global variables.
@@ -3842,10 +3935,10 @@ All HTML will be echoed and should be placed in the HEAD section. If no valid ex
 for this user, nothing will be echoed.&lt;/p&gt;</long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="221" package="api\robot\environments">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="231" package="api\robot\environments">
         <name>make_ros</name>
         <full_name>make_ros</full_name>
-        <docblock line="216">
+        <docblock line="226">
           <description>Create the HTML to create a connection to ROS using ros.js.</description>
           <long-description>&lt;p&gt;This will be wrapped in its own
 &lt;script&gt; tag and will declare a global variable called 'ros'. It can be placed anywhere in the
@@ -4216,15 +4309,15 @@ user is an admin, the admin menus will be shown.&lt;/p&gt;</long-description>
       </docblock>
     </function>
   </file>
-  <file path="inc/config.inc.php" hash="220591071307b856cf5155f075034723" package="inc">
+  <file path="inc/config.inc.php" hash="7b01a445babe287949e128bacc8533a8" package="inc">
     <docblock line="3">
       <description>RMS Site Settings and Configuration</description>
       <long-description>&lt;p&gt;Contains the site settings and configurations for the RMS. This file is auto-generated and
 should not be edited by hand.&lt;/p&gt;</long-description>
       <tag line="3" name="author" description="Auto Generated via Setup Script"/>
-      <tag line="3" name="copyright" description="2012 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="3" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="3" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="3" name="version" description="February 4, 2013"/>
+      <tag line="3" name="version" description="February 26, 2013"/>
       <tag line="3" name="package" description="inc"/>
       <tag line="3" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
@@ -4321,51 +4414,51 @@ common CSS and Javascript files, and the Google Analytics code if it exists.&lt;
       </docblock>
     </function>
   </file>
-  <file path="css/images/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="css/images/index.php" hash="dfcd21bae2955f2515d621b71562ba75" package="css\images">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="css.images"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="css/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="css/index.php" hash="973d6a47144a75df4b025cc327d0bf89" package="css">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="css"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="img/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="img/index.php" hash="317f1dffaab55df0631dc115ab320a87" package="img">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="img"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="img/slides/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="img/slides/index.php" hash="8ec52ace902f588734cb0bbf964cb59e" package="img\slides">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="img.slides"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
@@ -4410,6 +4503,150 @@ common CSS and Javascript files, and the Google Analytics code if it exists.&lt;
     <include line="21" type="Include Once" package="Default">
       <name/>
     </include>
+  </file>
+  <file path="resources/index.php" hash="b73f269943e3eacc17faddab95d1d86b" package="resources">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/index.php" hash="17f914f5b72f1df5d44c8cb2b3851f44" package="resources\pr2\description">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/head_v0/index.php" hash="c4da39ceece0e25130aa10df0d9d843c" package="resources\pr2\description\meshes\head\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.head_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/_sensors/index.php" hash="2c1290cb155817838b9f35a01232de03" package="resources\pr2\description\meshes\sensors">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.sensors"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/torso_v0/index.php" hash="7d25472398c3eee183f4c83997e03ba9" package="resources\pr2\description\meshes\torso\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.torso_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/base_v0/index.php" hash="1e9a887c1d05ea4528ecf95c839867b9" package="resources\pr2\description\meshes\base\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.base_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/upper_arm_v0/index.php" hash="b79e370e12a269903a8310be8943c7e8" package="resources\pr2\description\meshes\upper\arm\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.upper_arm_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/index.php" hash="5da1731651738057c4dae0f42d21aca2" package="resources\pr2\description\meshes">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/tilting_laser_v0/index.php" hash="e1dcd4500daf22a41abdc65f33570494" package="resources\pr2\description\meshes\tilting\laser\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.tilting_laser_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/gripper_v0/index.php" hash="409352bf0e4ca36be1d1546188f2d056" package="resources\pr2\description\meshes\gripper\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.gripper_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/forearm_v0/index.php" hash="0f72f9c9f7e1a1c8dca9e89d7530cfc4" package="resources\pr2\description\meshes\forearm\0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.forearm_0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="resources/pr2_description/meshes/shoulder_v0/index.php" hash="3d33a06a2fbc63652137aaa3dbbe17d7" package="resources\pr2\description\meshes\shoulder\v0">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="resources.pr2_description.meshes.shoulder_v0"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
   </file>
   <file path="menu/index.php" hash="1c4ac791386911f3b9c1462c12414b42" package="menu">
     <docblock line="2">
@@ -4483,75 +4720,87 @@ this is just a regular user, then only their scheduled study environments will b
       <name/>
     </include>
   </file>
-  <file path="js/content/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/content/index.php" hash="d1860c8fec421257f5ab536d9e53205f" package="js\content">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.content"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="js/jquery/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/jquery/index.php" hash="e1379021ccef198902b1dcfe3ec67f61" package="js\jquery">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.jquery"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="js/ros/widgets/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/ros/widgets/index.php" hash="d34a749a55befdd032a13ef680fa0ea4" package="js\ros\widgets">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.ros.widgets"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="js/ros/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/ros/index.php" hash="49ca38d3b2f8dc8e89b40bc8f3485934" package="js\ros">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.ros"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="js/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/threejs/index.php" hash="2dcc1fbbbd1380c3ae76c3a43e924286" package="js\three">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.three"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
-  <file path="js/rms/index.php" hash="085e14b94990ea19a25754b459947d75" package="inc">
+  <file path="js/index.php" hash="a3c9225d8b56938ec87c3294fa35ba03" package="js">
     <docblock line="2">
       <description>Basic redirect script to prevent peaking at the directory structure.</description>
       <long-description></long-description>
       <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
       <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
       <tag line="2" name="license" description="BSD -- see LICENSE file"/>
-      <tag line="2" name="version" description="December, 5 2012"/>
-      <tag line="2" name="package" description="inc"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js"/>
+      <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
+    </docblock>
+  </file>
+  <file path="js/rms/index.php" hash="5d08496b5e8aaa1d38c6db3846b642fc" package="js\rms">
+    <docblock line="2">
+      <description>Basic redirect script to prevent peaking at the directory structure.</description>
+      <long-description></long-description>
+      <tag line="2" name="author" description="Russell Toris &lt;rctoris@wpi.edu&gt;"/>
+      <tag line="2" name="copyright" description="2013 Russell Toris, Worcester Polytechnic Institute"/>
+      <tag line="2" name="license" description="BSD -- see LICENSE file"/>
+      <tag line="2" name="version" description="February, 26 2013"/>
+      <tag line="2" name="package" description="js.rms"/>
       <tag line="2" name="link" description="http://ros.org/wiki/rms" link="http://ros.org/wiki/rms"/>
     </docblock>
   </file>
@@ -4635,11 +4884,15 @@ this is just a regular user, then only their scheduled study environments will b
         <package name="environments" full_name="api\robot\environments\environments"/>
         <package name="interfaces" full_name="api\robot\environments\interfaces">
           <package name="basic" full_name="api\robot\environments\interfaces\basic"/>
+          <package name="markers" full_name="api\robot\environments\interfaces\markers"/>
           <package name="simple" full_name="api\robot\environments\interfaces\simple">
             <package name="nav2d" full_name="api\robot\environments\interfaces\simple\nav2d"/>
           </package>
         </package>
         <package name="widgets" full_name="api\robot\environments\widgets">
+          <package name="interactive" full_name="api\robot\environments\widgets\interactive">
+            <package name="markers" full_name="api\robot\environments\widgets\interactive\markers"/>
+          </package>
           <package name="keyboard" full_name="api\robot\environments\widgets\keyboard">
             <package name="teleoperation" full_name="api\robot\environments\widgets\keyboard\teleoperation"/>
           </package>
@@ -4668,10 +4921,62 @@ this is just a regular user, then only their scheduled study environments will b
     </package>
   </package>
   <package name="connection" full_name="connection"/>
+  <package name="css" full_name="css">
+    <package name="images" full_name="css\images"/>
+  </package>
   <package name="developers" full_name="developers"/>
+  <package name="img" full_name="img">
+    <package name="slides" full_name="img\slides"/>
+  </package>
   <package name="inc" full_name="inc"/>
+  <package name="js" full_name="js">
+    <package name="content" full_name="js\content"/>
+    <package name="jquery" full_name="js\jquery"/>
+    <package name="rms" full_name="js\rms"/>
+    <package name="ros" full_name="js\ros">
+      <package name="widgets" full_name="js\ros\widgets"/>
+    </package>
+    <package name="three" full_name="js\three"/>
+  </package>
   <package name="login" full_name="login"/>
   <package name="menu" full_name="menu"/>
+  <package name="resources" full_name="resources">
+    <package name="pr2" full_name="resources\pr2">
+      <package name="description" full_name="resources\pr2\description">
+        <package name="meshes" full_name="resources\pr2\description\meshes">
+          <package name="base" full_name="resources\pr2\description\meshes\base">
+            <package name="v0" full_name="resources\pr2\description\meshes\base\v0"/>
+          </package>
+          <package name="forearm" full_name="resources\pr2\description\meshes\forearm">
+            <package name="0" full_name="resources\pr2\description\meshes\forearm\0"/>
+          </package>
+          <package name="gripper" full_name="resources\pr2\description\meshes\gripper">
+            <package name="v0" full_name="resources\pr2\description\meshes\gripper\v0"/>
+          </package>
+          <package name="head" full_name="resources\pr2\description\meshes\head">
+            <package name="v0" full_name="resources\pr2\description\meshes\head\v0"/>
+          </package>
+          <package name="sensors" full_name="resources\pr2\description\meshes\sensors"/>
+          <package name="shoulder" full_name="resources\pr2\description\meshes\shoulder">
+            <package name="v0" full_name="resources\pr2\description\meshes\shoulder\v0"/>
+          </package>
+          <package name="tilting" full_name="resources\pr2\description\meshes\tilting">
+            <package name="laser" full_name="resources\pr2\description\meshes\tilting\laser">
+              <package name="v0" full_name="resources\pr2\description\meshes\tilting\laser\v0"/>
+            </package>
+          </package>
+          <package name="torso" full_name="resources\pr2\description\meshes\torso">
+            <package name="v0" full_name="resources\pr2\description\meshes\torso\v0"/>
+          </package>
+          <package name="upper" full_name="resources\pr2\description\meshes\upper">
+            <package name="arm" full_name="resources\pr2\description\meshes\upper\arm">
+              <package name="v0" full_name="resources\pr2\description\meshes\upper\arm\v0"/>
+            </package>
+          </package>
+        </package>
+      </package>
+    </package>
+  </package>
   <package name="setup" full_name="setup"/>
   <package name="study" full_name="study"/>
   <namespace name="global" full_name="global"/>

@@ -27,7 +27,7 @@ include_once(dirname(__FILE__).'/../../inc/head.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 12 2012
+ * @version    February, 26 2013
  * @package    api.robot_environments
  */
 class robot_environment {
@@ -168,6 +168,13 @@ class robot_environment {
       echo '<link rel="stylesheet" type="text/css" href="'.$css.'" />
       ';
     }
+    
+    // include three.js
+    echo '
+    <script type="text/javascript" src="'.$path.'js/threejs/three.js"></script>
+    <script type="text/javascript" src="'.$path.'js/threejs/helvetiker_regular.typeface.js"></script>
+    <script type="text/javascript" src="'.$path.'js/threejs/ColladaLoader.js"></script>
+    ';
 
     // include the Javascript files
     $js = get_javascript_files();
@@ -175,8 +182,11 @@ class robot_environment {
       echo '<script type="text/javascript" src="'.$path.$file['path'].'"></script>
       ';
     }
-    // get the study script
-    echo '<script type="text/javascript" src="'.$path.'js/rms/study.js"></script>';
+    // get the study and display scripts
+    echo '
+    <script type="text/javascript" src="'.$path.'js/rms/study.js"></script>
+    <script type="text/javascript" src="'.$path.'js/rms/rmsdisplay.js"></script>
+    ';
   }
 
   /**

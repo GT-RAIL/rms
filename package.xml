@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>rms</name>
-  <version>0.2.1</version>
+  <version>0.2.11</version>
   <description>RMS (Robot Management System) is a remote lab management tool designed for use with controlling ROS enabled robots from the web.</description>
 
   <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
