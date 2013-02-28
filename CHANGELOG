@@ -1,3 +1,6 @@
+-- Development --
++ Admin panel now correctly URI encodes the URL before making an AJAX call
+
 -- v0.2.11 --
 + Bug patched to correctly take into account a map's "continuous" flag
 + Bug patched to only include the update script if a config file already exists in initial setup

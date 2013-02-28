@@ -384,7 +384,7 @@ $live_version = get_init_sql_version("https://raw.github.com/WPI-RAIL/rms/groovy
               }
             } else {
               // escape the '&'
-              putString += $(this).attr('name') + '=' + $(this).val().replace('&', '%26');
+              putString += $(this).attr('name') + '=' + $(this).val().replace(/&/g, '%26');
               formData.append($(this).attr('name'), $(this).val());
             }
           }
