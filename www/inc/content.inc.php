@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    November, 2 2012
+ * @version    February, 28 2013
  * @package    inc
  * @link       http://ros.org/wiki/rms
  */
@@ -79,6 +79,7 @@ function create_footer() {
   <div class="line"></div>
   <table>
   <tr><td align="left">'.$designed_by.'</td><td align="right">'.$copyright.'</td></tr>
+  <tr><td colspan="2" align="right">Powered by the <a href="http://www.ros.org/wiki/rms/">Robot Management System</a></td></tr>
   </table>
   </footer>
   ';

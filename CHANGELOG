@@ -1,5 +1,6 @@
 -- Development --
 + Admin panel now correctly URI encodes the URL before making an AJAX call
++ "Powered by the Robot Management System" added to footer
 
 -- v0.2.11 --
 + Bug patched to correctly take into account a map's "continuous" flag
