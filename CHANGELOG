@@ -1,6 +1,7 @@
--- Development --
+-- v0.2.12 --
 + Admin panel now correctly URI encodes the URL before making an AJAX call
 + "Powered by the Robot Management System" added to footer
++ topic_logger widget integrated
 
 -- v0.2.11 --
 + Bug patched to correctly take into account a map's "continuous" flag
