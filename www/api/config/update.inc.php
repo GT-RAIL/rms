@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    February, 26 2013
+ * @version    March, 8 2013
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -16,13 +16,40 @@
 include_once(dirname(__FILE__).'/../../inc/config.inc.php');
 
 /**
- * Update the RMS database from version 2.0.1 to version 2.1.11.
+ * Update the RMS database from version 0.2.11 to version 0.2.12.
+ *
+ * @return string|null an error message or null if the update was sucessful
+ */
+function update_0_2_11() {
+  global $db;
+
+  // add interactivemarkersjs
+  $sql = "
+          INSERT INTO `javascript_files` (`url`, `path`) VALUES
+            ('https://raw.github.com/RobotWebTools/rosbagjs/groovy-devel/topiclogger.js', 
+             'js/ros/widgets/topiclogger.js')
+         ";
+  // try the update
+  if(!mysqli_query($db, $sql)) {
+    return mysqli_error($db);
+  }
+
+  // update the database version
+  if(!mysqli_query($db, "UPDATE `version` SET `version`='0.2.12' WHERE `version`='0.2.11'")) {
+    return mysqli_error($db);
+  } else {
+    return null;
+  }
+}
+
+/**
+ * Update the RMS database from version 0.2.1 to version 0.2.11.
  *
  * @return string|null an error message or null if the update was sucessful
  */
 function update_0_2_1() {
   global $db;
-  
+
   // add interactivemarkersjs
   $sql = "
           INSERT INTO `javascript_files` (`url`, `path`) VALUES
@@ -45,7 +72,7 @@ function update_0_2_1() {
   if(!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
-  
+
   // create the IM table
   $sql = "
           CREATE TABLE IF NOT EXISTS `interactive_markers` (
@@ -63,7 +90,7 @@ function update_0_2_1() {
   if(!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
-  
+
   // add constraints
   $sql = "
           ALTER TABLE `interactive_markers` ADD CONSTRAINT `interactive_markers_ibfk_1` 
@@ -73,7 +100,7 @@ function update_0_2_1() {
   if(!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
-  
+
   // "install" the table
   $sql = "
           INSERT INTO `widgets` (`name`, `table`, `script`)
@@ -84,7 +111,7 @@ function update_0_2_1() {
   if(!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
-  
+
   // "install" the example interface
   $sql = "INSERT INTO `interfaces` (`name`, `location`) VALUES ('Interactive Markers', 'markers')";
   // try the update
@@ -101,7 +128,7 @@ function update_0_2_1() {
 }
 
 /**
- * Update the RMS database from version 2.0.0 to version 2.1.0.
+ * Update the RMS database from version 0.2.0 to version 0.2.1.
  *
  * @return string|null an error message or null if the update was sucessful
  */
