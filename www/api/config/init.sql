@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `javascript_files` (
   PRIMARY KEY (`fileid`),
   UNIQUE KEY `url` (`url`),
   UNIQUE KEY `path` (`path`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `javascript_files`
@@ -215,7 +215,8 @@ INSERT INTO `javascript_files` (`fileid`, `url`, `path`) VALUES
 (10, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 'js/ros/widgets/improxy.js'),
 (11, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/threeinteraction.js', 'js/ros/widgets/threeinteraction.js'),
 (12, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosAxisHelper.js', 'js/ros/RosAxisHelper.js'),
-(13, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosOrbitControls.js', 'js/ros/RosOrbitControls.js');
+(13, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosOrbitControls.js', 'js/ros/RosOrbitControls.js'),
+(14, 'https://raw.github.com/RobotWebTools/rosbagjs/groovy-devel/topiclogger.js', 'js/ros/widgets/topiclogger.js');
 
 -- --------------------------------------------------------
 
@@ -432,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.2.11');
+('0.2.12');
 
 -- --------------------------------------------------------
 

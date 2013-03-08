@@ -3,6 +3,7 @@
 .settings
 .buildpath
 build
+www/api/robot_environments/interfaces/bosch_pr2_remote_demonstration_interface/
 www/api/robot_environments/interfaces/my_first_interface 
 www/api/robot_environments/interfaces/study_f2012
 www/inc/config.inc.php
