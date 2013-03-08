@@ -15,7 +15,7 @@ body, #preview-popup {
   font-family: Verdana, Arial, sans-ser;
   font-size: 12px;
   color: #101010;
-  background: #808285;
+  background: #101010 url(images/bg.jpg) repeat fixed center top;
 }
 
 h1, h2, h3 {
@@ -24,18 +24,18 @@ h1, h2, h3 {
 
 h1 {
   font-size: 40px;
-  color: #e1e1e2;
-  text-shadow: 0px 4px 2px #404245;
+  color: #9ccdfc;
+  text-shadow: 0px 4px 2px #333;
 }
 
 h2 {
   font-size: 26px;
-  text-shadow: 0px 2px 6px #e1e1e2;
+  text-shadow: 0px 2px 6px #f6f6f6;
 }
 
 h3 {
   font-size: 18px;
-  text-shadow: 0 0 3px #e1e1e2;
+  text-shadow: 0 0 3px #f6f6f6;
 }
 
 p {
@@ -59,7 +59,7 @@ header table, footer table {
 
 .line {
   height: 1px;
-  background-color: #003b6a;
+  background-color: #022056;
   border: 0 0 1px 0 solid #0b3e6f;
   margin: 1em 0;
   overflow: hidden;
@@ -101,7 +101,7 @@ body.loading .modal {
 
 /* == HEADER == */
 header {
-  background: #628cb2;
+  background: rgba(255, 255, 255, 0.25);
   border-top: 1px 1px 0 1px solid #333;
   width: 980px;
   position: relative;
@@ -113,12 +113,12 @@ header {
 header figure {
   float: right;
   padding: 10px;
-  background: #e1e1e2;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* == NAV == */
 #nav {
-  background: #628cb2;
+  background: rgba(255, 255, 255, 0.25);
   width: 100%;
   box-shadow: 0 1px 1px #101010;
 }
@@ -140,7 +140,7 @@ nav ul li a {
   font-size: 14px;
   font-weight: bold;
   padding: 7px 10px 4px;
-  text-shadow: 0 0px 5px #e1e1e2;
+  text-shadow: 0 0px 5px #fff;
   text-transform: uppercase;
 }
 
@@ -150,7 +150,7 @@ nav ul li a:hover {
 
 /* == PAGE == */
 #page {
-  background: #404245;
+  background: rgba(10, 10, 10, 0.8);
   width: 980px;
   position: relative;
   margin-left: auto;
@@ -158,7 +158,7 @@ nav ul li a:hover {
   margin-bottom: 10px;
   border-radius: 0 0 10px 10px;
   padding: 10px;
-  box-shadow: 0px 2px 4px #bd4647;
+  box-shadow: 0px 0px 15px 5px #aaaaaa;
 }
 
 /* == FORM == */
@@ -167,8 +167,8 @@ form fieldset {
 }
 
 form ol li {
-  background: #e1e1e2;
-  border: 2px solid #215f8b;
+  background: #9ccdfc;
+  border: 2px solid #096ac8;
   border-radius: 5px;
   line-height: 30px;
   list-style: none;
@@ -190,7 +190,7 @@ form fieldset fieldset label {
 
 form input:not([type=radio]), form textarea {
   resize: none;
-  background: #ffffff;
+  background: #f6f6f6;
   border: none;
   border-radius: 3px;
   font-style: italic;
@@ -200,10 +200,10 @@ form input:not([type=radio]), form textarea {
 }
 
 form input[type=submit], form input[type=button] {
-  background: #215f8b;
+  background: #096ac8;
   border: none;
   border-radius: 15px;
-  color: #e1e1e2;
+  color: #f6f6f6;
   display: block;
   font: 18px;
   letter-spacing: 1px;
@@ -215,13 +215,13 @@ form input[type=submit], form input[type=button] {
 }
 
 form input[type=submit]:hover, form input[type=button]:hover {
-  background: #003b6a;
+  background: #022056;
   cursor: pointer;
 }
 
 /* == SLIDESHOW == */
 #slides {
-  background: #c3c3c4;
+  background: rgba(240, 240, 240, 0.7);
   padding: 5px 0 17px 0;
   margin: 0 -10px 0 -10px;
 }
@@ -279,16 +279,16 @@ form input[type=submit]:hover, form input[type=button]:hover {
   width: 560px;
   font-size: 13px;
   line-height: 1.33;
-  color: #e1e1e2;
+  color: #f6f6f6;
   bottom: 0;
 }
 
 /* == ARTICLES == */
 article {
-  background: #a2bad2;
+  background: rgba(156, 205, 252, 0.7);
   margin: 10px 0;
   padding: 20px;
-  border: 1px solid #003b6a;
+  border: 1px solid #022056;
 }
 
 article figure {
@@ -309,11 +309,11 @@ table, table th {
 
 /* == SORTING == */
 table tr.even {
-  background: #a5a6a7;
+  background: rgba(156, 205, 252, 0.66);
 }
 
 table tr.odd {
-  background: #f1f1f1;
+  background: #f6f6f6;
 }
 
 table.tablesorter thead tr .header {
@@ -366,10 +366,11 @@ table td.content-cell {
 
 /* == FOOTER == */
 footer td {
-  color: #e1e1e2;
+  color: #f6f6f6;
   font-size: 10px;
 }
 
 footer a {
-  color: #e1e1e2;
+  color: #9ccdfc;
 }
+
