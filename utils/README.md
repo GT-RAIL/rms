@@ -11,6 +11,8 @@ rms Build Setup
    * `sudo apt-get install php-pear`
    * `sudo pear channel-discover pear.phing.info`
    * `sudo pear install phing/phing`
+ 1. Install code quality tools
+   * `sudo pear install PHP_CodeSniffer`
 
 ### Build with Phing
 

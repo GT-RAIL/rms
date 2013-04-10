@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="rms" default="build">
-  <property name="src.dir" value="../src" />
+	<property name="src.dir" value="../src" />
 	<property name="build.dir" value="../build" />
 
-	 <!-- Copy files into the build directory and minify JS -->
+	<!-- Copy files into the build directory and minify JS -->
 	<target name="rebuild">
 		<delete dir="${build.dir}" />
 		<mkdir dir="${build.dir}" />
@@ -15,7 +15,7 @@
 		</copy>
 	</target>
 
-	 <!-- Run a basic, simple linter -->
+	<!-- Run a basic, simple linter -->
 	<target name="lint">
 		<apply executable="php" failonerror="true">
 			<arg value="-l" />
@@ -26,6 +26,16 @@
 		</apply>
 	</target>
 
-	<target name="build" depends="rebuild,lint">
+	<!-- Code quality checks -->
+	<target name="quality">
+		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" haltonwarning="true">
+			<fileset dir="${build.dir}">
+				<include name="**/*.php" />
+				<include name="*.php" />
+			</fileset>
+		</phpcodesniffer>
+	</target>
+
+	<target name="build" depends="rebuild,lint,quality">
 	</target>
 </project>
