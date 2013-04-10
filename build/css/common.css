@@ -1,0 +1,376 @@
+/**
+ * The main style sheet for RMS.
+ *
+ *  Author: Russell Toris
+ * Version: December 13, 2012
+ */
+
+/* == GENERAL == */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body, #preview-popup {
+  font-family: Verdana, Arial, sans-ser;
+  font-size: 12px;
+  color: #101010;
+  background: #101010 url(images/bg.jpg) repeat fixed center top;
+}
+
+h1, h2, h3 {
+  font-variant: small-caps;
+}
+
+h1 {
+  font-size: 40px;
+  color: #9ccdfc;
+  text-shadow: 0px 4px 2px #333;
+}
+
+h2 {
+  font-size: 26px;
+  text-shadow: 0px 2px 6px #f6f6f6;
+}
+
+h3 {
+  font-size: 18px;
+  text-shadow: 0 0 3px #f6f6f6;
+}
+
+p {
+  line-height: 1.5em;
+  padding: 0 0 1em 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+article, nav ul li a, figure, #slides img {
+  border-radius: 10px;
+}
+
+header, footer, article, section, hgroup, nav, figure {
+  display: block;
+}
+
+header table, footer table {
+  width: 100%;
+}
+
+.line {
+  height: 1px;
+  background-color: #022056;
+  border: 0 0 1px 0 solid #0b3e6f;
+  margin: 1em 0;
+  overflow: hidden;
+}
+
+.clear:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.center {
+  text-align: center;
+  align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(255, 255, 255, .8) url('images/loading.gif') 50% 50%	no-repeat;
+}
+
+body.loading {
+	overflow: hidden;
+}
+
+body.loading .modal {
+	display: block;
+}
+
+/* == HEADER == */
+header {
+  background: rgba(255, 255, 255, 0.25);
+  border-top: 1px 1px 0 1px solid #333;
+  width: 980px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 10px 5px 10px;
+}
+
+header figure {
+  float: right;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* == NAV == */
+#nav {
+  background: rgba(255, 255, 255, 0.25);
+  width: 100%;
+  box-shadow: 0 1px 1px #101010;
+}
+
+nav {
+  height: 32px;
+  display: inline-block;
+}
+
+nav ul li {
+  display: inline;
+  text-align: center;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #101010;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 7px 10px 4px;
+  text-shadow: 0 0px 5px #fff;
+  text-transform: uppercase;
+}
+
+nav ul li a:hover {
+  background-color: rgba(240, 240, 240, 0.66);
+}
+
+/* == PAGE == */
+#page {
+  background: rgba(10, 10, 10, 0.8);
+  width: 980px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+  box-shadow: 0px 0px 15px 5px #aaaaaa;
+}
+
+/* == FORM == */
+form fieldset {
+  border: none;
+}
+
+form ol li {
+  background: #9ccdfc;
+  border: 2px solid #096ac8;
+  border-radius: 5px;
+  line-height: 30px;
+  list-style: none;
+  padding: 5px 10px;
+  margin: 0 0 2px 0;
+}
+
+form label {
+  float: left;
+  font-size: 13px;
+  width: 30%;
+}
+
+form fieldset fieldset label {
+  line-height: 20px;
+  padding: 0 0 0 30px;
+  width: 100%;
+}
+
+form input:not([type=radio]), form textarea {
+  resize: none;
+  background: #f6f6f6;
+  border: none;
+  border-radius: 3px;
+  font-style: italic;
+  outline: none;
+  padding: 5px;
+  width: 60%;
+}
+
+form input[type=submit], form input[type=button] {
+  background: #096ac8;
+  border: none;
+  border-radius: 15px;
+  color: #f6f6f6;
+  display: block;
+  font: 18px;
+  letter-spacing: 1px;
+  margin: auto;
+  padding: 5px 10px;
+  text-shadow: 0 1px 1px #101010;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+form input[type=submit]:hover, form input[type=button]:hover {
+  background: #022056;
+  cursor: pointer;
+}
+
+/* == SLIDESHOW == */
+#slides {
+  background: rgba(240, 240, 240, 0.7);
+  padding: 5px 0 17px 0;
+  margin: 0 -10px 0 -10px;
+}
+
+.slides_container, .slides_container div.slide {
+  width: 800px;
+}
+
+.slides_container {
+  overflow: hidden;
+  position: relative;
+  display: none;
+}
+
+.slides_container div.slide {
+  height: 350px;
+  display: block;
+}
+
+.pagination {
+  margin: 6px auto 0;
+  width: 100px;
+}
+
+.pagination li {
+  float: left;
+  margin: 0 1px;
+  list-style: none;
+}
+
+.pagination li a {
+  display: block;
+  width: 12px;
+  height: 0;
+  padding: 12px 0 0 0;
+  background-image: url(images/pagination.png);
+  background-position: 0 0;
+  float: left;
+  overflow: hidden;
+}
+
+.pagination li.current a {
+  background-position: 0 -12px;
+}
+
+.caption {
+  border-radius: 0 0 0 10px;
+  z-index: 100;
+  position: absolute;
+  bottom: -35px;
+  left: 0;
+  height: 30px;
+  padding: 5px 20px 0 20px;
+  background: rgba(10, 10, 10, 0.5);
+  width: 560px;
+  font-size: 13px;
+  line-height: 1.33;
+  color: #f6f6f6;
+  bottom: 0;
+}
+
+/* == ARTICLES == */
+article {
+  background: rgba(156, 205, 252, 0.7);
+  margin: 10px 0;
+  padding: 20px;
+  border: 1px solid #022056;
+}
+
+article figure {
+  float: right;
+  border: 3px solid #0b3e6f;
+  margin-left: 15px;
+  overflow: hidden;
+}
+
+article figure img {
+  margin-bottom: -5px;
+}
+
+/* == TABLE == */
+table, table th {
+  text-align: left;
+}
+
+/* == SORTING == */
+table tr.even {
+  background: rgba(156, 205, 252, 0.66);
+}
+
+table tr.odd {
+  background: #f6f6f6;
+}
+
+table.tablesorter thead tr .header {
+  background-image: url(images/sort.gif);
+  background-repeat: no-repeat;
+  background-position: center right;
+  padding: 0 12px 0 0;
+  cursor: pointer;
+}
+
+table.tablesorter thead tr .headerSortUp {
+  background-image: url(images/asc.gif);
+  background-repeat: no-repeat;
+}
+
+table.tablesorter thead tr .headerSortDown {
+  background-image: url(images/desc.gif);
+  background-repeat: no-repeat;
+}
+
+/* == CONTROL PANELS == */
+#log-container {
+  max-height: 500px;
+  overflow-y: scroll;
+  font-size: 11px;
+}
+
+#admin-tabs table {
+  width: 100%;
+  border: 0;
+  border-collapse: collapse;
+}
+
+table tr td.edit-cell, table tr td.delete-cell {
+  width: 29px;
+}
+
+table tr td.add-cell {
+  text-align: right;  
+}
+
+table td.content-cell {
+  border-left: 1px solid #aaaaaa;
+  padding: 0 0 0 3px;
+}
+
+.content-preview {
+  text-align: right;
+}
+
+/* == FOOTER == */
+footer td {
+  color: #f6f6f6;
+  font-size: 10px;
+}
+
+footer a {
+  color: #9ccdfc;
+}
+
