@@ -19,7 +19,7 @@ Before proceeding, please confirm you have installed the dependencies above.
 To run the build tasks:
 
  1. `cd /path/to/rms/utils/`
- 2. `phing build`
+ 2. `phing`
 
 `phing build` will minimize the JavaScript files under `src` and place the new built project into `build`. It will also run the linter. This is what [Travis CI](https://travis-ci.org/WPI-RAIL/rms) runs when a Pull Request is submitted.
 
