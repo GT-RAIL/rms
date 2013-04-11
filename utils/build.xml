@@ -33,6 +33,7 @@
 				<include name="study/*.php" />
                 <include name="setup/*.php" />
                 <include name="menu/*.php" />
+                <include name="login/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>

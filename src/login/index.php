@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    April, 11 2013
  * @package    login
  * @link       http://ros.org/wiki/rms
  */
@@ -50,12 +50,14 @@ $pagename = 'User Login';
       type : 'POST',
       beforeSend: function (xhr) {
         // set the username and password
-        var auth = base64Encode($('#username').val() + ':' + $('#password').val());
+        var auth = base64Encode($('#username').val() + 
+                ':' + $('#password').val());
         xhr.setRequestHeader('Authorization', 'Basic ' + auth);
       },
       success : function(data){
         // success
-         window.location = '<?php echo isset($_GET['goto']) ? '../'.$_GET['goto'] : '../menu'?>';
+         window.location = '<?php echo isset($_GET['goto']) ? 
+                                    '../'.$_GET['goto'] : '../menu'?>';
       },
       error : function(data){
         // display the error
