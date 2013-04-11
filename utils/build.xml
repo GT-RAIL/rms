@@ -41,6 +41,7 @@
                 <include name="img/**/*.php" />
                 <include name="css/*.php" />
                 <include name="css/**/*.php" />
+                <include name="connection/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>
