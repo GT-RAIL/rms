@@ -55,7 +55,7 @@ function get_slide_by_id($id) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `slides` WHERE `slideid`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `slides` WHERE `slideid`='%d'", api::cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -69,7 +69,7 @@ function get_slide_by_img($img) {
   global $db;
 
   // grab the page
-  $sql = sprintf("SELECT * FROM `slides` WHERE `img`='%s'", cleanse($img));
+  $sql = sprintf("SELECT * FROM `slides` WHERE `img`='%s'", api::cleanse($img));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -93,7 +93,7 @@ function create_slide($caption, $index, $fname, $tmp_file_location) {
   } else {
     // insert into the database
     $sql = sprintf("INSERT INTO `slides` (`img`, `caption`, `index`) VALUES ('%s', '%s', '%d')",
-    cleanse($fname), cleanse($caption), cleanse($index));
+    api::cleanse($fname), api::cleanse($caption), api::cleanse($index));
     mysqli_query($db, $sql);
 
     // no error
@@ -163,16 +163,16 @@ function update_slide($fields) {
       $id_to_set = $fields['slideid'];
     }
   }
-  $sql .= sprintf(" `slideid`='%d'", cleanse($id_to_set));
+  $sql .= sprintf(" `slideid`='%d'", api::cleanse($id_to_set));
 
   // check for each update
   if (isset($fields['caption'])) {
     $num_fields++;
-    $sql .= sprintf(", `caption`='%s'", cleanse($fields['caption']));
+    $sql .= sprintf(", `caption`='%s'", api::cleanse($fields['caption']));
   }
   if (isset($fields['index'])) {
     $num_fields++;
-    $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
+    $sql .= sprintf(", `index`='%d'", api::cleanse($fields['index']));
   }
 
   // do the file check
@@ -188,7 +188,7 @@ function update_slide($fields) {
       if (file_exists($file)) {
         unlink($file);
       }
-      $sql .= sprintf(", `img`='%s'", cleanse($fields['img']));
+      $sql .= sprintf(", `img`='%s'", api::cleanse($fields['img']));
     }
   }
 
@@ -202,7 +202,7 @@ function update_slide($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `slides` SET ".$sql." WHERE `slideid`='%d'"
-  , cleanse($fields['id']));
+  , api::cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -227,7 +227,7 @@ function delete_slide_by_id($id) {
     }
 
     // delete it
-    $sql = sprintf("DELETE FROM `slides` WHERE `slideid`='%d'", cleanse($id));
+    $sql = sprintf("DELETE FROM `slides` WHERE `slideid`='%d'", api::cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;

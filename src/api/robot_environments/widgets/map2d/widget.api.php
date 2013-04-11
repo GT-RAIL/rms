@@ -22,7 +22,7 @@ include_once(dirname(__FILE__).'/../../../../inc/config.inc.php');
 function get_map_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `maps` WHERE `id`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `maps` WHERE `id`='%d'", api::cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 

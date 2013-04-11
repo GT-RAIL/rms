@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    February, 28 2013
+ * @version    April, 11 2013
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -384,7 +384,7 @@ $liveVersion = get_init_sql_version();
             ajaxType = 'PUT';
           }
 
-          if ($(this).attr('name') !== 'password' || $(this).val() !== '<?php echo $PASSWORD_HOLDER?>') {
+          if ($(this).attr('name') !== 'password' || $(this).val() !== '<?php echo api::$passwordHolder?>') {
   	        if (putString.length > 1) {
               putString += '&';
             }
@@ -1281,7 +1281,7 @@ $liveVersion = get_init_sql_version();
                                         <tr>
                                             <td class=setting-label>Database
                                                 Password:</td>
-                                            <td><?php echo $PASSWORD_HOLDER?>
+                                            <td><?php echo api::$passwordHolder?>
                                             </td>
                                         </tr>
                                         <tr>

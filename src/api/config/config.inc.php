@@ -292,7 +292,7 @@ function update_site_settings($fields) {
  * @return string A string containing the HTML of the editor
  */
 function get_site_settings_editor_html() {
-  global $dbhost, $dbuser, $dbpass, $dbname, $title, $googleTrackingID, $copyright, $PASSWORD_HOLDER;
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $googleTrackingID, $copyright;
 
   $result = '<p>Complete the following form to edit the site settings.</p>
              <form action="javascript:submit();"><fieldset>
@@ -315,11 +315,11 @@ function get_site_settings_editor_html() {
               </li>
               <li>
                 <label for="password">Database Password</label>
-                <input type="password" name="password" id="password" value="'.$PASSWORD_HOLDER.'"
+                <input type="password" name="password" id="password" value="'.api::$passwordHolder.'"
                  placeholder="Password" required />
                 <label for="password-confirm">Confirm Database Password</label>
                 <input type="password" name="password-confirm" id="password-confirm"
-                 value="'.$PASSWORD_HOLDER.'" placeholder="Confirm Password" required />
+                 value="'.api::$passwordHolder.'" placeholder="Confirm Password" required />
               </li>
             </ol>
           </fieldset>

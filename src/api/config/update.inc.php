@@ -140,7 +140,7 @@ function update_0_2_0() {
   while($cur = mysqli_fetch_assoc($query)) {
     $new_url = str_replace('fuerte-devel', 'groovy-devel', $cur['url']);
     $sql = sprintf("UPDATE `javascript_files` SET `url`='%s' WHERE `fileid`='%d'"
-    , cleanse($new_url), cleanse($cur['fileid']));
+    , api::cleanse($new_url), api::cleanse($cur['fileid']));
     // try and do the update
     if (!mysqli_query($db, $sql)) {
       return mysqli_error($db);

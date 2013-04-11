@@ -46,30 +46,30 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
       // try to upload the database
       if ($error || $error = upload_database($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
       , $_POST['db'], $sqlfile)) {
-        $result = create_404_state($error);
+        $result = api::create_404_state($error);
       } else {
         // now create the config file
         if ($error = create_config_inc($_POST['host'], $_POST['dbuser'], $_POST['dbpass']
         , $_POST['db'], $_POST['site-name'], $_POST['google'], $_POST['copyright'])) {
-          $result = create_404_state($error);
+          $result = api::create_404_state($error);
         } else {
           // now delete any old Javascript files and download the new ones
           include_once(dirname(__FILE__).'/javascript_files/javascript_files.inc.php');
           if ($error = delete_local_javascript_files() || $error = download_javascript_files()) {
-            $result = create_404_state($error);
+            $result = api::create_404_state($error);
           } else {
             include_once(dirname(__FILE__).'/logs/logs.inc.php');
             write_to_log('SYSTEM: Site created.');
             // return the timestamp
-            $result = create_200_state(get_current_timestamp());
+            $result = api::create_200_state(get_current_timestamp());
           }
         }
       }
     } else {
-      $result = create_404_state('Incomplete list of required fields.');
+      $result = api::create_404_state('Incomplete list of required fields.');
     }
   } else {
-    $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+    $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
   }
 } else {
   // load the normal include files
@@ -89,21 +89,21 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                 if (count($_POST) === 1) {
                   // try and do the update
                   if ($error = run_database_update()) {
-                    $result = create_404_state($error);
+                    $result = api::create_404_state($error);
                   } else {
                     write_to_log('SYSTEM: '.$auth['username'].' updated the database.');
-                    $result = create_200_state(get_db_version());
+                    $result = api::create_200_state(get_db_version());
                   }
                 } else {
-                  $result = create_404_state('Too many fields provided.');
+                  $result = api::create_404_state('Too many fields provided.');
                 }
                 break;
               default:
-                $result = create_404_state($_GET['request'].' request type is invalid.');
+                $result = api::create_404_state($_GET['request'].' request type is invalid.');
                 break;
             }
           } else {
-            $result = create_404_state('Unknown request.');
+            $result = api::create_404_state('Unknown request.');
           }
           break;
         case 'GET':
@@ -112,42 +112,42 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
               // check for the editor request
               case 'editor':
                 if (count($_GET) === 1) {
-                  $result = create_200_state(get_site_settings_editor_html());
+                  $result = api::create_200_state(get_site_settings_editor_html());
                 } else {
-                  $result = create_404_state('Too many fields provided.');
+                  $result = api::create_404_state('Too many fields provided.');
                 }
                 break;
               default:
-                $result = create_404_state($_GET['request'].' request type is invalid.');
+                $result = api::create_404_state($_GET['request'].' request type is invalid.');
                 break;
             }
           } else {
-            $result = create_404_state('Unknown request.');
+            $result = api::create_404_state('Unknown request.');
           }
           break;
         case 'PUT':
-          if (count($_PUT) > 0) {
-            if ($error = update_site_settings($_PUT)) {
-              $result = create_404_state($error);
+          if (count($putArray) > 0) {
+            if ($error = update_site_settings($putArray)) {
+              $result = api::create_404_state($error);
             } else {
               write_to_log('SYSTEM: '.$auth['username'].' modified the site settings.');
-              $result = create_200_state(get_current_timestamp());
+              $result = api::create_200_state(get_current_timestamp());
             }
           } else {
-            $result = create_404_state('Unknown request.');
+            $result = api::create_404_state('Unknown request.');
           }
           break;
         default:
-          $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+          $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
           break;
       }
 
     } else {
       write_to_log('SECURITY: '.$auth['username'].' attempted to use the config script.');
-      $result = create_401_state();
+      $result = api::create_401_state();
     }
   } else {
-    $result = create_401_state();
+    $result = api::create_401_state();
   }
 }
 

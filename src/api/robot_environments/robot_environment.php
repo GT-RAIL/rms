@@ -206,7 +206,7 @@ class robot_environment {
     if ($this->experiment) {
       // get the time difference
       $sql = sprintf("SELECT UNIX_TIMESTAMP('%s') - UNIX_TIMESTAMP('%s') AS time"
-      , cleanse($this->experiment['end']), cleanse(get_current_timestamp()));
+      , api::cleanse($this->experiment['end']), api::cleanse(get_current_timestamp()));
       $diff = mysqli_fetch_array(mysqli_query($db, $sql));
 
       echo '

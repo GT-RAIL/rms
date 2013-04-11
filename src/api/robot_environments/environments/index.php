@@ -30,7 +30,7 @@ if ($auth = authenticate()) {
         if ($auth['type'] === 'admin') {
           if ($error = create_environment($_POST['protocol'], $_POST['envaddr'], $_POST['port']
           , $_POST['type'], $_POST['notes'], $_POST['enabled'])) {
-            $result = create_404_state($error);
+            $result = api::create_404_state($error);
           } else {
             // the most recent entry is the one we just created (auto increment)
             $all = get_environments();
@@ -43,14 +43,14 @@ if ($auth = authenticate()) {
               }
             }
             write_to_log('EDIT: '.$auth['username'].' created environment '.$_POST['envaddr'].'.');
-            $result = create_200_state($data);
+            $result = api::create_200_state($data);
           }
         } else {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment.');
-          $result = create_401_state();
+          $result = api::create_401_state();
         }
       } else {
-        $result = create_404_state('Unknown request.');
+        $result = api::create_404_state('Unknown request.');
       }
       break;
     case 'GET':
@@ -60,66 +60,66 @@ if ($auth = authenticate()) {
           case 'editor':
             if ($auth['type'] === 'admin') {
               if (count($_GET) === 1) {
-                $result = create_200_state(get_environment_editor_html(null));
+                $result = api::create_200_state(get_environment_editor_html(null));
               } else if (count($_GET) === 2 && isset($_GET['id'])) {
-                $result = create_200_state(get_environment_editor_html($_GET['id']));
+                $result = api::create_200_state(get_environment_editor_html($_GET['id']));
               } else {
-                $result = create_404_state('Too many fields provided.');
+                $result = api::create_404_state('Too many fields provided.');
               }
             } else {
               write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment editor.');
-              $result = create_401_state();
+              $result = api::create_401_state();
             }
             break;
           default:
-            $result = create_404_state($_GET['request'].' request type is invalid.');
+            $result = api::create_404_state($_GET['request'].' request type is invalid.');
             break;
         }
       } else {
-        $result = create_404_state('Unknown request.');
+        $result = api::create_404_state('Unknown request.');
       }
       break;
     case 'DELETE':
-      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+      if (count($deleteArray) === 1 && isset($deleteArray['id'])) {
         if ($auth['type'] === 'admin') {
-          if ($error = delete_environment_by_id($_DELETE['id'])) {
-            $result = create_404_state($error);
+          if ($error = delete_environment_by_id($deleteArray['id'])) {
+            $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$_DELETE['id'].'.');
-            $result = create_200_state(get_current_timestamp());
+            write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$deleteArray['id'].'.');
+            $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$_DELETE['id'].'.');
-          $result = create_401_state();
+          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$deleteArray['id'].'.');
+          $result = api::create_401_state();
         }
       } else {
-        $result = create_404_state('Unknown request.');
+        $result = api::create_404_state('Unknown request.');
       }
       break;
     case 'PUT':
-      if (isset($_PUT['id'])) {
+      if (isset($putArray['id'])) {
         if ($auth['type'] === 'admin') {
-          if ($error = update_environment($_PUT)) {
-            $result = create_404_state($error);
+          if ($error = update_environment($putArray)) {
+            $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified environment ID '.$_PUT['id'].'.');
-            $result = create_200_state(get_environment_by_id($_PUT['id']));
+            write_to_log('EDIT: '.$auth['username'].' modified environment ID '.$putArray['id'].'.');
+            $result = api::create_200_state(get_environment_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment ID '.$_PUT['id'].'.');
-          $result = create_401_state();
+          write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment ID '.$putArray['id'].'.');
+          $result = api::create_401_state();
         }
       } else {
-        $result = create_404_state('Unknown request.');
+        $result = api::create_404_state('Unknown request.');
       }
       break;
     default:
-      $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+      $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
       break;
   }
 } else {
   // default to the 401 state if no auth was given
-  $result = create_401_state();
+  $result = api::create_401_state();
 }
 
 // return the JSON encoding of the result

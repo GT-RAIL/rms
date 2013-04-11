@@ -20,9 +20,9 @@ header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
 if ($auth = authenticate()) {
-  $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+  $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
 } else {
-  $result = create_401_state();
+  $result = api::create_401_state();
 }
 
 echo json_encode($result);

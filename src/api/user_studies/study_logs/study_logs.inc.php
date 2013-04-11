@@ -43,7 +43,7 @@ function get_study_log_by_id($id) {
   global $db;
 
   // grab the article
-  $sql = sprintf("SELECT * FROM `study_logs` WHERE `logid`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `study_logs` WHERE `logid`='%d'", api::cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -59,7 +59,7 @@ function get_study_logs_by_expid($expid) {
 
   // grab the javascript entries and push them into an array
   $result = array();
-  $sql = sprintf("SELECT * FROM `study_logs` WHERE `expid`='%d'", cleanse($expid));
+  $sql = sprintf("SELECT * FROM `study_logs` WHERE `expid`='%d'", api::cleanse($expid));
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
@@ -81,7 +81,7 @@ global $db;
   if ($message !== '') {
     // insert the message into the database
     $sql = sprintf("INSERT INTO `study_logs` (`expid`, `entry`) VALUES ('%d','%s')"
-    , cleanse($expid), cleanse($entry));
+    , api::cleanse($expid), api::cleanse($entry));
     mysqli_query($db, $sql);
   }
 }

@@ -43,6 +43,7 @@
                 <include name="css/**/*.php" />
                 <include name="connection/*.php" />
                 <include name="account/*.php" />
+                <include name="api/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>

@@ -29,35 +29,35 @@ if ($auth = authenticate()) {
         // check the user level
         if ($auth['type'] === 'admin') {
           if ($conditions  = get_conditions()) {
-            $result = create_200_state($conditions);
+            $result = api::create_200_state($conditions);
           } else {
-            $result = create_404_state('No condition entries found.');
+            $result = api::create_404_state('No condition entries found.');
           }
         } else {
-          $result = create_401_state();
+          $result = api::create_401_state();
         }
       } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // check the user level
         if ($auth['type'] === 'admin') {
           // now check if the entry was found
           if ($condition = get_condition_by_id($_GET['id'])) {
-            $result = create_200_state($condition);
+            $result = api::create_200_state($condition);
           } else {
-            $result = create_404_state('Condition ID "'.$_GET['id'].'" is invalid.');
+            $result = api::create_404_state('Condition ID "'.$_GET['id'].'" is invalid.');
           }
         } else {
-          $result = create_401_state();
+          $result = api::create_401_state();
         }
       } else {
-        $result = create_404_state('Unknown request.');
+        $result = api::create_404_state('Unknown request.');
       }
       break;
     default:
-      $result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+      $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
       break;
   }
 } else {
-  $result = create_401_state();
+  $result = api::create_401_state();
 }
 
 // return the JSON encoding of the result

@@ -64,7 +64,7 @@ function valid_user_account_fields($array) {
  * @return array An array containing the enum types for users
  */
 function get_user_account_types() {
-  return get_enum_types('user_accounts', 'type');
+  return api::get_enum_types('user_accounts', 'type');
 }
 
 /**
@@ -94,7 +94,7 @@ function get_user_accounts() {
 function get_user_account_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `userid`='%d'", api::cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -108,7 +108,7 @@ function get_user_account_by_username($username) {
   global $db;
 
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", cleanse($username));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", api::cleanse($username));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -122,7 +122,7 @@ function get_user_account_by_email($email) {
   global $db;
 
 
-  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `email`='%s'", cleanse($email));
+  $sql = sprintf("SELECT * FROM `user_accounts` WHERE `email`='%s'", api::cleanse($email));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -148,13 +148,13 @@ function create_user_account($username, $password, $firstname, $lastname, $email
   }
 
   // generate a salt string
-  $salt = cleanse(generate_salt());
+  $salt = api::cleanse(generate_salt());
   // now insert into the database
   $sql = sprintf("INSERT INTO `user_accounts`
                  (`username`, `password`, `salt`, `firstname`, `lastname`, `email`, `type`)
                  VALUES
-                 ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", cleanse($username),
-  sha1(cleanse($password).$salt), $salt, cleanse($firstname), cleanse($lastname), cleanse($email), cleanse($type));
+                 ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", api::cleanse($username),
+  sha1(api::cleanse($password).$salt), $salt, api::cleanse($firstname), api::cleanse($lastname), api::cleanse($email), api::cleanse($type));
   mysqli_query($db, $sql);
 
   // no error
@@ -194,7 +194,7 @@ function update_user_account($fields) {
       $id_to_set = $fields['userid'];
     }
   }
-  $sql .= sprintf(" `userid`='%d'", cleanse($id_to_set));
+  $sql .= sprintf(" `userid`='%d'", api::cleanse($id_to_set));
 
   // check for each update
   if (isset($fields['username'])) {
@@ -202,30 +202,30 @@ function update_user_account($fields) {
     if ($fields['username'] !== $user['username'] && get_user_account_by_username($fields['username'])) {
       return 'ERROR: User "'.$fields['username'].'" already exists';
     }
-    $sql .= sprintf(", `username`='%s'", cleanse($fields['username']));
+    $sql .= sprintf(", `username`='%s'", api::cleanse($fields['username']));
   }
   if (isset($fields['email'])) {
     $num_fields++;
     if ($fields['email'] !== $user['email'] && get_user_account_by_email($fields['email'])) {
       return 'ERROR: Email address "'.$fields['email'].'" already exists';
     }
-    $sql .= sprintf(", `email`='%s'", cleanse($fields['email']));
+    $sql .= sprintf(", `email`='%s'", api::cleanse($fields['email']));
   }
   if (isset($fields['firstname'])) {
     $num_fields++;
-    $sql .= sprintf(", `firstname`='%s'", cleanse($fields['firstname']));
+    $sql .= sprintf(", `firstname`='%s'", api::cleanse($fields['firstname']));
   }
   if (isset($fields['lastname'])) {
     $num_fields++;
-    $sql .= sprintf(", `lastname`='%s'", cleanse($fields['lastname']));
+    $sql .= sprintf(", `lastname`='%s'", api::cleanse($fields['lastname']));
   }
   if (isset($fields['password'])) {
     $num_fields++;
-    $sql .= sprintf(", `password`='%s'", sha1(cleanse($fields['password']).$user['salt']));
+    $sql .= sprintf(", `password`='%s'", sha1(api::cleanse($fields['password']).$user['salt']));
   }
   if (isset($fields['type'])) {
     $num_fields++;
-    $sql .= sprintf(", `type`='%s'", cleanse($fields['type']));
+    $sql .= sprintf(", `type`='%s'", api::cleanse($fields['type']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -238,7 +238,7 @@ function update_user_account($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `user_accounts` SET ".$sql." WHERE `userid`='%d'"
-  , cleanse($fields['id']));
+  , api::cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -257,7 +257,7 @@ function delete_user_account_by_id($id) {
   // see if the account exists
   if (get_user_account_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `user_accounts` WHERE `userid`='%d'", cleanse($id));
+    $sql = sprintf("DELETE FROM `user_accounts` WHERE `userid`='%d'", api::cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;
@@ -292,7 +292,7 @@ function authenticate() {
     $password = $_SERVER['PHP_AUTH_PW'];
 
     // grab the username
-    $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", cleanse($username));
+    $sql = sprintf("SELECT * FROM `user_accounts` WHERE `username`='%s'", api::cleanse($username));
 
     // check if a result was found
     $query = mysqli_query($db, $sql);
@@ -315,13 +315,11 @@ function authenticate() {
  * @return string A string containing the HTML of the editor
  */
 function get_user_account_editor_html($id) {
-  global $PASSWORD_HOLDER;
-
   // see if a user exists with the given id
   $cur = get_user_account_by_id($id);
 
   if ($cur) {
-    $password = $PASSWORD_HOLDER;
+    $password = api::$passwordHolder;
     $username = $cur['username'];
     $firstname = $cur['firstname'];
     $lastname = $cur['lastname'];

@@ -33,13 +33,13 @@ if ($auth = authenticate())  {
 				if ($auth['type'] === 'admin' || $auth['userid'] === $exp['userid']) {
 					// insert into the log
 					create_study_log($_POST['expid'], $_POST['entry']);
-					$result = create_200_state(get_current_timestamp());
+					$result = api::create_200_state(get_current_timestamp());
 				} else {
 					write_to_log('SECURITY: '.$auth['username'].' attempted to insert into the study log.');
-					$result = create_401_state();
+					$result = api::create_401_state();
 				}
 			} else {
-				$result = create_404_state('Unknown request.');
+				$result = api::create_404_state('Unknown request.');
 			}
 			break;
 		case 'GET':
@@ -47,47 +47,47 @@ if ($auth = authenticate())  {
 				// check the user level
 				if ($auth['type'] === 'admin') {
 					if ($logs = get_study_logs()) {
-						$result = create_200_state($logs);
+						$result = api::create_200_state($logs);
 					} else {
-						$result = create_404_state('No study log entries found.');
+						$result = api::create_404_state('No study log entries found.');
 					}
 				} else {
-					$result = create_401_state();
+					$result = api::create_401_state();
 				}
 			} else if (count($_GET) === 1 && isset($_GET['id'])) {
 				// check the user level
 				if ($auth['type'] === 'admin') {
 					// now check if the entry was found
 					if ($log = get_study_log_by_id($_GET['id'])) {
-						$result = create_200_state($log);
+						$result = api::create_200_state($log);
 					} else {
-						$result = create_404_state('Study log ID "'.$_GET['id'].'" is invalid.');
+						$result = api::create_404_state('Study log ID "'.$_GET['id'].'" is invalid.');
 					}
 				} else {
-					$result = create_401_state();
+					$result = api::create_401_state();
 				}
 			}else if (count($_GET) === 1 && isset($_GET['expid'])) {
 				// check the user level
 				if ($auth['type'] === 'admin') {
 					// now check if the entry was found
 					if ($logs = get_study_logs_by_expid($_GET['expid'])) {
-						$result = create_200_state($logs);
+						$result = api::create_200_state($logs);
 					} else {
-						$result = create_404_state('No study log entries found with experiment ID "'.$_GET['expid'].'".');
+						$result = api::create_404_state('No study log entries found with experiment ID "'.$_GET['expid'].'".');
 					}
 				} else {
-					$result = create_401_state();
+					$result = api::create_401_state();
 				}
 			} else {
-				$result = create_404_state('Unknown request.');
+				$result = api::create_404_state('Unknown request.');
 			}
 			break;
 		default:
-			$result = create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+			$result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
 			break;
 	}
 } else {
-	$result = create_401_state();
+	$result = api::create_401_state();
 }
 
 // return the JSON encoding of the result

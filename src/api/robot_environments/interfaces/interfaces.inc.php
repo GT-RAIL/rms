@@ -51,7 +51,7 @@ function get_interfaces() {
 function get_interface_by_id($id) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `interfaces` WHERE `intid`='%d'", cleanse($id));
+  $sql = sprintf("SELECT * FROM `interfaces` WHERE `intid`='%d'", api::cleanse($id));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -64,7 +64,7 @@ function get_interface_by_id($id) {
 function get_interface_by_location($location) {
   global $db;
 
-  $sql = sprintf("SELECT * FROM `interfaces` WHERE `location`='%s'", cleanse($location));
+  $sql = sprintf("SELECT * FROM `interfaces` WHERE `location`='%s'", api::cleanse($location));
   return mysqli_fetch_assoc(mysqli_query($db, $sql));
 }
 
@@ -88,7 +88,7 @@ function create_interface($name, $location) {
     if ($location === $l) {
       // insert into the database
       $sql = sprintf("INSERT INTO `interfaces` (`name`, `location`) VALUES ('%s', '%s')",
-      cleanse($name), cleanse($location));
+      api::cleanse($name), api::cleanse($location));
       mysqli_query($db, $sql);
 
       // no error
@@ -133,19 +133,19 @@ function update_interface($fields) {
       $id_to_set = $fields['intid'];
     }
   }
-  $sql .= sprintf(" `intid`='%d'", cleanse($id_to_set));
+  $sql .= sprintf(" `intid`='%d'", api::cleanse($id_to_set));
 
   // check for each update
   if (isset($fields['name'])) {
     $num_fields++;
-    $sql .= sprintf(", `name`='%s'", cleanse($fields['name']));
+    $sql .= sprintf(", `name`='%s'", api::cleanse($fields['name']));
   }
   if (isset($fields['location'])) {
     $num_fields++;
     if ($fields['location'] !== $interface['location'] && get_interface_by_location($fields['location'])) {
       return 'ERROR: Interface location "'.$fields['location'].'" is already used';
     }
-    $sql .= sprintf(", `location`='%s'", cleanse($fields['location']));
+    $sql .= sprintf(", `location`='%s'", api::cleanse($fields['location']));
   }
 
   // check to see if there were too many fields or if we do not need to update
@@ -158,7 +158,7 @@ function update_interface($fields) {
 
   // we can now run the update
   $sql = sprintf("UPDATE `interfaces` SET ".$sql." WHERE `intid`='%d'"
-  , cleanse($fields['id']));
+  , api::cleanse($fields['id']));
   mysqli_query($db, $sql);
 
   // no error
@@ -177,7 +177,7 @@ function delete_interface_by_id($id) {
   // see if the interface exists
   if (get_interface_by_id($id)) {
     // delete it
-    $sql = sprintf("DELETE FROM `interfaces` WHERE `intid`='%d'", cleanse($id));
+    $sql = sprintf("DELETE FROM `interfaces` WHERE `intid`='%d'", api::cleanse($id));
     mysqli_query($db, $sql);
     // no error
     return null;
