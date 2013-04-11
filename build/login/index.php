@@ -16,7 +16,7 @@
 session_start();
 
 // check if there is a user logged in
-if(isset($_SESSION['userid'])) {
+if (isset($_SESSION['userid'])) {
   header('Location: ../menu');
 }
 

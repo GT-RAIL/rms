@@ -22,13 +22,13 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry
-      if(valid_interface_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_interface($_POST['name'], $_POST['location'])) {
+      if (valid_interface_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_interface($_POST['name'], $_POST['location'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' created interface '.$_POST['name'].'.');
@@ -43,14 +43,14 @@ if($auth = authenticate()) {
       }
       break;
     case 'GET':
-      if(isset($_GET['request'])) {
+      if (isset($_GET['request'])) {
         // create an editor
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_interface_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_interface_editor_html($_GET['id']));
               } else {
                 $result = create_404_state('Too many fields provided.');
@@ -69,9 +69,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_interface_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_interface_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted interface ID '.$_DELETE['id'].'.');
@@ -86,9 +86,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = update_interface($_PUT)) {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = update_interface($_PUT)) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified interface ID '.$_PUT['id'].'.');

@@ -23,13 +23,13 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry
-      if(valid_article_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_article($_POST['title'], $_POST['content'], $_POST['pageid'], $_POST['index'])) {
+      if (valid_article_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_article($_POST['title'], $_POST['content'], $_POST['pageid'], $_POST['index'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' created article '.$_POST['title'].'.');
@@ -45,34 +45,34 @@ if($auth = authenticate()) {
       break;
     case 'GET':
       // check if this is a default request
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check for articles
-        if($articles = get_articles()) {
+        if ($articles = get_articles()) {
           $result = create_200_state($articles);
         } else {
           $result = create_404_state('No content articles found.');
         }
-      } else if(count($_GET) === 1 && isset($_GET['id'])) {
+      } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // now check if the article was found
-        if($article = get_article_by_id($_GET['id'])) {
+        if ($article = get_article_by_id($_GET['id'])) {
           $result = create_200_state($article);
         } else {
           $result = create_404_state('Article ID "'.$_GET['id'].'" is invalid.');
         }
-      } else if(count($_GET) === 1 && isset($_GET['pageid'])) {
+      } else if (count($_GET) === 1 && isset($_GET['pageid'])) {
         // now check if the articles were found
-        if($articles = get_articles_by_pageid($_GET['pageid'])) {
+        if ($articles = get_articles_by_pageid($_GET['pageid'])) {
           $result = create_200_state($articles);
         } else {
           $result = create_404_state('No articles with content page ID "'.$_GET['pageid'].'" found.');
         }
-      } else if(isset($_GET['request'])) {
+      } else if (isset($_GET['request'])) {
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_article_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_article_editor_html($_GET['id']));
               } else {
                 $result = create_404_state('Too many fields provided.');
@@ -91,9 +91,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_article_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_article_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted article ID '.$_DELETE['id'].'.');
@@ -108,9 +108,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = update_article($_PUT)) {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = update_article($_PUT)) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified article ID '.$_PUT['id'].'.');

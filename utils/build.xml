@@ -30,7 +30,7 @@
 	<target name="quality">
 		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" haltonwarning="true">
 			<fileset dir="${build.dir}">
-				<include name="**/*.php" />
+				<include name="study/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>

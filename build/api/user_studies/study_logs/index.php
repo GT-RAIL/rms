@@ -23,14 +23,14 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate())  {
+if ($auth = authenticate())  {
 	switch ($_SERVER['REQUEST_METHOD']) {
 		case 'POST':
 			// check the fields
-			if(count($_POST) === 2 && isset($_POST['expid']) && isset($_POST['entry'])) {
+			if (count($_POST) === 2 && isset($_POST['expid']) && isset($_POST['entry'])) {
 				// check if we are authorized to make this entry
 				$exp = get_experiment_by_id($_POST['expid']);
-				if($auth['type'] === 'admin' || $auth['userid'] === $exp['userid']) {
+				if ($auth['type'] === 'admin' || $auth['userid'] === $exp['userid']) {
 					// insert into the log
 					create_study_log($_POST['expid'], $_POST['entry']);
 					$result = create_200_state(get_current_timestamp());
@@ -43,10 +43,10 @@ if($auth = authenticate())  {
 			}
 			break;
 		case 'GET':
-			if(count($_GET) === 0) {
+			if (count($_GET) === 0) {
 				// check the user level
-				if($auth['type'] === 'admin') {
-					if($logs = get_study_logs()) {
+				if ($auth['type'] === 'admin') {
+					if ($logs = get_study_logs()) {
 						$result = create_200_state($logs);
 					} else {
 						$result = create_404_state('No study log entries found.');
@@ -54,11 +54,11 @@ if($auth = authenticate())  {
 				} else {
 					$result = create_401_state();
 				}
-			} else if(count($_GET) === 1 && isset($_GET['id'])) {
+			} else if (count($_GET) === 1 && isset($_GET['id'])) {
 				// check the user level
-				if($auth['type'] === 'admin') {
+				if ($auth['type'] === 'admin') {
 					// now check if the entry was found
-					if($log = get_study_log_by_id($_GET['id'])) {
+					if ($log = get_study_log_by_id($_GET['id'])) {
 						$result = create_200_state($log);
 					} else {
 						$result = create_404_state('Study log ID "'.$_GET['id'].'" is invalid.');
@@ -66,11 +66,11 @@ if($auth = authenticate())  {
 				} else {
 					$result = create_401_state();
 				}
-			}else if(count($_GET) === 1 && isset($_GET['expid'])) {
+			}else if (count($_GET) === 1 && isset($_GET['expid'])) {
 				// check the user level
-				if($auth['type'] === 'admin') {
+				if ($auth['type'] === 'admin') {
 					// now check if the entry was found
-					if($logs = get_study_logs_by_expid($_GET['expid'])) {
+					if ($logs = get_study_logs_by_expid($_GET['expid'])) {
 						$result = create_200_state($logs);
 					} else {
 						$result = create_404_state('No study log entries found with experiment ID "'.$_GET['expid'].'".');

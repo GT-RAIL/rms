@@ -25,12 +25,12 @@ if (!isset($_SESSION['userid'])) {
   return;
 }
 
-$session_user = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = get_user_account_by_id($_SESSION['userid']);
 
 // check the information that was given
-if(!isset($_GET['envid']) || !isset($_GET['intid'])) {
+if (!isset($_GET['envid']) || !isset($_GET['intid'])) {
   // invalid request, log this and return them back to the menu
-  write_to_log($session_user['username'].' attempted to create an invalid connection.');
+  write_to_log($sessionUser['username'].' attempted to create an invalid connection.');
   header('Location: ../login');
   return;
 }

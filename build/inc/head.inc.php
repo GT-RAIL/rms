@@ -12,7 +12,7 @@
  * @link       http://ros.org/wiki/rms
  */
 
-if(file_exists(dirname(__FILE__).'/config.inc.php')) {
+if (file_exists(dirname(__FILE__).'/config.inc.php')) {
   include_once(dirname(__FILE__).'/config.inc.php');
 }
 
@@ -70,7 +70,7 @@ function import_analytics() {
   global $google_tracking_id;
 
   // check if tracking is being used
-  if($google_tracking_id) {
+  if ($google_tracking_id) {
     echo '
     <script type="text/javascript">
     var _gaq = _gaq || [];

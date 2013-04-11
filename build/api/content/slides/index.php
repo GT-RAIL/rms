@@ -23,18 +23,18 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry
-      if(valid_slide_fields($_POST)) {
-        if($auth['type'] === 'admin') {
+      if (valid_slide_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
           // check if a file was uploaded
-          if($_FILES['img']['error'] !== 0 && $_FILES['img']['error'] !== 4) {
+          if ($_FILES['img']['error'] !== 0 && $_FILES['img']['error'] !== 4) {
             $result = create_404_state();
             $error = 'PHP file upload returned with error code '.$_FILES['img']['error'].'.';
           } else {
-            if($error = create_slide($_POST['caption'], $_POST['index'], $_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
+            if ($error = create_slide($_POST['caption'], $_POST['index'], $_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
               $result = create_404_state($error);
             } else {
               write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
@@ -45,14 +45,14 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a slide.');
           $result = create_401_state();
         }
-      } else if(isset($_FILES['img']) && count($_POST) === 0) {
-        if($auth['type'] === 'admin') {
+      } else if (isset($_FILES['img']) && count($_POST) === 0) {
+        if ($auth['type'] === 'admin') {
           // check if a file was uploaded
-          if($_FILES['img']['error'] !== 0 && $_FILES['img']['error'] !== 4) {
+          if ($_FILES['img']['error'] !== 0 && $_FILES['img']['error'] !== 4) {
             $result = create_404_state();
             $error = 'PHP file upload returned with error code '.$_FILES['img']['error'].'.';
           } else {
-            if($error = upload_img($_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
+            if ($error = upload_img($_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
               $result = create_404_state($error);
             } else {
               write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
@@ -69,20 +69,20 @@ if($auth = authenticate()) {
       break;
     case 'GET':
       // check if this is a default request
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check for slides
-        if($slides = get_slides()) {
+        if ($slides = get_slides()) {
           $result = create_200_state($slides);
         } else {
           $result = create_404_state('No slideshow entires found.');
         }
-      } else if(isset($_GET['request'])) {
+      } else if (isset($_GET['request'])) {
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_slide_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_slide_editor_html($_GET['id']));
               } else {
                 $result = create_404_state('Too many fields provided.');
@@ -101,9 +101,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_slide_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_slide_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted slide ID '.$_DELETE['id'].'.');
@@ -118,9 +118,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = update_slide($_PUT)) {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = update_slide($_PUT)) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified slide ID '.$_PUT['id'].'.');

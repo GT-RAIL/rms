@@ -78,7 +78,7 @@ function create_study_log($expid, $entry) {
 global $db;
 
   // don't log an empty message
-  if($message !== '') {
+  if ($message !== '') {
     // insert the message into the database
     $sql = sprintf("INSERT INTO `study_logs` (`expid`, `entry`) VALUES ('%d','%s')"
     , cleanse($expid), cleanse($entry));

@@ -2,8 +2,8 @@
 /**
  * Slideshow include functions for the RMS API.
  *
- * Allows read and write access to slideshow slides via PHP function calls. Used throughout RMS and
- * within the RMS API.
+ * Allows read and write access to slideshow slides via PHP function calls. 
+ * Used throughout RMS and within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
@@ -16,13 +16,14 @@
 include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 
 /**
- * Check if the given array has all of the necessary fields to create slide. This does include
- * a check to see if a file was uploaded.
+ * Check if the given array has all of the necessary fields to create slide.
+ * This does include a check to see if a file was uploaded.
  *
  * @param array $array The array to check
  * @return boolean If the given array has all of the necessary fields to create a new slide
  */
-function valid_slide_fields($array) {
+function valid_slide_fields($array)
+{
   return isset($array['caption']) && isset($array['index']) && (count($array) === 2) && isset($_FILES['img']);
 }
 
@@ -85,9 +86,9 @@ function create_slide($caption, $index, $fname, $tmp_file_location) {
   global $db;
 
   // check if a file exists
-  if(get_slide_by_img($fname)) {
+  if (get_slide_by_img($fname)) {
     return 'ERROR: Slide already exists with image name '.$fname;
-  } else if($error = upload_img($fname, $tmp_file_location)) {
+  } else if ($error = upload_img($fname, $tmp_file_location)) {
     return $error;
   } else {
     // insert into the database
@@ -111,13 +112,13 @@ function upload_img($fname, $tmp_file_location) {
   global $db;
 
   // check if a file exists
-  if(get_slide_by_img($fname)) {
+  if (get_slide_by_img($fname)) {
     return 'ERROR: Slide already exists with image name '.$fname;
   } else {
     $destination = dirname(__FILE__).'/../../../img/slides/'.$fname;
 
     // check if we need to remove the old file
-    if(file_exists($destination)) {
+    if (file_exists($destination)) {
       unlink($destination);
     }
 
@@ -140,7 +141,7 @@ function upload_img($fname, $tmp_file_location) {
 function update_slide($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -148,15 +149,15 @@ function update_slide($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the slide
-  if(!($slide = get_slide_by_id($fields['id']))) {
+  if (!($slide = get_slide_by_id($fields['id']))) {
     return 'ERROR: Slide ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $slide['slideid'];
-  if(isset($fields['slideid'])) {
+  if (isset($fields['slideid'])) {
     $num_fields++;
-    if($fields['slideid'] !== $slide['slideid'] && get_slide_by_id($fields['slideid'])) {
+    if ($fields['slideid'] !== $slide['slideid'] && get_slide_by_id($fields['slideid'])) {
       return 'ERROR: Slide ID '.$fields['slideid'].' already exists';
     } else {
       $id_to_set = $fields['slideid'];
@@ -165,26 +166,26 @@ function update_slide($fields) {
   $sql .= sprintf(" `slideid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['caption'])) {
+  if (isset($fields['caption'])) {
     $num_fields++;
     $sql .= sprintf(", `caption`='%s'", cleanse($fields['caption']));
   }
-  if(isset($fields['index'])) {
+  if (isset($fields['index'])) {
     $num_fields++;
     $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
 
   // do the file check
-  if(isset($fields['img'])) {
-    if($fields['img'] !== $slide['img'] && get_slide_by_img($fields['img'])) {
+  if (isset($fields['img'])) {
+    if ($fields['img'] !== $slide['img'] && get_slide_by_img($fields['img'])) {
       return 'ERROR: Image '.$fields['img'].' already not exists.';
-    } else if(!file_exists(dirname(__FILE__).'/../../../img/slides/'.$fields['img'])) {
+    } else if (!file_exists(dirname(__FILE__).'/../../../img/slides/'.$fields['img'])) {
       return 'ERROR: Image '.$fields['img'].' does not exist on the server.';
     }else {
       $num_fields++;
       // cleanup the old image
       $file = dirname(__FILE__).'/../../../img/slides/'.$slide['img'];
-      if(file_exists($file)) {
+      if (file_exists($file)) {
         unlink($file);
       }
       $sql .= sprintf(", `img`='%s'", cleanse($fields['img']));
@@ -192,7 +193,7 @@ function update_slide($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0 && !isset($img)) {
     // nothing to update
@@ -218,10 +219,10 @@ function delete_slide_by_id($id) {
   global $db;
 
   // see if the environment exists
-  if($slide = get_slide_by_id($id)) {
+  if ($slide = get_slide_by_id($id)) {
     // remove the file
     $file = dirname(__FILE__).'/../../../img/slides/'.$slide['img'];
-    if(file_exists($file)) {
+    if (file_exists($file)) {
       unlink($file);
     }
 
@@ -277,7 +278,7 @@ function get_slide_editor_html($id) {
   // see if a slide exists with the given id
   $cur = get_slide_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $img = $cur['img'];
     $caption = $cur['caption'];
     $index = $cur['index'];
@@ -296,7 +297,7 @@ function get_slide_editor_html($id) {
                              id="id" value="'.$cur['slideid'].'" readonly="readonly" /></li>' : '';
 
   // check if we have an image to preview
-  if($cur) {
+  if ($cur) {
     $result .=  '<li><label for="id">Slide ID</label><input type="text" name="id"
                       id="id" value="'.$cur['slideid'].'" readonly="readonly" /></li>
                  <li>

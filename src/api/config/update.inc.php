@@ -30,12 +30,12 @@ function update_0_2_11() {
              'js/ros/widgets/topiclogger.js')
          ";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
   // update the database version
-  if(!mysqli_query($db, "UPDATE `version` SET `version`='0.2.12' WHERE `version`='0.2.11'")) {
+  if (!mysqli_query($db, "UPDATE `version` SET `version`='0.2.12' WHERE `version`='0.2.11'")) {
     return mysqli_error($db);
   } else {
     return null;
@@ -69,7 +69,7 @@ function update_0_2_1() {
              'js/ros/RosOrbitControls.js')
          ";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
@@ -87,7 +87,7 @@ function update_0_2_1() {
           ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The interactive marker widget.' AUTO_INCREMENT=1;
          ";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
@@ -97,7 +97,7 @@ function update_0_2_1() {
           FOREIGN KEY (`envid`) REFERENCES `environments` (`envid`) ON DELETE CASCADE ON UPDATE CASCADE;
          ";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
@@ -108,19 +108,19 @@ function update_0_2_1() {
           ('Interactive Markers', 'interactive_markers', 'interactive_markers')
          ";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
   // "install" the example interface
   $sql = "INSERT INTO `interfaces` (`name`, `location`) VALUES ('Interactive Markers', 'markers')";
   // try the update
-  if(!mysqli_query($db, $sql)) {
+  if (!mysqli_query($db, $sql)) {
     return mysqli_error($db);
   }
 
   // update the database version
-  if(!mysqli_query($db, "UPDATE `version` SET `version`='0.2.11' WHERE `version`='0.2.1'")) {
+  if (!mysqli_query($db, "UPDATE `version` SET `version`='0.2.11' WHERE `version`='0.2.1'")) {
     return mysqli_error($db);
   } else {
     return null;
@@ -142,13 +142,13 @@ function update_0_2_0() {
     $sql = sprintf("UPDATE `javascript_files` SET `url`='%s' WHERE `fileid`='%d'"
     , cleanse($new_url), cleanse($cur['fileid']));
     // try and do the update
-    if(!mysqli_query($db, $sql)) {
+    if (!mysqli_query($db, $sql)) {
       return mysqli_error($db);
     }
   }
 
   // update the database version
-  if(!mysqli_query($db, "UPDATE `version` SET `version`='0.2.1' WHERE `version`='0.2.0'")) {
+  if (!mysqli_query($db, "UPDATE `version` SET `version`='0.2.1' WHERE `version`='0.2.0'")) {
     return mysqli_error($db);
   } else {
     return null;

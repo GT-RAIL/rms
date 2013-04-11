@@ -63,13 +63,13 @@ function download_javascript_file($js) {
   $type = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
   curl_close ($curl);
 
-  if(!$data || strstr($type, 'text/html')) {
+  if (!$data || strstr($type, 'text/html')) {
     return 'Could not download Javascript file "'.$js['url'].'".';
   }
 
   // save the file locally
   $path = dirname(__FILE__).'/../../../'.$js['path'];
-  if(!($file = @fopen($path, "w+")) || !fputs($file, $data) || !fclose($file)) {
+  if (!($file = @fopen($path, "w+")) || !fputs($file, $data) || !fclose($file)) {
     return 'Could not write file "'.$js['path'].'". Check folder permissions and try again.';
   }
 
@@ -84,10 +84,10 @@ function download_javascript_file($js) {
  */
 function download_javascript_files() {
   // grab all of the files
-  if($files = get_javascript_files()) {
+  if ($files = get_javascript_files()) {
     // delete each of them
     foreach ($files as $cur) {
-      if($error = download_javascript_file($cur)) {
+      if ($error = download_javascript_file($cur)) {
         return $error;
       }
     }
@@ -106,7 +106,7 @@ function download_javascript_files() {
 function delete_local_javascript_file($js) {
   $path = dirname(__FILE__).'/../../../'.$js['path'];
 
-  if(file_exists($path) && !unlink($path)) {
+  if (file_exists($path) && !unlink($path)) {
     return 'Could not delete Javascript file "'.$js['path'].'".';
   } else {
     // no errors
@@ -121,10 +121,10 @@ function delete_local_javascript_file($js) {
  */
 function delete_local_javascript_files() {
   // grab all of the files
-  if($files = get_javascript_files()) {
+  if ($files = get_javascript_files()) {
     // delete each of them
     foreach ($files as $cur) {
-      if($error = delete_local_javascript_file($cur)) {
+      if ($error = delete_local_javascript_file($cur)) {
         return $error;
       }
     }

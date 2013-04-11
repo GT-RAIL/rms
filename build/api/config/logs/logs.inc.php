@@ -41,7 +41,7 @@ function write_to_log($message) {
   global $db;
 
   // don't log an empty message
-  if($message !== '') {
+  if ($message !== '') {
     // insert the message into the database
     $sql = sprintf("INSERT INTO `logs` (`uri`, `addr`, `entry`) VALUES ('%s','%s','%s')"
     , cleanse($_SERVER['REQUEST_URI']), cleanse($_SERVER['REMOTE_ADDR']), cleanse($message));

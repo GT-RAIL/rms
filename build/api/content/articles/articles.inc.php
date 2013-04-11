@@ -72,10 +72,10 @@ function get_article_by_title_and_pageid($title, $pageid) {
   global $db;
 
   // get all the articles on that page
-  if($articles = get_articles_by_pageid($pageid)) {
+  if ($articles = get_articles_by_pageid($pageid)) {
     // now check all of them
     foreach ($articles as $a) {
-      if($a['title'] === $title) {
+      if ($a['title'] === $title) {
         return $a;
       }
     }
@@ -119,9 +119,9 @@ function create_article($title, $content, $pageid, $index) {
   global $db;
 
   // check if the page ID is valid
-  if(!get_content_page_by_id($pageid)) {
+  if (!get_content_page_by_id($pageid)) {
     return 'ERROR: Content page with ID '.$pageid.' does not exist.';
-  } else if(get_article_by_title_and_pageid($title, $pageid)) {
+  } else if (get_article_by_title_and_pageid($title, $pageid)) {
     // make sure it does not already exist
     return 'ERROR: Article page with title '.$title.' already exists on page ID '.$pageid.'.';
   }
@@ -146,7 +146,7 @@ function create_article($title, $content, $pageid, $index) {
 function update_article($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update.';
   }
 
@@ -154,15 +154,15 @@ function update_article($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the user
-  if(!($article = get_article_by_id($fields['id']))) {
+  if (!($article = get_article_by_id($fields['id']))) {
     return 'ERROR: Article page ID '.$fields['id'].' does not exist.';
   }
 
   // check if we are changing the id
   $id_to_set = $article['artid'];
-  if(isset($fields['artid'])) {
+  if (isset($fields['artid'])) {
     $num_fields++;
-    if($fields['artid'] !== $article['artid'] && get_article_by_id($fields['artid'])) {
+    if ($fields['artid'] !== $article['artid'] && get_article_by_id($fields['artid'])) {
       return 'ERROR: Article ID '.$fields['artid'].' already exists';
     } else {
       $id_to_set = $fields['artid'];
@@ -171,33 +171,33 @@ function update_article($fields) {
   $sql .= sprintf(" `artid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['pageid'])) {
+  if (isset($fields['pageid'])) {
     $num_fields++;
-    if(!get_content_page_by_id($fields['pageid'])) {
+    if (!get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID "'.$fields['pageid'].'" does not exist.';
     }
     $sql .= sprintf(", `pageid`='%d'", cleanse($fields['pageid']));
   }
-  if(isset($fields['title'])) {
+  if (isset($fields['title'])) {
     $num_fields++;
     // check if we changed pages or if the article name exists on the same page already
-    if((isset($fields['pageid']) && $fields['pageid'] !== $article['pageid'] && get_article_by_title_and_pageid($fields['title'], $fields['pageid']))
+    if ((isset($fields['pageid']) && $fields['pageid'] !== $article['pageid'] && get_article_by_title_and_pageid($fields['title'], $fields['pageid']))
     || ($fields['title'] !== $article['title'] && get_article_by_title_and_pageid($fields['title'], $article['pageid']))) {
       return 'ERROR: Article page with title '.$fields['title'].' already exists.';
     }
     $sql .= sprintf(", `title`='%s'", cleanse($fields['title']));
   }
-  if(isset($fields['content'])) {
+  if (isset($fields['content'])) {
     $num_fields++;
     $sql .= sprintf(", `content`='%s'", cleanse($fields['content'], false));
   }
-  if(isset($fields['index'])) {
+  if (isset($fields['index'])) {
     $num_fields++;
     $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -222,7 +222,7 @@ function delete_article_by_id($id) {
   global $db;
 
   // see if the article exists
-  if(get_article_by_id($id)) {
+  if (get_article_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `articles` WHERE `artid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -277,7 +277,7 @@ function get_article_editor_html($id) {
   // see if an article exists with the given id
   $cur = get_article_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $title = $cur['title'];
     $content = $cur['content'];
     $pageid = $cur['pageid'];
@@ -318,7 +318,7 @@ function get_article_editor_html($id) {
   $pages = get_content_pages();
   foreach ($pages as $curpage) {
     // check if this type is the same
-    if($pageid === $curpage['pageid']) {
+    if ($pageid === $curpage['pageid']) {
       $result .= '<option value="'.$curpage['pageid'].'" selected="selected">'.$curpage['pageid'].': '.$curpage['title'].'</option>';
     } else {
       $result .= '<option value="'.$curpage['pageid'].'">'.$curpage['pageid'].': '.$curpage['title'].'</option>';

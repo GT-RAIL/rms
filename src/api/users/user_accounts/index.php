@@ -21,14 +21,14 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if this is a request
-      if(isset($_POST['request'])) {
+      if (isset($_POST['request'])) {
         switch ($_POST['request']) {
           case 'server_session':
-            if(count($_POST) === 1) {
+            if (count($_POST) === 1) {
               // create the session
               session_start();
               $_SESSION['userid'] = $auth['userid'];
@@ -39,8 +39,8 @@ if($auth = authenticate()) {
             }
             break;
           case 'destroy_session':
-            if(count($_POST) === 1) {
-              if(isset($_SESSION['userid'])) {
+            if (count($_POST) === 1) {
+              if (isset($_SESSION['userid'])) {
                 // destroy the session
                 unset($_SESSION['userid']);
                 session_destroy();
@@ -57,9 +57,9 @@ if($auth = authenticate()) {
             $result = create_404_state($_POST['request'].' request type is invalid.');
             break;
         }
-      } else if(valid_user_account_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
+      } else if (valid_user_account_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
           , $_POST['lastname'], $_POST['email'], $_POST['type'])) {
             $result = create_404_state($error);
           } else {
@@ -79,9 +79,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'GET':
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check the user level
-        if($auth['type'] === 'admin') {
+        if ($auth['type'] === 'admin') {
           // we authenticated so we know at least one user exists
           $accounts = get_user_accounts();
           // remove the password info
@@ -94,11 +94,11 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
           $result = create_401_state();
         }
-      } else if(count($_GET) === 1 && isset($_GET['id'])) {
+      } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // check the user level
-        if($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
+        if ($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
           // check if it exists
-          if($user = get_user_account_by_id($_GET['id'])) {
+          if ($user = get_user_account_by_id($_GET['id'])) {
             // remove the password info
             unset($user['password']);
             unset($user['salt']);
@@ -110,13 +110,13 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
           $result = create_401_state();
         }
-      } else if(isset($_GET['request'])) {
+      } else if (isset($_GET['request'])) {
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_user_account_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_user_account_editor_html($_GET['id']));
               } else {
                 $result = create_404_state('Unknown request.');
@@ -135,9 +135,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_user_account_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_user_account_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$_DELETE['id'].'.');
@@ -152,9 +152,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = update_user_account($_PUT)) {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = update_user_account($_PUT)) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified user ID '.$_PUT['id'].'.');

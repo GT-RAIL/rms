@@ -109,7 +109,7 @@ function create_environment_interface_pair($envid, $intid) {
   global $db;
 
   // make sure the pair does not already exist
-  if(get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
+  if (get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
     return 'ERROR: Environment-interface pair '.$envid.'-'.$intid.' already exists';
   }
 
@@ -133,7 +133,7 @@ function create_environment_interface_pair($envid, $intid) {
 function update_environment_interface_pair($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -141,15 +141,15 @@ function update_environment_interface_pair($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the pair
-  if(!($pair = get_environment_interface_pair_by_id($fields['id']))) {
+  if (!($pair = get_environment_interface_pair_by_id($fields['id']))) {
     return 'ERROR: Environment-interface pair ID '.$id.' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $pair['pairid'];
-  if(isset($fields['pairid'])) {
+  if (isset($fields['pairid'])) {
     $num_fields++;
-    if($fields['pairid'] !== $pair['pairid'] && get_environment_interface_pair_by_id($fields['pairid'])) {
+    if ($fields['pairid'] !== $pair['pairid'] && get_environment_interface_pair_by_id($fields['pairid'])) {
       return 'ERROR: Environment-interface pair ID '.$fields['pairid'].' already exists';
     } else {
       $id_to_set = $fields['pairid'];
@@ -158,24 +158,24 @@ function update_environment_interface_pair($fields) {
   $sql .= sprintf(" `pairid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['envid'])) {
+  if (isset($fields['envid'])) {
     $num_fields++;
     $sql .= sprintf(", `envid`='%d'", cleanse($fields['envid']));
   }
-  if(isset($fields['intid'])) {
+  if (isset($fields['intid'])) {
     $num_fields++;
     $sql .= sprintf(", `intid`='%d'", cleanse($fields['intid']));
   }
 
   // check to make sure the pair does not exist already
-  if(isset($fields['envid']) && isset($fields['intid'])
+  if (isset($fields['envid']) && isset($fields['intid'])
   && ($fields['envid'] !== $pair['envid'] || $fields['intid'] !== $pair['intid'])
   && get_environment_interface_pair_by_envid_and_intid($fields['envid'], $fields['intid'])) {
     return 'ERROR: Environment-interface pair '.$envid.'-'.$intid.' already exists';
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -201,7 +201,7 @@ function delete_environment_interface_pair_by_id($id) {
   global $db;
 
   // see if the pair exists
-  if(get_environment_interface_pair_by_id($id)) {
+  if (get_environment_interface_pair_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `environment_interface_pairs` WHERE `pairid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -223,7 +223,7 @@ function get_environment_interface_pair_editor_html($id) {
   // see if a pair exists with the given id
   $cur = get_environment_interface_pair_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $envid = $cur['envid'];
     $intid = $cur['intid'];
   } else {
@@ -246,7 +246,7 @@ function get_environment_interface_pair_editor_html($id) {
   $environments = get_environments();
   foreach ($environments as $cur) {
     // check if this environment is the same
-    if($envid === $cur['envid']) {
+    if ($envid === $cur['envid']) {
       $result .= '<option value="'.$cur['envid'].'" selected="selected">'.$cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']." :: ".$cur['notes'].'</option>';
     } else {
       $result .= '<option value="'.$cur['envid'].'">'.$cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']." :: ".$cur['notes'].'</option>';
@@ -261,7 +261,7 @@ function get_environment_interface_pair_editor_html($id) {
   $interfaces = get_interfaces();
   foreach ($interfaces as $cur) {
     // check if this environment is the same
-    if($intid === $cur['intid']) {
+    if ($intid === $cur['intid']) {
       $result .= '<option value="'.$cur['intid'].'" selected="selected">'.$cur['intid'].': '.$cur['name'].' -- api/robot_environments/interfaces/'.$cur['location'].'</option>';
     } else {
       $result .= '<option value="'.$cur['intid'].'">'.$cur['intid'].': '.$cur['name'].' -- api/robot_environments/interfaces/'.$cur['location'].'</option>';
@@ -324,20 +324,20 @@ function create_error_page($error, $user) {
  */
 function generate_environment_interface($userid, $envid, $intid) {
   // grab what we need
-  if(!$interface = get_interface_by_id($intid)) {
+  if (!$interface = get_interface_by_id($intid)) {
     create_error_page('Invalid interface number provided.', get_user_account_by_id($userid));
-  } else if(!get_environment_by_id($envid)) {
+  } else if (!get_environment_by_id($envid)) {
     create_error_page('Invalid environment number provided.', get_user_account_by_id($userid));
-  } else if(!get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
+  } else if (!get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
     create_error_page('Invalid pairing between the interface and the environment.', get_user_account_by_id($userid));
-  } else if(!file_exists(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php')) {
+  } else if (!file_exists(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php')) {
     create_error_page(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php does not exist!', get_user_account_by_id($userid));
   } else {
     // include the file
     include_once(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php');
 
     // now check for the correct function
-    if(!function_exists('generate')) {
+    if (!function_exists('generate')) {
       create_error_page('Interface script does not implement the required function.', $user);
     } else {
       // good to go, lets create the interface!

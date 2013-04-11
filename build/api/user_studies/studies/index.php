@@ -22,13 +22,13 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate())  {
+if ($auth = authenticate())  {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check the user level
-        if($auth['type'] === 'admin') {
-          if($studies = get_studies()) {
+        if ($auth['type'] === 'admin') {
+          if ($studies = get_studies()) {
             $result = create_200_state($studies);
           } else {
             $result = create_404_state('No study entries found.');
@@ -36,11 +36,11 @@ if($auth = authenticate())  {
         } else {
           $result = create_401_state(array());
         }
-      } else if(count($_GET) === 1 && isset($_GET['id'])) {
+      } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // check the user level
-        if($auth['type'] === 'admin') {
+        if ($auth['type'] === 'admin') {
           // now check if the entry was found
-          if($study = get_study_by_id($_GET['id'])) {
+          if ($study = get_study_by_id($_GET['id'])) {
             $result = create_200_state($study);
           } else {
             $result = create_404_state('Study ID "'.$_GET['id'].'" is invalid.');

@@ -48,7 +48,7 @@ function create_keyboard_teleop_with_slider($teleop, $cb = null) {
 		';
 
   // check the callback
-  if($cb) {
+  if ($cb) {
       $result .= $cb.'(teleop);
       ';
   }

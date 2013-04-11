@@ -40,14 +40,14 @@ function create_header($user, $pagename, $path) {
   }
 
   // add the login page if the user is not logged in
-  if(!$user) {
+  if (!$user) {
     echo '<li><a href="'.$path.'login">Login</a></li>';
   }
   echo '
   </ul></nav></center></div>';
 
   // the user menu
-  if($user) {
+  if ($user) {
     echo '
     <header class="clear"><table><tr>
     <td align="left"><h3>'.$user['firstname'].' '.$user['lastname'].'</h3></td>
@@ -56,7 +56,7 @@ function create_header($user, $pagename, $path) {
     <span class="menu-account"><a href="'.$path.'account/">Account</a></span>&nbsp;';
 
     // check if this is an admin
-    if($user['type'] === 'admin') {
+    if ($user['type'] === 'admin') {
       echo '
       <span class="menu-admin-panel"><a href="'.$path.'admin/">Admin Panel</a></span>&nbsp;
       <span class="menu-study-panel"><a href="'.$path.'study/">Study Panel</a> </span>&nbsp;';

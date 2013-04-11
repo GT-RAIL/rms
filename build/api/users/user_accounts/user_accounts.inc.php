@@ -141,9 +141,9 @@ function create_user_account($username, $password, $firstname, $lastname, $email
   global $db;
 
   // make sure the user does not exist
-  if(get_user_account_by_username($username)) {
+  if (get_user_account_by_username($username)) {
     return 'ERROR: User "'.$username.'" already exists';
-  } else if(get_user_account_by_email($email)) {
+  } else if (get_user_account_by_email($email)) {
     return 'ERROR: Email address "'.$email.'" already exists';
   }
 
@@ -172,7 +172,7 @@ function create_user_account($username, $password, $firstname, $lastname, $email
 function update_user_account($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -180,15 +180,15 @@ function update_user_account($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the user
-  if(!($user = get_user_account_by_id($fields['id']))) {
+  if (!($user = get_user_account_by_id($fields['id']))) {
     return 'ERROR: User ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $user['userid'];
-  if(isset($fields['userid'])) {
+  if (isset($fields['userid'])) {
     $num_fields++;
-    if($fields['userid'] !== $user['userid'] && get_user_account_by_id($fields['userid'])) {
+    if ($fields['userid'] !== $user['userid'] && get_user_account_by_id($fields['userid'])) {
       return 'ERROR: User ID '.$fields['userid'].' already exists';
     } else {
       $id_to_set = $fields['userid'];
@@ -197,39 +197,39 @@ function update_user_account($fields) {
   $sql .= sprintf(" `userid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['username'])) {
+  if (isset($fields['username'])) {
     $num_fields++;
     if ($fields['username'] !== $user['username'] && get_user_account_by_username($fields['username'])) {
       return 'ERROR: User "'.$fields['username'].'" already exists';
     }
     $sql .= sprintf(", `username`='%s'", cleanse($fields['username']));
   }
-  if(isset($fields['email'])) {
+  if (isset($fields['email'])) {
     $num_fields++;
-    if($fields['email'] !== $user['email'] && get_user_account_by_email($fields['email'])) {
+    if ($fields['email'] !== $user['email'] && get_user_account_by_email($fields['email'])) {
       return 'ERROR: Email address "'.$fields['email'].'" already exists';
     }
     $sql .= sprintf(", `email`='%s'", cleanse($fields['email']));
   }
-  if(isset($fields['firstname'])) {
+  if (isset($fields['firstname'])) {
     $num_fields++;
     $sql .= sprintf(", `firstname`='%s'", cleanse($fields['firstname']));
   }
-  if(isset($fields['lastname'])) {
+  if (isset($fields['lastname'])) {
     $num_fields++;
     $sql .= sprintf(", `lastname`='%s'", cleanse($fields['lastname']));
   }
-  if(isset($fields['password'])) {
+  if (isset($fields['password'])) {
     $num_fields++;
     $sql .= sprintf(", `password`='%s'", sha1(cleanse($fields['password']).$user['salt']));
   }
-  if(isset($fields['type'])) {
+  if (isset($fields['type'])) {
     $num_fields++;
     $sql .= sprintf(", `type`='%s'", cleanse($fields['type']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -255,7 +255,7 @@ function delete_user_account_by_id($id) {
   global $db;
 
   // see if the account exists
-  if(get_user_account_by_id($id)) {
+  if (get_user_account_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `user_accounts` WHERE `userid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -279,7 +279,7 @@ function authenticate() {
   // check if we are using the session information
   $headers = apache_request_headers();
   foreach ($headers as $h => $value) {
-    if($h === 'RMS-Use-Session' && $value === 'true') {
+    if ($h === 'RMS-Use-Session' && $value === 'true') {
       // use session information to authenticate
       session_start();
       return (isset($_SESSION['userid'])) ? get_user_account_by_id($_SESSION['userid']) : null;
@@ -287,7 +287,7 @@ function authenticate() {
   }
 
   // check the auth header
-  if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+  if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
     $username = $_SERVER['PHP_AUTH_USER'];
     $password = $_SERVER['PHP_AUTH_PW'];
 
@@ -320,7 +320,7 @@ function get_user_account_editor_html($id) {
   // see if a user exists with the given id
   $cur = get_user_account_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $password = $PASSWORD_HOLDER;
     $username = $cur['username'];
     $firstname = $cur['firstname'];
@@ -380,7 +380,7 @@ function get_user_account_editor_html($id) {
   $types = get_user_account_types();
   foreach ($types as $curtype) {
     // check if this type is the same
-    if($type === $curtype) {
+    if ($type === $curtype) {
       $result .= '<option value="'.$curtype.'" selected="selected">'.$curtype.'</option>';
     } else {
       $result .= '<option value="'.$curtype.'">'.$curtype.'</option>';

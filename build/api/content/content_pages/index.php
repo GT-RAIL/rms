@@ -23,13 +23,13 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry
-      if(valid_content_page_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_content_page($_POST['title'], $_POST['menu'], $_POST['index'],
+      if (valid_content_page_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_content_page($_POST['title'], $_POST['menu'], $_POST['index'],
           isset($_POST['js']) ? $_POST['js'] : null)) {
             $result = create_404_state($error);
           } else {
@@ -46,27 +46,27 @@ if($auth = authenticate()) {
       break;
     case 'GET':
       // check if this is a default request
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check for pages
-        if($pages = get_content_pages()) {
+        if ($pages = get_content_pages()) {
           $result = create_200_state($pages);
         } else {
           $result = create_404_state('No content pages found.');
         }
-      } else if(count($_GET) === 1 && isset($_GET['id'])) {
+      } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // now check if the page was found
-        if($page = get_content_page_by_id($_GET['id'])) {
+        if ($page = get_content_page_by_id($_GET['id'])) {
           $result = create_200_state($page);
         } else {
           $result = create_404_state('Content Page ID "'.$_GET['id'].'" is invalid.');
         }
-      } else if(isset($_GET['request'])) {
+      } else if (isset($_GET['request'])) {
         switch ($_GET['request']) {
           case 'editor':
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_content_page_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_content_page_editor_html($_GET['id']));
               } else {
                 $result = create_404_state('Too many fields provided.');
@@ -85,9 +85,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_content_page_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_content_page_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted content page ID '.$_DELETE['id'].'.');
@@ -102,9 +102,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = update_content_page($_PUT)) {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = update_content_page($_PUT)) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' modified content page ID '.$_PUT['id'].'.');

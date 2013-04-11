@@ -17,45 +17,44 @@ session_start();
 
 // check if a user is logged in
 if (!isset($_SESSION['userid'])) {
-  header('Location: ../login/?goto=account/');
-  return;
+    header('Location: ../login/?goto=account/');
+    return;
 }
 
 // load the include files
-include_once(dirname(__FILE__).'/../api/users/user_accounts/user_accounts.inc.php');
+include_once(dirname(__FILE__).
+        '/../api/users/user_accounts/user_accounts.inc.php');
 include_once(dirname(__FILE__).'/../inc/head.inc.php');
 include_once(dirname(__FILE__).'/../inc/content.inc.php');
 
 $pagename = 'Account Settings';
 
 // grab the user info from the database
-$session_user = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = get_user_account_by_id($_SESSION['userid']);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
 <?php import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
-
 <script type="text/javascript">
 	createMenuButtons();
 </script>
 </head>
 <body>
-<?php create_header($session_user, $pagename, '../')?>
-  <section id="page">
-    <section>
-      <div class="line"></div>
-      <article>
-        <div class="line"></div>
-        <div class="center">
-          <h2>Coming Soon</h2>
-        </div>
-        <div class="line"></div>
-      </article>
+    <?php create_header($sessionUser, $pagename, '../')?>
+    <section id="page">
+        <section>
+            <div class="line"></div>
+            <article>
+                <div class="line"></div>
+                <div class="center">
+                    <h2>Coming Soon</h2>
+                </div>
+                <div class="line"></div>
+            </article>
+        </section>
+        <?php create_footer()?>
     </section>
-    <?php create_footer()?>
-  </section>
 </body>
 </html>

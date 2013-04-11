@@ -15,7 +15,7 @@
 
 include_once(dirname(__FILE__).'/../api.inc.php');
 // only include update if we have a config file already
-if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
+if (file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
 	include_once(dirname(__FILE__).'/update.inc.php');
 }
 
@@ -58,7 +58,7 @@ function get_init_sql_version($url) {
   $lines = explode("\n", $data);
   $len = count($lines);
   for ($i = 0; $i < $len; $i++) {
-    if($lines[$i] === "INSERT INTO `version` (`version`) VALUES") {
+    if ($lines[$i] === "INSERT INTO `version` (`version`) VALUES") {
       // break out the version number
       $v = substr($lines[$i+1], strpos($lines[$i+1], "'")+1);
       $v = substr($v, 0, strpos($v, "'"));
@@ -91,11 +91,11 @@ function valid_config_fields($array) {
  */
 function upload_database($host, $user, $pass, $name, $fname) {
   // grab the file
-  if(!file_exists($fname) || !($sql = file_get_contents($fname))) {
+  if (!file_exists($fname) || !($sql = file_get_contents($fname))) {
     return 'Could not load SQL file "'.$fname.'".';
   }
   // connect to the database
-  if(!($db = @mysqli_connect($host, $user, $pass, $name))) {
+  if (!($db = @mysqli_connect($host, $user, $pass, $name))) {
     return 'Could not create a connection to the MySQL server.';
   }
 
@@ -103,7 +103,7 @@ function upload_database($host, $user, $pass, $name, $fname) {
   mysqli_multi_query($db, $sql);
   // wait for everything to finish
   do {
-    if($r = mysqli_store_result($db)){
+    if ($r = mysqli_store_result($db)){
       mysqli_free_result($r);
     }
   } while(mysqli_next_result($db));
@@ -126,13 +126,13 @@ function upload_database($host, $user, $pass, $name, $fname) {
  */
 function create_config_inc($dbhost, $dbuser, $dbpass, $dbname, $title, $google, $copyright) {
   // create the file
-  if(!$f = @fopen(dirname(__FILE__).'/../../inc/config.inc.php', 'w')) {
+  if (!$f = @fopen(dirname(__FILE__).'/../../inc/config.inc.php', 'w')) {
     return 'Could not create config inside of folder "inc". Check folder permissions and try again.';
   }
 
   // check the google tracking ID
   $google_tracking_id = '$google_tracking_id = ';
-  if($google === '') {
+  if ($google === '') {
     $google_tracking_id .= 'null;';
   } else {
     $google_tracking_id .= '\''.$google.'\';';
@@ -193,7 +193,7 @@ function run_database_update() {
   $code_version = get_init_sql_version($prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql');
 
 
-  if(get_db_version() < '0.2.0') {
+  if (get_db_version() < '0.2.0') {
     return 'ERROR: Version '.$code_version.' is not backwards compatible with version '.get_db_version().'.';
   }
 
@@ -202,7 +202,7 @@ function run_database_update() {
     // build the function name
     $function  = 'update_'.get_db_version();
     $function= str_replace('.', '_', $function);
-    if($error = $function()) {
+    if ($error = $function()) {
       return $error;
     }
   }
@@ -222,43 +222,43 @@ function update_site_settings($fields) {
 
   // check the fields
   $num_fields = 0;
-  if(isset($fields['host'])) {
+  if (isset($fields['host'])) {
     $num_fields++;
     $new_dbhost = $fields['host'];
   } else {
     $new_dbhost = $dbhost;
   }
-  if(isset($fields['db'])) {
+  if (isset($fields['db'])) {
     $num_fields++;
     $new_dbname = $fields['db'];
   } else {
     $new_dbname = $dbname;
   }
-  if(isset($fields['dbuser'])) {
+  if (isset($fields['dbuser'])) {
     $num_fields++;
     $new_dbuser = $fields['dbuser'];
   } else {
     $new_dbuser = $dbuser;
   }
-  if(isset($fields['password'])) {
+  if (isset($fields['password'])) {
     $num_fields++;
     $new_dbpass = $fields['password'];
   } else {
     $new_dbpass = $dbpass;
   }
-  if(isset($fields['site-name'])) {
+  if (isset($fields['site-name'])) {
     $num_fields++;
     $new_title = $fields['site-name'];
   } else {
     $new_title = $title;
   }
-  if(isset($fields['google'])) {
+  if (isset($fields['google'])) {
     $num_fields++;
     $new_google = $fields['google'];
   } else {
     $new_google = $google_tracking_id;
   }
-  if(isset($fields['copyright'])) {
+  if (isset($fields['copyright'])) {
     $num_fields++;
     $new_copyright= $fields['copyright'];
   } else {
@@ -266,7 +266,7 @@ function update_site_settings($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== count($fields)) {
+  if ($num_fields !== count($fields)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -274,11 +274,11 @@ function update_site_settings($fields) {
   }
 
   // cleanup the old file
-  if(file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
+  if (file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
     unlink(dirname(__FILE__).'/../../inc/config.inc.php');
   }
   // we can now run the update
-  if($error =  create_config_inc($new_dbhost, $new_dbuser, $new_dbpass, $new_dbname, $new_title, $new_google, $new_copyright)) {
+  if ($error =  create_config_inc($new_dbhost, $new_dbuser, $new_dbpass, $new_dbname, $new_title, $new_google, $new_copyright)) {
     return $error;
   } else {
     // no error

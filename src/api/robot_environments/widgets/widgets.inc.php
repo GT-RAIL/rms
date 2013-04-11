@@ -34,13 +34,13 @@ function valid_widget_fields($array) {
  */
 function valid_widget_instance_fields($array) {
   // check if the widget exists
-  if(isset($array['widgetid']) && $widget = get_widget_by_id($array['widgetid'])) {
+  if (isset($array['widgetid']) && $widget = get_widget_by_id($array['widgetid'])) {
     // go through each field
     $fields = get_widget_table_columns_by_id($array['widgetid']);
     // check if the numbers match (ignore ID)
-    if($valid = ((count($fields)) === (count($array)))) {
+    if ($valid = ((count($fields)) === (count($array)))) {
       foreach ($fields as $f) {
-        if($f !== 'id') {
+        if ($f !== 'id') {
           $valid &= isset($array[$f]);
         }
       }
@@ -92,7 +92,7 @@ function get_widget_table_columns_by_id($id) {
   global $db;
 
   // check the widget
-  if($w = get_widget_by_id($id)) {
+  if ($w = get_widget_by_id($id)) {
     $columns = array();
     $sql = sprintf("SHOW COLUMNS FROM `%s`", cleanse($w['table']));
     $query = mysqli_query($db, $sql);
@@ -117,7 +117,7 @@ function get_widget_instances_by_widgetid($widgetid) {
   global $db;
 
   // check the widget
-  if($w = get_widget_by_id($widgetid)) {
+  if ($w = get_widget_by_id($widgetid)) {
     // grab the entries and push them into an array
     $result = array();
     $sql = sprintf("SELECT * FROM `%s`", cleanse($w['table']));
@@ -143,7 +143,7 @@ function get_widget_instances_by_widgetid_and_envid($widgetid, $envid) {
   global $db;
 
   // check the widget
-  if($w = get_widget_by_id($widgetid)) {
+  if ($w = get_widget_by_id($widgetid)) {
     // grab the entries and push them into an array
     $result = array();
     $sql = sprintf("SELECT * FROM `%s` WHERE `envid`='%d'", cleanse($w['table'])
@@ -170,7 +170,7 @@ function get_widget_instance_by_widgetid_and_id($widgetid, $id) {
   global $db;
 
   // check the widget
-  if($w = get_widget_by_id($widgetid)) {
+  if ($w = get_widget_by_id($widgetid)) {
     // return what we find
     $result = array();
     $sql = sprintf("SELECT * FROM `%s` WHERE `id`='%d'", cleanse($w['table']),
@@ -220,19 +220,19 @@ function create_widget($name, $table, $script) {
   global $db;
 
   // make sure it does not already exist
-  if(get_widget_by_table($table)) {
+  if (get_widget_by_table($table)) {
     return 'ERROR: Widget with SQL table '.$table.' already exists';
-  } else if(get_widget_by_script($script)) {
+  } else if (get_widget_by_script($script)) {
     return 'ERROR: Widget with script location '.$script.' already exists';
   }
 
   // now check if those fields are valid
   $tables = get_unused_widget_tables();
   foreach ($tables as $t) {
-    if($table === $t) {
+    if ($table === $t) {
       $scripts = get_unused_widget_scripts();
       foreach ($scripts as $s) {
-        if($script === $s) {
+        if ($script === $s) {
           // insert into the database
           $sql = sprintf("INSERT INTO `widgets` (`name`, `table`, `script`) VALUES ('%s', '%s', '%s')",
           cleanse($name), cleanse($table), cleanse($script));
@@ -261,7 +261,7 @@ function create_widget_instance($entries) {
   global $db;
 
   // check the widget
-  if($widget = get_widget_by_id($entries['widgetid'])) {
+  if ($widget = get_widget_by_id($entries['widgetid'])) {
     // create the insertion string
     $sql = sprintf("INSERT INTO `%s` (", cleanse($widget['table']));
     $insert = "";
@@ -269,10 +269,10 @@ function create_widget_instance($entries) {
     $fields = get_widget_table_columns_by_id($entries['widgetid']);
     foreach ($fields as $f) {
       // check the environment
-      if($f === 'envid' && !get_environment_by_id($entries[$f])) {
+      if ($f === 'envid' && !get_environment_by_id($entries[$f])) {
         return 'ERROR: Environment ID '.$entries[$f].' does not exist';
       }
-      if($f !== 'id') {
+      if ($f !== 'id') {
         $insert .= sprintf("`%s`, ", cleanse($f));
         $values .= sprintf("'%s', ", cleanse($entries[$f]));
       }
@@ -300,7 +300,7 @@ function create_widget_instance($entries) {
 function update_widget($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -308,15 +308,15 @@ function update_widget($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the widget
-  if(!($widget = get_widget_by_id($fields['id']))) {
+  if (!($widget = get_widget_by_id($fields['id']))) {
     return 'ERROR: Widget ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $widget['widgetid'];
-  if(isset($fields['widgetid'])) {
+  if (isset($fields['widgetid'])) {
     $num_fields++;
-    if($fields['widgetid'] !== $widget['widgetid'] && get_widgetid_by_id($fields['widgetid'])) {
+    if ($fields['widgetid'] !== $widget['widgetid'] && get_widgetid_by_id($fields['widgetid'])) {
       return 'ERROR: Widget ID '.$fields['widgetid'].' already exists';
     } else {
       $id_to_set = $fields['widgetid'];
@@ -325,14 +325,14 @@ function update_widget($fields) {
   $sql .= sprintf(" `widgetid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['name'])) {
+  if (isset($fields['name'])) {
     $num_fields++;
     $sql .= sprintf(", `name`='%s'", cleanse($fields['name']));
   }
-  if(isset($fields['table'])) {
+  if (isset($fields['table'])) {
     $num_fields++;
-    if($fields['table'] !== $widget['table']) {
-      if(get_widget_by_table($fields['table'])) {
+    if ($fields['table'] !== $widget['table']) {
+      if (get_widget_by_table($fields['table'])) {
         return 'ERROR: Widget SQL table "'.$fields['table'].'" is already used';
       } else {
         // now check if those fields are valid
@@ -341,7 +341,7 @@ function update_widget($fields) {
         foreach ($tables as $t) {
           $valid |= ($fields['table'] === $t);
         }
-        if(!$valid) {
+        if (!$valid) {
           // script not valid
           return 'ERROR: Widget SQL table '.$fields['table'].' is not valid';
         }
@@ -349,10 +349,10 @@ function update_widget($fields) {
     }
     $sql .= sprintf(", `table`='%s'", cleanse($fields['table']));
   }
-  if(isset($fields['script'])) {
+  if (isset($fields['script'])) {
     $num_fields++;
-    if($fields['script'] !== $widget['script']) {
-      if(get_widget_by_script($fields['script'])) {
+    if ($fields['script'] !== $widget['script']) {
+      if (get_widget_by_script($fields['script'])) {
         return 'ERROR: Widget script location "'.$fields['script'].'" is already used';
       } else {
         // now check if those fields are valid
@@ -361,7 +361,7 @@ function update_widget($fields) {
         foreach ($scripts as $s) {
           $valid |= ($fields['script'] === $s);
         }
-        if(!$valid) {
+        if (!$valid) {
           // script not valid
           return 'ERROR: Widget script location '.$fields['script'].' is not valid';
         }
@@ -371,7 +371,7 @@ function update_widget($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -399,9 +399,9 @@ function update_widget($fields) {
 function update_widget_instance($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
-  } else if(!isset($fields['widgetid'])) {
+  } else if (!isset($fields['widgetid'])) {
     return 'ERROR: Widget ID field missing in update';
   }
 
@@ -409,17 +409,17 @@ function update_widget_instance($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the widget and instance
-  if(!($widget = get_widget_by_id($fields['widgetid']))) {
+  if (!($widget = get_widget_by_id($fields['widgetid']))) {
     return 'ERROR: Widget ID '.$fields['widgetid'].' does not exist';
-  } else if(!($instance = get_widget_instance_by_widgetid_and_id($fields['widgetid'], $fields['id']))) {
+  } else if (!($instance = get_widget_instance_by_widgetid_and_id($fields['widgetid'], $fields['id']))) {
     return 'ERROR: Widget instance ID '.$fields['id'].' does not exist in Widget ID '.$fields['widgetid'];
   }
 
   // check if we are changing the id
   $id_to_set = $instance['id'];
-  if(isset($fields['id'])) {
+  if (isset($fields['id'])) {
     $num_fields++;
-    if($fields['id'] !== $instance['id'] && get_widgetid_by_id($fields['id'])) {
+    if ($fields['id'] !== $instance['id'] && get_widgetid_by_id($fields['id'])) {
       return 'ERROR: Widget instance ID '.$fields['id'].' already exists in Widget ID '.$fields['widgetid'];
     } else {
       $id_to_set = $fields['id'];
@@ -430,9 +430,9 @@ function update_widget_instance($fields) {
   // check for each update
   $columns = get_widget_table_columns_by_id($fields['widgetid']);
   foreach ($columns as $c) {
-    if($c !== 'id' && isset($fields[$c])) {
+    if ($c !== 'id' && isset($fields[$c])) {
       // check for a valid environment
-      if($c === 'envid' && !get_environment_by_id($fields[$c])) {
+      if ($c === 'envid' && !get_environment_by_id($fields[$c])) {
         return 'ERROR: Environment ID '.$fields[$c].' does not exist';
       }
       $num_fields++;
@@ -441,7 +441,7 @@ function update_widget_instance($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.'.$num_fields;
   } else if ($num_fields === 0) {
     // nothing to update
@@ -467,7 +467,7 @@ function delete_widget_by_id($id) {
   global $db;
 
   // see if the widget exists
-  if(get_widget_by_id($id)) {
+  if (get_widget_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `widgets` WHERE `widgetid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -489,10 +489,10 @@ function delete_widget_instance_by_widgetid_and_id($widgetid, $id) {
   global $db;
 
   // see if the widget exists
-  if($widget = get_widget_by_id($widgetid)) {
+  if ($widget = get_widget_by_id($widgetid)) {
     // now check the instance
     $table = $widget['table'];
-    if(get_widget_instance_by_widgetid_and_id($widgetid, $id)) {
+    if (get_widget_instance_by_widgetid_and_id($widgetid, $id)) {
       // delete it
       $sql = sprintf("DELETE FROM `%s` WHERE `id`='%d'", cleanse($widget['table']),
       cleanse($id));
@@ -519,7 +519,7 @@ function get_unused_widget_scripts() {
   $files = array();
   while ($f = readdir($dir)) {
     // check if it is a file or a directory and is already not used
-    if(is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' && !get_widget_by_script($f)) {
+    if (is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' && !get_widget_by_script($f)) {
       $files[] = $f;
     }
   }
@@ -549,7 +549,7 @@ function get_unused_widget_tables() {
       $found_label |= ($field['Field'] === 'label');
     }
     // check for an unused match
-    if($found_envid && $found_label && !get_widget_by_table($table[0])) {
+    if ($found_envid && $found_label && !get_widget_by_table($table[0])) {
       $valid[] = $table[0];
     }
   }
@@ -568,7 +568,7 @@ function get_widget_editor_html($id) {
   // see if an widget exists with the given id
   $cur = get_widget_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $script = $cur['script'];
     $table = $cur['table'];
     $name = $cur['name'];
@@ -598,16 +598,16 @@ function get_widget_editor_html($id) {
   $disabled = '';
   // check for unused tables
   $tables = get_unused_widget_tables();
-  if(strlen($table) > 0) {
+  if (strlen($table) > 0) {
     $tables = ($tables) ? $tables : array();
     $tables[] = $table;
   }
-  if($tables) {
+  if ($tables) {
     $result .= '<label for="table">SQL Table</label>
                 <select name="table" id="table" required>';
     // put in each option
     foreach($tables as $t) {
-      if($table === $t) {
+      if ($table === $t) {
         $result .= '<option value="'.$t.'" selected="selected">'.$t.'</option>';
       } else {
         $result .= '<option value="'.$t.'">'.$t.'</option>';
@@ -626,16 +626,16 @@ function get_widget_editor_html($id) {
 
   // check for unused script locations
   $scripts = get_unused_widget_scripts();
-  if(strlen($script) > 0) {
+  if (strlen($script) > 0) {
     $scripts = ($scripts) ? $scripts : array();
     $scripts[] = $script;
   }
-  if($scripts) {
+  if ($scripts) {
     $result .= '<label for="script">PHP Script Location</label>
                 <select name="script" id="script" required>';
     // put in each option
     foreach($scripts as $s) {
-      if($script === $s) {
+      if ($script === $s) {
         $result .= '<option value="'.$s.'" selected="selected">'.$s.'</option>';
       } else {
         $result .= '<option value="'.$s.'">'.$s.'</option>';
@@ -669,7 +669,7 @@ function get_widget_editor_html($id) {
  */
 function get_widget_instance_editor_html_by_widgetid($widgetid, $id) {
   // check if widget ID
-  if(!($widget = get_widget_by_id($widgetid))) {
+  if (!($widget = get_widget_by_id($widgetid))) {
     return '<h2>Invalid Widget ID '.$widgetid.'</h2>';
   }
 
@@ -682,7 +682,7 @@ function get_widget_instance_editor_html_by_widgetid($widgetid, $id) {
 
   $fields = get_widget_table_columns_by_id($widgetid);
   // check if there is a widget
-  if(!($w = get_widget_instance_by_widgetid_and_id($widgetid, $id))) {
+  if (!($w = get_widget_instance_by_widgetid_and_id($widgetid, $id))) {
     // put in empty fields
     $w = array();
     foreach ($fields as $f) {
@@ -698,7 +698,7 @@ function get_widget_instance_editor_html_by_widgetid($widgetid, $id) {
   // put in each field
   foreach ($w as $field => $value) {
     // check if this is the environment ID
-    if($field === 'envid') {
+    if ($field === 'envid') {
       $result .= '<li>
                     <label for="envid">Environment</label>
                     <select name="envid" id="envid" required>';
@@ -706,7 +706,7 @@ function get_widget_instance_editor_html_by_widgetid($widgetid, $id) {
       $environments = get_environments();
       foreach ($environments as $cur) {
         // check if this environment is the same
-        if($value === $cur['envid']) {
+        if ($value === $cur['envid']) {
           $result .= '<option value="'.$cur['envid'].'" selected="selected">'.$cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']." :: ".$cur['notes'].'</option>';
         } else {
           $result .= '<option value="'.$cur['envid'].'">'.$cur['envid'].": ".$cur['envaddr']." -- ".$cur['type']." :: ".$cur['notes'].'</option>';
@@ -714,7 +714,7 @@ function get_widget_instance_editor_html_by_widgetid($widgetid, $id) {
       }
       $result .= '  </select>
               </li>';
-    } else if($field !== 'id') {
+    } else if ($field !== 'id') {
       // for now, just put in a text field, later we can add cases for booleans and such
       $result .= '<li>
                     <label for="'.$field.'">'.$field.'</label>

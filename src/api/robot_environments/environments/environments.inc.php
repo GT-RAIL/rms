@@ -96,7 +96,7 @@ function create_environment($protocol, $envaddr, $port, $type, $notes, $enabled)
 function update_environment($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -104,15 +104,15 @@ function update_environment($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the user
-  if(!($environment = get_environment_by_id($fields['id']))) {
+  if (!($environment = get_environment_by_id($fields['id']))) {
     return 'ERROR: Environment ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $environment['envid'];
-  if(isset($fields['envid'])) {
+  if (isset($fields['envid'])) {
     $num_fields++;
-    if($fields['envid'] !== $environment['envid'] && get_environment_by_id($fields['envid'])) {
+    if ($fields['envid'] !== $environment['envid'] && get_environment_by_id($fields['envid'])) {
       return 'ERROR: Environment ID '.$fields['envid'].' already exists';
     } else {
       $id_to_set = $fields['envid'];
@@ -121,33 +121,33 @@ function update_environment($fields) {
   $sql .= sprintf(" `envid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['protocol'])) {
+  if (isset($fields['protocol'])) {
     $num_fields++;
     $sql .= sprintf(", `protocol`='%s'", cleanse($fields['protocol']));
   }
-  if(isset($fields['envaddr'])) {
+  if (isset($fields['envaddr'])) {
     $num_fields++;
     $sql .= sprintf(", `envaddr`='%s'", cleanse($fields['envaddr']));
   }
-  if(isset($fields['port'])) {
+  if (isset($fields['port'])) {
     $num_fields++;
     $sql .= sprintf(", `port`='%d'", cleanse($fields['port']));
   }
-  if(isset($fields['type'])) {
+  if (isset($fields['type'])) {
     $num_fields++;
     $sql .= sprintf(", `type`='%s'", cleanse($fields['type']));
   }
-  if(isset($fields['notes'])) {
+  if (isset($fields['notes'])) {
     $num_fields++;
     $sql .= sprintf(", `notes`='%s'", cleanse($fields['notes']));
   }
-  if(isset($fields['enabled'])) {
+  if (isset($fields['enabled'])) {
     $num_fields++;
     $sql .= sprintf(", `enabled`='%d'", cleanse($fields['enabled']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -173,7 +173,7 @@ function delete_environment_by_id($id) {
   global $db;
 
   // see if the environment exists
-  if(get_environment_by_id($id)) {
+  if (get_environment_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `environments` WHERE `envid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -213,7 +213,7 @@ function get_environment_editor_html($id) {
   // see if an environment exists with the given id
   $cur = get_environment_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $protocol = $cur['protocol'];
     $envaddr = $cur['envaddr'];
     $port = $cur['port'];
@@ -246,7 +246,7 @@ function get_environment_editor_html($id) {
   $protocols = get_protocol_types();
   foreach ($protocols as $curprot) {
     // check if this type is the same
-    if($type === $curprot) {
+    if ($type === $curprot) {
       $result .= '<option value="'.$curprot.'" selected="selected">'.$curprot.'</option>';
     } else {
       $result .= '<option value="'.$curprot.'">'.$curprot.'</option>';
@@ -273,7 +273,7 @@ function get_environment_editor_html($id) {
   $types = get_environment_types();
   foreach ($types as $curtype) {
     // check if this type is the same
-    if($type === $curtype) {
+    if ($type === $curtype) {
       $result .= '<option value="'.$curtype.'" selected="selected">'.$curtype.'</option>';
     } else {
       $result .= '<option value="'.$curtype.'">'.$curtype.'</option>';

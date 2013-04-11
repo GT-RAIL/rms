@@ -87,7 +87,7 @@ function get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid)
   $query = mysqli_query($db, $sql);
   while($cur = mysqli_fetch_assoc($query)) {
     // check the fields
-    if($cur['envid'] === $envid
+    if ($cur['envid'] === $envid
     && ($condition = get_condition_by_id($cur['condid']))
     && $condition['intid'] === $intid) {
       // found a match

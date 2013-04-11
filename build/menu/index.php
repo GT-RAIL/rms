@@ -36,7 +36,7 @@ include_once(dirname(__FILE__).'/../inc/content.inc.php');
 $pagename = 'Main Menu';
 
 // grab the user info from the database
-$session_user = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = get_user_account_by_id($_SESSION['userid']);
 ?>
 
 <!DOCTYPE html>
@@ -65,11 +65,11 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
 </script>
 </head>
 <body>
-<?php create_header($session_user, $pagename, '../')?>
+<?php create_header($sessionUser, $pagename, '../')?>
   <section id="page">
     <section id="articles">
       <div class="line"></div>
-      <?php if($session_user['type'] === 'admin') { //admin menu?>
+      <?php if ($sessionUser['type'] === 'admin') { //admin menu?>
       <article>
         <div class="center">
           <h2>Admin Interface Menu</h2>
@@ -85,7 +85,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
           </h3>
           <script type="text/javascript">
 						rosonline('<?php echo $cur['protocol']?>', '<?php echo $cur['envaddr']?>', <?php echo $cur['port']?>, function(online) {
-							if(online) {
+							if (online) {
 							  $('#envstatus-<?php echo $cur['envid']?>').html('<b>Available</b>');
 							} else {
 						    $('#envstatus-<?php echo $cur['envid']?>').html('<b>Offline</b>');
@@ -94,18 +94,18 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
 					</script>
           <div id="envstatus-<?php echo $cur['envid']?>"
             class="environment-status">Acquiring connection...</div>
-            <?php if(strlen($cur['notes']) > 0) {
+            <?php if (strlen($cur['notes']) > 0) {
               echo $cur['notes'];
             }?>
           <div class="line"></div>
 
           <?php
           // check if the environment is enabled
-          if($cur['enabled']) {?>
+          if ($cur['enabled']) {?>
           <ul>
           <?php
           // go through each interface for this environment
-          if($pairs = get_environment_interface_pairs_by_envid($cur['envid'])) {
+          if ($pairs = get_environment_interface_pairs_by_envid($cur['envid'])) {
             foreach ($pairs as $pair) {
               $int = get_interface_by_id($pair['intid']);?>
             <li><a
@@ -129,7 +129,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
       } else {?>
       <div class="center">
         <h1>
-        <?php echo 'Welcome '.$session_user['firstname']." ".$session_user['lastname'].'!'?>
+        <?php echo 'Welcome '.$sessionUser['firstname']." ".$sessionUser['lastname'].'!'?>
         </h1>
       </div>
       <article>
@@ -144,7 +144,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
           </p>
           <?php
           // populate the selection box
-          if($experiments = get_experiments_by_userid($session_user['userid'])) {
+          if ($experiments = get_experiments_by_userid($sessionUser['userid'])) {
             foreach ($experiments as $cur) {
               $cond = get_condition_by_id($cur['condid']);
               $study = get_study_by_id($cond['studyid']);
@@ -152,7 +152,7 @@ $session_user = get_user_account_by_id($_SESSION['userid']);
 
               // grab the current timestamp from the SQL server
               $time = get_current_timestamp();
-              if($time >= $cur['start'] && $time <= $cur['end']) {
+              if ($time >= $cur['start'] && $time <= $cur['end']) {
                 echo '<button onclick="javascript:beginStudy('.$cur['expid'].', '.$cond['intid'].', '.$cur['envid'].');">Start!</button>';
               } else {
                 echo '<button disabled="disabled">Start!</button>';

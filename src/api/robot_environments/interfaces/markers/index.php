@@ -17,13 +17,13 @@
  */
 function generate($re) {
   // lets begin by checking if we have the correct widgets
-  if(!$re->get_widgets_by_name('MJPEG Stream')) {
+  if (!$re->get_widgets_by_name('MJPEG Stream')) {
     create_error_page('No MJPEG streams found.', $re->get_user_account());
-  } else if(!$teleop = $re->get_widgets_by_name('Keyboard Teleop')) {
+  } else if (!$teleop = $re->get_widgets_by_name('Keyboard Teleop')) {
     create_error_page('No Keyboard Teloperation settings found.', $re->get_user_account());
-  } else if(!$im = $re->get_widgets_by_name('Interactive Markers')) {
+  } else if (!$im = $re->get_widgets_by_name('Interactive Markers')) {
     create_error_page('No Interactive Markers settings found.', $re->get_user_account());
-  } else if(!$re->authorized()) {
+  } else if (!$re->authorized()) {
     create_error_page('Invalid experiment for the current user.', $re->get_user_account());
   } else { // here we can spit out the HTML for our interface?>
 <!DOCTYPE html>

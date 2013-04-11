@@ -21,20 +21,20 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       // check if this is a default request
-      if(count($_GET) === 0) {
+      if (count($_GET) === 0) {
         // check for Javascript files
-        if($js = get_javascript_files()) {
+        if ($js = get_javascript_files()) {
           $result = create_200_state($js);
         } else {
           $result = create_404_state('No Javascript entries found.');
         }
-      } else if(count($_GET) === 1 && isset($_GET['id'])) {
+      } else if (count($_GET) === 1 && isset($_GET['id'])) {
         // now check if the entry was found
-        if($js = get_javascript_file_by_id($_GET['id'])) {
+        if ($js = get_javascript_file_by_id($_GET['id'])) {
           $result = create_200_state($js);
         } else {
           $result = create_404_state('Javascript file ID '.$_GET['id'].' is invalid.');
@@ -44,13 +44,13 @@ if($auth = authenticate()) {
       }
       break;
     case 'POST':
-      if(isset($_POST['request'])) {
+      if (isset($_POST['request'])) {
         switch ($_POST['request']) {
           case 'update':
-            if($auth['type'] === 'admin') {
-              if(count($_POST === 1)) {
+            if ($auth['type'] === 'admin') {
+              if (count($_POST === 1)) {
                 // try and do the update
-                if($error = delete_local_javascript_files() || $error = download_javascript_files()) {
+                if ($error = delete_local_javascript_files() || $error = download_javascript_files()) {
                   $result = create_404_state($error);
                 } else {
                   write_to_log('SYSTEM: '.$auth['username'].' upedated the Javascript files.');

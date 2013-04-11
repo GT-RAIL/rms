@@ -48,9 +48,9 @@ function get_mjpeg_streams_by_envid($envid) {
  */
 function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 0, $cb = null) {
   // check the information
-  if(!$environment = get_environment_by_id($envid)) {
+  if (!$environment = get_environment_by_id($envid)) {
     return '<h2>Invalid Environment Provided</h2>';
-  } else if(!$streams = get_mjpeg_streams_by_envid($envid)) {
+  } else if (!$streams = get_mjpeg_streams_by_envid($envid)) {
     return '<h2>No MJPEG Streams Found</h2>';
   }
 
@@ -73,7 +73,7 @@ function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 
   for ($i = 0; $i < $num_streams; $i++) {
     $topic .= '\''.$streams[$i]['topic'].'\'';
     $label .= '\''.$streams[$i]['label'].'\'';
-    if($i != $num_streams-1) {
+    if ($i != $num_streams-1) {
       $topic .= ', ';
       $label .= ', ';
     }
@@ -101,7 +101,7 @@ function create_multi_mjpeg_canvas_by_envid($envid, $width, $height, $default = 
   ';
 
   // check the callback
-  if($cb) {
+  if ($cb) {
       $result .= $cb.'(mjpeg);
       ';
   }

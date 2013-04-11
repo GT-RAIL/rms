@@ -23,7 +23,7 @@ $PASSWORD_HOLDER = '***********';
  * @var array
  */
 $_DELETE = array();
-if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
   parse_str(file_get_contents('php://input'), $_DELETE);
 }
 /**
@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
  * @var array
  */
 $_PUT = array();
-if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
   parse_str(file_get_contents('php://input'), $_PUT);
 }
 
@@ -48,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 function cleanse($input, $html = true, $sprintf = true) {
   global $db;
 
-  if($html) {
+  if ($html) {
     $cleansed = htmlentities($input, ENT_QUOTES);
   } else {
     $cleansed = $input;
@@ -59,7 +59,7 @@ function cleanse($input, $html = true, $sprintf = true) {
   // run a escape check
   $cleansed = $db->real_escape_string($cleansed);
 
-  if($sprintf) {
+  if ($sprintf) {
     // escape percentage signs
     $cleansed = str_replace('%', '%%', $cleansed);
   }

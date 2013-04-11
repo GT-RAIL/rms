@@ -85,12 +85,12 @@ function create_content_page($title, $menu, $index, $js) {
   global $db;
 
   // make sure it does not already exist
-  if(get_content_page_by_title($title)) {
+  if (get_content_page_by_title($title)) {
     return 'ERROR: Content page with title '.$title.' already exists';
   }
 
   // insert into the database
-  if(!$js || $js === 'NULL') {
+  if (!$js || $js === 'NULL') {
     $sql = sprintf("INSERT INTO `content_pages` (`title`, `menu`, `index`) VALUES ('%s', '%s', '%d')"
     , cleanse($title), cleanse($menu), cleanse($index));
   } else {
@@ -115,7 +115,7 @@ function create_content_page($title, $menu, $index, $js) {
 function update_content_page($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update.';
   }
 
@@ -123,15 +123,15 @@ function update_content_page($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the user
-  if(!($page = get_content_page_by_id($fields['id']))) {
+  if (!($page = get_content_page_by_id($fields['id']))) {
     return 'ERROR: Content page ID '.$fields['id'].' does not exist.';
   }
 
   // check if we are changing the id
   $id_to_set = $page['pageid'];
-  if(isset($fields['pageid'])) {
+  if (isset($fields['pageid'])) {
     $num_fields++;
-    if($fields['pageid'] !== $page['pageid'] && get_content_page_by_id($fields['pageid'])) {
+    if ($fields['pageid'] !== $page['pageid'] && get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID '.$fields['pageid'].' already exists';
     } else {
       $id_to_set = $fields['pageid'];
@@ -140,25 +140,25 @@ function update_content_page($fields) {
   $sql .= sprintf(" `pageid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['title'])) {
+  if (isset($fields['title'])) {
     $num_fields++;
-    if($fields['title'] !== $page['title'] && get_content_page_by_title($fields['title'])) {
+    if ($fields['title'] !== $page['title'] && get_content_page_by_title($fields['title'])) {
       return 'ERROR: Content page title "'.$fields['title'].'" already exists.';
     }
     $sql .= sprintf(", `title`='%s'", cleanse($fields['title']));
   }
-  if(isset($fields['menu'])) {
+  if (isset($fields['menu'])) {
     $num_fields++;
     $sql .= sprintf(", `menu`='%s'", cleanse($fields['menu']));
   }
-  if(isset($fields['index'])) {
+  if (isset($fields['index'])) {
     $num_fields++;
     $sql .= sprintf(", `index`='%d'", cleanse($fields['index']));
   }
-  if(isset($fields['js'])) {
+  if (isset($fields['js'])) {
     $num_fields++;
     // check if we are removing the JS file
-    if($fields['js'] === 'NULL') {
+    if ($fields['js'] === 'NULL') {
       $sql .= sprintf(", `js`=NULL");
     } else {
       $sql .= sprintf(", `js`='%s'", cleanse($fields['js']));
@@ -166,7 +166,7 @@ function update_content_page($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -192,7 +192,7 @@ function delete_content_page_by_id($id) {
   global $db;
 
   // see if the content page exists
-  if(get_content_page_by_id($id)) {
+  if (get_content_page_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `content_pages` WHERE `pageid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -214,7 +214,7 @@ function get_content_page_editor_html($id) {
   // see if a content page exists with the given id
   $cur = get_content_page_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $title = $cur['title'];
     $menu = $cur['menu'];
     $index = $cur['index'];
@@ -262,18 +262,18 @@ function get_content_page_editor_html($id) {
   while ($f = readdir($dir)) {
     // check if it is a Javascript file
     $parts = pathinfo($f);
-    if($parts['extension'] === 'js') {
+    if ($parts['extension'] === 'js') {
       $files[] = $f;
     }
   }
-  if(count($files) > 0) {
+  if (count($files) > 0) {
     $result .= '<li>
                   <label for="js">Javascript File (optional)</label>
                   <select name="js" id="js" required>
                     <option value="NULL">None</option>';
     // put in each option
     foreach($files as $f) {
-      if($js === $f) {
+      if ($js === $f) {
         $result .= '<option value="'.$f.'" selected="selected">'.$f.'</option>';
       } else {
         $result .= '<option value="'.$f.'">'.$f.'</option>';

@@ -27,7 +27,7 @@ include_once(dirname(__FILE__).'/../map2d/widget.api.php');
  */
 function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
   // check the map
-  if(!$map2d = get_map_by_id($nav2d['mapid'])) {
+  if (!$map2d = get_map_by_id($nav2d['mapid'])) {
     return '<h2>Navigation has invalid map ID.</h2>';
   } else {
     // create the widget with a unique ID
@@ -48,7 +48,7 @@ function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
 	});
   ';
   // check the callback
-  if($cb) {
+  if ($cb) {
       $result .= $cb.'(nav);
       ';
   }

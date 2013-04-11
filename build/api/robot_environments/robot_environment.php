@@ -82,12 +82,12 @@ class robot_environment {
     $this->widgets = array();
     $all = get_widgets();
     foreach ($all as $cur) {
-      if($cur_all = get_widget_instances_by_widgetid_and_envid($cur['widgetid'], $envid)) {
+      if ($cur_all = get_widget_instances_by_widgetid_and_envid($cur['widgetid'], $envid)) {
         $this->widgets[$cur['name']] = $cur_all;
 
         // include all of the widget scripts
         $file = dirname(__FILE__).'/widgets/'.$cur['script'].'/widget.api.php';
-        if(file_exists($file)) {
+        if (file_exists($file)) {
           include_once($file);
         }
       }
@@ -163,7 +163,7 @@ class robot_environment {
     import_head($path);
 
     // check for a style sheet
-    if(file_exists(dirname(__FILE__).'/interfaces/'.$this->interface['location'].'/style.css')) {
+    if (file_exists(dirname(__FILE__).'/interfaces/'.$this->interface['location'].'/style.css')) {
       $css = $path.'api/robot_environments/interfaces/'.$this->interface['location'].'/style.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$css.'" />
       ';
@@ -203,7 +203,7 @@ class robot_environment {
     global $db;
 
     // check for an experiment
-    if($this->experiment) {
+    if ($this->experiment) {
       // get the time difference
       $sql = sprintf("SELECT UNIX_TIMESTAMP('%s') - UNIX_TIMESTAMP('%s') AS time"
       , cleanse($this->experiment['end']), cleanse(get_current_timestamp()));
@@ -214,7 +214,7 @@ class robot_environment {
         _EXPID = '.$this->experiment['expid'].';
         _TIME = '.($diff['time']*1000).';
         _END = setInterval(function() {
-          if(typeof endStudy == \'function\') {
+          if (typeof endStudy == \'function\') {
             endStudy();
           }
          }, _TIME);

@@ -79,13 +79,13 @@ function create_interface($name, $location) {
   global $db;
 
   // make sure it does not already exist
-  if(get_interface_by_location($location)) {
+  if (get_interface_by_location($location)) {
     return 'ERROR: Interface with location '.$location.' already exists';
   }
   // now check if that location is valid
   $locations = get_unused_interface_locations();
   foreach ($locations as $l) {
-    if($location === $l) {
+    if ($location === $l) {
       // insert into the database
       $sql = sprintf("INSERT INTO `interfaces` (`name`, `location`) VALUES ('%s', '%s')",
       cleanse($name), cleanse($location));
@@ -111,7 +111,7 @@ function create_interface($name, $location) {
 function update_interface($fields) {
   global $db;
 
-  if(!isset($fields['id'])) {
+  if (!isset($fields['id'])) {
     return 'ERROR: ID field missing in update';
   }
 
@@ -119,15 +119,15 @@ function update_interface($fields) {
   $sql = "";
   $num_fields = 0;
   // check for the interface
-  if(!($interface = get_interface_by_id($fields['id']))) {
+  if (!($interface = get_interface_by_id($fields['id']))) {
     return 'ERROR: Interface ID '.$fields['id'].' does not exist';
   }
 
   // check if we are changing the id
   $id_to_set = $interface['intid'];
-  if(isset($fields['intid'])) {
+  if (isset($fields['intid'])) {
     $num_fields++;
-    if($fields['intid'] !== $interface['intid'] && get_interface_by_id($fields['intid'])) {
+    if ($fields['intid'] !== $interface['intid'] && get_interface_by_id($fields['intid'])) {
       return 'ERROR: Interface ID '.$fields['intid'].' already exists';
     } else {
       $id_to_set = $fields['intid'];
@@ -136,20 +136,20 @@ function update_interface($fields) {
   $sql .= sprintf(" `intid`='%d'", cleanse($id_to_set));
 
   // check for each update
-  if(isset($fields['name'])) {
+  if (isset($fields['name'])) {
     $num_fields++;
     $sql .= sprintf(", `name`='%s'", cleanse($fields['name']));
   }
-  if(isset($fields['location'])) {
+  if (isset($fields['location'])) {
     $num_fields++;
-    if($fields['location'] !== $interface['location'] && get_interface_by_location($fields['location'])) {
+    if ($fields['location'] !== $interface['location'] && get_interface_by_location($fields['location'])) {
       return 'ERROR: Interface location "'.$fields['location'].'" is already used';
     }
     $sql .= sprintf(", `location`='%s'", cleanse($fields['location']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if($num_fields !== (count($fields) - 1)) {
+  if ($num_fields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
   } else if ($num_fields === 0) {
     // nothing to update
@@ -175,7 +175,7 @@ function delete_interface_by_id($id) {
   global $db;
 
   // see if the interface exists
-  if(get_interface_by_id($id)) {
+  if (get_interface_by_id($id)) {
     // delete it
     $sql = sprintf("DELETE FROM `interfaces` WHERE `intid`='%d'", cleanse($id));
     mysqli_query($db, $sql);
@@ -198,7 +198,7 @@ function get_unused_interface_locations() {
   $files = array();
   while ($f = readdir($dir)) {
     // check if it is a file or a directory and is already not used
-    if(is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' && !get_interface_by_location($f)) {
+    if (is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' && !get_interface_by_location($f)) {
       $files[] = $f;
     }
   }
@@ -217,7 +217,7 @@ function get_interface_editor_html($id) {
   // see if an interface exists with the given id
   $cur = get_interface_by_id($id);
 
-  if($cur) {
+  if ($cur) {
     $name = $cur['name'];
     $location = $cur['location'];
   } else {
@@ -243,16 +243,16 @@ function get_interface_editor_html($id) {
 
   // check for unused locations
   $locations = get_unused_interface_locations();
-  if(strlen($location) > 0) {
+  if (strlen($location) > 0) {
     $locations = ($locations) ? $locations : array();
     $locations[] = $location;
   }
-  if($locations) {
+  if ($locations) {
     $result .= '<label for="location">Location</label>
                 <select name="location" id="location" required>';
     // put in each option
     foreach($locations as $l) {
-      if($location === $l) {
+      if ($location === $l) {
         $result .= '<option value="'.$l.'" selected="selected">'.$l.'</option>';
       } else {
         $result .= '<option value="'.$l.'">'.$l.'</option>';

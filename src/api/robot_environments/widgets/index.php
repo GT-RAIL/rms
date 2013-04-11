@@ -22,13 +22,13 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if($auth = authenticate()) {
+if ($auth = authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry
-      if(valid_widget_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_widget($_POST['name'], $_POST['table'], $_POST['script'])) {
+      if (valid_widget_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_widget($_POST['name'], $_POST['table'], $_POST['script'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' created widget '.$_POST['name'].'.');
@@ -38,9 +38,9 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to create a widget.');
           $result = create_401_state();
         }
-      } else if(valid_widget_instance_fields($_POST)) {
-        if($auth['type'] === 'admin') {
-          if($error = create_widget_instance($_POST)) {
+      } else if (valid_widget_instance_fields($_POST)) {
+        if ($auth['type'] === 'admin') {
+          if ($error = create_widget_instance($_POST)) {
             $result = create_404_state($error);
           } else {
             // the most recent entry is the one we just created (auto increment)
@@ -48,7 +48,7 @@ if($auth = authenticate()) {
             $max_id = -1;
             $data = null;
             foreach ($all as $cur) {
-              if($cur['id'] > $max_id) {
+              if ($cur['id'] > $max_id) {
                 $max_id = $cur['id'];
                 $data = $cur;
               }
@@ -65,19 +65,19 @@ if($auth = authenticate()) {
       }
       break;
     case 'GET':
-      if(isset($_GET['request'])) {
+      if (isset($_GET['request'])) {
         // create an editor
         switch ($_GET['request']) {
           case 'editor':
             // check the editor type
-            if($auth['type'] === 'admin') {
-              if(count($_GET) === 1) {
+            if ($auth['type'] === 'admin') {
+              if (count($_GET) === 1) {
                 $result = create_200_state(get_widget_editor_html(null));
-              } else if(count($_GET) === 2 && isset($_GET['id'])) {
+              } else if (count($_GET) === 2 && isset($_GET['id'])) {
                 $result = create_200_state(get_widget_editor_html($_GET['id']));
-              } else if(count($_GET) === 2 && isset($_GET['widgetid'])) {
+              } else if (count($_GET) === 2 && isset($_GET['widgetid'])) {
                 $result = create_200_state(get_widget_instance_editor_html_by_widgetid($_GET['widgetid'], null));
-              } else if(count($_GET) === 3 && isset($_GET['widgetid']) && isset($_GET['id'])) {
+              } else if (count($_GET) === 3 && isset($_GET['widgetid']) && isset($_GET['id'])) {
                 $result = create_200_state(get_widget_instance_editor_html_by_widgetid($_GET['widgetid'], $_GET['id']));
               } else {
                 $result = create_404_state('Too many fields provided.');
@@ -96,9 +96,9 @@ if($auth = authenticate()) {
       }
       break;
     case 'DELETE':
-      if(count($_DELETE) === 1 && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_widget_by_id($_DELETE['id'])) {
+      if (count($_DELETE) === 1 && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_widget_by_id($_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted widget ID '.$_DELETE['id'].'.');
@@ -108,9 +108,9 @@ if($auth = authenticate()) {
           write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget ID '.$_DELETE['id'].'.');
           $result = create_401_state();
         }
-      } else if(count($_DELETE) === 2 && isset($_DELETE['widgetid']) && isset($_DELETE['id'])) {
-        if($auth['type'] === 'admin') {
-          if($error = delete_widget_instance_by_widgetid_and_id($_DELETE['widgetid'], $_DELETE['id'])) {
+      } else if (count($_DELETE) === 2 && isset($_DELETE['widgetid']) && isset($_DELETE['id'])) {
+        if ($auth['type'] === 'admin') {
+          if ($error = delete_widget_instance_by_widgetid_and_id($_DELETE['widgetid'], $_DELETE['id'])) {
             $result = create_404_state($error);
           } else {
             write_to_log('EDIT: '.$auth['username'].' deleted widget instance ID '.$_DELETE['id'].' from widget ID '.$_DELETE['widgetid']);
@@ -125,18 +125,18 @@ if($auth = authenticate()) {
       }
       break;
     case 'PUT':
-      if(isset($_PUT['id'])) {
-        if($auth['type'] === 'admin') {
+      if (isset($_PUT['id'])) {
+        if ($auth['type'] === 'admin') {
           // check if this is a widget update or an instance update
-          if(isset($_PUT['widgetid'])) {
-            if($error = update_widget_instance($_PUT)) {
+          if (isset($_PUT['widgetid'])) {
+            if ($error = update_widget_instance($_PUT)) {
               $result = create_404_state($error);
             } else {
               write_to_log('EDIT: '.$auth['username'].' modified widget instance ID '.$_PUT['id'].' from widget ID '.$_PUT['widgetid']);
               $result = create_200_state(get_widget_by_id($_PUT['id']));
             }
           } else {
-            if($error = update_widget($_PUT)) {
+            if ($error = update_widget($_PUT)) {
               $result = create_404_state($error);
             } else {
               write_to_log('EDIT: '.$auth['username'].' modified widget ID '.$_PUT['id'].'.');
