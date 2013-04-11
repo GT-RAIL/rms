@@ -39,6 +39,8 @@
                 <include name="inc/*.php" />
                 <include name="img/*.php" />
                 <include name="img/**/*.php" />
+                <include name="css/*.php" />
+                <include name="css/**/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>
