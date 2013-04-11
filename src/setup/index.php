@@ -23,7 +23,7 @@ include_once(dirname(__FILE__).'/../inc/head.inc.php');
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title>Robot Management System Setup</title>
 <script type="text/javascript">
   /**

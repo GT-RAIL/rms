@@ -30,7 +30,7 @@ $pagename = 'User Login';
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript">
   /**
@@ -70,7 +70,7 @@ $pagename = 'User Login';
 </script>
 </head>
 <body>
-<?php create_header(null, $pagename, '../')?>
+<?php content::create_header(null, $pagename, '../')?>
   <section id="page">
     <article>
       <h2>User Login</h2>
@@ -97,7 +97,7 @@ $pagename = 'User Login';
         </tr>
       </table>
     </article>
-    <?php create_footer()?>
+    <?php content::create_footer()?>
   </section>
 </body>
 </html>

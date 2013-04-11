@@ -73,7 +73,7 @@ $liveVersion = get_init_sql_version();
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
 <script
@@ -506,7 +506,7 @@ $liveVersion = get_init_sql_version();
 </script>
 </head>
 <body onload="start()">
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
         <section>
             <div class="line"></div>
@@ -1292,7 +1292,7 @@ $liveVersion = get_init_sql_version();
                                         <tr>
                                             <td class="setting-label">Google
                                                 Analytics Tracking ID:</td>
-                                            <td><?php echo (isset($google_tracking_id)) ? $google_tracking_id : '---'?>
+                                            <td><?php echo (isset($googleTrackingID)) ? $googleTrackingID : '---'?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1463,7 +1463,7 @@ $liveVersion = get_init_sql_version();
                 </div>
             </article>
         </section>
-        <?php create_footer()?>
+        <?php content::create_footer()?>
     </section>
     <div
         id="confirm-delete-popup"

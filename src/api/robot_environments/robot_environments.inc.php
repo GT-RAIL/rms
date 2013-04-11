@@ -293,13 +293,13 @@ function create_error_page($error, $user) {
 <!DOCTYPE html>
 <html>
   <head>';
-  import_head($path);
+  head::import_head($path);
   echo '
     <script type="text/javascript">createMenuButtons();</script>
     <title>'.$title.' :: '.$pagename.'</title>
   </head>
   <body>';
-  create_header($user, $pagename, $path);
+  content::create_header($user, $pagename, $path);
   echo'
     <section id="page"><article>
         <div class="center">
@@ -307,7 +307,7 @@ function create_error_page($error, $user) {
           <h2>ERROR: '.$error.'</h2>
           <br /> <br /> <br /> <br /> <br />
         </div></article>';
-  create_footer($path);
+  content::create_footer($path);
   echo '
     </section>
   </body>

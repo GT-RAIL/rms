@@ -160,7 +160,7 @@ class robot_environment {
     $path = $prot.$_SERVER['HTTP_HOST'].'/';
 
     // grab the common information
-    import_head($path);
+    head::import_head($path);
 
     // check for a style sheet
     if (file_exists(dirname(__FILE__).'/interfaces/'.$this->interface['location'].'/style.css')) {

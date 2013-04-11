@@ -56,7 +56,7 @@ if ($sessionUser['type'] !== 'admin') {
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
 <script type="text/javascript" src="../js/jquery/jquery.tablesorter.js">
@@ -152,7 +152,7 @@ if ($sessionUser['type'] !== 'admin') {
 </script>
 </head>
 <body onload="start()">
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
         <section>
             <div class="line"></div>
@@ -407,7 +407,7 @@ for ($i = 0; $i < $numExperiments; $i++) {
             </div>
         </article>
     </section>
-    <?php create_footer()?>
+    <?php content::create_footer()?>
     </section>
     <div id="confirm-delete-popup" title="Delete?"></div>
     <div id="editor-popup" title="Editor"></div>

@@ -131,11 +131,11 @@ function create_config_inc($dbhost, $dbuser, $dbpass, $dbname, $title, $google, 
   }
 
   // check the google tracking ID
-  $google_tracking_id = '$google_tracking_id = ';
+  $googleTrackingID = '$googleTrackingID = ';
   if ($google === '') {
-    $google_tracking_id .= 'null;';
+    $googleTrackingID .= 'null;';
   } else {
-    $google_tracking_id .= '\''.$google.'\';';
+    $googleTrackingID .= '\''.$google.'\';';
   }
 
   // put in the header
@@ -165,13 +165,13 @@ $db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname)
 or DIE(\'Connection has failed. Please try again later.\');
 
 // Google Analytics tracking ID -- unset if no tracking is being used.
-'.$google_tracking_id.'
+'.$googleTrackingID.'
 
 // site copyright and design information
 $copyright = \'&copy '.addslashes($copyright).'\';
 $title = \''.addslashes($title).'\';
 // original site design information
-$designed_by = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
+$designedBy = \'Site design by <a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
 ?>
 ');
 
@@ -218,7 +218,7 @@ function run_database_update() {
  * @return string|null an error message or null if the update was sucessful
  */
 function update_site_settings($fields) {
-  global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright;
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $googleTrackingID, $copyright;
 
   // check the fields
   $num_fields = 0;
@@ -256,7 +256,7 @@ function update_site_settings($fields) {
     $num_fields++;
     $new_google = $fields['google'];
   } else {
-    $new_google = $google_tracking_id;
+    $new_google = $googleTrackingID;
   }
   if (isset($fields['copyright'])) {
     $num_fields++;
@@ -292,7 +292,7 @@ function update_site_settings($fields) {
  * @return string A string containing the HTML of the editor
  */
 function get_site_settings_editor_html() {
-  global $dbhost, $dbuser, $dbpass, $dbname, $title, $google_tracking_id, $copyright, $PASSWORD_HOLDER;
+  global $dbhost, $dbuser, $dbpass, $dbname, $title, $googleTrackingID, $copyright, $PASSWORD_HOLDER;
 
   $result = '<p>Complete the following form to edit the site settings.</p>
              <form action="javascript:submit();"><fieldset>
@@ -334,7 +334,7 @@ function get_site_settings_editor_html() {
               </li>
               <li>
                 <label for="google">Google Analytics (optional)</label>
-                <input type="text" name="google" id="google" value="'.$google_tracking_id.'"
+                <input type="text" name="google" id="google" value="'.$googleTrackingID.'"
                  placeholder="(optional)" />
               </li>
               <li><label for="copyright">Copyright Message</label>

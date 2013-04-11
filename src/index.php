@@ -63,7 +63,7 @@ $ishome = $page['pageid'] === $homepage['pageid'];
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('')?>
+<?php head::import_head('')?>
 <title><?php echo $title." :: ".$page['title']?></title>
 
 <?php if ($sessionUser) {?>
@@ -92,7 +92,7 @@ if ($ishome) {?>
 </head>
 
 <body>
-    <?php create_header($sessionUser, $page['title'], '')?>
+    <?php content::create_header($sessionUser, $page['title'], '')?>
     <section id="page">
         <?php
         // check if this is the homepage
@@ -101,7 +101,7 @@ if ($ishome) {?>
         }
         // put in the content
         echo create_page_articles_html($page);
-        create_footer();
+        content::create_footer();
         ?>
     </section>
 </body>

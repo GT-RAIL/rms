@@ -48,7 +48,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../') ?>
+<?php head::import_head('../') ?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript" src="../js/ros/ros_bundle.min.js"></script>
 <script type="text/javascript">
@@ -72,7 +72,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 </script>
 </head>
 <body>
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
     <section id="articles">
         <div class="line"></div>
@@ -187,7 +187,7 @@ if ($sessionUser['type'] === 'admin') {
 }
 ?>
     </section>
-        <?php create_footer()?>
+        <?php content::create_footer()?>
     </section>
 </body>
 </html>

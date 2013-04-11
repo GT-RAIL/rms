@@ -35,14 +35,14 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript">
 	createMenuButtons();
 </script>
 </head>
 <body>
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
         <section>
             <div class="line"></div>
@@ -54,7 +54,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
                 <div class="line"></div>
             </article>
         </section>
-        <?php create_footer()?>
+        <?php content::create_footer()?>
     </section>
 </body>
 </html>

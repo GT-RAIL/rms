@@ -36,6 +36,7 @@
                 <include name="login/*.php" />
                 <include name="js/*.php" />
                 <include name="js/**/*.php" />
+                <include name="inc/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>
