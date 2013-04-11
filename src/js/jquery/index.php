@@ -5,10 +5,11 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    February, 26 2013
+ * @version    April, 11 2013
  * @package    js.jquery
  * @link       http://ros.org/wiki/rms
  */
 
 header('Location: ../index.php');
 ?>
+<html></html>
