@@ -31,6 +31,8 @@
 		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" haltonwarning="true">
 			<fileset dir="${build.dir}">
 				<include name="study/*.php" />
+                <include name="setup/*.php" />
+                <include name="menu/*.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>
