@@ -22,162 +22,162 @@ header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
 if ($auth = authenticate()) {
-  switch ($_SERVER['REQUEST_METHOD']) {
-    case 'POST':
-      // check if this is a request
-      if (isset($_POST['request'])) {
-        switch ($_POST['request']) {
-          case 'server_session':
-            if (count($_POST) === 1) {
-              // create the session
-              session_start();
-              $_SESSION['userid'] = $auth['userid'];
-              logs::write_to_log('SESSION: '.$auth['username'].' created a new session.');
-              $result = api::create_200_state(get_current_timestamp());
+    switch ($_SERVER['REQUEST_METHOD']) {
+        case 'POST':
+            // check if this is a request
+            if (isset($_POST['request'])) {
+                switch ($_POST['request']) {
+                    case 'server_session':
+                        if (count($_POST) === 1) {
+                            // create the session
+                            session_start();
+                            $_SESSION['userid'] = $auth['userid'];
+                            logs::write_to_log('SESSION: '.$auth['username'].' created a new session.');
+                            $result = api::create_200_state(get_current_timestamp());
+                        } else {
+                            $result = api::create_404_state('Too many fields provided.');
+                        }
+                        break;
+                    case 'destroy_session':
+                        if (count($_POST) === 1) {
+                            if (isset($_SESSION['userid'])) {
+                                // destroy the session
+                                unset($_SESSION['userid']);
+                                session_destroy();
+                                logs::write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
+                                $result = api::create_200_state(get_current_timestamp());
+                            } else {
+                                $result = api::create_404_state('No session to destroy.');
+                            }
+                        } else {
+                            $result = api::create_404_state('Too many fields provided.');
+                        }
+                        break;
+                    default:
+                        $result = api::create_404_state($_POST['request'].' request type is invalid.');
+                        break;
+                }
+            } else if (valid_user_account_fields($_POST)) {
+                if ($auth['type'] === 'admin') {
+                    if ($error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
+                            , $_POST['lastname'], $_POST['email'], $_POST['type'])) {
+                        $result = api::create_404_state($error);
+                    } else {
+                        logs::write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
+                        $account = get_user_account_by_username($_POST['username']);
+                        // remove the password info
+                        unset($account['password']);
+                        unset($account['salt']);
+                        $result = api::create_200_state($account);
+                    }
+                } else {
+                    logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
+                    $result = api::create_401_state();
+                }
             } else {
-              $result = api::create_404_state('Too many fields provided.');
-            }
-            break;
-          case 'destroy_session':
-            if (count($_POST) === 1) {
-              if (isset($_SESSION['userid'])) {
-                // destroy the session
-                unset($_SESSION['userid']);
-                session_destroy();
-                logs::write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
-                $result = api::create_200_state(get_current_timestamp());
-              } else {
-                $result = api::create_404_state('No session to destroy.');
-              }
-            } else {
-              $result = api::create_404_state('Too many fields provided.');
-            }
-            break;
-          default:
-            $result = api::create_404_state($_POST['request'].' request type is invalid.');
-            break;
-        }
-      } else if (valid_user_account_fields($_POST)) {
-        if ($auth['type'] === 'admin') {
-          if ($error = create_user_account($_POST['username'], $_POST['password'], $_POST['firstname']
-          , $_POST['lastname'], $_POST['email'], $_POST['type'])) {
-            $result = api::create_404_state($error);
-          } else {
-            logs::write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
-            $account = get_user_account_by_username($_POST['username']);
-            // remove the password info
-            unset($account['password']);
-            unset($account['salt']);
-            $result = api::create_200_state($account);
-          }
-        } else {
-          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
-          $result = api::create_401_state();
-        }
-      } else {
-        $result = api::create_404_state('Unknown request.');
-      }
-      break;
-    case 'GET':
-      if (count($_GET) === 0) {
-        // check the user level
-        if ($auth['type'] === 'admin') {
-          // we authenticated so we know at least one user exists
-          $accounts = get_user_accounts();
-          // remove the password info
-          foreach ($accounts as $account) {
-            unset($account['password']);
-            unset($account['salt']);
-          }
-          $result = api::create_200_state(get_user_accounts());
-        } else {
-          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
-          $result = api::create_401_state();
-        }
-      } else if (count($_GET) === 1 && isset($_GET['id'])) {
-        // check the user level
-        if ($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
-          // check if it exists
-          if ($user = get_user_account_by_id($_GET['id'])) {
-            // remove the password info
-            unset($user['password']);
-            unset($user['salt']);
-            $result = api::create_200_state($user);
-          } else {
-            $result = api::create_404_state('User with ID '.$_GET['id'].' does not exist.');
-          }
-        } else {
-          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
-          $result = api::create_401_state();
-        }
-      } else if (isset($_GET['request'])) {
-        switch ($_GET['request']) {
-          case 'editor':
-            if ($auth['type'] === 'admin') {
-              if (count($_GET) === 1) {
-                $result = api::create_200_state(get_user_account_editor_html(null));
-              } else if (count($_GET) === 2 && isset($_GET['id'])) {
-                $result = api::create_200_state(get_user_account_editor_html($_GET['id']));
-              } else {
                 $result = api::create_404_state('Unknown request.');
-              }
-            } else {
-              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
-              $result = api::create_401_state();
             }
             break;
-          default:
-            $result = api::create_404_state('Unknown request.');
+        case 'GET':
+            if (count($_GET) === 0) {
+                // check the user level
+                if ($auth['type'] === 'admin') {
+                    // we authenticated so we know at least one user exists
+                    $accounts = get_user_accounts();
+                    // remove the password info
+                    foreach ($accounts as $account) {
+                        unset($account['password']);
+                        unset($account['salt']);
+                    }
+                    $result = api::create_200_state(get_user_accounts());
+                } else {
+                    logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
+                    $result = api::create_401_state();
+                }
+            } else if (count($_GET) === 1 && isset($_GET['id'])) {
+                // check the user level
+                if ($auth['type'] === 'admin' || $auth['userid'] === $_GET['id']) {
+                    // check if it exists
+                    if ($user = get_user_account_by_id($_GET['id'])) {
+                        // remove the password info
+                        unset($user['password']);
+                        unset($user['salt']);
+                        $result = api::create_200_state($user);
+                    } else {
+                        $result = api::create_404_state('User with ID '.$_GET['id'].' does not exist.');
+                    }
+                } else {
+                    logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
+                    $result = api::create_401_state();
+                }
+            } else if (isset($_GET['request'])) {
+                switch ($_GET['request']) {
+                    case 'editor':
+                        if ($auth['type'] === 'admin') {
+                            if (count($_GET) === 1) {
+                                $result = api::create_200_state(get_user_account_editor_html(null));
+                            } else if (count($_GET) === 2 && isset($_GET['id'])) {
+                                $result = api::create_200_state(get_user_account_editor_html($_GET['id']));
+                            } else {
+                                $result = api::create_404_state('Unknown request.');
+                            }
+                        } else {
+                            logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
+                            $result = api::create_401_state();
+                        }
+                        break;
+                    default:
+                        $result = api::create_404_state('Unknown request.');
+                        break;
+                }
+            } else {
+                $result = api::create_404_state('Unknown request.');
+            }
             break;
-        }
-      } else {
-        $result = api::create_404_state('Unknown request.');
-      }
-      break;
-    case 'DELETE':
-      if (count($deleteArray) === 1 && isset($deleteArray['id'])) {
-        if ($auth['type'] === 'admin') {
-          if ($error = delete_user_account_by_id($deleteArray['id'])) {
-            $result = api::create_404_state($error);
-          } else {
-            logs::write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$deleteArray['id'].'.');
-            $result = api::create_200_state(get_current_timestamp());
-          }
-        } else {
-          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$deleteArray['id'].'.');
-          $result = api::create_401_state();
-        }
-      } else {
-        $result = api::create_404_state('Unknown request.');
-      }
-      break;
-    case 'PUT':
-      if (isset($putArray['id'])) {
-        if ($auth['type'] === 'admin') {
-          if ($error = update_user_account($putArray)) {
-            $result = api::create_404_state($error);
-          } else {
-            logs::write_to_log('EDIT: '.$auth['username'].' modified user ID '.$putArray['id'].'.');
-            $account = get_user_account_by_id($putArray['id']);
-            // remove the password info
-            unset($account['password']);
-            unset($account['salt']);
-            $result = api::create_200_state($account);
-          }
-        } else {
-          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$putArray['id'].'.');
-          $result = api::create_401_state();
-        }
-      } else {
-        $result = api::create_404_state('Unknown request.');
-      }
-      break;
-    default:
-      $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
-      break;
-  }
+        case 'DELETE':
+            if (count($deleteArray) === 1 && isset($deleteArray['id'])) {
+                if ($auth['type'] === 'admin') {
+                    if ($error = delete_user_account_by_id($deleteArray['id'])) {
+                        $result = api::create_404_state($error);
+                    } else {
+                        logs::write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$deleteArray['id'].'.');
+                        $result = api::create_200_state(get_current_timestamp());
+                    }
+                } else {
+                    logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$deleteArray['id'].'.');
+                    $result = api::create_401_state();
+                }
+            } else {
+                $result = api::create_404_state('Unknown request.');
+            }
+            break;
+        case 'PUT':
+            if (isset($putArray['id'])) {
+                if ($auth['type'] === 'admin') {
+                    if ($error = update_user_account($putArray)) {
+                        $result = api::create_404_state($error);
+                    } else {
+                        logs::write_to_log('EDIT: '.$auth['username'].' modified user ID '.$putArray['id'].'.');
+                        $account = get_user_account_by_id($putArray['id']);
+                        // remove the password info
+                        unset($account['password']);
+                        unset($account['salt']);
+                        $result = api::create_200_state($account);
+                    }
+                } else {
+                    logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$putArray['id'].'.');
+                    $result = api::create_401_state();
+                }
+            } else {
+                $result = api::create_404_state('Unknown request.');
+            }
+            break;
+        default:
+            $result = api::create_404_state($_SERVER['REQUEST_METHOD'].' method is unavailable.');
+            break;
+    }
 } else {
-  $result = api::create_401_state();
+    $result = api::create_401_state();
 }
 
 // return the JSON encoding of the result
