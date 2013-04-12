@@ -7,6 +7,7 @@ before_script:
   - pear channel-discover pear.phing.info
   - pear install phing/phing
   - pear install PHP_CodeSniffer
+  - phpenv rehash
   - cd utils
 
 script:
