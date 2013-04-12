@@ -328,7 +328,7 @@ $liveVersion = config::get_init_sql_version();
   /**
    * The main submit callback for the editor forms. This will make the correct AJAX call for the form.
    */
-	function submit() {
+    function submit() {
      createModalPageLoading();
 
      // the actual function to make the request
@@ -385,7 +385,7 @@ $liveVersion = config::get_init_sql_version();
           }
 
           if ($(this).attr('name') !== 'password' || $(this).val() !== '<?php echo api::$passwordHolder?>') {
-  	        if (putString.length > 1) {
+              if (putString.length > 1) {
               putString += '&';
             }
             // check if this is a checkbox (tiny int)
@@ -404,7 +404,7 @@ $liveVersion = config::get_init_sql_version();
             }
           }
         }
-  	  });
+        });
 
       // special case -- generic widget editor
       var finalScript = script;
@@ -438,12 +438,12 @@ $liveVersion = config::get_init_sql_version();
 
       makeRequest(finalScript, dataToSubmit, ajaxType, function(data){window.location.reload();});
     }
-	}
+    }
 
   /**
    * Make an AJAX request to update the Javascript files.
    */
-	function updateJSRequest() {
+    function updateJSRequest() {
     createModalPageLoading();
 
     // create a AJAX request
@@ -470,12 +470,12 @@ $liveVersion = config::get_init_sql_version();
         createErrorDialog(response.msg);
       }
     });
-	}
+    }
 
-	/**
+    /**
    * Make an AJAX request to update the RMS database.
    */
-	function updateDBRequest() {
+    function updateDBRequest() {
     createModalPageLoading();
 
     // create a AJAX request
@@ -502,7 +502,7 @@ $liveVersion = config::get_init_sql_version();
         createErrorDialog(response.msg);
       }
     });
-	}
+    }
 </script>
 </head>
 <body onload="start()">

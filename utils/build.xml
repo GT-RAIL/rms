@@ -31,26 +31,8 @@
 		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" 
 			haltonwarning="true">
 			<fileset dir="${build.dir}">
-				<include name="study/*.php" />
-                <include name="setup/*.php" />
-                <include name="menu/*.php" />
-                <include name="login/*.php" />
-                <include name="js/*.php" />
-                <include name="js/**/*.php" />
-                <include name="inc/*.php" />
-                <include name="img/*.php" />
-                <include name="img/**/*.php" />
-                <include name="css/*.php" />
-                <include name="css/**/*.php" />
-                <include name="connection/*.php" />
-                <include name="account/*.php" />
-                <include name="api/*.php" />
-                <include name="api/config/*.php" />
-                <include name="api/config/**/.php" />
-                <include name="api/content/*.php" />
-                <include name="api/content/slides/*.php" />
-                <include name="api/content/slides/**/.php" />
 				<include name="*.php" />
+                <include name="**/*.php" />
 			</fileset>
 		</phpcodesniffer>
 	</target>

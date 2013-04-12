@@ -65,10 +65,10 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
    * @param {int}
    *          envid the experiment's environment ID number
    */
-	function beginStudy(expid, intid, envid) {
-		window.location = '../connection/?expid=' + expid + '&intid=' + intid 
-		                      + '&envid=' + envid;
-	}
+    function beginStudy(expid, intid, envid) {
+        window.location = '../connection/?expid=' + expid + '&intid=' + intid 
+                              + '&envid=' + envid;
+    }
 </script>
 </head>
 <body>
@@ -95,17 +95,17 @@ if ($sessionUser['type'] === 'admin') {
                             $cur['envaddr'].' -- '.$cur['type']?>
                     </h3>
                     <script type="text/javascript">
-    					rosonline('<?php echo $cur['protocol']?>', 
-    							  '<?php echo $cur['envaddr']?>', 
-    							  <?php echo $cur['port']?>, function(online) {
-    						var id = '#envstatus-<?php echo $cur['envid']?>';
-    						if (online) {
-    						  $(id).html('<b>Available</b>');
-    						} else {
-    					      $(id).html('<b>Offline</b>');
+                        rosonline('<?php echo $cur['protocol']?>', 
+                                  '<?php echo $cur['envaddr']?>', 
+                                  <?php echo $cur['port']?>, function(online) {
+                            var id = '#envstatus-<?php echo $cur['envid']?>';
+                            if (online) {
+                              $(id).html('<b>Available</b>');
+                            } else {
+                              $(id).html('<b>Offline</b>');
                             }
-    				    });
-    				</script>
+                        });
+                    </script>
                     <div id="envstatus-<?php echo $cur['envid']?>"
                         class="environment-status">Acquiring connection...</div>
         <?php

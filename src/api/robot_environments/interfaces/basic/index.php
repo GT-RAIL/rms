@@ -33,7 +33,7 @@ function generate($re) {
 
 <script type="text/javascript">
   ros.on('error', function() {
-  	alert('Lost communication with ROS.');
+      alert('Lost communication with ROS.');
   });
 </script>
 </head>

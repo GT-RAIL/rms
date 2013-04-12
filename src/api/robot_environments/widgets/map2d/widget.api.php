@@ -39,11 +39,11 @@ function create_map2d($map2d) {
 
   $result = '
 <script type="text/javascript">
-	var map = new Map({
-		ros : ros,
-		mapTopic : \''.$map2d['topic'].'\'
-		'.$continuous.'
-	});
+    var map = new Map({
+        ros : ros,
+        mapTopic : \''.$map2d['topic'].'\'
+        '.$continuous.'
+    });
 </script>
 ';
 

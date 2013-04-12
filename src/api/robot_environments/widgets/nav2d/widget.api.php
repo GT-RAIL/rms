@@ -37,15 +37,15 @@ function create_nav2d($nav2d, $width, $height, $img = null, $cb = null) {
 <canvas id="nav-'.$id.'" width="'.$width.'" height="'.$height.'"></canvas>
 
 <script type="text/javascript">
-	var nav = new Nav2D({
-		ros : ros,
-		serverName : \''.$nav2d['actionserver'].'\',
-		actionName : \''.$nav2d['action'].'\',
-		mapTopic : \''.$map2d['topic'].'\',
-		canvasID : \'nav-'.$id.'\'
-		'.(($img) ? ', image : \''.$img.'\'' : '' ).'
-		'.(($map2d['continuous'] !== '0') ? ', continuous : true' : '' ).'
-	});
+    var nav = new Nav2D({
+        ros : ros,
+        serverName : \''.$nav2d['actionserver'].'\',
+        actionName : \''.$nav2d['action'].'\',
+        mapTopic : \''.$map2d['topic'].'\',
+        canvasID : \'nav-'.$id.'\'
+        '.(($img) ? ', image : \''.$img.'\'' : '' ).'
+        '.(($map2d['continuous'] !== '0') ? ', continuous : true' : '' ).'
+    });
   ';
   // check the callback
   if ($cb) {

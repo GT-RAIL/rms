@@ -38,7 +38,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 <?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript">
-	createMenuButtons();
+    createMenuButtons();
 </script>
 </head>
 <body>

@@ -31,21 +31,21 @@ function create_keyboard_teleop_with_slider($teleop, $cb = null) {
   var teleop = new KeyboardTeleop({
     ros : ros,
     topic : \''.$teleop['twist'].'\',
-		throttle: '.$teleop['throttle'].'
-	});
+        throttle: '.$teleop['throttle'].'
+    });
 
-	$("#speed-slider").slider({
-			range: "min",
-			min: 0,
-			max: 100,
-			value: 90,
-			slide: function(event, ui) {
-				$("#speed-label").html("<h3>Speed: "+ui.value+"%</h3>");
-				teleop.scale = (ui.value/100.0);
-			}
-		});
-		$("#speed-label").html("<h3>Speed: "+($("#speed-slider").slider("value"))+"%</h3>");
-		';
+    $("#speed-slider").slider({
+            range: "min",
+            min: 0,
+            max: 100,
+            value: 90,
+            slide: function(event, ui) {
+                $("#speed-label").html("<h3>Speed: "+ui.value+"%</h3>");
+                teleop.scale = (ui.value/100.0);
+            }
+        });
+        $("#speed-label").html("<h3>Speed: "+($("#speed-slider").slider("value"))+"%</h3>");
+        ';
 
   // check the callback
   if ($cb) {
