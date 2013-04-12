@@ -49,7 +49,7 @@ include_once(dirname(__FILE__).'/../inc/head.inc.php');
 include_once(dirname(__FILE__).'/../inc/content.inc.php');
 
 // grab the user info from the database
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 
 // now make sure this is an admin
 if ($sessionUser['type'] !== 'admin') {
@@ -552,7 +552,7 @@ $liveVersion = config::get_init_sql_version();
                                 <tbody>
                                     <?php
                                     // populate the table
-                                    $user_accounts = get_user_accounts();
+                                    $user_accounts = user_accounts::get_user_accounts();
                                     $num_users = count($user_accounts);
                                     for ($i = 0; $i < $num_users; $i++) {
                   $cur = $user_accounts[$i];

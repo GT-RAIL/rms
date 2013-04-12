@@ -23,7 +23,7 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if ($auth = authenticate()) {
+if ($auth = user_accounts::authenticate()) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
       // check if we are creating a new entry

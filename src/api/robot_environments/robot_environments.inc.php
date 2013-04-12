@@ -325,13 +325,13 @@ function create_error_page($error, $user) {
 function generate_environment_interface($userid, $envid, $intid) {
   // grab what we need
   if (!$interface = get_interface_by_id($intid)) {
-    create_error_page('Invalid interface number provided.', get_user_account_by_id($userid));
+    create_error_page('Invalid interface number provided.', user_accounts::get_user_account_by_id($userid));
   } else if (!get_environment_by_id($envid)) {
-    create_error_page('Invalid environment number provided.', get_user_account_by_id($userid));
+    create_error_page('Invalid environment number provided.', user_accounts::get_user_account_by_id($userid));
   } else if (!get_environment_interface_pair_by_envid_and_intid($envid, $intid)) {
-    create_error_page('Invalid pairing between the interface and the environment.', get_user_account_by_id($userid));
+    create_error_page('Invalid pairing between the interface and the environment.', user_accounts::get_user_account_by_id($userid));
   } else if (!file_exists(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php')) {
-    create_error_page(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php does not exist!', get_user_account_by_id($userid));
+    create_error_page(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php does not exist!', user_accounts::get_user_account_by_id($userid));
   } else {
     // include the file
     include_once(dirname(__FILE__).'/interfaces/'.$interface['location'].'/index.php');

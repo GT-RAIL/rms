@@ -92,7 +92,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
     include_once(dirname(__FILE__).
             '/../users/user_accounts/user_accounts.inc.php');
 
-    if ($auth = authenticate()) {
+    if ($auth = user_accounts::authenticate()) {
         // only admins can use this script
         if ($auth['type'] === 'admin') {
             switch ($_SERVER['REQUEST_METHOD']) {

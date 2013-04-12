@@ -1,9 +1,9 @@
 <?php
 /**
- * User accounts include functions for the RMS API.
+ * User accounts include static functions for the RMS API.
  *
- * Allows read and write access to user accounts via PHP function calls. Used
- * throughout RMS and within the RMS API.
+ * Allows read and write access to user accounts via PHP static function calls.
+ * Used throughout RMS and within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
@@ -17,13 +17,13 @@ include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
 include_once(dirname(__FILE__).'/../../api.inc.php');
 
 /**
- * A static class to contain the api.inc.php functions.
+ * A static class to contain the user_accounts.inc.php static functions.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
- * @package    api
+ * @version    April, 12 2013
+ * @package    api.users.user_accounts
  */
 class user_accounts
 {
@@ -61,7 +61,8 @@ class user_accounts
      * @return boolean If the given array has all of the necessary fields to
      *     create a new user account
      */
-    function valid_user_account_fields($array) {
+    static function valid_user_account_fields($array)
+    {
         return isset($array['username']) && isset($array['password'])
                 && isset($array['firstname']) && isset($array['lastname'])
                 && isset($array['email']) && isset($array['type'])
@@ -73,7 +74,8 @@ class user_accounts
      *
      * @return array An array containing the enum types for users
      */
-    function get_user_account_types() {
+    static function get_user_account_types()
+    {
         return api::get_enum_types('user_accounts', 'type');
     }
     
@@ -84,7 +86,8 @@ class user_accounts
      * @return array|null An array of all the user accounts in the system, or
      *     null if none exist
      */
-    function get_user_accounts() {
+    static function get_user_accounts()
+    {
         global $db;
     
         // grab the users and push them into an array
@@ -103,7 +106,8 @@ class user_accounts
      * @param integer $id The user ID number
      * @return array|null An array of the user's SQL entry or null if none exist
      */
-    function get_user_account_by_id($id) {
+    static function get_user_account_by_id($id)
+    {
         global $db;
     
         $str = "SELECT * FROM `user_accounts` WHERE `userid`='%d'";
@@ -118,7 +122,8 @@ class user_accounts
      * @param string $username The username
      * @return array|null An array of the user's SQL entry or null if none exist
      */
-    function get_user_account_by_username($username) {
+    static function get_user_account_by_username($username)
+    {
         global $db;
 
         $str = "SELECT * FROM `user_accounts` WHERE `username`='%s'";
@@ -133,7 +138,8 @@ class user_accounts
      * @param string $email The email
      * @return array|null An array of the user's SQL entry or null if none exist
      */
-    function get_user_account_by_email($email) {
+    static function get_user_account_by_email($email)
+    {
         global $db;
         
         $str = "SELECT * FROM `user_accounts` WHERE `email`='%s'";
@@ -153,14 +159,15 @@ class user_accounts
      * @param string $type The type of user
      * @return string|null An error message or null if the create was sucessful
      */
-    function create_user_account($username, $password, $firstname, 
-            $lastname, $email, $type) {
+    static function create_user_account($username, $password,
+            $firstname, $lastname, $email, $type)
+    {
         global $db;
     
         // make sure the user does not exist
         if (get_user_account_by_username($username)) {
             return 'ERROR: User "'.$username.'" already exists';
-        } else if (get_user_account_by_email($email)) {
+        } else if (user_accounts::get_user_account_by_email($email)) {
             return 'ERROR: Email address "'.$email.'" already exists';
         }
     
@@ -192,7 +199,8 @@ class user_accounts
      * @param array $fields the fields to update including the user ID number
      * @return string|null an error message or null if the update was sucessful
      */
-    function update_user_account($fields) {
+    static function update_user_account($fields)
+    {
         global $db;
     
         if (!isset($fields['id'])) {
@@ -203,7 +211,7 @@ class user_accounts
         $sql = "";
         $numFields = 0;
         // check for the user
-        if (!($user = get_user_account_by_id($fields['id']))) {
+        if (!($user = user_accounts::get_user_account_by_id($fields['id']))) {
             return 'ERROR: User ID '.$fields['id'].' does not exist';
         }
     
@@ -211,8 +219,8 @@ class user_accounts
         $idToSet = $user['userid'];
         if (isset($fields['userid'])) {
             $numFields++;
-            if ($fields['userid'] !== $user['userid'] 
-                    && get_user_account_by_id($fields['userid'])) {
+            $exists = user_accounts::get_user_account_by_id($fields['userid']);
+            if ($fields['userid'] !== $user['userid'] && $exists) {
                 return 'ERROR: User ID '.$fields['userid'].' already exists';
             } else {
                 $idToSet = $fields['userid'];
@@ -234,8 +242,8 @@ class user_accounts
         }
         if (isset($fields['email'])) {
             $numFields++;
-            if ($fields['email'] !== $user['email'] 
-                    && get_user_account_by_email($fields['email'])) {
+            $ex = user_accounts::get_user_account_by_email($fields['email']);
+            if ($fields['email'] !== $user['email'] && $ex) {
                 return 'ERROR: Email address "'.$fields['email'].
                     '" already exists';
             }
@@ -289,11 +297,12 @@ class user_accounts
      * @param integer $id The user ID number
      * @return string|null an error message or null if the delete was sucessful
      */
-    function delete_user_account_by_id($id) {
+    static function delete_user_account_by_id($id)
+    {
         global $db;
     
         // see if the account exists
-        if (get_user_account_by_id($id)) {
+        if (user_accounts::get_user_account_by_id($id)) {
             // delete it
             $str = "DELETE FROM `user_accounts` WHERE `userid`='%d'";
             $sql = sprintf($str, api::cleanse($id));
@@ -313,7 +322,8 @@ class user_accounts
      *
      * @return array|null The authenticated user or null if none exist
      */
-    function authenticate() {
+    static function authenticate()
+    {
         global $db;
     
         // check if we are using the session information
@@ -323,7 +333,7 @@ class user_accounts
                 // use session information to authenticate
                 session_start();
                 return (isset($_SESSION['userid'])) 
-                    ? get_user_account_by_id($_SESSION['userid']) 
+                    ? user_accounts::get_user_account_by_id($_SESSION['userid'])
                     : null;
             }
         }
@@ -362,9 +372,10 @@ class user_accounts
      *     new entry is being made
      * @return string A string containing the HTML of the editor
      */
-    function get_user_account_editor_html($id) {
+    static function get_user_account_editor_html($id)
+    {
         // see if a user exists with the given id
-        $cur = get_user_account_by_id($id);
+        $cur = user_accounts::get_user_account_by_id($id);
     
         if ($cur) {
             $password = api::$passwordHolder;
@@ -427,7 +438,7 @@ class user_accounts
     <select name="type" id="type" required>';
     
         // grab the types of users
-        $types = get_user_account_types();
+        $types = user_accounts::get_user_account_types();
         foreach ($types as $curtype) {
             // check if this type is the same
             if ($type === $curtype) {

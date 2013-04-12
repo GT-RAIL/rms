@@ -42,7 +42,7 @@ include_once(dirname(__FILE__).'/../inc/head.inc.php');
 include_once(dirname(__FILE__).'/../inc/content.inc.php');
 
 // grab the user info from the database
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 
 // now make sure this is an admin
 if ($sessionUser['type'] !== 'admin') {
@@ -332,7 +332,7 @@ $experiments = get_experiments();
 $numExperiments = count($experiments);
 for ($i = 0; $i < $numExperiments; $i++) {
     $cur = $experiments[$i];
-    $user = get_user_account_by_id($cur['userid']);
+    $user = user_accounts::get_user_account_by_id($cur['userid']);
     $condition = get_condition_by_id($cur['condid']);
     $study = get_study_by_id($condition['studyid']);
     $env = get_environment_by_id($cur['envid']);

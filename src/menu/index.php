@@ -43,7 +43,7 @@ include_once(dirname(__FILE__).'/../inc/content.inc.php');
 $pagename = 'Main Menu';
 
 // grab the user info from the database
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 ?>
 <!DOCTYPE html>
 <html>

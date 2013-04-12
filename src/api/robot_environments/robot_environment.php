@@ -71,7 +71,7 @@ class robot_environment {
    * @param integer $intid The ID of the interface to use
    */
   function __construct($userid, $envid, $intid) {
-    $this->user_account = get_user_account_by_id($userid);
+    $this->user_account = user_accounts::get_user_account_by_id($userid);
     $this->environment = get_environment_by_id($envid);
     $this->interface = get_interface_by_id($intid);
 

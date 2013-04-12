@@ -28,7 +28,7 @@ if (!isset($_SESSION['userid'])) {
     return;
 }
 
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 
 // check the information that was given
 if (!isset($_GET['envid']) || !isset($_GET['intid'])) {

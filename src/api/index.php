@@ -20,7 +20,7 @@ header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
 // check for authorization
-if ($auth = authenticate()) {
+if ($auth = user_accounts::authenticate()) {
     $msg = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
     $result = api::create_404_state($msg);
 } else {

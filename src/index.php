@@ -34,7 +34,7 @@ include_once(dirname(__FILE__).'/inc/head.inc.php');
 
 // grab the user with this session
 $sessionUser = isset($_SESSION['userid']) ?
-get_user_account_by_id($_SESSION['userid']) : null;
+user_accounts::get_user_account_by_id($_SESSION['userid']) : null;
 
 // grab the page information
 if (!isset($_GET['pageid'])) {
