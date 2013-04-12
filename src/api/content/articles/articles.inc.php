@@ -273,7 +273,7 @@ function create_page_articles_html($page) {
  * @param integer|null $id the ID of the article to edit, or null if a new entry is being made
  * @return string A string containing the HTML of the editor
  */
-function get_article_editor_html($id) {
+function get_article_editor($id) {
   // see if an article exists with the given id
   $cur = get_article_by_id($id);
 

@@ -71,9 +71,9 @@ if ($auth = user_accounts::authenticate()) {
           case 'editor':
             if ($auth['type'] === 'admin') {
               if (count($_GET) === 1) {
-                $result = api::create_200_state(get_article_editor_html(null));
+                $result = api::create_200_state(get_article_editor(null));
               } else if (count($_GET) === 2 && isset($_GET['id'])) {
-                $result = api::create_200_state(get_article_editor_html($_GET['id']));
+                $result = api::create_200_state(get_article_editor($_GET['id']));
               } else {
                 $result = api::create_404_state('Too many fields provided.');
               }

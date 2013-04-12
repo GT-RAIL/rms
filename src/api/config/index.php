@@ -133,7 +133,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                         switch ($_GET['request']) {
                             // check for the editor request
                             case 'editor':
-                                $msg = config::get_site_settings_editor_html();
+                                $msg = config::get_site_settings_editor();
                                 if (count($_GET) === 1) {
                                     $result = api::create_200_state($msg);
                                 } else {

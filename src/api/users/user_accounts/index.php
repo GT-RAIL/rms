@@ -144,7 +144,7 @@ if ($auth = user_accounts::authenticate()) {
                         if ($auth['type'] === 'admin') {
                             // get the editors
                             $id = isset($_GET['id']) ? $_GET['id'] : null;
-                            $e = user_accounts::get_user_account_editor_html(
+                            $e = user_accounts::get_user_account_editor(
                                 $id
                             );
                             if (count($_GET) <= 2) {

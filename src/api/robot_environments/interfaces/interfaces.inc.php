@@ -213,7 +213,7 @@ function get_unused_interface_locations() {
  * @param integer|null $id the ID of the interface to edit, or null if a new entry is being made
  * @return string A string containing the HTML of the editor
  */
-function get_interface_editor_html($id) {
+function get_interface_editor($id) {
   // see if an interface exists with the given id
   $cur = get_interface_by_id($id);
 
@@ -251,7 +251,7 @@ function get_interface_editor_html($id) {
     $result .= '<label for="location">Location</label>
                 <select name="location" id="location" required>';
     // put in each option
-    foreach($locations as $l) {
+    foreach ($locations as $l) {
       if ($location === $l) {
         $result .= '<option value="'.$l.'" selected="selected">'.$l.'</option>';
       } else {

@@ -826,7 +826,7 @@ $liveVersion = config::get_init_sql_version();
                                 <tbody>
                                     <?php
                                     // populate the table
-                                    $pairs = get_environment_interface_pairs();
+                                    $pairs = robot_environments::get_environment_interface_pairs();
                                     $num_pairs = count($pairs);
                                     for ($i = 0; $i < $num_pairs; $i++) {
                   $cur = $pairs[$i];
@@ -895,7 +895,7 @@ $liveVersion = config::get_init_sql_version();
                                 <tbody>
                                     <?php
                                     // populate the table
-                                    $widgets = get_widgets();
+                                    $widgets = widgets::get_widgets();
                                     $num_widgets = count($widgets);
                                     for ($i = 0; $i < $num_widgets; $i++) {
                   $cur = $widgets[$i];
@@ -953,7 +953,7 @@ $liveVersion = config::get_init_sql_version();
                                 <thead>
                                     <?php
                                     // build an array of the column names
-                                    $attributes = get_widget_table_columns_by_id($w['widgetid']);
+                                    $attributes = widgets::get_widget_table_columns_by_id($w['widgetid']);
                 $num_att = count($attributes);?>
                                     <tr>
                                         <th></th>
@@ -977,7 +977,7 @@ $liveVersion = config::get_init_sql_version();
                                 <tbody>
                                     <?php
                                     // populate the table
-                                    $instances = get_widget_instances_by_widgetid($w['widgetid']);
+                                    $instances = widgets::get_widget_instances_by_widgetid($w['widgetid']);
                                     $num_instances = count($instances);
                                     for ($i = 0; $i < $num_instances; $i++) {
                   $cur = $instances[$i];

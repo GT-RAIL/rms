@@ -17,11 +17,11 @@
 function generate($re) {
   // lets begin by checking if we have an MJPEG widget and a keyboard at the very least
   if (!$re->get_widgets_by_name('MJPEG Stream')) {
-    create_error_page('No MJPEG streams found.', $re->get_user_account());
+    robot_environments::create_error_page('No MJPEG streams found.', $re->get_user_account());
   } else if (!$teleop = $re->get_widgets_by_name('Keyboard Teleop')) {
-    create_error_page('No Keyboard Teloperation settings found.', $re->get_user_account());
+    robot_environments::create_error_page('No Keyboard Teloperation settings found.', $re->get_user_account());
   } else if (!$re->authorized()) {
-    create_error_page('Invalid experiment for the current user.', $re->get_user_account());
+    robot_environments::create_error_page('Invalid experiment for the current user.', $re->get_user_account());
   } else { // here we can spit out the HTML for our interface?>
 <!DOCTYPE html>
 <html>

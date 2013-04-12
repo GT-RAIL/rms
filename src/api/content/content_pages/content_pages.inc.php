@@ -210,7 +210,7 @@ function delete_content_page_by_id($id) {
  * @param integer|null $id the ID of the content page to edit, or null if a new entry is being made
  * @return string A string containing the HTML of the editor
  */
-function get_content_page_editor_html($id) {
+function get_content_page_editor($id) {
   // see if a content page exists with the given id
   $cur = get_content_page_by_id($id);
 
@@ -272,7 +272,7 @@ function get_content_page_editor_html($id) {
                   <select name="js" id="js" required>
                     <option value="NULL">None</option>';
     // put in each option
-    foreach($files as $f) {
+    foreach ($files as $f) {
       if ($js === $f) {
         $result .= '<option value="'.$f.'" selected="selected">'.$f.'</option>';
       } else {

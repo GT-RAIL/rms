@@ -329,7 +329,7 @@ $designedBy = \'Site design by ".
      *
      * @return string A string containing the HTML of the editor
      */
-    static function get_site_settings_editor_html()
+    static function get_site_settings_editor()
     {
         global $dbhost, $dbuser, $dbpass, $dbname, $title, $googleTrackingID,
             $copyright;

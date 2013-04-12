@@ -120,7 +120,8 @@ if ($sessionUser['type'] === 'admin') {
             <ul>
             <?php
             // go through each interface for this environment
-            if ($p = get_environment_interface_pairs_by_envid($cur['envid'])) {
+            if ($p = robot_environments::
+                    get_environment_interface_pairs_by_envid($cur['envid'])) {
                 foreach ($p as $pair) {
                   $int = get_interface_by_id($pair['intid']);
                   $url = '../connection/?envid='.$cur['envid'].'&intid='.

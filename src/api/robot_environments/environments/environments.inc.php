@@ -209,7 +209,7 @@ function get_environment_types() {
  * @param integer|null $id the ID of the environment to edit, or null if a new entry is being made
  * @return string A string containing the HTML of the editor
  */
-function get_environment_editor_html($id) {
+function get_environment_editor($id) {
   // see if an environment exists with the given id
   $cur = get_environment_by_id($id);
 

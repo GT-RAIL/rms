@@ -320,7 +320,7 @@ class slides
      *     entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_slide_editor_html($id)
+    static function get_slide_editor($id)
     {
       // see if a slide exists with the given id
       $cur = slides::get_slide_by_id($id);
