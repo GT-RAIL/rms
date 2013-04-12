@@ -1051,7 +1051,7 @@ $liveVersion = config::get_init_sql_version();
                                     <tbody>
                                         <?php
                                         // populate the table
-                                        $slides = get_slides();
+                                        $slides = slides::get_slides();
                                         $num_slides = count($slides);
                                         for ($i = 0; $i < $num_slides; $i++) {
                     $cur = $slides[$i];

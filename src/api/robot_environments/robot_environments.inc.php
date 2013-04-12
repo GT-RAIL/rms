@@ -146,16 +146,16 @@ function update_environment_interface_pair($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $pair['pairid'];
+  $idToSet = $pair['pairid'];
   if (isset($fields['pairid'])) {
     $numFields++;
     if ($fields['pairid'] !== $pair['pairid'] && get_environment_interface_pair_by_id($fields['pairid'])) {
       return 'ERROR: Environment-interface pair ID '.$fields['pairid'].' already exists';
     } else {
-      $id_to_set = $fields['pairid'];
+      $idToSet = $fields['pairid'];
     }
   }
-  $sql .= sprintf(" `pairid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `pairid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['envid'])) {

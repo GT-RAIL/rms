@@ -124,16 +124,16 @@ function update_interface($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $interface['intid'];
+  $idToSet = $interface['intid'];
   if (isset($fields['intid'])) {
     $numFields++;
     if ($fields['intid'] !== $interface['intid'] && get_interface_by_id($fields['intid'])) {
       return 'ERROR: Interface ID '.$fields['intid'].' already exists';
     } else {
-      $id_to_set = $fields['intid'];
+      $idToSet = $fields['intid'];
     }
   }
-  $sql .= sprintf(" `intid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `intid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['name'])) {

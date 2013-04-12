@@ -47,6 +47,9 @@
                 <include name="api/*.php" />
                 <include name="api/config/*.php" />
                 <include name="api/config/**/.php" />
+                <include name="api/content/*.php" />
+                <include name="api/content/slides/*.php" />
+                <include name="api/content/slides/**/.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>

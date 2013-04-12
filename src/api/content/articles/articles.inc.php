@@ -159,16 +159,16 @@ function update_article($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $article['artid'];
+  $idToSet = $article['artid'];
   if (isset($fields['artid'])) {
     $numFields++;
     if ($fields['artid'] !== $article['artid'] && get_article_by_id($fields['artid'])) {
       return 'ERROR: Article ID '.$fields['artid'].' already exists';
     } else {
-      $id_to_set = $fields['artid'];
+      $idToSet = $fields['artid'];
     }
   }
-  $sql .= sprintf(" `artid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `artid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['pageid'])) {
@@ -330,7 +330,7 @@ function get_article_editor_html($id) {
                <label for="index">Index</label>
                <select name="index" id="index" required>';
   // create enough to index 15 articles
-  for($i = 0; $i < 25; $i++) {
+  for ($i = 0; $i < 25; $i++) {
     $selected = ($index === strval($i)) ? 'selected="selected" ' : '';
     $result .=  '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }

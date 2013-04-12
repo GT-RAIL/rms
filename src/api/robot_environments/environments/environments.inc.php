@@ -109,16 +109,16 @@ function update_environment($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $environment['envid'];
+  $idToSet = $environment['envid'];
   if (isset($fields['envid'])) {
     $numFields++;
     if ($fields['envid'] !== $environment['envid'] && get_environment_by_id($fields['envid'])) {
       return 'ERROR: Environment ID '.$fields['envid'].' already exists';
     } else {
-      $id_to_set = $fields['envid'];
+      $idToSet = $fields['envid'];
     }
   }
-  $sql .= sprintf(" `envid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `envid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['protocol'])) {

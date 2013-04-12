@@ -97,7 +97,7 @@ if ($ishome) {?>
         <?php
         // check if this is the homepage
         if ($ishome) {
-            echo '<center>'.create_slideshow_html().'</center><br />';
+            echo '<center>'.slides::create_slideshow_html().'</center><br />';
         }
         // put in the content
         echo create_page_articles_html($page);

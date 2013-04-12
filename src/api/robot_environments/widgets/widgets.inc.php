@@ -313,16 +313,16 @@ function update_widget($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $widget['widgetid'];
+  $idToSet = $widget['widgetid'];
   if (isset($fields['widgetid'])) {
     $numFields++;
     if ($fields['widgetid'] !== $widget['widgetid'] && get_widgetid_by_id($fields['widgetid'])) {
       return 'ERROR: Widget ID '.$fields['widgetid'].' already exists';
     } else {
-      $id_to_set = $fields['widgetid'];
+      $idToSet = $fields['widgetid'];
     }
   }
-  $sql .= sprintf(" `widgetid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `widgetid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['name'])) {
@@ -416,16 +416,16 @@ function update_widget_instance($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $instance['id'];
+  $idToSet = $instance['id'];
   if (isset($fields['id'])) {
     $numFields++;
     if ($fields['id'] !== $instance['id'] && get_widgetid_by_id($fields['id'])) {
       return 'ERROR: Widget instance ID '.$fields['id'].' already exists in Widget ID '.$fields['widgetid'];
     } else {
-      $id_to_set = $fields['id'];
+      $idToSet = $fields['id'];
     }
   }
-  $sql .= sprintf(" `id`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `id`='%d'", api::cleanse($idToSet));
 
   // check for each update
   $columns = get_widget_table_columns_by_id($fields['widgetid']);

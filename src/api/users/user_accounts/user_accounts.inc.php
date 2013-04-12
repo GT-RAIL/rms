@@ -185,16 +185,16 @@ function update_user_account($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $user['userid'];
+  $idToSet = $user['userid'];
   if (isset($fields['userid'])) {
     $numFields++;
     if ($fields['userid'] !== $user['userid'] && get_user_account_by_id($fields['userid'])) {
       return 'ERROR: User ID '.$fields['userid'].' already exists';
     } else {
-      $id_to_set = $fields['userid'];
+      $idToSet = $fields['userid'];
     }
   }
-  $sql .= sprintf(" `userid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `userid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['username'])) {

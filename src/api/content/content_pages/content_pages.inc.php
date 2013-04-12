@@ -128,16 +128,16 @@ function update_content_page($fields) {
   }
 
   // check if we are changing the id
-  $id_to_set = $page['pageid'];
+  $idToSet = $page['pageid'];
   if (isset($fields['pageid'])) {
     $numFields++;
     if ($fields['pageid'] !== $page['pageid'] && get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID '.$fields['pageid'].' already exists';
     } else {
-      $id_to_set = $fields['pageid'];
+      $idToSet = $fields['pageid'];
     }
   }
-  $sql .= sprintf(" `pageid`='%d'", api::cleanse($id_to_set));
+  $sql .= sprintf(" `pageid`='%d'", api::cleanse($idToSet));
 
   // check for each update
   if (isset($fields['title'])) {
@@ -248,7 +248,7 @@ function get_content_page_editor_html($id) {
                <label for="index">Index</label>
                <select name="index" id="index" required>';
   // create enough to index 10 pages
-  for($i = 0; $i < 10; $i++) {
+  for ($i = 0; $i < 10; $i++) {
     $selected = ($index === strval($i)) ? 'selected="selected" ' : '';
     $result .=  '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
   }
