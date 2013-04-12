@@ -28,7 +28,8 @@
 
 	<!-- Code quality checks -->
 	<target name="quality">
-		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" haltonwarning="true">
+		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" 
+			haltonwarning="true">
 			<fileset dir="${build.dir}">
 				<include name="study/*.php" />
                 <include name="setup/*.php" />
