@@ -2,8 +2,8 @@
 /**
  * Robot environments API script.
  *
- * Allows read and write access to robot environments. This includes things like pairings between
- * interfaces and environments. Used throughout RMS and within the RMS API.
+ * Allows read and write access to robot environments. This includes things like
+ * pairings between interfaces and environments. Used throughout RMS and within the RMS API.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute

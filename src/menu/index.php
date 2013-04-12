@@ -162,10 +162,13 @@ if ($sessionUser['type'] === 'admin') {
                 </p>
     <?php
     // populate the selection box
-    if ($experiments = get_experiments_by_userid($sessionUser['userid'])) {
+    if ($experiments = experiments::get_experiments_by_userid(
+        $sessionUser['userid']
+    )
+    ) {
         foreach ($experiments as $cur) {
-            $cond = get_condition_by_id($cur['condid']);
-            $study = get_study_by_id($cond['studyid']);
+            $cond = conditions::get_condition_by_id($cur['condid']);
+            $study = studies::get_study_by_id($cond['studyid']);
             echo '<h3>'.$study['name'].' ('.$cur['start'].' - '.
                 $cur['end'].')</h3>';
 

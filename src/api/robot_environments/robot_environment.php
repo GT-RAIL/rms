@@ -76,7 +76,7 @@ class robot_environment {
     $this->interface = get_interface_by_id($intid);
 
     // check for an experiment
-    $this->experiment = get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid);
+    $this->experiment = experiments::get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid);
 
     // generate the widget list
     $this->widgets = array();

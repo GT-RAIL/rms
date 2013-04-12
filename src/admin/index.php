@@ -244,7 +244,7 @@ $liveVersion = config::get_init_sql_version();
 
         $('#editor-popup').html(html);
         $('#editor-popup').dialog('open');
-      }else {
+      } else {
         createModalPageLoading();
 
         // grab the script name

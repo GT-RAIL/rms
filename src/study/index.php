@@ -193,7 +193,7 @@ if ($sessionUser['type'] !== 'admin') {
                                     <tbody>
 <?php
 // populate the table
-$studies = get_studies();
+$studies = studies::get_studies();
 $numStudies = count($studies);
 for ($i = 0; $i < $numStudies; $i++) {
     $cur = $studies[$i];
@@ -257,11 +257,11 @@ for ($i = 0; $i < $numStudies; $i++) {
             <tbody>
 <?php
 // populate the table
-$conditions = get_conditions();
+$conditions = conditions::get_conditions();
 $numConditions = count($conditions);
 for ($i = 0; $i < $numConditions; $i++) {
     $cur = $conditions[$i];
-    $study = get_study_by_id($cur['studyid']);
+    $study = studies::get_study_by_id($cur['studyid']);
     $interface = get_interface_by_id($cur['intid']);
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
     <tr class="<?php echo $class?>">
@@ -328,13 +328,13 @@ for ($i = 0; $i < $numConditions; $i++) {
             <tbody>
 <?php
 // populate the table
-$experiments = get_experiments();
+$experiments = experiments::get_experiments();
 $numExperiments = count($experiments);
 for ($i = 0; $i < $numExperiments; $i++) {
     $cur = $experiments[$i];
     $user = user_accounts::get_user_account_by_id($cur['userid']);
-    $condition = get_condition_by_id($cur['condid']);
-    $study = get_study_by_id($condition['studyid']);
+    $condition = conditions::get_condition_by_id($cur['condid']);
+    $study = studies::get_study_by_id($condition['studyid']);
     $env = get_environment_by_id($cur['envid']);
     $id = 'experiments-'.$cur['expid'];
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
