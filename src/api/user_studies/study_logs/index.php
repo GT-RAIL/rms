@@ -35,7 +35,7 @@ if ($auth = authenticate())  {
 					create_study_log($_POST['expid'], $_POST['entry']);
 					$result = api::create_200_state(get_current_timestamp());
 				} else {
-					write_to_log('SECURITY: '.$auth['username'].' attempted to insert into the study log.');
+					logs::write_to_log('SECURITY: '.$auth['username'].' attempted to insert into the study log.');
 					$result = api::create_401_state();
 				}
 			} else {

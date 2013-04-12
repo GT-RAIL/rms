@@ -54,7 +54,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 // now make sure this is an admin
 if ($sessionUser['type'] !== 'admin') {
     $warn = $sessionUser['username'].' attempted to access the admin panel.';
-    write_to_log('WARNING: '.$warn);
+    logs::write_to_log('WARNING: '.$warn);
     // send the user back to their main menu
     header('Location: /menu');
     return;
@@ -624,7 +624,7 @@ $liveVersion = config::get_init_sql_version();
                                     <tbody>
                                         <?php
                                         // populate the table
-                                        $logs = get_logs();
+                                        $logs = logs::get_logs();
                                         $num_logs = count($logs);
                                         for ($i = 0; $i < $num_logs; $i++) {
                     $cur = $logs[$i];

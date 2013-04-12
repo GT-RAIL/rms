@@ -42,11 +42,11 @@ if ($auth = authenticate()) {
                 $data = $cur;
               }
             }
-            write_to_log('EDIT: '.$auth['username'].' created environment '.$_POST['envaddr'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created environment '.$_POST['envaddr'].'.');
             $result = api::create_200_state($data);
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment.');
           $result = api::create_401_state();
         }
       } else {
@@ -67,7 +67,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment editor.');
               $result = api::create_401_state();
             }
             break;
@@ -85,11 +85,11 @@ if ($auth = authenticate()) {
           if ($error = delete_environment_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted environment ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -102,11 +102,11 @@ if ($auth = authenticate()) {
           if ($error = update_environment($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified environment ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified environment ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_environment_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

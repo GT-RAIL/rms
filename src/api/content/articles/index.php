@@ -32,11 +32,11 @@ if ($auth = authenticate()) {
           if ($error = create_article($_POST['title'], $_POST['content'], $_POST['pageid'], $_POST['index'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created article '.$_POST['title'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created article '.$_POST['title'].'.');
             $result = api::create_200_state(get_article_by_title_and_pageid($_POST['title'], $_POST['pageid']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create an article.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create an article.');
           $result = api::create_401_state();
         }
       } else {
@@ -78,7 +78,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get an article editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get an article editor.');
               $result = api::create_401_state();
             }
             break;
@@ -96,11 +96,11 @@ if ($auth = authenticate()) {
           if ($error = delete_article_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted article ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted article ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete article ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete article ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -113,11 +113,11 @@ if ($auth = authenticate()) {
           if ($error = update_article($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified article ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified article ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_article_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit article ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit article ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

@@ -70,7 +70,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                         $result = api::create_404_state($error);
                     } else {
                         include_once(dirname(__FILE__).'/logs/logs.inc.php');
-                        write_to_log('SYSTEM: Site created.');
+                        logs::write_to_log('SYSTEM: Site created.');
                         // return the timestamp
                         $t = get_current_timestamp();
                         $result = api::create_200_state($t);
@@ -109,7 +109,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                                     } else {
                                         $log = 'SYSTEM: '.$auth['username'].
                                             ' updated the database.';
-                                        write_to_log($log);
+                                        logs::write_to_log($log);
                                         $v = config::get_db_version();
                                         $result = api::create_200_state($v);
                                     }
@@ -158,7 +158,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                         } else {
                             $log = 'SYSTEM: '.$auth['username'].
                                 ' modified the site settings.';
-                            write_to_log($log);
+                            logs::write_to_log($log);
                             $t = get_current_timestamp();
                             $result = api::create_200_state($t);
                         }
@@ -175,7 +175,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
         } else {
             $log = 'SECURITY: '.$auth['username'].
                 ' attempted to use the config script.';
-            write_to_log($log);
+            logs::write_to_log($log);
             $result = api::create_401_state();
         }
     } else {

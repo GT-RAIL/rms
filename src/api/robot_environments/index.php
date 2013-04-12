@@ -32,11 +32,11 @@ if ($auth = authenticate()) {
           if ($error = create_environment_interface_pair($_POST['envid'], $_POST['intid'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created environment-interface pair '.$_POST['envid'].'-'.$_POST['intid'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created environment-interface pair '.$_POST['envid'].'-'.$_POST['intid'].'.');
             $result = api::create_200_state(get_environment_interface_pair_by_envid_and_intid($_POST['envid'], $_POST['intid']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment-interface pair.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create an environment-interface pair.');
           $result = api::create_401_state();
         }
       } else {
@@ -57,7 +57,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment-interface pair editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get an environment-interface pair editor.');
               $result = api::create_401_state();
             }
             break;
@@ -83,11 +83,11 @@ if ($auth = authenticate()) {
           if ($error = delete_environment_interface_pair_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted environment-interface pair ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted environment-interface pair ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment-interface pair ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete environment-interface pair ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -100,11 +100,11 @@ if ($auth = authenticate()) {
           if ($error = update_environment_interface_pair($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified environment-interface pair ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified environment-interface pair ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_environment_interface_pair_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment-interface pair ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit environment-interface pair ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

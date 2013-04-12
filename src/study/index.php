@@ -47,7 +47,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
 // now make sure this is an admin
 if ($sessionUser['type'] !== 'admin') {
     $msg = $sessionUser['username'].' attempted to access the study panel.';
-    write_to_log('WARNING: '.$msg);
+    logs::write_to_log('WARNING: '.$msg);
     // send the user back to their main menu
     header('Location: /menu');
     return;

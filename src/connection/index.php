@@ -35,7 +35,7 @@ if (!isset($_GET['envid']) || !isset($_GET['intid'])) {
     // invalid request, log this and return them back to the menu
     $msg = $sessionUser['username'].
         ' attempted to create an invalid connection.';
-    write_to_log($msg);
+    logs::write_to_log($msg);
     header('Location: ../login');
     return;
 }

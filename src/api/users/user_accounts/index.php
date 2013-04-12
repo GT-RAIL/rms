@@ -32,7 +32,7 @@ if ($auth = authenticate()) {
               // create the session
               session_start();
               $_SESSION['userid'] = $auth['userid'];
-              write_to_log('SESSION: '.$auth['username'].' created a new session.');
+              logs::write_to_log('SESSION: '.$auth['username'].' created a new session.');
               $result = api::create_200_state(get_current_timestamp());
             } else {
               $result = api::create_404_state('Too many fields provided.');
@@ -44,7 +44,7 @@ if ($auth = authenticate()) {
                 // destroy the session
                 unset($_SESSION['userid']);
                 session_destroy();
-                write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
+                logs::write_to_log('SESSION: '.$auth['username'].' destroyed their session.');
                 $result = api::create_200_state(get_current_timestamp());
               } else {
                 $result = api::create_404_state('No session to destroy.');
@@ -63,7 +63,7 @@ if ($auth = authenticate()) {
           , $_POST['lastname'], $_POST['email'], $_POST['type'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created user '.$_POST['username'].'.');
             $account = get_user_account_by_username($_POST['username']);
             // remove the password info
             unset($account['password']);
@@ -71,7 +71,7 @@ if ($auth = authenticate()) {
             $result = api::create_200_state($account);
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a user.');
           $result = api::create_401_state();
         }
       } else {
@@ -91,7 +91,7 @@ if ($auth = authenticate()) {
           }
           $result = api::create_200_state(get_user_accounts());
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get all users.');
           $result = api::create_401_state();
         }
       } else if (count($_GET) === 1 && isset($_GET['id'])) {
@@ -107,7 +107,7 @@ if ($auth = authenticate()) {
             $result = api::create_404_state('User with ID '.$_GET['id'].' does not exist.');
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get user ID '.$_GET['id'].'.');
           $result = api::create_401_state();
         }
       } else if (isset($_GET['request'])) {
@@ -122,7 +122,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Unknown request.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a user editor.');
               $result = api::create_401_state();
             }
             break;
@@ -140,11 +140,11 @@ if ($auth = authenticate()) {
           if ($error = delete_user_account_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted user ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete user ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -157,7 +157,7 @@ if ($auth = authenticate()) {
           if ($error = update_user_account($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified user ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified user ID '.$putArray['id'].'.');
             $account = get_user_account_by_id($putArray['id']);
             // remove the password info
             unset($account['password']);
@@ -165,7 +165,7 @@ if ($auth = authenticate()) {
             $result = api::create_200_state($account);
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit user ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

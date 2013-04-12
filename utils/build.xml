@@ -46,6 +46,7 @@
                 <include name="account/*.php" />
                 <include name="api/*.php" />
                 <include name="api/config/*.php" />
+                <include name="api/config/**/.php" />
 				<include name="*.php" />
 			</fileset>
 		</phpcodesniffer>

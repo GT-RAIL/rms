@@ -31,11 +31,11 @@ if ($auth = authenticate()) {
           if ($error = create_widget($_POST['name'], $_POST['table'], $_POST['script'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created widget '.$_POST['name'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created widget '.$_POST['name'].'.');
             $result = api::create_200_state(get_widget_by_script($_POST['script']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create a widget.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a widget.');
           $result = api::create_401_state();
         }
       } else if (valid_widget_instance_fields($_POST)) {
@@ -53,11 +53,11 @@ if ($auth = authenticate()) {
                 $data = $cur;
               }
             }
-            write_to_log('EDIT: '.$auth['username'].' created widget instance '.$_POST['label'].' in widget ID '.$_POST['widgetid']);
+            logs::write_to_log('EDIT: '.$auth['username'].' created widget instance '.$_POST['label'].' in widget ID '.$_POST['widgetid']);
             $result = api::create_200_state($data);
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create a widget instance in widget ID '.$_POST['widgetid']);
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a widget instance in widget ID '.$_POST['widgetid']);
           $result = api::create_401_state();
         }
       } else {
@@ -83,7 +83,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get a widget editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a widget editor.');
               $result = api::create_401_state();
             }
             break;
@@ -101,11 +101,11 @@ if ($auth = authenticate()) {
           if ($error = delete_widget_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted widget ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted widget ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else if (count($deleteArray) === 2 && isset($deleteArray['widgetid']) && isset($deleteArray['id'])) {
@@ -113,11 +113,11 @@ if ($auth = authenticate()) {
           if ($error = delete_widget_instance_by_widgetid_and_id($deleteArray['widgetid'], $deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted widget instance ID '.$deleteArray['id'].' from widget ID '.$deleteArray['widgetid']);
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted widget instance ID '.$deleteArray['id'].' from widget ID '.$deleteArray['widgetid']);
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget instance ID '.$deleteArray['id'].' from widget ID '.$deleteArray['widgetid']);
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete widget instance ID '.$deleteArray['id'].' from widget ID '.$deleteArray['widgetid']);
           $result = api::create_401_state();
         }
       } else {
@@ -132,19 +132,19 @@ if ($auth = authenticate()) {
             if ($error = update_widget_instance($putArray)) {
               $result = api::create_404_state($error);
             } else {
-              write_to_log('EDIT: '.$auth['username'].' modified widget instance ID '.$putArray['id'].' from widget ID '.$putArray['widgetid']);
+              logs::write_to_log('EDIT: '.$auth['username'].' modified widget instance ID '.$putArray['id'].' from widget ID '.$putArray['widgetid']);
               $result = api::create_200_state(get_widget_by_id($putArray['id']));
             }
           } else {
             if ($error = update_widget($putArray)) {
               $result = api::create_404_state($error);
             } else {
-              write_to_log('EDIT: '.$auth['username'].' modified widget ID '.$putArray['id'].'.');
+              logs::write_to_log('EDIT: '.$auth['username'].' modified widget ID '.$putArray['id'].'.');
               $result = api::create_200_state(get_widget_by_id($putArray['id']));
             }
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit widget ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit widget ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

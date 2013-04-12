@@ -33,11 +33,11 @@ if ($auth = authenticate()) {
           isset($_POST['js']) ? $_POST['js'] : null)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created content page '.$_POST['title'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created content page '.$_POST['title'].'.');
             $result = api::create_200_state(get_content_page_by_title($_POST['title']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create a content page.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a content page.');
           $result = api::create_401_state();
         }
       } else {
@@ -72,7 +72,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get a content page editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a content page editor.');
               $result = api::create_401_state();
             }
             break;
@@ -90,11 +90,11 @@ if ($auth = authenticate()) {
           if ($error = delete_content_page_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted content page ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted content page ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete content page ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete content page ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -107,11 +107,11 @@ if ($auth = authenticate()) {
           if ($error = update_content_page($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified content page ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified content page ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_content_page_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit content page ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit content page ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

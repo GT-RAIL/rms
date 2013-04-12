@@ -37,12 +37,12 @@ if ($auth = authenticate()) {
             if ($error = create_slide($_POST['caption'], $_POST['index'], $_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
               $result = api::create_404_state($error);
             } else {
-              write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
+              logs::write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
               $result = api::create_200_state(get_slide_by_img($_FILES['img']['name']));
             }
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create a slide.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create a slide.');
           $result = api::create_401_state();
         }
       } else if (isset($_FILES['img']) && count($_POST) === 0) {
@@ -55,12 +55,12 @@ if ($auth = authenticate()) {
             if ($error = upload_img($_FILES['img']['name'], $_FILES['img']['tmp_name'])) {
               $result = api::create_404_state($error);
             } else {
-              write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
+              logs::write_to_log('EDIT: '.$auth['username'].' created slide '.$_FILES['img']['name'].'.');
               $result = api::create_200_state(get_slide_by_img($_FILES['img']['name']));
             }
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to upload a slide.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to upload a slide.');
           $result = api::create_401_state();
         }
       }else {
@@ -88,7 +88,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get a slide editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get a slide editor.');
               $result = api::create_401_state();
             }
             break;
@@ -106,11 +106,11 @@ if ($auth = authenticate()) {
           if ($error = delete_slide_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted slide ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted slide ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete slide ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete slide ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -123,11 +123,11 @@ if ($auth = authenticate()) {
           if ($error = update_slide($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified slide ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified slide ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_slide_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit slide ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit slide ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {

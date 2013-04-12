@@ -31,11 +31,11 @@ if ($auth = authenticate()) {
           if ($error = create_interface($_POST['name'], $_POST['location'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' created interface '.$_POST['name'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' created interface '.$_POST['name'].'.');
             $result = api::create_200_state(get_interface_by_location($_POST['location']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to create an interface.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to create an interface.');
           $result = api::create_401_state();
         }
       } else {
@@ -56,7 +56,7 @@ if ($auth = authenticate()) {
                 $result = api::create_404_state('Too many fields provided.');
               }
             } else {
-              write_to_log('SECURITY: '.$auth['username'].' attempted to get an interface editor.');
+              logs::write_to_log('SECURITY: '.$auth['username'].' attempted to get an interface editor.');
               $result = api::create_401_state();
             }
             break;
@@ -74,11 +74,11 @@ if ($auth = authenticate()) {
           if ($error = delete_interface_by_id($deleteArray['id'])) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' deleted interface ID '.$deleteArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' deleted interface ID '.$deleteArray['id'].'.');
             $result = api::create_200_state(get_current_timestamp());
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to delete interface ID '.$deleteArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to delete interface ID '.$deleteArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
@@ -91,11 +91,11 @@ if ($auth = authenticate()) {
           if ($error = update_interface($putArray)) {
             $result = api::create_404_state($error);
           } else {
-            write_to_log('EDIT: '.$auth['username'].' modified interface ID '.$putArray['id'].'.');
+            logs::write_to_log('EDIT: '.$auth['username'].' modified interface ID '.$putArray['id'].'.');
             $result = api::create_200_state(get_interface_by_id($putArray['id']));
           }
         } else {
-          write_to_log('SECURITY: '.$auth['username'].' attempted to edit interface ID '.$putArray['id'].'.');
+          logs::write_to_log('SECURITY: '.$auth['username'].' attempted to edit interface ID '.$putArray['id'].'.');
           $result = api::create_401_state();
         }
       } else {
