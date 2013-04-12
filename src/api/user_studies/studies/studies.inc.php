@@ -26,7 +26,7 @@ function get_studies() {
   // grab the javascript entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `studies`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 

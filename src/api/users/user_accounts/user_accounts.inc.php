@@ -78,7 +78,7 @@ function get_user_accounts() {
   // grab the users and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `user_accounts`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -178,7 +178,7 @@ function update_user_account($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the user
   if (!($user = get_user_account_by_id($fields['id']))) {
     return 'ERROR: User ID '.$fields['id'].' does not exist';
@@ -187,7 +187,7 @@ function update_user_account($fields) {
   // check if we are changing the id
   $id_to_set = $user['userid'];
   if (isset($fields['userid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['userid'] !== $user['userid'] && get_user_account_by_id($fields['userid'])) {
       return 'ERROR: User ID '.$fields['userid'].' already exists';
     } else {
@@ -198,40 +198,40 @@ function update_user_account($fields) {
 
   // check for each update
   if (isset($fields['username'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['username'] !== $user['username'] && get_user_account_by_username($fields['username'])) {
       return 'ERROR: User "'.$fields['username'].'" already exists';
     }
     $sql .= sprintf(", `username`='%s'", api::cleanse($fields['username']));
   }
   if (isset($fields['email'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['email'] !== $user['email'] && get_user_account_by_email($fields['email'])) {
       return 'ERROR: Email address "'.$fields['email'].'" already exists';
     }
     $sql .= sprintf(", `email`='%s'", api::cleanse($fields['email']));
   }
   if (isset($fields['firstname'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `firstname`='%s'", api::cleanse($fields['firstname']));
   }
   if (isset($fields['lastname'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `lastname`='%s'", api::cleanse($fields['lastname']));
   }
   if (isset($fields['password'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `password`='%s'", sha1(api::cleanse($fields['password']).$user['salt']));
   }
   if (isset($fields['type'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `type`='%s'", api::cleanse($fields['type']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }

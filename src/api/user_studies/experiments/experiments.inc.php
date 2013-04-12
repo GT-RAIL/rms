@@ -27,7 +27,7 @@ function get_experiments() {
   // grab the javascript entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `experiments`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -61,7 +61,7 @@ function get_experiments_by_userid($userid) {
   $result = array();
   $sql = sprintf("SELECT * FROM `experiments` WHERE `userid`='%d'", api::cleanse($userid));
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -85,7 +85,7 @@ function get_valid_experiment_by_intid_userid_and_envid($intid, $userid, $envid)
   $sql = sprintf("SELECT * FROM `experiments` WHERE (`userid`='%d' AND `end`>'%s' AND `start`<'%s')"
   , api::cleanse($userid), $timestamp, $timestamp);
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     // check the fields
     if ($cur['envid'] === $envid
     && ($condition = get_condition_by_id($cur['condid']))

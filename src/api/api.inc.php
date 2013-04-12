@@ -12,6 +12,15 @@
  * @link       http://ros.org/wiki/rms
  */
 
+/**
+ * A static class to contain the api.inc.php functions.
+ *
+ * @author     Russell Toris <rctoris@wpi.edu>
+ * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
+ * @license    BSD -- see LICENSE file
+ * @version    April, 11 2013
+ * @package    api
+ */
 class api
 {
     /**

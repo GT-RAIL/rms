@@ -27,7 +27,7 @@ function get_javascript_files() {
   // grab the javascript entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `javascript_files`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 

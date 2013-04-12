@@ -61,14 +61,14 @@ if ($sessionUser['type'] !== 'admin') {
 }
 
 // grab the database version
-$dbVersion = get_db_version();
+$dbVersion = config::get_db_version();
 // grab the code version
 $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 $fullUrl = $prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql';
-$codeVersion = get_init_sql_version($fullUrl);
+$codeVersion = config::get_init_sql_version($fullUrl);
 // find our the live version
 $liveURL = 'https://raw.github.com/WPI-RAIL/rms/stable/www/api/config/init.sql';
-$liveVersion = get_init_sql_version();
+$liveVersion = config::get_init_sql_version();
 ?>
 <!DOCTYPE html>
 <html>

@@ -62,7 +62,7 @@ function get_widgets() {
   // grab the entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `widgets`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -97,7 +97,7 @@ function get_widget_table_columns_by_id($id) {
     $sql = sprintf("SHOW COLUMNS FROM `%s`", api::cleanse($w['table']));
     $query = mysqli_query($db, $sql);
     // fill the array
-    while($cur = mysqli_fetch_array($query)) {
+    while ($cur = mysqli_fetch_array($query)) {
       $columns[] = $cur['Field'];
     }
     return (count($columns) === 0) ? null : $columns;
@@ -122,7 +122,7 @@ function get_widget_instances_by_widgetid($widgetid) {
     $result = array();
     $sql = sprintf("SELECT * FROM `%s`", api::cleanse($w['table']));
     $query = mysqli_query($db, $sql);
-    while($cur = mysqli_fetch_assoc($query)) {
+    while ($cur = mysqli_fetch_assoc($query)) {
       $result[] = $cur;
     }
     return (count($result) === 0) ? null : $result;
@@ -149,7 +149,7 @@ function get_widget_instances_by_widgetid_and_envid($widgetid, $envid) {
     $sql = sprintf("SELECT * FROM `%s` WHERE `envid`='%d'", api::cleanse($w['table'])
     , api::cleanse($envid));
     $query = mysqli_query($db, $sql);
-    while($cur = mysqli_fetch_assoc($query)) {
+    while ($cur = mysqli_fetch_assoc($query)) {
       $result[] = $cur;
     }
     return (count($result) === 0) ? null : $result;
@@ -306,7 +306,7 @@ function update_widget($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the widget
   if (!($widget = get_widget_by_id($fields['id']))) {
     return 'ERROR: Widget ID '.$fields['id'].' does not exist';
@@ -315,7 +315,7 @@ function update_widget($fields) {
   // check if we are changing the id
   $id_to_set = $widget['widgetid'];
   if (isset($fields['widgetid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['widgetid'] !== $widget['widgetid'] && get_widgetid_by_id($fields['widgetid'])) {
       return 'ERROR: Widget ID '.$fields['widgetid'].' already exists';
     } else {
@@ -326,11 +326,11 @@ function update_widget($fields) {
 
   // check for each update
   if (isset($fields['name'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `name`='%s'", api::cleanse($fields['name']));
   }
   if (isset($fields['table'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['table'] !== $widget['table']) {
       if (get_widget_by_table($fields['table'])) {
         return 'ERROR: Widget SQL table "'.$fields['table'].'" is already used';
@@ -350,7 +350,7 @@ function update_widget($fields) {
     $sql .= sprintf(", `table`='%s'", api::cleanse($fields['table']));
   }
   if (isset($fields['script'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['script'] !== $widget['script']) {
       if (get_widget_by_script($fields['script'])) {
         return 'ERROR: Widget script location "'.$fields['script'].'" is already used';
@@ -371,9 +371,9 @@ function update_widget($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }
@@ -407,7 +407,7 @@ function update_widget_instance($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the widget and instance
   if (!($widget = get_widget_by_id($fields['widgetid']))) {
     return 'ERROR: Widget ID '.$fields['widgetid'].' does not exist';
@@ -418,7 +418,7 @@ function update_widget_instance($fields) {
   // check if we are changing the id
   $id_to_set = $instance['id'];
   if (isset($fields['id'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['id'] !== $instance['id'] && get_widgetid_by_id($fields['id'])) {
       return 'ERROR: Widget instance ID '.$fields['id'].' already exists in Widget ID '.$fields['widgetid'];
     } else {
@@ -435,15 +435,15 @@ function update_widget_instance($fields) {
       if ($c === 'envid' && !get_environment_by_id($fields[$c])) {
         return 'ERROR: Environment ID '.$fields[$c].' does not exist';
       }
-      $num_fields++;
+      $numFields++;
       $sql .= sprintf(", `%s`='%s'", api::cleanse($c), api::cleanse($fields[$c]));
     }
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
-    return 'ERROR: Too many fields given.'.$num_fields;
-  } else if ($num_fields === 0) {
+  if ($numFields !== (count($fields) - 1)) {
+    return 'ERROR: Too many fields given.'.$numFields;
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }
@@ -539,12 +539,12 @@ function get_unused_widget_tables() {
   // go through each table
   $valid = array();
   $query = mysqli_query($db, "SHOW TABLES");
-  while($table = mysqli_fetch_array($query)) {
+  while ($table = mysqli_fetch_array($query)) {
     $sql = sprintf("SHOW COLUMNS FROM `%s`", api::cleanse($table[0]));
     $field_query = mysqli_query($db, $sql);
     $found_envid = false;
     $found_label = false;
-    while($field = mysqli_fetch_array($field_query)) {
+    while ($field = mysqli_fetch_array($field_query)) {
       $found_envid |= ($field['Field'] === 'envid');
       $found_label |= ($field['Field'] === 'label');
     }

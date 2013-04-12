@@ -27,7 +27,7 @@ function get_mjpeg_streams_by_envid($envid) {
   $result = array();
   $sql = sprintf( "SELECT * FROM `mjpeg_streams` WHERE `envid`='%d'", api::cleanse($envid));
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 

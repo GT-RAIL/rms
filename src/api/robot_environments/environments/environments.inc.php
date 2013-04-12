@@ -38,7 +38,7 @@ function get_environments() {
   // grab the entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `environments`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -102,7 +102,7 @@ function update_environment($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the user
   if (!($environment = get_environment_by_id($fields['id']))) {
     return 'ERROR: Environment ID '.$fields['id'].' does not exist';
@@ -111,7 +111,7 @@ function update_environment($fields) {
   // check if we are changing the id
   $id_to_set = $environment['envid'];
   if (isset($fields['envid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['envid'] !== $environment['envid'] && get_environment_by_id($fields['envid'])) {
       return 'ERROR: Environment ID '.$fields['envid'].' already exists';
     } else {
@@ -122,34 +122,34 @@ function update_environment($fields) {
 
   // check for each update
   if (isset($fields['protocol'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `protocol`='%s'", api::cleanse($fields['protocol']));
   }
   if (isset($fields['envaddr'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `envaddr`='%s'", api::cleanse($fields['envaddr']));
   }
   if (isset($fields['port'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `port`='%d'", api::cleanse($fields['port']));
   }
   if (isset($fields['type'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `type`='%s'", api::cleanse($fields['type']));
   }
   if (isset($fields['notes'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `notes`='%s'", api::cleanse($fields['notes']));
   }
   if (isset($fields['enabled'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `enabled`='%d'", api::cleanse($fields['enabled']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }

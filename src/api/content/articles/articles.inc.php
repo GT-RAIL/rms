@@ -39,7 +39,7 @@ function get_articles() {
   // grab the articles and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `articles`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -99,7 +99,7 @@ function get_articles_by_pageid($pageid) {
   $sql = sprintf("SELECT * FROM `articles` WHERE `pageid`='%d' ORDER BY `index`"
   , api::cleanse($pageid));
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -152,7 +152,7 @@ function update_article($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the user
   if (!($article = get_article_by_id($fields['id']))) {
     return 'ERROR: Article page ID '.$fields['id'].' does not exist.';
@@ -161,7 +161,7 @@ function update_article($fields) {
   // check if we are changing the id
   $id_to_set = $article['artid'];
   if (isset($fields['artid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['artid'] !== $article['artid'] && get_article_by_id($fields['artid'])) {
       return 'ERROR: Article ID '.$fields['artid'].' already exists';
     } else {
@@ -172,14 +172,14 @@ function update_article($fields) {
 
   // check for each update
   if (isset($fields['pageid'])) {
-    $num_fields++;
+    $numFields++;
     if (!get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID "'.$fields['pageid'].'" does not exist.';
     }
     $sql .= sprintf(", `pageid`='%d'", api::cleanse($fields['pageid']));
   }
   if (isset($fields['title'])) {
-    $num_fields++;
+    $numFields++;
     // check if we changed pages or if the article name exists on the same page already
     if ((isset($fields['pageid']) && $fields['pageid'] !== $article['pageid'] && get_article_by_title_and_pageid($fields['title'], $fields['pageid']))
     || ($fields['title'] !== $article['title'] && get_article_by_title_and_pageid($fields['title'], $article['pageid']))) {
@@ -188,18 +188,18 @@ function update_article($fields) {
     $sql .= sprintf(", `title`='%s'", api::cleanse($fields['title']));
   }
   if (isset($fields['content'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `content`='%s'", api::cleanse($fields['content'], false));
   }
   if (isset($fields['index'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `index`='%d'", api::cleanse($fields['index']));
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }

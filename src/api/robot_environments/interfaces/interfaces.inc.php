@@ -35,7 +35,7 @@ function get_interfaces() {
   // grab the entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `interfaces`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -117,7 +117,7 @@ function update_interface($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the interface
   if (!($interface = get_interface_by_id($fields['id']))) {
     return 'ERROR: Interface ID '.$fields['id'].' does not exist';
@@ -126,7 +126,7 @@ function update_interface($fields) {
   // check if we are changing the id
   $id_to_set = $interface['intid'];
   if (isset($fields['intid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['intid'] !== $interface['intid'] && get_interface_by_id($fields['intid'])) {
       return 'ERROR: Interface ID '.$fields['intid'].' already exists';
     } else {
@@ -137,11 +137,11 @@ function update_interface($fields) {
 
   // check for each update
   if (isset($fields['name'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `name`='%s'", api::cleanse($fields['name']));
   }
   if (isset($fields['location'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['location'] !== $interface['location'] && get_interface_by_location($fields['location'])) {
       return 'ERROR: Interface location "'.$fields['location'].'" is already used';
     }
@@ -149,9 +149,9 @@ function update_interface($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }

@@ -37,7 +37,7 @@ function get_content_pages() {
   // grab the pages and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `content_pages` ORDER BY `index`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -121,7 +121,7 @@ function update_content_page($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the user
   if (!($page = get_content_page_by_id($fields['id']))) {
     return 'ERROR: Content page ID '.$fields['id'].' does not exist.';
@@ -130,7 +130,7 @@ function update_content_page($fields) {
   // check if we are changing the id
   $id_to_set = $page['pageid'];
   if (isset($fields['pageid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['pageid'] !== $page['pageid'] && get_content_page_by_id($fields['pageid'])) {
       return 'ERROR: Content page ID '.$fields['pageid'].' already exists';
     } else {
@@ -141,22 +141,22 @@ function update_content_page($fields) {
 
   // check for each update
   if (isset($fields['title'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['title'] !== $page['title'] && get_content_page_by_title($fields['title'])) {
       return 'ERROR: Content page title "'.$fields['title'].'" already exists.';
     }
     $sql .= sprintf(", `title`='%s'", api::cleanse($fields['title']));
   }
   if (isset($fields['menu'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `menu`='%s'", api::cleanse($fields['menu']));
   }
   if (isset($fields['index'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `index`='%d'", api::cleanse($fields['index']));
   }
   if (isset($fields['js'])) {
-    $num_fields++;
+    $numFields++;
     // check if we are removing the JS file
     if ($fields['js'] === 'NULL') {
       $sql .= sprintf(", `js`=NULL");
@@ -166,9 +166,9 @@ function update_content_page($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }

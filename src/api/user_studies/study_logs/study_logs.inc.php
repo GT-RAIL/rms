@@ -26,7 +26,7 @@ function get_study_logs() {
   // grab the javascript entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `study_logs`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -61,7 +61,7 @@ function get_study_logs_by_expid($expid) {
   $result = array();
   $sql = sprintf("SELECT * FROM `study_logs` WHERE `expid`='%d'", api::cleanse($expid));
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 

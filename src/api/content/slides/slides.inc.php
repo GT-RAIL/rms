@@ -38,7 +38,7 @@ function get_slides() {
   // grab the articles and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `slides` ORDER BY `index`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -147,7 +147,7 @@ function update_slide($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the slide
   if (!($slide = get_slide_by_id($fields['id']))) {
     return 'ERROR: Slide ID '.$fields['id'].' does not exist';
@@ -156,7 +156,7 @@ function update_slide($fields) {
   // check if we are changing the id
   $id_to_set = $slide['slideid'];
   if (isset($fields['slideid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['slideid'] !== $slide['slideid'] && get_slide_by_id($fields['slideid'])) {
       return 'ERROR: Slide ID '.$fields['slideid'].' already exists';
     } else {
@@ -167,11 +167,11 @@ function update_slide($fields) {
 
   // check for each update
   if (isset($fields['caption'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `caption`='%s'", api::cleanse($fields['caption']));
   }
   if (isset($fields['index'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `index`='%d'", api::cleanse($fields['index']));
   }
 
@@ -182,7 +182,7 @@ function update_slide($fields) {
     } else if (!file_exists(dirname(__FILE__).'/../../../img/slides/'.$fields['img'])) {
       return 'ERROR: Image '.$fields['img'].' does not exist on the server.';
     }else {
-      $num_fields++;
+      $numFields++;
       // cleanup the old image
       $file = dirname(__FILE__).'/../../../img/slides/'.$slide['img'];
       if (file_exists($file)) {
@@ -193,9 +193,9 @@ function update_slide($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0 && !isset($img)) {
+  } else if ($numFields === 0 && !isset($img)) {
     // nothing to update
     return null;
   }

@@ -42,7 +42,7 @@ function get_environment_interface_pairs() {
   // grab the entries and push them into an array
   $result = array();
   $query = mysqli_query($db, "SELECT * FROM `environment_interface_pairs`");
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -76,7 +76,7 @@ function get_environment_interface_pairs_by_envid($envid) {
   $sql = sprintf( "SELECT * FROM `environment_interface_pairs` WHERE `envid`='%d'"
   , api::cleanse($envid));
   $query = mysqli_query($db, $sql);
-  while($cur = mysqli_fetch_assoc($query)) {
+  while ($cur = mysqli_fetch_assoc($query)) {
     $result[] = $cur;
   }
 
@@ -139,7 +139,7 @@ function update_environment_interface_pair($fields) {
 
   // build the SQL string
   $sql = "";
-  $num_fields = 0;
+  $numFields = 0;
   // check for the pair
   if (!($pair = get_environment_interface_pair_by_id($fields['id']))) {
     return 'ERROR: Environment-interface pair ID '.$id.' does not exist';
@@ -148,7 +148,7 @@ function update_environment_interface_pair($fields) {
   // check if we are changing the id
   $id_to_set = $pair['pairid'];
   if (isset($fields['pairid'])) {
-    $num_fields++;
+    $numFields++;
     if ($fields['pairid'] !== $pair['pairid'] && get_environment_interface_pair_by_id($fields['pairid'])) {
       return 'ERROR: Environment-interface pair ID '.$fields['pairid'].' already exists';
     } else {
@@ -159,11 +159,11 @@ function update_environment_interface_pair($fields) {
 
   // check for each update
   if (isset($fields['envid'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `envid`='%d'", api::cleanse($fields['envid']));
   }
   if (isset($fields['intid'])) {
-    $num_fields++;
+    $numFields++;
     $sql .= sprintf(", `intid`='%d'", api::cleanse($fields['intid']));
   }
 
@@ -175,9 +175,9 @@ function update_environment_interface_pair($fields) {
   }
 
   // check to see if there were too many fields or if we do not need to update
-  if ($num_fields !== (count($fields) - 1)) {
+  if ($numFields !== (count($fields) - 1)) {
     return 'ERROR: Too many fields given.';
-  } else if ($num_fields === 0) {
+  } else if ($numFields === 0) {
     // nothing to update
     return null;
   }
