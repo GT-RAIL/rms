@@ -372,7 +372,7 @@ class user_accounts
      *     new entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_user_account_editor($id)
+    static function get_user_account_editor($id = null)
     {
         // see if a user exists with the given id
         $cur = user_accounts::get_user_account_by_id($id);

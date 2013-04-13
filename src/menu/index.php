@@ -86,7 +86,7 @@ if ($sessionUser['type'] === 'admin') {
                 </div>
             </article>
     <?php
-    $environments = get_environments();
+    $environments = environments::get_environments();
     foreach ($environments as $cur) {?>
             <article>
                 <div class="center">
@@ -123,7 +123,7 @@ if ($sessionUser['type'] === 'admin') {
             if ($p = robot_environments::
                     get_environment_interface_pairs_by_envid($cur['envid'])) {
                 foreach ($p as $pair) {
-                  $int = get_interface_by_id($pair['intid']);
+                  $int = interfaces::get_interface_by_id($pair['intid']);
                   $url = '../connection/?envid='.$cur['envid'].'&intid='.
                              $int['intid']?>
                     <li><a href="<?php echo $url?>"><?php echo $int['name']?>

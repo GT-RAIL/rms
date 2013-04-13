@@ -169,8 +169,7 @@ class robot_environments
      * @param array $fields the fields to update including the pair ID number
      * @return string|null an error message or null if the update was sucessful
      */
-    static function update_environment_interface_pair(
-        $fields)
+    static function update_environment_interface_pair($fields)
     {
         global $db;
 
@@ -281,7 +280,7 @@ class robot_environments
      *     null if a new entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_environment_interface_pair_editor($id)
+    static function get_environment_interface_pair_editor($id = null)
     {
         // see if a pair exists with the given id
         $cur = robot_environments::get_environment_interface_pair_by_id($id);
@@ -310,7 +309,7 @@ class robot_environments
                 <label for="envid">Environment</label>
                 <select name="envid" id="envid" required>';
         // grab the environments
-        $environments = get_environments();
+        $environments = environments::get_environments();
         foreach ($environments as $cur) {
             // check if this environment is the same
             if ($envid === $cur['envid']) {
@@ -329,7 +328,7 @@ class robot_environments
                 <label for="intid">Interface</label>
                 <select name="intid" id="intid" required>';
         // grab the interfaces
-        $interfaces = get_interfaces();
+        $interfaces = interfaces::get_interfaces();
         foreach ($interfaces as $cur) {
             // check if this environment is the same
             if ($intid === $cur['intid']) {
@@ -406,12 +405,12 @@ class robot_environments
     static function generate_environment_interface($userid, $envid, $intid)
     {
         // grab what we need
-        if (!$interface = get_interface_by_id($intid)) {
+        if (!$interface = interfaces::get_interface_by_id($intid)) {
             robot_environments::create_error_page(
                 'Invalid interface number provided.', 
                 user_accounts::get_user_account_by_id($userid)
             );
-        } else if (!get_environment_by_id($envid)) {
+        } else if (!environments::get_environment_by_id($envid)) {
             robot_environments::create_error_page(
                 'Invalid environment number provided.',
                 user_accounts::get_user_account_by_id($userid)

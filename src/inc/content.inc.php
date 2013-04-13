@@ -48,7 +48,7 @@ class content
         <div id="nav"><center><nav><ul>';
     
         // list all of the content pages
-        $pages = get_content_pages();
+        $pages = content_pages::get_content_pages();
         foreach ($pages as $cur) {
             echo '<li><a href="'.$path.'?pageid='.$cur['pageid'].'">'.
                 $cur['menu'].'</a></li>';

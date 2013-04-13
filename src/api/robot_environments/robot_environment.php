@@ -75,8 +75,8 @@ class robot_environment
     function __construct($userid, $envid, $intid)
     {
         $this->_userAccount = user_accounts::get_userAccount_by_id($userid);
-        $this->_environment = get_environment_by_id($envid);
-        $this->_interface = get_interface_by_id($intid);
+        $this->_environment = environments::get_environment_by_id($envid);
+        $this->_interface = interfaces::get_interface_by_id($intid);
 
         // check for an experiment
         $this->_experiment = experiments::

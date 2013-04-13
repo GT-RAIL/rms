@@ -34,7 +34,8 @@ class interfaces
      * @return boolean If the given array has all of the necessary fields to
      *     create a new interface
      */
-    static function valid_interface_fields($array) {
+    static function valid_interface_fields($array)
+    {
         return isset($array['name']) && isset($array['location']) 
             && (count($array) === 2);
     }
@@ -45,7 +46,8 @@ class interfaces
      * @return array|null An array of all the interface entries, or null if
      *     none exist
      */
-    static function get_interfaces() {
+    static function get_interfaces()
+    {
         global $db;
 
         // grab the entries and push them into an array
@@ -66,7 +68,8 @@ class interfaces
      * @return array|null An array of the interface's SQL entry or null if none
      *     exist
      */
-    static function get_interface_by_id($id) {
+    static function get_interface_by_id($id)
+    {
         global $db;
 
         $str = "SELECT * FROM `interfaces` WHERE `intid`='%d'";
@@ -83,7 +86,8 @@ class interfaces
      * @return array|null An array of the interface's SQL entry or null if none
      *     exist
      */
-    static function get_interface_by_location($location) {
+    static function get_interface_by_location($location)
+    {
         global $db;
 
         $str = "SELECT * FROM `interfaces` WHERE `location`='%s'";
@@ -99,16 +103,17 @@ class interfaces
      *     api/robot_environments/interfaces
      * @return string|null An error message or null if the create was sucessful
      */
-    static function create_interface($name, $location) {
+    static function create_interface($name, $location)
+    {
         global $db;
 
         // make sure it does not already exist
-        if (get_interface_by_location($location)) {
+        if (interfaces::get_interface_by_location($location)) {
             return 'ERROR: Interface with location '.$location.
                 ' already exists';
         }
         // now check if that location is valid
-        $locations = get_unused_interface_locations();
+        $locations = interfaces::get_unused_interface_locations();
         foreach ($locations as $l) {
             if ($location === $l) {
                 // insert into the database
@@ -138,7 +143,8 @@ class interfaces
      *     number
      * @return string|null an error message or null if the update was sucessful
      */
-    static function update_interface($fields) {
+    static function update_interface($fields)
+    {
         global $db;
 
         if (!isset($fields['id'])) {
@@ -149,7 +155,7 @@ class interfaces
         $sql = "";
         $numFields = 0;
         // check for the interface
-        if (!($interface = get_interface_by_id($fields['id']))) {
+        if (!($interface = interfaces::get_interface_by_id($fields['id']))) {
             return 'ERROR: Interface ID '.$fields['id'].' does not exist';
         }
 
@@ -157,8 +163,10 @@ class interfaces
         $idToSet = $interface['intid'];
         if (isset($fields['intid'])) {
             $numFields++;
-            if ($fields['intid'] !== $interface['intid'] && get_interface_by_id($fields['intid'])) {
-                return 'ERROR: Interface ID '.$fields['intid'].' already exists';
+            if ($fields['intid'] !== $interface['intid'] 
+                    && interfaces::get_interface_by_id($fields['intid'])) {
+                return 'ERROR: Interface ID '.$fields['intid'].
+                    ' already exists';
             } else {
                 $idToSet = $fields['intid'];
             }
@@ -172,13 +180,20 @@ class interfaces
         }
         if (isset($fields['location'])) {
             $numFields++;
-            if ($fields['location'] !== $interface['location'] && get_interface_by_location($fields['location'])) {
-                return 'ERROR: Interface location "'.$fields['location'].'" is already used';
+            if ($fields['location'] !== $interface['location'] 
+                    && interfaces::get_interface_by_location(
+                        $fields['location']
+                    )
+            ) {
+                return 'ERROR: Interface location "'.$fields['location'].
+                    '" is already used';
             }
-            $sql .= sprintf(", `location`='%s'", api::cleanse($fields['location']));
+            $sql .= sprintf(
+                ", `location`='%s'", api::cleanse($fields['location'])
+            );
         }
 
-        // check to see if there were too many fields or if we do not need to update
+        // check to see if there were too many fields
         if ($numFields !== (count($fields) - 1)) {
             return 'ERROR: Too many fields given.';
         } else if ($numFields === 0) {
@@ -187,8 +202,8 @@ class interfaces
         }
 
         // we can now run the update
-        $sql = sprintf("UPDATE `interfaces` SET ".$sql." WHERE `intid`='%d'"
-                , api::cleanse($fields['id']));
+        $str = "UPDATE `interfaces` SET ".$sql." WHERE `intid`='%d'";
+        $sql = sprintf($str, api::cleanse($fields['id']));
         mysqli_query($db, $sql);
 
         // no error
@@ -196,18 +211,21 @@ class interfaces
     }
 
     /**
-     * Delete the interface array for the interface with the given ID. Any errors are returned.
+     * Delete the interface array for the interface with the given ID. Any
+     * errors are returned.
      *
      * @param integer $id The interface ID number
      * @return string|null an error message or null if the delete was sucessful
      */
-    static function delete_interface_by_id($id) {
+    static function delete_interface_by_id($id)
+    {
         global $db;
 
         // see if the interface exists
-        if (get_interface_by_id($id)) {
+        if (interfaces::get_interface_by_id($id)) {
             // delete it
-            $sql = sprintf("DELETE FROM `interfaces` WHERE `intid`='%d'", api::cleanse($id));
+            $str = "DELETE FROM `interfaces` WHERE `intid`='%d'";
+            $sql = sprintf($str, api::cleanse($id));
             mysqli_query($db, $sql);
             // no error
             return null;
@@ -217,18 +235,21 @@ class interfaces
     }
 
     /**
-     * Get an array of all the unused interface directories inside of the api/robot_environments/interfaces
-     * directory or null if none exist.
+     * Get an array of all the unused interface directories inside of the
+     * api/robot_environments/interfaces directory or null if none exist.
      *
-     * @return array|null An array of the unused interface directories or null if none exist
+     * @return array|null An array of the unused interface directories or null
+     *     if none exist
      */
-    static function get_unused_interface_locations() {
+    static function get_unused_interface_locations()
+    {
         // check for unused interface folders
         $dir  = opendir(dirname(__FILE__));
         $files = array();
         while ($f = readdir($dir)) {
             // check if it is a file or a directory and is already not used
-            if (is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' && !get_interface_by_location($f)) {
+            if (is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' 
+                    && !interfaces::get_interface_by_location($f)) {
                 $files[] = $f;
             }
         }
@@ -237,15 +258,18 @@ class interfaces
     }
 
     /**
-     * Get the HTML for an editor used to create or edit the given interface entry. If this is not an
+     * Get the HTML for an editor used to create or edit the given interface
+     * entry. If this is not an
      * edit, null can be given as the ID.
      *
-     * @param integer|null $id the ID of the interface to edit, or null if a new entry is being made
+     * @param integer|null $id the ID of the interface to edit, or null if a new
+     *     entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_interface_editor($id) {
+    static function get_interface_editor($id = null)
+    {
         // see if an interface exists with the given id
-        $cur = get_interface_by_id($id);
+        $cur = interfaces::get_interface_by_id($id);
 
         if ($cur) {
             $name = $cur['name'];
@@ -255,24 +279,29 @@ class interfaces
             $location = '';
         }
 
-        $result = '<p>Complete the following form to create or edit an interface.</p>
-                <form action="javascript:submit();">
-                <fieldset>
-                <ol>';
+        $result = '
+            <p>Complete the following form to create or edit an interface.</p>
+            <form action="javascript:submit();">
+            <fieldset>
+            <ol>';
 
         // only show the ID for edits
-        $result .=  ($cur) ? '<li><label for="id">Interface ID</label><input type="text" name="id"
-                id="id" value="'.$cur['intid'].'" readonly="readonly" /></li>' : '';
+        $result .=  ($cur) ? '
+                        <li><label for="id">Interface ID</label>
+                        <input type="text" name="id" id="id" value="'.
+                         $cur['intid'].'" readonly="readonly" /></li>' 
+                        : '';
 
-        $result .= '<li>
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" value="'.$name.'"
-                        placeholder="e.g., My Cool Interface" required />
-                        </li>
-                        <li>';
+        $result .= '
+                <li>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" value="'.$name.'"
+                     placeholder="e.g., My Cool Interface" required />
+                    </li>
+                <li>';
 
         // check for unused locations
-        $locations = get_unused_interface_locations();
+        $locations = interfaces::get_unused_interface_locations();
         if (strlen($location) > 0) {
             $locations = ($locations) ? $locations : array();
             $locations[] = $location;
@@ -283,7 +312,8 @@ class interfaces
             // put in each option
             foreach ($locations as $l) {
                 if ($location === $l) {
-                    $result .= '<option value="'.$l.'" selected="selected">'.$l.'</option>';
+                    $result .= '<option value="'.$l.'" selected="selected">'.
+                        $l.'</option>';
                 } else {
                     $result .= '<option value="'.$l.'">'.$l.'</option>';
                 }
@@ -294,16 +324,19 @@ class interfaces
                     <input type="submit" value="Submit" />';
         } else {
             // put dummy dropdown in
-            $result .= '      <label for="location-dummy">Location</label>
-                    <select name="location-dummy" id="location-dummy" disabled="disabled">
-                    <option value="void">No unused locations found in "api/robot_environments/interfaces"</option>
-                    </select>
-                    </li>
-                    </ol>
-                    <input type="submit" value="Submit" disabled="true" />';
+            $result .= '
+            <label for="location-dummy">Location</label>
+            <select name="location-dummy" id="location-dummy" 
+                    disabled="disabled">
+                <option value="void">No unused locations found in 
+                      "api/robot_environments/interfaces"</option>
+            </select>
+            </li>
+        </ol>
+        <input type="submit" value="Submit" disabled="true" />';
         }
 
-        $result .= '  </fieldset>
+        $result .= '</fieldset>
                 </form>';
 
         return $result;

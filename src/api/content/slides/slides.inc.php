@@ -21,7 +21,7 @@ include_once(dirname(__FILE__).'/../../../inc/config.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 13 2013
+ * @version    April, 12 2013
  * @package    api.content.slides
  */
 class slides
@@ -320,7 +320,7 @@ class slides
      *     entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_slide_editor($id)
+    static function get_slide_editor($id = null)
     {
       // see if a slide exists with the given id
       $cur = slides::get_slide_by_id($id);

@@ -262,7 +262,7 @@ $numConditions = count($conditions);
 for ($i = 0; $i < $numConditions; $i++) {
     $cur = $conditions[$i];
     $study = studies::get_study_by_id($cur['studyid']);
-    $interface = get_interface_by_id($cur['intid']);
+    $interface = interfaces::get_interface_by_id($cur['intid']);
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
     <tr class="<?php echo $class?>">
         <td class="delete-cell">
@@ -335,7 +335,7 @@ for ($i = 0; $i < $numExperiments; $i++) {
     $user = user_accounts::get_user_account_by_id($cur['userid']);
     $condition = conditions::get_condition_by_id($cur['condid']);
     $study = studies::get_study_by_id($condition['studyid']);
-    $env = get_environment_by_id($cur['envid']);
+    $env = environments::get_environment_by_id($cur['envid']);
     $id = 'experiments-'.$cur['expid'];
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                                 <tr class="<?php echo $class?>">

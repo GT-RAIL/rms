@@ -332,7 +332,9 @@ class widgets
             );
             foreach ($fields as $f) {
                 // check the environment
-                if ($f === 'envid' && !get_environment_by_id($entries[$f])) {
+                if ($f === 'envid' && !environments::get_environment_by_id(
+                    $entries[$f]
+                )) {
                     return 'ERROR: Environment ID '.$entries[$f].
                         ' does not exist';
                 }
@@ -511,7 +513,9 @@ class widgets
         foreach ($columns as $c) {
             if ($c !== 'id' && isset($fields[$c])) {
                 // check for a valid environment
-                if ($c === 'envid' && !get_environment_by_id($fields[$c])) {
+                if ($c === 'envid' && !environments::get_environment_by_id(
+                    $fields[$c]
+                )) {
                     return 'ERROR: Environment ID '.$fields[$c].
                         ' does not exist';
                 }
@@ -665,7 +669,7 @@ class widgets
      *     entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_widget_editor($id)
+    static function get_widget_editor($id = null)
     {
         // see if an widget exists with the given id
         $cur = widgets::get_widget_by_id($id);
@@ -824,7 +828,7 @@ class widgets
                         <label for="envid">Environment</label>
                         <select name="envid" id="envid" required>';
                 // grab the environments
-                $environments = get_environments();
+                $environments = environments::get_environments();
                 foreach ($environments as $cur) {
                     // check if this environment is the same
                     if ($value === $cur['envid']) {
