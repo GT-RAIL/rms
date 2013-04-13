@@ -4,6 +4,8 @@ php:
   - 5.3
 
 before_script:
+  - sudo apt-get update
+  - sudo apt-cache search node
   - sudo apt-get -y install node-0.10
   - pear channel-discover pear.phing.info
   - pear install phing/phing
