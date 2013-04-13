@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    April, 11 2013
  * @package    account
  * @link       http://ros.org/wiki/rms
  */
@@ -30,19 +30,19 @@ include_once(dirname(__FILE__).'/../inc/content.inc.php');
 $pagename = 'Account Settings';
 
 // grab the user info from the database
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript">
-	createMenuButtons();
+    createMenuButtons();
 </script>
 </head>
 <body>
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
         <section>
             <div class="line"></div>
@@ -54,7 +54,7 @@ $sessionUser = get_user_account_by_id($_SESSION['userid']);
                 <div class="line"></div>
             </article>
         </section>
-        <?php create_footer()?>
+        <?php content::create_footer()?>
     </section>
 </body>
 </html>

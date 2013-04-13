@@ -34,16 +34,16 @@ include_once(dirname(__FILE__).'/inc/head.inc.php');
 
 // grab the user with this session
 $sessionUser = isset($_SESSION['userid']) ?
-get_user_account_by_id($_SESSION['userid']) : null;
+user_accounts::get_user_account_by_id($_SESSION['userid']) : null;
 
 // grab the page information
 if (!isset($_GET['pageid'])) {
     // simply take the first page
-    $contentPages = get_content_pages();
+    $contentPages = content_pages::get_content_pages();
     $page = $contentPages ? $contentPages[0] : null;
 } else {
     // check if that page exists
-    $page = get_content_page_by_id($_GET['pageid']);
+    $page = content_pages::get_content_page_by_id($_GET['pageid']);
 }
 
 // check if we found a valid content page
@@ -54,7 +54,7 @@ if (!$page) {
 
 // check if this is the homepage
 if (!isset($contentPages)) {
-    $contentPages = get_content_pages();
+    $contentPages = content_pages::get_content_pages();
 }
 $homepage = $contentPages[0];
 $ishome = $page['pageid'] === $homepage['pageid'];
@@ -63,7 +63,7 @@ $ishome = $page['pageid'] === $homepage['pageid'];
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('')?>
+<?php head::import_head('')?>
 <title><?php echo $title." :: ".$page['title']?></title>
 
 <?php if ($sessionUser) {?>
@@ -92,16 +92,16 @@ if ($ishome) {?>
 </head>
 
 <body>
-    <?php create_header($sessionUser, $page['title'], '')?>
+    <?php content::create_header($sessionUser, $page['title'], '')?>
     <section id="page">
         <?php
         // check if this is the homepage
         if ($ishome) {
-            echo '<center>'.create_slideshow_html().'</center><br />';
+            echo '<center>'.slides::create_slideshow_html().'</center><br />';
         }
         // put in the content
-        echo create_page_articles_html($page);
-        create_footer();
+        echo articles::create_page_articles_html($page);
+        content::create_footer();
         ?>
     </section>
 </body>

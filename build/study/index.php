@@ -42,12 +42,12 @@ include_once(dirname(__FILE__).'/../inc/head.inc.php');
 include_once(dirname(__FILE__).'/../inc/content.inc.php');
 
 // grab the user info from the database
-$sessionUser = get_user_account_by_id($_SESSION['userid']);
+$sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 
 // now make sure this is an admin
 if ($sessionUser['type'] !== 'admin') {
     $msg = $sessionUser['username'].' attempted to access the study panel.';
-    write_to_log('WARNING: '.$msg);
+    logs::write_to_log('WARNING: '.$msg);
     // send the user back to their main menu
     header('Location: /menu');
     return;
@@ -56,7 +56,7 @@ if ($sessionUser['type'] !== 'admin') {
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
 <script type="text/javascript" src="../js/jquery/jquery.tablesorter.js">
@@ -152,7 +152,7 @@ if ($sessionUser['type'] !== 'admin') {
 </script>
 </head>
 <body onload="start()">
-    <?php create_header($sessionUser, $pagename, '../')?>
+    <?php content::create_header($sessionUser, $pagename, '../')?>
     <section id="page">
         <section>
             <div class="line"></div>
@@ -193,7 +193,7 @@ if ($sessionUser['type'] !== 'admin') {
                                     <tbody>
 <?php
 // populate the table
-$studies = get_studies();
+$studies = studies::get_studies();
 $numStudies = count($studies);
 for ($i = 0; $i < $numStudies; $i++) {
     $cur = $studies[$i];
@@ -257,12 +257,12 @@ for ($i = 0; $i < $numStudies; $i++) {
             <tbody>
 <?php
 // populate the table
-$conditions = get_conditions();
+$conditions = conditions::get_conditions();
 $numConditions = count($conditions);
 for ($i = 0; $i < $numConditions; $i++) {
     $cur = $conditions[$i];
-    $study = get_study_by_id($cur['studyid']);
-    $interface = get_interface_by_id($cur['intid']);
+    $study = studies::get_study_by_id($cur['studyid']);
+    $interface = interfaces::get_interface_by_id($cur['intid']);
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
     <tr class="<?php echo $class?>">
         <td class="delete-cell">
@@ -328,14 +328,14 @@ for ($i = 0; $i < $numConditions; $i++) {
             <tbody>
 <?php
 // populate the table
-$experiments = get_experiments();
+$experiments = experiments::get_experiments();
 $numExperiments = count($experiments);
 for ($i = 0; $i < $numExperiments; $i++) {
     $cur = $experiments[$i];
-    $user = get_user_account_by_id($cur['userid']);
-    $condition = get_condition_by_id($cur['condid']);
-    $study = get_study_by_id($condition['studyid']);
-    $env = get_environment_by_id($cur['envid']);
+    $user = user_accounts::get_user_account_by_id($cur['userid']);
+    $condition = conditions::get_condition_by_id($cur['condid']);
+    $study = studies::get_study_by_id($condition['studyid']);
+    $env = environments::get_environment_by_id($cur['envid']);
     $id = 'experiments-'.$cur['expid'];
     $class = ($i % 2 == 0) ? 'even' : 'odd';?>
                                 <tr class="<?php echo $class?>">
@@ -407,7 +407,7 @@ for ($i = 0; $i < $numExperiments; $i++) {
             </div>
         </article>
     </section>
-    <?php create_footer()?>
+    <?php content::create_footer()?>
     </section>
     <div id="confirm-delete-popup" title="Delete?"></div>
     <div id="editor-popup" title="Editor"></div>
