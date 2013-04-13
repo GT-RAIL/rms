@@ -7,6 +7,8 @@ DEVEL **0.3.0**
  * Major code cleanup for Zend coding standard [(rctoris)](https://github.com/rctoris/)
  * JavaScript file management removed from RMS [(rctoris)](https://github.com/rctoris/)
  * Widget PHP script management removed from RMS [(rctoris)](https://github.com/rctoris/)
+ * rmsdisplay.js removed [(rctoris)](https://github.com/rctoris/)
+ * Local JQuery copy removed [(rctoris)](https://github.com/rctoris/)
 
 2013-03-08 **0.2.12**
  * Admin panel now correctly URI encodes the URL before making an AJAX call [(rctoris)](https://github.com/rctoris/)

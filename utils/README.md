@@ -1,18 +1,32 @@
 rms Build Setup
 ===============
 
-[Phing](http://www.phing.info/) is used for building, minimizing, documenting, linting, and testing.
+[Phing](http://www.phing.info/) is used for building, minimizing, documenting, linting, and testing of PHP files.
 
-### Install Phing and its Dependencies
+[Grunt](http://gruntjs.com/) is used for building, including minimizing, documenting, linting, and testing of JavaScript files.
+
+### Install Phing, Grunt, and their Dependencies
 
 #### Ubuntu
 
- 1. Install PHP Pear and Phing
+ 1. Install PHP Pear, Phing, and CodeSniffer
    * `sudo apt-get install php-pear`
    * `sudo pear channel-discover pear.phing.info`
    * `sudo pear install phing/phing`
- 1. Install code quality tools
    * `sudo pear install PHP_CodeSniffer`
+ 2. Install Node.js and its package manager, NPM
+   * `sudo apt-get install python-software-properties`
+   * `sudo add-apt-repository ppa:chris-lea/node.js`
+   * `sudo apt-get update && sudo apt-get install nodejs phantomjs`
+ 3. Install Grunt and the test runner [Karma](http://karma-runner.github.io/)
+   * `sudo npm install -g grunt-cli karma`
+   * `sudo rm -rf ~/.npm ~/tmp`
+ 4. Install the Grunt tasks specific to this project
+   * `cd /path/to/ros3djs/utils/`
+   * `npm install .`
+ 5. (Optional) To generate the documentation, you'll need to setup Java. Documentation generation is not required for patches.
+   * `echo "export JAVA_HOME=/usr/lib/jvm/default-java/jre" >> ~/.bashrc`
+   * `source ~/.bashrc`
 
 ### Build with Phing
 

@@ -10,8 +10,6 @@
 
     <!-- Copy files into the build directory and minify JS -->
     <target name="rebuild">
-        <delete dir="${build.dir}" />
-        <mkdir dir="${build.dir}" />
         <copy todir="${build.dir}">
             <fileset dir="${src.dir}">
                 <include name="**/*" />
@@ -34,6 +32,11 @@
             <fileset refid="build" />
         </phpcodesniffer>
     </target>
+	
+	<!-- Code quality checks -->
+    <target name="grunt">
+    	<exec command="grunt build" passthru="true" checkreturn="true" />
+    </target>
 
-    <target name="build" depends="rebuild,lint,quality" />
+    <target name="build" depends="rebuild,lint,quality,grunt" />
 </project>
