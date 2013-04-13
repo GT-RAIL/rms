@@ -144,7 +144,7 @@ function createSlideshow() {
  */
 function rosonline(protocol, host, port, callback) {
   var ros = new ROSLIB.Ros({
-	  url : protocol + host + ':' + port
+    url : protocol + host + ':' + port
   });
   ros.on('connection', function() {
     callback(true);
