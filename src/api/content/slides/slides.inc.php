@@ -300,7 +300,7 @@ class slides
     static function create_slideshow_html()
     {
       $slides = slides::get_slides();
-      $html  = '<div id="slides">
+      $html  = '<div id="slides" class="slides">
                   <div class="slides_container">';
       foreach ($slides as $cur) {
         $html .= slides::create_slide_html($cur);

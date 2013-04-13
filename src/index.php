@@ -82,7 +82,8 @@ if ($page['js']) {?>
 
 // check for the slideshow
 if ($ishome) {?>
-<script type="text/javascript" src="js/jquery/slides.min.jquery.js"></script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/Slides/1.1.8/slides.min.js"></script>
 <script type="text/javascript">
   createSlideshow();
 </script>
