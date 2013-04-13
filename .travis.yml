@@ -4,6 +4,7 @@ php:
   - 5.3
 
 before_script:
+  - sudo apt-get -y install node-0.10
   - pear channel-discover pear.phing.info
   - pear install phing/phing
   - pear install PHP_CodeSniffer
