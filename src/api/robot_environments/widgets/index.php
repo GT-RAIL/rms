@@ -101,7 +101,7 @@ if ($auth = user_accounts::authenticate()) {
                                     get_widget_instance_editor_by_widgetid(
                                         $_GET['widgetid']
                                     );
-                                $result = api::create_200_state();
+                                $result = api::create_200_state($edit);
                             } else if (count($_GET) === 3 
                                     && isset($_GET['widgetid']) 
                                     && isset($_GET['id'])) {

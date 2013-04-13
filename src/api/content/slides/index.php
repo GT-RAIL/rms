@@ -112,7 +112,7 @@ if ($auth = user_accounts::authenticate()) {
                             } else if (count($_GET) === 2 
                                     && isset($_GET['id'])) {
                                 $id = $_GET['id'];
-                                $edit = slides::get_slide_editor($id = null);
+                                $edit = slides::get_slide_editor($id);
                                 $result = api::create_200_state($edit);
                             } else {
                                 $msg = 'Too many fields provided.';

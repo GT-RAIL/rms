@@ -61,12 +61,13 @@ if ($sessionUser['type'] !== 'admin') {
 // grab the database version
 $dbVersion = config::get_db_version();
 // grab the code version
-$prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
-$fullUrl = $prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql';
-$codeVersion = config::get_init_sql_version($fullUrl);
+$codeVersion = config::get_init_sql_version(
+    dirname(__FILE__).'/../api/config/init.sql', true
+);
 // find our the live version
-$liveURL = 'https://raw.github.com/WPI-RAIL/rms/stable/www/api/config/init.sql';
-$liveVersion = config::get_init_sql_version();
+$liveVersion = config::get_init_sql_version(
+    'https://raw.github.com/WPI-RAIL/rms/stable/www/api/config/init.sql'
+);
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,9 +75,14 @@ $liveVersion = config::get_init_sql_version();
 <?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
-<script type="text/javascript" src="../js/jquery/jquery.tablesorter.js">
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/tablesorter/2.0.5b/tablesorter.min.js">
 </script>
-<script type="text/javascript" src="../js/ros/ros_bundle.min.js"></script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
 <script type="text/javascript">
   var script = '';
 
@@ -309,7 +315,7 @@ $liveVersion = config::get_init_sql_version();
     var title = $('#title').val();
     var content = $('#content').val();
     // create the HTML
-    var html = '<section id="page"><article><h2>'+$('#title').val()+'</h2>';
+    var html = '<section class="page"><article><h2>'+$('#title').val()+'</h2>';
     html += '<div class="line"></div><div class="clear">';
     html += $('#content').val()+'</div></article></section>';
     $('#preview-popup').html(html);
@@ -478,12 +484,12 @@ $liveVersion = config::get_init_sql_version();
 </head>
 <body onload="start()">
     <?php content::create_header($sessionUser, $pagename, '../')?>
-    <section id="page">
+    <section class="page">
         <section>
             <div class="line"></div>
             <article>
                 <div class="admin-tabs-container">
-                    <div id="admin-tabs">
+                    <div id="admin-tabs" class="admin-tabs">
                         <ul>
                             <li><a href="#users-tab">Manage Users</a>
                             </li>
@@ -1381,6 +1387,6 @@ for ($i = 0; $i < $numArticles; $i++) {
     </section>
     <div id="confirm-delete-popup" title="Delete?"></div>
     <div id="editor-popup" title="Editor"></div>
-    <div id="preview-popup" title="Content Preview"></div>
+    <div id="preview-popup" class="preview-popup" title="Content Preview"></div>
 
 </html>

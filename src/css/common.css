@@ -316,8 +316,8 @@ table .odd {
 table.tablesorter thead tr .header {
   background-image: url(images/sort.gif);
   background-repeat: no-repeat;
-  background-position: center;
-  padding: 0 12px 0 0;
+  background-position: right;
+  padding: 0 10px 0 0;
   cursor: pointer;
 }
 
@@ -352,7 +352,7 @@ table tr .add-cell {
   text-align: right;  
 }
 
-table td .content-cell {
+table .content-cell {
   border-left: 1px solid #aaaaaa;
   padding: 0 0 0 3px;
 }

@@ -80,7 +80,8 @@ if ($auth = user_accounts::authenticate()) {
                             $_POST['username'].'.';
                         logs::write_to_log($msg);
                         $username = $_POST['username'];
-                        $account = get_user_account_by_username($username);
+                        $account = user_accounts::
+                            get_user_account_by_username($username);
                         // remove the password info
                         unset($account['password']);
                         unset($account['salt']);

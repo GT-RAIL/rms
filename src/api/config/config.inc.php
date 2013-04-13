@@ -55,16 +55,25 @@ class config
      * Parse the init.sql file at the given URL and return the version number.
      *
      * @param string $url the URL to the init.sql file
+     * @param boolean $local if this is a local file (default = false)
      * @return string the version number in the init.sql file
      */
-    static function get_init_sql_version($url)
+    static function get_init_sql_version($url, $local = false)
     {
-        // setup CURL to grab the file
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $data = curl_exec($curl);
-        curl_close($curl);
+        if ($local) {
+            // get the local file
+            $f = fopen($url, "r");
+            $data = fread($f, filesize($url));
+            fclose($f);
+        } else {
+            // setup CURL to grab the file
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            $data = curl_exec($curl);
+            curl_close($curl);
+        }
     
         // read the file line by line until we find the version
         $lines = array();

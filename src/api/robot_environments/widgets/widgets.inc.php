@@ -785,7 +785,8 @@ class widgets
      *     a new entry is being made
      * @return string A string containing the HTML of the editor
      */
-    static function get_widget_instance_editor_by_widgetid($widgetid, $id)
+    static function get_widget_instance_editor_by_widgetid($widgetid, 
+            $id = null)
     {
         // check if widget ID
         if (!($widget = widgets::get_widget_by_id($widgetid))) {
