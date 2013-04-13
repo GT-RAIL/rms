@@ -11,7 +11,8 @@ before_script:
   - sudo apt-get update
   - sudo apt-cache search node
   - sudo apt-get -y install nodejs npm phantomjs
-  - nodejs --version
+  - node --version
+  - npm --version
   - sudo npm install -g karma grunt-cli
   - cd utils
   - npm install .
