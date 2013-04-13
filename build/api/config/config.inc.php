@@ -55,16 +55,25 @@ class config
      * Parse the init.sql file at the given URL and return the version number.
      *
      * @param string $url the URL to the init.sql file
+     * @param boolean $local if this is a local file (default = false)
      * @return string the version number in the init.sql file
      */
-    static function get_init_sql_version($url)
+    static function get_init_sql_version($url, $local = false)
     {
-        // setup CURL to grab the file
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $data = curl_exec($curl);
-        curl_close($curl);
+        if ($local) {
+            // get the local file
+            $f = fopen($url, "r");
+            $data = fread($f, filesize($url));
+            fclose($f);
+        } else {
+            // setup CURL to grab the file
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+            $data = curl_exec($curl);
+            curl_close($curl);
+        }
     
         // read the file line by line until we find the version
         $lines = array();
@@ -78,6 +87,8 @@ class config
                 return $v;
             }
         }
+        
+        return 'unknown';
     }
     
     /**
@@ -195,8 +206,8 @@ or DIE(\'Connection has failed. Please try again later.\');
 $copyright = \'&copy '.addslashes($copyright).'\';
 $title = \''.addslashes($title).'\';
 // original site design information
-$designedBy = \'Site design by ".
-        "<a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
+$designedBy = \'Site design by
+    <a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
 ';
         fwrite($f, $toWrite);
     
@@ -232,7 +243,7 @@ $designedBy = \'Site design by ".
             // build the static function name
             $function = 'update::update_'.config::get_db_version();
             $function = str_replace('.', '_', $function);
-            if ($error = $function()) {
+            if ($error = call_user_func($function)) {
                 return $error;
             }
         }

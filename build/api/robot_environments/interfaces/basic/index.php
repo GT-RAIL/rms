@@ -6,7 +6,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments.interfaces.basic
  * @link       http://ros.org/wiki/rms
  */
@@ -17,7 +17,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments.interfaces.basic
  */
 class basic
@@ -50,37 +50,44 @@ class basic
 <html>
 <head>
 <?php $re->create_head() // grab the header information ?>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
 <title>Basic Teleop Interface</title>
-<?php $re->make_ros() // connect to ROS ?>
 <script type="text/javascript">
+  //connect to ROS
+  var ros = new ROSLIB.Ros('<?php echo $re->rosbridge_url()?>');
+  
   ros.on('error', function() {
       alert('Lost communication with ROS.');
   });
 </script>
 </head>
 <body>
-    <section id="page">
-        <section id="basic-interface">
+    <section class="page">
+        <section class="basic-interface">
             <table class="center">
                 <tr>
-                    <td colspan="3"><div id="main-widget">
-<?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 800, 600, 2)?>
+                    <td colspan="3"><div class="main-widget">
+<?php //echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 800, 600, 2)?>
                         </div></td>
                 </tr>
                 <tr>
-                    <td width="33%"><div id="south-west-widget">
-<?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200, 1)?>
+                    <td width="33%"><div class="south-west-widget">
+<?php //echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200, 1)?>
                         </div>
                     </td>
                     <td width="33%">
-                        <div id="control-widget">
-                            <div id="speed-container">
-<?php echo create_keyboard_teleop_with_slider($teleop[0])?>
+                        <div class="control-widget">
+                            <div class="speed-container">
+<?php //echo create_keyboard_teleop_with_slider($teleop[0])?>
                             </div>
                         </div>
                     </td>
-                    <td width="33%"><div id="south-east-widget">
-<?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200)?>
+                    <td width="33%"><div class="south-east-widget">
+<?php //echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 266, 200)?>
                         </div>
                     </td>
                 </tr>

@@ -31,14 +31,14 @@ if ($auth = user_accounts::authenticate()) {
             if (widgets::valid_widget_fields($_POST)) {
                 if ($auth['type'] === 'admin') {
                     if ($error = widgets::create_widget(
-                        $_POST['name'], $_POST['table'], $_POST['script']
+                        $_POST['name'], $_POST['table']
                     )) {
                         $result = api::create_404_state($error);
                     } else {
                         $msg = 'EDIT: '.$auth['username'].
                             ' created widget '.$_POST['name'].'.';
                         logs::write_to_log($msg);
-                        $w = widgets::get_widget_by_script($_POST['script']);
+                        $w = widgets::get_widget_by_table($_POST['table']);
                         $result = api::create_200_state($w);
                     }
                 } else {
@@ -101,7 +101,7 @@ if ($auth = user_accounts::authenticate()) {
                                     get_widget_instance_editor_by_widgetid(
                                         $_GET['widgetid']
                                     );
-                                $result = api::create_200_state();
+                                $result = api::create_200_state($edit);
                             } else if (count($_GET) === 3 
                                     && isset($_GET['widgetid']) 
                                     && isset($_GET['id'])) {
@@ -141,7 +141,7 @@ if ($auth = user_accounts::authenticate()) {
                         $msg = 'EDIT: '.$auth['username'].
                             ' deleted widget ID '.$deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {
@@ -166,7 +166,7 @@ if ($auth = user_accounts::authenticate()) {
                             ' deleted widget instance ID '.$deleteArray['id'].
                             ' from widget ID '.$deleteArray['widgetid'];
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {

@@ -165,7 +165,7 @@ class user_accounts
         global $db;
     
         // make sure the user does not exist
-        if (get_user_account_by_username($username)) {
+        if (user_accounts::get_user_account_by_username($username)) {
             return 'ERROR: User "'.$username.'" already exists';
         } else if (user_accounts::get_user_account_by_email($email)) {
             return 'ERROR: Email address "'.$email.'" already exists';
@@ -232,7 +232,10 @@ class user_accounts
         if (isset($fields['username'])) {
             $numFields++;
             if ($fields['username'] !== $user['username'] 
-                    && get_user_account_by_username($fields['username'])) {
+                    && user_accounts::get_user_account_by_username(
+                        $fields['username']
+                    )
+            ) {
                 return 'ERROR: User "'.$fields['username'].'" already exists';
             }
             $sql .= sprintf(

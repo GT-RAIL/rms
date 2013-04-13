@@ -9,7 +9,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -22,11 +22,45 @@ include_once(dirname(__FILE__).'/../../inc/config.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    api.config
  */
 class update
 {
+    /**
+     * Update the RMS database from version 0.2.12 to version 0.3.0.
+     *
+     * @return string|null an error message or null if the update was sucessful
+     */
+    static function update_0_2_12()
+    {
+        global $db;
+    
+        // drop the JavaScript table
+        $sql = "DROP TABLE `javascript_files`";
+        // try the update
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
+        // drop the scripts column
+        $sql = "ALTER TABLE `widgets` DROP COLUMN `script`";
+        mysqli_query($db, $sql);
+        // try the update
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+
+        // update the database version
+        $sql = "UPDATE `version` SET `version`='0.3.0' '.
+                'WHERE `version`='0.2.12'";
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        } else {
+            return null;
+        }
+    }
+    
     /**
      * Update the RMS database from version 0.2.11 to version 0.2.12.
      *

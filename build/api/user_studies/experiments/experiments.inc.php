@@ -104,7 +104,7 @@ class experiments
         global $db;
 
         // grab the experiments within the current time
-        $timestamp = api::cleanse(get_current_timestamp());
+        $timestamp = api::cleanse(api::get_current_timestamp());
         $str = "SELECT * FROM `experiments` 
                 WHERE (`userid`='%d' AND `end`>'%s' AND `start`<'%s')";
         $sql = sprintf($str, api::cleanse($userid), $timestamp, $timestamp);

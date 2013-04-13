@@ -379,7 +379,7 @@ class robot_environments
                         <body>';
         content::create_header($user, $pagename, $path);
         echo'
-                <section id="page"><article>
+                <section class="page"><article>
                 <div class="center">
                 <br /> <br /> <br /> <br /> <br />
                 <h2>ERROR: '.$error.'</h2>
@@ -438,17 +438,20 @@ class robot_environments
             // include the file
             include_once(dirname(__FILE__).'/interfaces/'.
                     $interface['location'].'/index.php');
-
             // now check for the correct static function
-            if (function_exists('generate')) {
+            $class = $interface['location'];
+            $function = $class.'::generate';
+            if (!class_exists($class) || !method_exists($class, 'generate')) {
                 robot_environments::create_error_page(
                     'Interface script does not implement '.
                     'the required static function.', 
-                    $user
+                    user_accounts::get_user_account_by_id($userid)
                 );
             } else {
                 // good to go, lets create the interface!
-                generate(new robot_environment($userid, $envid, $intid));
+                call_user_func(
+                    $function, new robot_environment($userid, $envid, $intid)
+                );
             }
         }
     }
