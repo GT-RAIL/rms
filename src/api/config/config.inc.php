@@ -197,7 +197,6 @@ $title = \''.addslashes($title).'\';
 // original site design information
 $designedBy = \'Site design by ".
         "<a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
-?>
 ';
         fwrite($f, $toWrite);
     
