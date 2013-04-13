@@ -24,9 +24,11 @@ rms Build Setup
  4. Install the Grunt tasks specific to this project
    * `cd /path/to/ros3djs/utils/`
    * `npm install .`
- 5. (Optional) To generate the documentation, you'll need to setup Java. Documentation generation is not required for patches.
+ 5. (Optional) To generate the documentation, you'll need to setup Java and phpDocumentor 2. Documentation generation is not required for patches.
    * `echo "export JAVA_HOME=/usr/lib/jvm/default-java/jre" >> ~/.bashrc`
    * `source ~/.bashrc`
+   * `sudo pear channel-discover pear.phpdoc.org`
+   * `sudo pear install phpdoc/phpDocumentor-alpha`
 
 ### Build with Phing
 

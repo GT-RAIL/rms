@@ -2,11 +2,18 @@
 <project name="rms" default="build">
     <property name="src.dir" value="../src" />
     <property name="build.dir" value="../build" />
-    
+    <property name="doc.dir" value="../doc" />
+    <property name="php-doc.dir" value="../doc/php" />
+    <property name="js-doc.dir" value="../doc/js" />
+
     <fileset id="build" dir="${build.dir}">
         <include name="*.php" />
         <include name="**/*.php" />
     </fileset>
+    <fileset id="src" dir="${src.dir}">
+            <include name="*.php" />
+            <include name="**/*.php" />
+     </fileset>
 
     <!-- Copy files into the build directory and minify JS -->
     <target name="rebuild">
@@ -32,11 +39,31 @@
             <fileset refid="build" />
         </phpcodesniffer>
     </target>
-	
-	<!-- Code quality checks -->
+
+    <!-- JS/CSS checks via Grunt -->
     <target name="grunt">
-    	<exec command="grunt build" passthru="true" checkreturn="true" />
+        <exec command="grunt build" passthru="true" checkreturn="true" />
+    </target>
+
+    <!-- Clean old docs -->
+    <target name="clean-doc">
+        <delete dir="${doc.dir}" />
+        <mkdir dir="${php-doc.dir}" />
+        <mkdir dir="${js-doc.dir}" />
+    </target>
+
+    <!-- PHP docs -->
+    <target name="php-doc">
+        <phpdoc2 destdir="${php-doc.dir}" quiet="false">
+            <fileset refid="src" />
+        </phpdoc2>
+    </target>
+	
+	<!-- JS docs via Grunt -->
+	<target name="grunt-doc">
+	    <exec command="grunt doc" passthru="true" checkreturn="true" />
     </target>
 
     <target name="build" depends="rebuild,lint,quality,grunt" />
+    <target name="doc" depends="clean-doc,php-doc,grunt-doc" />
 </project>
