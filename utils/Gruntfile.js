@@ -30,6 +30,21 @@ module.exports = function(grunt) {
         }
       }
     },
+    imagemin: {
+      build: {
+        options: {
+          optimizationLevel: 7
+        },
+        files: {
+          '../build/img/logo.png': '../build/img/logo.png',
+          '../build/img/real.png': '../build/img/real.png',
+          '../build/img/sim.png': '../build/img/sim.png',
+          '../build/img/slides/pr2.jpg': '../build/img/slides/pr2.jpg',
+          '../build/img/slides/youbot_sim.jpg': '../build/img/slides/youbot_sim.jpg',
+          '../build/img/slides/youbot.jpg': '../build/img/slides/youbot.jpg'
+        }
+      }
+    },
     clean: {
       options: {
         force: true
@@ -52,10 +67,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('build', ['jshint', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'uglify', 'imagemin']);
   grunt.registerTask('doc', ['clean', 'jsdoc']);
 };
 
