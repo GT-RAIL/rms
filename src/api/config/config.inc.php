@@ -243,7 +243,7 @@ $designedBy = \'Site design by
             // build the static function name
             $function = 'update::update_'.config::get_db_version();
             $function = str_replace('.', '_', $function);
-            if ($error = $function()) {
+            if ($error = call_user_func($function)) {
                 return $error;
             }
         }

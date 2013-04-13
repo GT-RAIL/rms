@@ -92,13 +92,6 @@ class robot_environment
                 $cur['widgetid'], $envid
             )) {
                 $this->_widgets[$cur['name']] = $curAll;
-
-                // include all of the widget scripts
-                $file = dirname(__FILE__).'/widgets/'.$cur['script'].
-                    '/widget.api.php';
-                if (file_exists($file)) {
-                    include_once($file);
-                }
             }
         }
     }
@@ -194,7 +187,7 @@ class robot_environment
                     ';
         }
 
-        // get the study and display scripts
+        // get the study script
         echo '<script type="text/javascript" src="'.$path.
             'js/rms/study.js"></script>';
     }

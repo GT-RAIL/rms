@@ -38,7 +38,7 @@ class widgets
     static function valid_widget_fields($array)
     {
         return isset($array['name']) && isset($array['table']) 
-            && isset($array['script']) && (count($array) === 3);
+            && (count($array) === 2);
     }
 
     /**
@@ -225,24 +225,6 @@ class widgets
     }
 
     /**
-     * Get the widget array for the widget with the given script location, or
-     * null if none exist.
-     *
-     * @param string $script The widget script location inside of the
-     *     api/robot_environments/widgets directory
-     * @return array|null An array of the widgets's SQL entry or null if none
-     *     exist
-     */
-    static function get_widget_by_script($script)
-    {
-        global $db;
-
-        $str = "SELECT * FROM `widgets` WHERE `script`='%s'";
-        $sql = sprintf($str, api::cleanse($script));
-        return mysqli_fetch_assoc(mysqli_query($db, $sql));
-    }
-
-    /**
      * Get the widget array for the widget with the given SQL table, or null if
      * none exist.
      *
@@ -264,44 +246,30 @@ class widgets
      *
      * @param string $name The name of the widget
      * @param string $table The SQL table for the widget
-     * @param integer $script The PHP script location
      * @return string|null An error message or null if the create was sucessful
      */
-    static function create_widget($name, $table, $script)
+    static function create_widget($name, $table)
     {
         global $db;
 
         // make sure it does not already exist
         if (widgets::get_widget_by_table($table)) {
             return 'ERROR: Widget with SQL table '.$table.' already exists';
-        } else if (widgets::get_widget_by_script($script)) {
-            return 'ERROR: Widget with script location '.$script.
-                ' already exists';
         }
 
         // now check if those fields are valid
         $tables = widgets::get_unused_widget_tables();
         foreach ($tables as $t) {
             if ($table === $t) {
-                $scripts = widgets::get_unused_widget_scripts();
-                foreach ($scripts as $s) {
-                    if ($script === $s) {
-                        // insert into the database
-                        $str = "INSERT INTO `widgets` 
-                                (`name`, `table`, `script`) 
-                                VALUES ('%s', '%s', '%s')";
-                        $sql = sprintf(
-                            $str, api::cleanse($name), api::cleanse($table), 
-                            api::cleanse($script)
-                        );
-                        mysqli_query($db, $sql);
-
-                        // no error
-                        return null;
-                    }
-                }
-                // script not valid
-                return 'ERROR: Widget script location '.$script.' is not valid';
+                // insert into the database
+                $str = "INSERT INTO `widgets` 
+                        (`name`, `table`) VALUES ('%s', '%s')";
+                $sql = sprintf(
+                    $str, api::cleanse($name), api::cleanse($table)
+                );
+                mysqli_query($db, $sql);
+                // no error
+                return null;
             }
         }
         // table not valid
@@ -412,35 +380,13 @@ class widgets
                         $valid |= ($fields['table'] === $t);
                     }
                     if (!$valid) {
-                        // script not valid
+                        // table not valid
                         return 'ERROR: Widget SQL table '.$fields['table'].
                             ' is not valid';
                     }
                 }
             }
             $sql .= sprintf(", `table`='%s'", api::cleanse($fields['table']));
-        }
-        if (isset($fields['script'])) {
-            $numFields++;
-            if ($fields['script'] !== $widget['script']) {
-                if (widgets::get_widget_by_script($fields['script'])) {
-                    return 'ERROR: Widget script location "'.$fields['script'].
-                        '" is already used';
-                } else {
-                    // now check if those fields are valid
-                    $scripts = widgets::get_unused_widget_scripts();
-                    $valid = false;
-                    foreach ($scripts as $s) {
-                        $valid |= ($fields['script'] === $s);
-                    }
-                    if (!$valid) {
-                        // script not valid
-                        return 'ERROR: Widget script location '.
-                            $fields['script'].' is not valid';
-                    }
-                }
-            }
-            $sql .= sprintf(", `script`='%s'", api::cleanse($fields['script']));
         }
 
         // check to see if there were too many fields
@@ -606,29 +552,6 @@ class widgets
     }
 
     /**
-     * Get an array of all the unused widget scripts inside of the
-     * api/robot_environments/widgets directory or null if none exist.
-     *
-     * @return array|null An array of the unused widget directory scripts or
-     *     null if none exist
-     */
-    static function get_unused_widget_scripts()
-    {
-        // check for unused interface folders
-        $dir  = opendir(dirname(__FILE__));
-        $files = array();
-        while ($f = readdir($dir)) {
-            // check if it is a file or a directory and is already not used
-            if (is_dir(dirname(__FILE__).'/'.$f) && $f[0] !== '.' 
-                    && !widgets::get_widget_by_script($f)) {
-                $files[] = $f;
-            }
-        }
-
-        return (count($files) === 0) ? null : $files;
-    }
-
-    /**
      * Get an array of all the unused widget SQL tables or null if none exist.
      * A valid table is any table with an 'envid' field, and a 'label' field.
      *
@@ -675,11 +598,9 @@ class widgets
         $cur = widgets::get_widget_by_id($id);
 
         if ($cur) {
-            $script = $cur['script'];
             $table = $cur['table'];
             $name = $cur['name'];
         } else {
-            $script = '';
             $table = '';
             $name = '';
         }
@@ -733,39 +654,6 @@ class widgets
             $disabled = 'disabled="disabled" ';
         }
         $result .= '  </select>
-                </li>
-                <li>';
-
-        // check for unused script locations
-        $scripts = widgets::get_unused_widget_scripts();
-        if (strlen($script) > 0) {
-            $scripts = ($scripts) ? $scripts : array();
-            $scripts[] = $script;
-        }
-        if ($scripts) {
-            $result .= '<label for="script">PHP Script Location</label>
-                    <select name="script" id="script" required>';
-            // put in each option
-            foreach ($scripts as $s) {
-                if ($script === $s) {
-                    $result .= '<option value="'.$s.'" selected="selected">'.
-                        $s.'</option>';
-                } else {
-                    $result .= '<option value="'.$s.'">'.$s.'</option>';
-                }
-            }
-        } else {
-            // put dummy dropdown in
-            $result .= '<label for="script-dummy">PHP Script Location</label>
-                    <select name="script-dummy" id="script-dummy" 
-                     disabled="true">
-                    <option value="void">No unused script locations found in 
-                                         "api/robot_environments/widgets"
-                    </option>';
-            $disabled = 'disabled="disabled" ';
-        }
-
-        $result .= '</select>
                 </li>
                 </ol>
                 <input type="submit" value="Submit" '.$disabled.'/>

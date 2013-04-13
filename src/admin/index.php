@@ -861,10 +861,9 @@ for ($i = 0; $i < $numPairs; $i++) {
                     <th>ID</th>
                     <th>Name</th>
                     <th>SQL Table</th>
-                    <th>PHP Script Location</th>
                 </tr>
                 <tr>
-                    <td colspan="6"><hr />
+                    <td colspan="5"><hr />
                     </td>
                 </tr>
             </thead>
@@ -894,19 +893,17 @@ for ($i = 0; $i < $numWidgets; $i++) {
         </td>
         <td class="content-cell"><?php echo $cur['table']?>
         </td>
-        <td class="content-cell"><?php echo $cur['script']?>
-        </td>
     </tr>
 <?php
 }
 ?>
         </tbody>
         <tr>
-            <td colspan="6"><hr />
+            <td colspan="5"><hr />
             </td>
         </tr>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="4"></td>
             <td class="add-cell">
                 <button class="create-new"
                     id="add-widget" name="widgets">Add

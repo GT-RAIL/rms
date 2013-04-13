@@ -31,14 +31,14 @@ if ($auth = user_accounts::authenticate()) {
             if (widgets::valid_widget_fields($_POST)) {
                 if ($auth['type'] === 'admin') {
                     if ($error = widgets::create_widget(
-                        $_POST['name'], $_POST['table'], $_POST['script']
+                        $_POST['name'], $_POST['table']
                     )) {
                         $result = api::create_404_state($error);
                     } else {
                         $msg = 'EDIT: '.$auth['username'].
                             ' created widget '.$_POST['name'].'.';
                         logs::write_to_log($msg);
-                        $w = widgets::get_widget_by_script($_POST['script']);
+                        $w = widgets::get_widget_by_table($_POST['table']);
                         $result = api::create_200_state($w);
                     }
                 } else {
