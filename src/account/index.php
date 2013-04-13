@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    account
  * @link       http://ros.org/wiki/rms
  */
@@ -43,7 +43,7 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 </head>
 <body>
     <?php content::create_header($sessionUser, $pagename, '../')?>
-    <section id="page">
+    <section class="page">
         <section>
             <div class="line"></div>
             <article>
