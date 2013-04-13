@@ -344,11 +344,11 @@ table.tablesorter thead tr .headerSortDown {
   border-collapse: collapse;
 }
 
-table tr td .edit-cell, table tr td .delete-cell {
+table tr .edit-cell, table tr .delete-cell {
   width: 29px;
 }
 
-table tr td .add-cell {
+table tr .add-cell {
   text-align: right;  
 }
 

@@ -60,15 +60,13 @@ The current supported version can be found on the Robot Web Tools CDN ([full](ht
 [nav2djs](https://github.com/WPI-RAIL/nav2djs). The current supported version is r1.
 The current supported version can be found on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.js)) | ([min](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.min.js)).
 
-[SlideJS](https://github.com/nathansearles/Slides). The current supported version is 1.1.8.
-The current supported version can be found on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/Slides/1.1.8/slides.js)) | ([min](http://cdn.robotwebtools.org/Slides/1.1.8/slides.min.js)).
+[SlideJS](https://github.com/nathansearles/Slides). This script is auto-linked in RMS.
 
-[nav2djs](https://github.com/WPI-RAIL/nav2djs). The current supported version is r1.
-The current supported version can be found on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.js)) | ([min](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.min.js)).
+[tablesorter](http://tablesorter.com). The current supported version is 2.0.5b. This script is auto-linked in RMS.
 
-[jQuery](http://jquery.com/). The current supported version is 1.9.1. This script is auto-linked in RMS.
+[jQuery](http://jquery.com/). The current supported version is 1.7.2. This script is auto-linked in RMS.
 
-[jQuery UI](http://jqueryui.com/). The current supported version is 1.10.2. This script is auto-linked in RMS.
+[jQuery UI](http://jqueryui.com/). The current supported version is 1.8.22. This script is auto-linked in RMS.
 
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building.

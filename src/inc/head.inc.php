@@ -8,9 +8,9 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    inc
- * @link     http://ros.org/wiki/rms
+ * @link       http://ros.org/wiki/rms
  */
 
 if (file_exists(dirname(__FILE__).'/config.inc.php')) {
@@ -23,7 +23,7 @@ if (file_exists(dirname(__FILE__).'/config.inc.php')) {
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    inc
  */
 class head
@@ -78,9 +78,9 @@ class head
         echo '
         <script type="text/javascript" src="'.$path.'js/rms/common.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/'.
-            'jquery-1.9.1.min.js"></script>
+            'jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/ui/'.
-            '1.10.2/jquery-ui.min.js"></script>
+            '1.8.22/jquery-ui.min.js"></script>
         ';
     }
     
