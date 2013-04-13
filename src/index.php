@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @link       http://ros.org/wiki/rms
  */
 
@@ -93,7 +93,7 @@ if ($ishome) {?>
 
 <body>
     <?php content::create_header($sessionUser, $page['title'], '')?>
-    <section id="page">
+    <section class="page">
         <?php
         // check if this is the homepage
         if ($ishome) {

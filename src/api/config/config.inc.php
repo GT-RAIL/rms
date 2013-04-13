@@ -195,8 +195,8 @@ or DIE(\'Connection has failed. Please try again later.\');
 $copyright = \'&copy '.addslashes($copyright).'\';
 $title = \''.addslashes($title).'\';
 // original site design information
-$designedBy = \'Site design by ".
-        "<a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
+$designedBy = \'Site design by '.
+        '<a href="http://users.wpi.edu/~rctoris/">Russell Toris</a>\';
 ';
         fwrite($f, $toWrite);
     
