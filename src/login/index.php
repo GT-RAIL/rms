@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    login
  * @link       http://ros.org/wiki/rms
  */
@@ -71,7 +71,7 @@ $pagename = 'User Login';
 </head>
 <body>
 <?php content::create_header(null, $pagename, '../')?>
-  <section id="page">
+  <section class="page">
     <article>
       <h2>User Login</h2>
       <div class="line"></div>
