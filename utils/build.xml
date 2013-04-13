@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="rms" default="build">
-	<property name="src.dir" value="../src" />
-	<property name="build.dir" value="../build" />
+    <property name="src.dir" value="../src" />
+    <property name="build.dir" value="../build" />
+    
+    <fileset id="build" dir="${build.dir}">
+        <include name="*.php" />
+        <include name="**/*.php" />
+    </fileset>
 
-	<!-- Copy files into the build directory and minify JS -->
-	<target name="rebuild">
-		<delete dir="${build.dir}" />
-		<mkdir dir="${build.dir}" />
-		<copy todir="${build.dir}">
-			<fileset dir="${src.dir}">
-				<include name="**/*" />
-				<include name="*" />
-			</fileset>
-		</copy>
-	</target>
+    <!-- Copy files into the build directory and minify JS -->
+    <target name="rebuild">
+        <delete dir="${build.dir}" />
+        <mkdir dir="${build.dir}" />
+        <copy todir="${build.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*" />
+                <include name="*" />
+            </fileset>
+        </copy>
+    </target>
 
-	<!-- Run a basic, simple linter -->
-	<target name="lint">
-		<apply executable="php" failonerror="true">
-			<arg value="-l" />
-			<fileset dir="${build.dir}">
-				<include name="**/*.php" />
-				<include name="*.php" />
-			</fileset>
-		</apply>
-	</target>
+    <!-- Run a basic, simple linter -->
+    <target name="lint">
+        <phplint haltonfailure="true" deprecatedAsError="true">
+            <fileset refid="build" />
+        </phplint>
+    </target>
 
-	<!-- Code quality checks -->
-	<target name="quality">
-		<phpcodesniffer standard="Zend" showSources="true" haltonerror="true" 
-			haltonwarning="true">
-			<fileset dir="${build.dir}">
-				<include name="*.php" />
-                <include name="**/*.php" />
-			</fileset>
-		</phpcodesniffer>
-	</target>
+    <!-- Code quality checks -->
+    <target name="quality">
+        <phpcodesniffer standard="Zend" showSources="true" haltonerror="true" 
+            haltonwarning="true">
+            <fileset refid="build" />
+        </phpcodesniffer>
+    </target>
 
-	<target name="build" depends="rebuild,lint,quality">
-	</target>
+    <target name="build" depends="rebuild,lint,quality" />
 </project>
