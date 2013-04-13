@@ -30,6 +30,31 @@ module.exports = function(grunt) {
         }
       }
     },
+    csslint: {
+      build: {
+        options: {
+          csslintrc: '.csslintrc'
+        },
+        src: [
+          '../src/css/common.css',
+          '../src/api/robot_environments/interfaces/**/*.css'
+        ]
+      }
+    },
+    cssmin: {
+      options: {
+        report: 'min'
+      },
+      build: {
+        files: {
+          '../build/css/common.css': ['../build/css/common.css'],
+          '../build/css/jquery-ui-1.8.22.custom.css': ['../build/css/jquery-ui-1.8.22.custom.css'],
+          '../build/api/robot_environments/interfaces/basic/style.css': ['../build/api/robot_environments/interfaces/basic/style.css'],
+          '../build/api/robot_environments/interfaces/markers/style.css': ['../build/api/robot_environments/interfaces/markers/style.css'],
+          '../build/api/robot_environments/interfaces/simple_nav2d/style.css': ['../build/api/robot_environments/interfaces/simple_nav2d/style.css']
+        }
+      }
+    },
     imagemin: {
       build: {
         options: {
@@ -82,10 +107,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('build', ['jshint', 'uglify', 'imagemin']);
+  grunt.registerTask('build', ['jshint', 'uglify', 'csslint', 'cssmin', 'imagemin']);
   grunt.registerTask('doc', ['clean', 'jsdoc']);
 };
 
