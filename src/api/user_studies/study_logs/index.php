@@ -38,7 +38,9 @@ if ($auth = user_accounts::authenticate()) {
                     study_logs::create_study_log(
                         $_POST['expid'], $_POST['entry']
                     );
-                    $result = api::create_200_state(get_current_timestamp());
+                    $result = api::create_200_state(
+                        api::get_current_timestamp()
+                    );
                 } else {
                     $msg = 'SECURITY: '.$auth['username'].
                         ' attempted to insert into the study log.';

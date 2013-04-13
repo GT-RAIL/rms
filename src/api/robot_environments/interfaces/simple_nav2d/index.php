@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments.interfaces.simple_nav2d
  * @link       http://ros.org/wiki/rms
  */
@@ -19,7 +19,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments.interfaces.simple_nav2d
  */
 class simple_nav2d
@@ -58,31 +58,39 @@ class simple_nav2d
 <head>
 <?php $re->create_head() // grab the header information ?>
 <title>Simple Navigation Interface</title>
-<?php $re->make_ros() // connect to ROS ?>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
+
 <script type="text/javascript">
+  //connect to ROS
+  var ros = new ROSLIB.Ros('<?php echo $re->rosbridge_url()?>');
+
   ros.on('error', function() {
     alert('Lost communication with ROS.');
   });
 </script>
 </head>
 <body>
-    <section id="page">
-        <section id="nav-interface">
+    <section class="page">
+        <section class="nav-interface">
             <table class="center">
                 <tr>
                     <td colspan="2"><h1>2D Navigation</h1></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><div id="speed-container">
-<?php echo create_keyboard_teleop_with_slider($teleop[0])?>
+                    <td colspan="2"><div class="speed-container">
+<?php //echo create_keyboard_teleop_with_slider($teleop[0])?>
                         </div></td>
                 </tr>
                 <tr>
-                    <td><div id="mjpeg-widget">
-<?php echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 480, 360, 2)?>
+                    <td><div class="mjpeg-widget">
+<?php //echo create_multi_mjpeg_canvas_by_envid($re->get_envid(), 480, 360, 2)?>
                         </div></td>
-                    <td><div id="nav-widget">
-<?php echo create_nav2d($nav[0], 480, 360)?>
+                    <td><div class="nav-widget">
+<?php //echo create_nav2d($nav[0], 480, 360)?>
                         </div></td>
                 </tr>
             </table>

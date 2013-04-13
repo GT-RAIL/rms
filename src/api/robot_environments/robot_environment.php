@@ -5,7 +5,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments
  * @link       http://ros.org/wiki/rms
  */
@@ -27,7 +27,7 @@ include_once(dirname(__FILE__).'/../../inc/head.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 13 2013
  * @package    api.robot_environments
  */
 class robot_environment
@@ -74,7 +74,7 @@ class robot_environment
      */
     function __construct($userid, $envid, $intid)
     {
-        $this->_userAccount = user_accounts::get_userAccount_by_id($userid);
+        $this->_userAccount = user_accounts::get_user_account_by_id($userid);
         $this->_environment = environments::get_environment_by_id($envid);
         $this->_interface = interfaces::get_interface_by_id($intid);
 
@@ -121,7 +121,7 @@ class robot_environment
      *
      * @return array the user account SQL array
      */
-    function get_userAccount()
+    function get_user_account()
     {
         return $this->_userAccount;
     }
@@ -221,7 +221,7 @@ class robot_environment
             $str = "SELECT UNIX_TIMESTAMP('%s') - UNIX_TIMESTAMP('%s') AS time";
             $sql = sprintf(
                 $str, api::cleanse($this->_experiment['end']), 
-                api::cleanse(get_current_timestamp())
+                api::cleanse(api::get_current_timestamp())
             );
             $diff = mysqli_fetch_array(mysqli_query($db, $sql));
 
@@ -236,5 +236,16 @@ class robot_environment
     }, _TIME);
 </script>';
         }
+    }
+    
+    /**
+     * Get the full rosbridge websocket URL as a string.
+     * 
+     * @return string the full rosbridge websocket URL as a string
+     */
+    function rosbridge_url()
+    {
+        return $this->_environment['protocol'].$this->_environment['envaddr'].
+                ':'.$this->_environment['port'];
     }
 }
