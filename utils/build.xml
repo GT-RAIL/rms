@@ -11,8 +11,9 @@
         <include name="**/*.php" />
     </fileset>
     <fileset id="src" dir="${src.dir}">
-            <include name="*.php" />
-            <include name="**/*.php" />
+        <include name="*.php" />
+        <include name="**/*.php" />
+        <exclude name="inc/config.inc.php"/>
      </fileset>
 
     <!-- Copy files into the build directory and minify JS -->
@@ -21,6 +22,7 @@
             <fileset dir="${src.dir}">
                 <include name="**/*" />
                 <include name="*" />
+                <exclude name="inc/config.inc.php"/>
             </fileset>
         </copy>
     </target>
