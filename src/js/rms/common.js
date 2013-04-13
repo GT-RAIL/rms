@@ -1,10 +1,11 @@
 /**
  * A collection of common Javascript functions used throughout the RMS.
- * 
- * @fileOverview A collection of common Javascript functions used throughout the RMS.
+ *
+ * @fileOverview A collection of common Javascript functions used throughout the
+ *  RMS.
  * @name RMS Common
  * @author Russell Toris <rctoris@wpi.edu>
- * @version December, 5 2012
+ * @version April, 13 2013
  */
 
 /**
@@ -12,27 +13,27 @@
  */
 function createMenuButtons() {
   $(function() {
-    $("a", ".menu-main-menu").button({
+    $('a', '.menu-main-menu').button({
       icons : {
         primary : 'ui-icon-home'
       }
     });
-    $("a", ".menu-account").button({
+    $('a', '.menu-account').button({
       icons : {
         primary : 'ui-icon-gear'
       }
     });
-    $("a", ".menu-admin-panel").button({
+    $('a', '.menu-admin-panel').button({
       icons : {
         primary : 'ui-icon-wrench'
       }
     });
-    $("a", ".menu-study-panel").button({
+    $('a', '.menu-study-panel').button({
       icons : {
         primary : 'ui-icon-person'
       }
     });
-    $("a", ".menu-logout").button({
+    $('a', '.menu-logout').button({
       icons : {
         primary : 'ui-icon-power'
       }
@@ -41,7 +42,8 @@ function createMenuButtons() {
 }
 
 /**
- * Creates a modal overlay with a loading icon. Disable the screen with removeModalPageLoading().
+ * Creates a modal overlay with a loading icon. Disable the screen with
+ * removeModalPageLoading().
  */
 function createModalPageLoading() {
   // remove any old modals that may exist
@@ -63,7 +65,7 @@ function removeModalPageLoading() {
 
 /**
  * Creates a displays a modal dialog with the given error message.
- * 
+ *
  * @param {string}
  *            message the error message to display
  */
@@ -75,7 +77,8 @@ function createErrorDialog(message) {
 
   // create an error div
   var html = '<div id="ERROR-DIALOG"><b>';
-  html += '<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>';
+  html += '<span class="ui-icon ui-icon-alert" ';
+  html += 'style="float: left; margin: 0 7px 50px 0;"></span>';
   html += message;
   html += '</b></div>';
   $('body').append(html);
@@ -129,7 +132,7 @@ function createSlideshow() {
 
 /**
  * A function to check if the given rosbridge server is online
- * 
+ *
  * @param {String}
  *            protocol the protocol to use
  * @param {String}
@@ -140,7 +143,7 @@ function createSlideshow() {
  *            callback the callback function returning if the server is online
  */
 function rosonline(protocol, host, port, callback) {
-  var ros = new ROS(protocol + host + ':' + port);
+  var ros = new ROSLIB.Ros(protocol + host + ':' + port);
   ros.on('connection', function() {
     callback(true);
   });
@@ -177,7 +180,7 @@ function logout() {
 
 /**
  * Base 64 encode the given string.
- * 
+ *
  * @param {String}
  *            string the string to base 64 encode
  * @returns {String} the base 64 encoded string

@@ -1,4 +1,10 @@
 {
+  "globals": {
+    "module": true,
+    "$": true,
+    "ROSLIB": true,
+    "_EXPID": true
+  },
   "curly": true,
   "eqeqeq": true,
   "immed": true,

@@ -1,18 +1,18 @@
 /**
- * A collection of common Javascript functions used throughout the RMS for interacting with the user
- * study API.
- * 
- * @fileOverview A collection of common Javascript functions used throughout the RMS for interacting
- *               with the user study API.
+ * A collection of common Javascript functions used throughout the RMS for
+ * interacting with the user study API.
+ *
+ * @fileOverview A collection of common Javascript functions used throughout the
+ *  RMS for interacting with the user study API.
  * @name RMS Studies
  * @author Russell Toris <rctoris@wpi.edu>
- * @version December, 20 2012
+ * @version April, 13 2013
  */
 
 /**
- * Log the given message into the study_logs MySQL table. This function will only work if the _EXPID
- * global variable is defined.
- * 
+ * Log the given message into the study_logs MySQL table. This function will
+ * only work if the _EXPID global variable is defined.
+ *
  * @param mesasge
  *            {string} the message to log
  */
