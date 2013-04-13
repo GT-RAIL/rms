@@ -143,7 +143,9 @@ function createSlideshow() {
  *            callback the callback function returning if the server is online
  */
 function rosonline(protocol, host, port, callback) {
-  var ros = new ROSLIB.Ros(protocol + host + ':' + port);
+  var ros = new ROSLIB.Ros({
+	  url : protocol + host + ':' + port
+  });
   ros.on('connection', function() {
     callback(true);
   });

@@ -50,7 +50,11 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 <head>
 <?php head::import_head('../') ?>
 <title><?php echo $title.' :: '.$pagename?></title>
-<script type="text/javascript" src="../js/ros/ros_bundle.min.js"></script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
 <script type="text/javascript">
   createMenuButtons();
 
@@ -73,8 +77,7 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 </head>
 <body>
     <?php content::create_header($sessionUser, $pagename, '../')?>
-    <section id="page">
-    <section id="articles">
+    <section class="page">
         <div class="line"></div>
         <?php
 //admin menu
@@ -190,8 +193,7 @@ if ($sessionUser['type'] === 'admin') {
         <?php
 }
 ?>
-    </section>
-        <?php content::create_footer()?>
+    <?php content::create_footer()?>
     </section>
 </body>
 </html>
