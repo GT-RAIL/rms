@@ -1352,20 +1352,17 @@ for ($i = 0; $i < $numArticles; $i++) {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td width="33%" rowspan="4"></td>
-                                            <td width="33%" rowspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class=setting-label>inc:</td>
+                                            <td width="33%" rowspan="2"></td>
+                                            <td class="setting-label">inc:</td>
                                             <td>
 <?php echo is_writable(dirname(__FILE__).'/../inc') 
     ? 'Writable' : '<b>UN-WRITABLE</b>'?>
                                             </td>
+                                            <td width="33%" rowspan="2"></td>
                                         </tr>
                                         <tr>
-                                            <td class=setting-label>
-                                                img/slides:
-                                            </td>
+                                            <td class="setting-label">
+                                                img/slides:</td>
                                             <td>
 <?php echo is_writable(dirname(__FILE__).'/../img/slides') 
     ? 'Writable' : '<b>UN-WRITABLE</b>'?>

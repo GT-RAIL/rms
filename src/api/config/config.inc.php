@@ -87,6 +87,8 @@ class config
                 return $v;
             }
         }
+        
+        return 'unknown';
     }
     
     /**
