@@ -141,7 +141,7 @@ if ($auth = user_accounts::authenticate()) {
                         $msg = 'EDIT: '.$auth['username'].
                             ' deleted widget ID '.$deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {
@@ -166,7 +166,7 @@ if ($auth = user_accounts::authenticate()) {
                             ' deleted widget instance ID '.$deleteArray['id'].
                             ' from widget ID '.$deleteArray['widgetid'];
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {

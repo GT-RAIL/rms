@@ -126,7 +126,7 @@ if ($auth = user_accounts::authenticate()) {
                             ' deleted environment-interface pair ID '.
                             $deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {

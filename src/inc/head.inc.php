@@ -77,10 +77,10 @@ class head
     {
         echo '
         <script type="text/javascript" src="'.$path.'js/rms/common.js"></script>
-        <script type="text/javascript" src="'.$path.
-            'js/jquery/jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="'.$path.
-            'js/jquery/jquery-ui-1.8.22.custom.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/'.
+            'jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/'.
+            '1.10.2/jquery-ui.min.js"></script>
         ';
     }
     

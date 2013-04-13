@@ -174,7 +174,7 @@ if ($sessionUser['type'] === 'admin') {
                 $cur['end'].')</h3>';
 
             // grab the current timestamp from the SQL server
-            $time = get_current_timestamp();
+            $time = api::get_current_timestamp();
             if ($time >= $cur['start'] && $time <= $cur['end']) {
                 echo '<button onclick="javascript:beginStudy('.$cur['expid'].
                     ', '.$cond['intid'].', '.

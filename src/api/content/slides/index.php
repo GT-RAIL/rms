@@ -146,7 +146,7 @@ if ($auth = user_accounts::authenticate()) {
                         $msg = 'EDIT: '.$auth['username'].' deleted slide ID '.
                             $deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {

@@ -60,6 +60,10 @@ The current supported version can be found on the Robot Web Tools CDN ([full](ht
 [nav2djs](https://github.com/WPI-RAIL/nav2djs). The current supported version is r1.
 The current supported version can be found on the Robot Web Tools CDN ([full](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.js)) | ([min](http://cdn.robotwebtools.org/nav2djs/r1/nav2d.min.js)).
 
+[jQuery](http://jquery.com/). The current supported version is 1.9.1. This script is auto-linked in RMS.
+
+[jQuery UI](http://jqueryui.com/). The current supported version is 1.10.2. This script is auto-linked in RMS.
+
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building.
 
