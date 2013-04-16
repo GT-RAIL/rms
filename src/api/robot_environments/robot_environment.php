@@ -128,6 +128,26 @@ class robot_environment
     {
         return $this->_environment['envid'];
     }
+    
+    /**
+     * Get the MJPEG server host name.
+     *
+     * @return string the MJPEG server host name
+     */
+    function get_mjpeg()
+    {
+        return $this->_environment['mjpeg'];
+    }
+    
+    /**
+     * Get the MJPEG server port.
+     *
+     * @return string the MJPEG server port
+     */
+    function get_mjpegport()
+    {
+        return $this->_environment['mjpegport'];
+    }
 
     /**
      * Get the interface ID for the associated interface.

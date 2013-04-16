@@ -42,3 +42,4 @@ To run the build tasks:
 `phing build` will minimize the JavaScript files under `src` and place the new built project into `build`. It will also run the linter. This is what [Travis CI](https://travis-ci.org/WPI-RAIL/rms) runs when a Pull Request is submitted.
 
 `phing doc` will document all PHP and JavaScript files and place them in the `doc` folder.
+
