@@ -2,37 +2,37 @@
  * The custom style sheet for the basic interface.
  *
  *  Author: Russell Toris
- * Version: December 13, 2012
+ * Version: April 13, 2013
  */
 
-#page {
-  box-shadow: 0px 0px 15px 15px rgba(156, 205, 252, 0.7);
+.page {
+  box-shadow: 0 0 15px 15px rgba(156, 205, 252, 0.7);
 }
 
-#basic-interface table {
+.basic-interface table {
   width: 800px;
   border: 0;
   border-collapse: collapse;
 }
 
-#basic-interface table td {
+.basic-interface table td {
   border: 1px solid #333333;
 }
 
-#main-widget {
+.main-widget {
   width: 800px;
   height: 600px;
 }
 
-#south-east-widget, #south-west-widget, #control-widget {
+.south-east-widget, .south-west-widget, .control-widget {
   width: 266px;
   height: 200px;
 }
 
-#control-widget {
+.control-widget {
   background-color: rgba(156, 205, 252, 0.5);
 }
 
-#speed-container {
+.speed-container {
   padding: 75px 10px 0 10px;
 }

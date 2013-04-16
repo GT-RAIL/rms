@@ -2,32 +2,32 @@
  * The custom style sheet for the simple navigation interface.
  *
  *  Author: Russell Toris
- * Version: December 13, 2012
+ * Version: April 13, 2013
  */
 
 
-#page {
-	box-shadow: 0px 0px 15px 15px rgba(156, 205, 252, 0.7);
+.page {
+	box-shadow: 0 0 15px 15px rgba(156, 205, 252, 0.7);
 }
 
-#nav-interface table {
+.nav-interface table {
 	width: 960px;
 	border: 0;
 	border-collapse: collapse;
 }
 
-#nav-widget, #mjpeg-widget {
+.nav-widget, .mjpeg-widget {
 	width: 480px;
 	height: 360px;
 }
 
-#speed-container {
+.speed-container {
 	background-color: rgba(156, 205, 252, 0.5);
 	padding: 0 5px 10px 5px;
 	margin: 5px 0 15px 0;
 	border-radius: 5px;
 }
 
-#nav-interface {
+.nav-interface {
   padding: 0 0 15px 0;  
 }

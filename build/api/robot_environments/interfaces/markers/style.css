@@ -1,17 +1,1 @@
-/**
- * The custom style sheet for the simple interactive markers interface.
- *
- *  Author: Russell Toris
- * Version: February, 26 2013
- */
-
-#page {
-	box-shadow: 0px 0px 15px 15px rgba(156, 205, 252, 0.7);
-}
-
-#speed-container {
-	background-color: rgba(156, 205, 252, 0.5);
-	padding: 0 5px 10px 5px;
-	margin: 5px 0 15px 0;
-	border-radius: 5px;
-}
+.page{box-shadow:0 0 15px 15px rgba(156,205,252,.7)}.speed-container{background-color:rgba(156,205,252,.5);padding:0 5px 10px;margin:5px 0 15px;border-radius:5px}

@@ -1,9 +1,16 @@
 DEVEL **0.3.0**
- * CHANGES IN v0.3.0 ARE NOT BACKWARDS COMPATIBLE WITH RMS v0.2.12 OR EARLIER [(rctoris)](https://github.com/rctoris/)
- * Source moved from www to src (NOT BACKWARDS COMPATIBLE WITH RMS v0.2.12 OR EARLIER) [(rctoris)](https://github.com/rctoris/)
+ * Source moved from www to src [(rctoris)](https://github.com/rctoris/)
  * ROS XML and build scripts removed [(rctoris)](https://github.com/rctoris/)
  * Main devel branch started [(rctoris)](https://github.com/rctoris/)
  * Authors file started [(rctoris)](https://github.com/rctoris/)
+ * Phing build script added [(rctoris)](https://github.com/rctoris/)
+ * Major code cleanup for Zend coding standard [(rctoris)](https://github.com/rctoris/)
+ * JavaScript file management removed from RMS [(rctoris)](https://github.com/rctoris/)
+ * Widget PHP script management removed from RMS [(rctoris)](https://github.com/rctoris/)
+ * rmsdisplay.js removed [(rctoris)](https://github.com/rctoris/)
+ * Local JQuery copy removed [(rctoris)](https://github.com/rctoris/)
+ * Type and description removed from environment [(rctoris)](https://github.com/rctoris/)
+ * MJPEG Server host and port added to environment [(rctoris)](https://github.com/rctoris/)
 
 2013-03-08 **0.2.12**
  * Admin panel now correctly URI encodes the URL before making an AJAX call [(rctoris)](https://github.com/rctoris/)

@@ -2,7 +2,7 @@
  * The main style sheet for RMS.
  *
  *  Author: Russell Toris
- * Version: December 13, 2012
+ * Version: April 13, 2013
  */
 
 /* == GENERAL == */
@@ -11,29 +11,28 @@
   padding: 0;
 }
 
-body, #preview-popup {
+body, .preview-popup {
   font-family: Verdana, Arial, sans-ser;
   font-size: 12px;
   color: #101010;
   background: #101010 url(images/bg.jpg) repeat fixed center top;
 }
 
-h1, h2, h3 {
-  font-variant: small-caps;
-}
-
 h1 {
+  font-variant: small-caps;
   font-size: 40px;
   color: #9ccdfc;
-  text-shadow: 0px 4px 2px #333;
+  text-shadow: 0 4px 2px #333;
 }
 
 h2 {
+  font-variant: small-caps;
   font-size: 26px;
-  text-shadow: 0px 2px 6px #f6f6f6;
+  text-shadow: 0 2px 6px #f6f6f6;
 }
 
 h3 {
+  font-variant: small-caps;
   font-size: 18px;
   text-shadow: 0 0 3px #f6f6f6;
 }
@@ -45,7 +44,7 @@ p {
   text-justify: inter-word;
 }
 
-article, nav ul li a, figure, #slides img {
+article, nav ul li a, figure, .slides img {
   border-radius: 10px;
 }
 
@@ -60,7 +59,7 @@ header table, footer table {
 .line {
   height: 1px;
   background-color: #022056;
-  border: 0 0 1px 0 solid #0b3e6f;
+  border-bottom: 1px solid #0b3e6f;
   margin: 1em 0;
   overflow: hidden;
 }
@@ -75,7 +74,6 @@ header table, footer table {
 
 .center {
   text-align: center;
-  align: center;
   margin-left: auto;
   margin-right: auto;
 }
@@ -102,7 +100,7 @@ body.loading .modal {
 /* == HEADER == */
 header {
   background: rgba(255, 255, 255, 0.25);
-  border-top: 1px 1px 0 1px solid #333;
+  border-top: 1px solid #333;
   width: 980px;
   position: relative;
   margin-left: auto;
@@ -117,7 +115,7 @@ header figure {
 }
 
 /* == NAV == */
-#nav {
+.nav {
   background: rgba(255, 255, 255, 0.25);
   width: 100%;
   box-shadow: 0 1px 1px #101010;
@@ -140,7 +138,7 @@ nav ul li a {
   font-size: 14px;
   font-weight: bold;
   padding: 7px 10px 4px;
-  text-shadow: 0 0px 5px #fff;
+  text-shadow: 0 0 5px #fff;
   text-transform: uppercase;
 }
 
@@ -149,7 +147,7 @@ nav ul li a:hover {
 }
 
 /* == PAGE == */
-#page {
+.page {
   background: rgba(10, 10, 10, 0.8);
   width: 980px;
   position: relative;
@@ -158,7 +156,7 @@ nav ul li a:hover {
   margin-bottom: 10px;
   border-radius: 0 0 10px 10px;
   padding: 10px;
-  box-shadow: 0px 0px 15px 5px #aaaaaa;
+  box-shadow: 0 0 15px 5px #aaaaaa;
 }
 
 /* == FORM == */
@@ -220,7 +218,7 @@ form input[type=submit]:hover, form input[type=button]:hover {
 }
 
 /* == SLIDESHOW == */
-#slides {
+.slides {
   background: rgba(240, 240, 240, 0.7);
   padding: 5px 0 17px 0;
   margin: 0 -10px 0 -10px;
@@ -263,7 +261,7 @@ form input[type=submit]:hover, form input[type=button]:hover {
   overflow: hidden;
 }
 
-.pagination li.current a {
+.pagination .current a {
   background-position: 0 -12px;
 }
 
@@ -280,7 +278,6 @@ form input[type=submit]:hover, form input[type=button]:hover {
   font-size: 13px;
   line-height: 1.33;
   color: #f6f6f6;
-  bottom: 0;
 }
 
 /* == ARTICLES == */
@@ -308,19 +305,19 @@ table, table th {
 }
 
 /* == SORTING == */
-table tr.even {
+table .even {
   background: rgba(156, 205, 252, 0.66);
 }
 
-table tr.odd {
+table .odd {
   background: #f6f6f6;
 }
 
 table.tablesorter thead tr .header {
   background-image: url(images/sort.gif);
   background-repeat: no-repeat;
-  background-position: center right;
-  padding: 0 12px 0 0;
+  background-position: right;
+  padding: 0 10px 0 0;
   cursor: pointer;
 }
 
@@ -335,27 +332,27 @@ table.tablesorter thead tr .headerSortDown {
 }
 
 /* == CONTROL PANELS == */
-#log-container {
+.log-container {
   max-height: 500px;
   overflow-y: scroll;
   font-size: 11px;
 }
 
-#admin-tabs table {
+.admin-tabs table {
   width: 100%;
   border: 0;
   border-collapse: collapse;
 }
 
-table tr td.edit-cell, table tr td.delete-cell {
+table tr .edit-cell, table tr .delete-cell {
   width: 29px;
 }
 
-table tr td.add-cell {
+table tr .add-cell {
   text-align: right;  
 }
 
-table td.content-cell {
+table .content-cell {
   border-left: 1px solid #aaaaaa;
   padding: 0 0 0 3px;
 }
