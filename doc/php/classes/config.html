@@ -158,7 +158,7 @@ config file.</span><pre>valid_config_fields()</pre></a></li>
 </div>
 <a id="method_get_init_sql_version"></a><div class="element clickable method public method_get_init_sql_version" data-toggle="collapse" data-target=".method_get_init_sql_version .collapse">
 <h2>Parse the init.sql file at the given URL and return the version number.</h2>
-<pre>get_init_sql_version(string $url) : string</pre>
+<pre>get_init_sql_version(string $url, boolean $local) : string</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -166,6 +166,10 @@ config file.</span><pre>valid_config_fields()</pre></a></li>
 <div class="subelement argument">
 <h4>$url</h4>
 <code>string</code><p>the URL to the init.sql file</p></div>
+<div class="subelement argument">
+<h4>$local</h4>
+<code>boolean</code><p>if this is a local file (default = false)</p>
+</div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code>the version number in the init.sql file</div>
@@ -261,7 +265,7 @@ config file.</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-04-13T12:58:32-07:00.<br></footer></div>
+            generated on 2013-04-16T13:14:58-07:00.<br></footer></div>
 </div>
 </body>
 </html>

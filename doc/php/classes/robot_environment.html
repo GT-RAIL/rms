@@ -67,10 +67,13 @@
 <li class="method public "><a href="#method_get_envid" title="get_envid :: Get the environment ID for the associated environment."><span class="description">Get the environment ID for the associated environment.</span><pre>get_envid()</pre></a></li>
 <li class="method public "><a href="#method_get_experiment" title="get_experiment :: Get the experiment SQL entry found for the user, or null if none exist."><span class="description">Get the experiment SQL entry found for the user, or null if none exist.</span><pre>get_experiment()</pre></a></li>
 <li class="method public "><a href="#method_get_intid" title="get_intid :: Get the interface ID for the associated interface."><span class="description">Get the interface ID for the associated interface.</span><pre>get_intid()</pre></a></li>
-<li class="method public "><a href="#method_get_userAccount" title="get_userAccount :: Get the user account SQL array for the user that is currently logged in."><span class="description">Get the user account SQL array for the user that is currently logged in.</span><pre>get_userAccount()</pre></a></li>
+<li class="method public "><a href="#method_get_mjpeg" title="get_mjpeg :: Get the MJPEG server host name."><span class="description">Get the MJPEG server host name.</span><pre>get_mjpeg()</pre></a></li>
+<li class="method public "><a href="#method_get_mjpegport" title="get_mjpegport :: Get the MJPEG server port."><span class="description">Get the MJPEG server port.</span><pre>get_mjpegport()</pre></a></li>
+<li class="method public "><a href="#method_get_user_account" title="get_user_account :: Get the user account SQL array for the user that is currently logged in."><span class="description">Get the user account SQL array for the user that is currently logged in.</span><pre>get_user_account()</pre></a></li>
 <li class="method public "><a href="#method_get_widgets_by_name" title="get_widgets_by_name :: Get an array of all widgets for this robot environment/interface with the
 given widget name."><span class="description">Get an array of all widgets for this robot environment/interface with the
 given widget name.</span><pre>get_widgets_by_name()</pre></a></li>
+<li class="method public "><a href="#method_rosbridge_url" title="rosbridge_url :: Get the full rosbridge websocket URL as a string."><span class="description">Get the full rosbridge websocket URL as a string.</span><pre>rosbridge_url()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -119,7 +122,7 @@ useful information such as widget lists, etc.</p>
 </tr>
 <tr>
 <th>version</th>
-<td>April, 12 2013</td>
+<td>April, 13 2013</td>
 </tr>
 <tr>
 <th>package</th>
@@ -216,9 +219,31 @@ valid experiment is found for this user, nothing will be echoed.</p></div></div>
 <code>integer</code>The interface ID</div>
 </div></div>
 </div>
-<a id="method_get_userAccount"></a><div class="element clickable method public method_get_userAccount" data-toggle="collapse" data-target=".method_get_userAccount .collapse">
+<a id="method_get_mjpeg"></a><div class="element clickable method public method_get_mjpeg" data-toggle="collapse" data-target=".method_get_mjpeg .collapse">
+<h2>Get the MJPEG server host name.</h2>
+<pre>get_mjpeg() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>the MJPEG server host name</div>
+</div></div>
+</div>
+<a id="method_get_mjpegport"></a><div class="element clickable method public method_get_mjpegport" data-toggle="collapse" data-target=".method_get_mjpegport .collapse">
+<h2>Get the MJPEG server port.</h2>
+<pre>get_mjpegport() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>the MJPEG server port</div>
+</div></div>
+</div>
+<a id="method_get_user_account"></a><div class="element clickable method public method_get_user_account" data-toggle="collapse" data-target=".method_get_user_account .collapse">
 <h2>Get the user account SQL array for the user that is currently logged in.</h2>
-<pre>get_userAccount() : array</pre>
+<pre>get_user_account() : array</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -242,6 +267,17 @@ given widget name.</h2>
 <div class="subelement response">
 <code>array</code>The array of widgets for this environment/interface or null
     if none exist</div>
+</div></div>
+</div>
+<a id="method_rosbridge_url"></a><div class="element clickable method public method_rosbridge_url" data-toggle="collapse" data-target=".method_rosbridge_url .collapse">
+<h2>Get the full rosbridge websocket URL as a string.</h2>
+<pre>rosbridge_url() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>the full rosbridge websocket URL as a string</div>
 </div></div>
 </div>
 <h3>
@@ -285,7 +321,7 @@ widget name. The inner array is indexed only by numbers.</p></div></div></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-04-13T12:58:32-07:00.<br></footer></div>
+            generated on 2013-04-16T13:14:58-07:00.<br></footer></div>
 </div>
 </body>
 </html>

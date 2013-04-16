@@ -67,7 +67,6 @@
 <li class="method public "><a href="#method_get_environment_editor" title="get_environment_editor :: Get the HTML for an editor used to create or edit the given environment
 entry."><span class="description">Get the HTML for an editor used to create or edit the given environment
 entry.</span><pre>get_environment_editor()</pre></a></li>
-<li class="method public "><a href="#method_get_environment_types" title="get_environment_types :: Get the enum types for environments in an array."><span class="description">Get the enum types for environments in an array.</span><pre>get_environment_types()</pre></a></li>
 <li class="method public "><a href="#method_get_environments" title="get_environments :: Get an array of all the environment entries, or null if none exist."><span class="description">Get an array of all the environment entries, or null if none exist.</span><pre>get_environments()</pre></a></li>
 <li class="method public "><a href="#method_get_protocol_types" title="get_protocol_types :: Get the enum types for protocols in an array."><span class="description">Get the enum types for protocols in an array.</span><pre>get_protocol_types()</pre></a></li>
 <li class="method public "><a href="#method_update_environment" title="update_environment :: Update an environment with the given information inside of the array."><span class="description">Update an environment with the given information inside of the array.</span><pre>update_environment()</pre></a></li>
@@ -106,7 +105,7 @@ environment.</span><pre>valid_environment_fields()</pre></a></li>
 </tr>
 <tr>
 <th>version</th>
-<td>April, 12 2013</td>
+<td>April, 15 2013</td>
 </tr>
 <tr>
 <th>package</th>
@@ -117,7 +116,7 @@ environment.</span><pre>valid_environment_fields()</pre></a></li>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a id="method_create_environment"></a><div class="element clickable method public method_create_environment" data-toggle="collapse" data-target=".method_create_environment .collapse">
 <h2>Create an environment with the given information.</h2>
-<pre>create_environment(string $protocol, string $envaddr, integer $port, string $type, string $notes, integer $enabled) : string | null</pre>
+<pre>create_environment(string $protocol, string $envaddr, integer $port, string $mjpeg, string $mjpegport, integer $enabled) : string | null</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>Any errors are
@@ -135,11 +134,11 @@ returned.</p></div>
 <code>integer</code><p>The environment's port</p>
 </div>
 <div class="subelement argument">
-<h4>$type</h4>
-<code>string</code><p>The the environment type</p></div>
+<h4>$mjpeg</h4>
+<code>string</code><p>The MJPEG server host</p></div>
 <div class="subelement argument">
-<h4>$notes</h4>
-<code>string</code><p>Any notes about the environment</p></div>
+<h4>$mjpegport</h4>
+<code>string</code><p>The MJPEG server port</p></div>
 <div class="subelement argument">
 <h4>$enabled</h4>
 <code>integer</code><p>If the environment is currently enabled</p></div>
@@ -196,17 +195,6 @@ entry.</h2>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code>A string containing the HTML of the editor</div>
-</div></div>
-</div>
-<a id="method_get_environment_types"></a><div class="element clickable method public method_get_environment_types" data-toggle="collapse" data-target=".method_get_environment_types .collapse">
-<h2>Get the enum types for environments in an array.</h2>
-<pre>get_environment_types() : array</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>array</code>An array containing the enum types for environments</div>
 </div></div>
 </div>
 <a id="method_get_environments"></a><div class="element clickable method public method_get_environments" data-toggle="collapse" data-target=".method_get_environments .collapse">
@@ -275,7 +263,7 @@ environment.</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-04-13T12:58:32-07:00.<br></footer></div>
+            generated on 2013-04-16T13:14:58-07:00.<br></footer></div>
 </div>
 </body>
 </html>
