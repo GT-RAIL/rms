@@ -1,0 +1,9 @@
+{
+  "import": 2,
+  "important": false,
+  "universal-selector": false,
+  "fallback-colors": false,
+  "box-model": false,
+  "outline-none": false
+}
+

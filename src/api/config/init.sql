@@ -101,8 +101,8 @@ CREATE TABLE IF NOT EXISTS `environments` (
   `protocol` enum('ws://','wss://') NOT NULL COMMENT 'WebSocket server protocol.',
   `envaddr` varchar(255) NOT NULL COMMENT 'Address of the robot environment''s ROS server.',
   `port` int(11) NOT NULL COMMENT 'Port of the rosbridge server.',
-  `type` enum('simulation','physical') NOT NULL COMMENT 'The type of robot environment.',
-  `notes` varchar(255) NOT NULL COMMENT 'Notes about the enironment.',
+  `mjpeg` varchar(255) NOT NULL COMMENT 'The MJPEG server host address.',
+  `mjpegport` int(11) NOT NULL COMMENT 'The MJPEG server port.',
   `enabled` tinyint(1) NOT NULL COMMENT 'If this environment is currently enabled.',
   PRIMARY KEY (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Configuration information for robot environments.' AUTO_INCREMENT=3 ;
@@ -111,9 +111,9 @@ CREATE TABLE IF NOT EXISTS `environments` (
 -- Dumping data for table `environments`
 --
 
-INSERT INTO `environments` (`envid`, `protocol`, `envaddr`, `port`, `type`, `notes`, `enabled`) VALUES
-(1, 'ws://', 'localhost', 9090, 'simulation', 'YouBot simulator.', 1),
-(2, 'ws://', 'localhost', 9090, 'simulation', 'PR2 Simulator.', 1);
+INSERT INTO `environments` (`envid`, `protocol`, `envaddr`, `port`, `mjpeg`, `mjpegport`, `enabled`) VALUES
+(1, 'ws://', 'localhost', 9090, 'localhost', '8080', 1),
+(2, 'ws://', 'localhost', 9090, 'localhost', '8080', 1);
 
 -- --------------------------------------------------------
 
@@ -182,41 +182,6 @@ INSERT INTO `interfaces` (`intid`, `name`, `location`) VALUES
 (1, 'Basic Teleop', 'basic'),
 (2, 'Nav2D Interface', 'simple_nav2d'),
 (3, 'Interactive Markers', 'markers');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `javascript_files`
---
-
-CREATE TABLE IF NOT EXISTS `javascript_files` (
-  `fileid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the file.',
-  `url` varchar(255) NOT NULL COMMENT 'URL to the file that will be downloaded.',
-  `path` varchar(255) NOT NULL COMMENT 'Local file path (including the file name) relative to the server root for the file.',
-  PRIMARY KEY (`fileid`),
-  UNIQUE KEY `url` (`url`),
-  UNIQUE KEY `path` (`path`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='A list of Javascript files that are to be downloaded and maintained.' AUTO_INCREMENT=15 ;
-
---
--- Dumping data for table `javascript_files`
---
-
-INSERT INTO `javascript_files` (`fileid`, `url`, `path`) VALUES
-(1, 'https://raw.github.com/RobotWebTools/rosjs/groovy-devel/dist/ros_bundle.min.js', 'js/ros/ros_bundle.min.js'),
-(2, 'https://raw.github.com/RobotWebTools/keyboardteleopjs/groovy-devel/keyboardteleop.js', 'js/ros/widgets/keyboardteleop.js'),
-(3, 'https://raw.github.com/RobotWebTools/mjpegcanvasjs/groovy-devel/mjpegcanvas.js', 'js/ros/widgets/mjpegcanvas.js'),
-(4, 'https://raw.github.com/RobotWebTools/map2djs/groovy-devel/map.js', 'js/ros/widgets/map.js'),
-(5, 'https://raw.github.com/RobotWebTools/actionlibjs/groovy-devel/actionclient.js', 'js/ros/actionclient.js'),
-(6, 'https://raw.github.com/RobotWebTools/nav2djs/groovy-devel/nav2d.js', 'js/ros/widgets/nav2d.js'),
-(7, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/tfclient.js', 'js/ros/widgets/tfclient.js'),
-(8, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/markersthree.js', 'js/ros/widgets/markersthree.js'),
-(9, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/imthree.js', 'js/ros/widgets/imthree.js'),
-(10, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/improxy.js', 'js/ros/widgets/improxy.js'),
-(11, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/threeinteraction.js', 'js/ros/widgets/threeinteraction.js'),
-(12, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosAxisHelper.js', 'js/ros/RosAxisHelper.js'),
-(13, 'https://raw.github.com/RobotWebTools/interactivemarkersjs/groovy-devel/examples/include/helpers/RosOrbitControls.js', 'js/ros/RosOrbitControls.js'),
-(14, 'https://raw.github.com/RobotWebTools/rosbagjs/groovy-devel/topiclogger.js', 'js/ros/widgets/topiclogger.js');
 
 -- --------------------------------------------------------
 
@@ -433,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.2.12');
+('0.3.0');
 
 -- --------------------------------------------------------
 
@@ -445,22 +410,20 @@ CREATE TABLE IF NOT EXISTS `widgets` (
   `widgetid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the widget.',
   `name` varchar(255) NOT NULL COMMENT 'Name of the widget.',
   `table` varchar(255) NOT NULL COMMENT 'The SQL table containing information for an instance of this widget. ',
-  `script` varchar(255) NOT NULL COMMENT 'PHP script to create the widget HTML.',
   PRIMARY KEY (`widgetid`),
-  UNIQUE KEY `script` (`script`),
   UNIQUE KEY `table` (`table`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='RRL Widgets.' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='RMS Widgets.' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `widgets`
 --
 
-INSERT INTO `widgets` (`widgetid`, `name`, `table`, `script`) VALUES
-(1, 'MJPEG Stream', 'mjpeg_streams', 'mjpeg_canvas'),
-(2, 'Keyboard Teleop', 'keyboard_teleoperations', 'keyboard_teleoperation'),
-(3, 'Map 2D', 'maps', 'map2d'),
-(4, '2D Navigation', 'navigations', 'nav2d'),
-(5, 'Interactive Markers', 'interactive_markers', 'interactive_markers');
+INSERT INTO `widgets` (`widgetid`, `name`, `table`) VALUES
+(1, 'MJPEG Stream', 'mjpeg_streams'),
+(2, 'Keyboard Teleop', 'keyboard_teleoperations'),
+(3, 'Map 2D', 'maps'),
+(4, '2D Navigation', 'navigations'),
+(5, 'Interactive Markers', 'interactive_markers');
 
 --
 -- Constraints for dumped tables

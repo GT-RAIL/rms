@@ -1,13 +1,14 @@
 <?php
 /**
- * Studies API script. Currently, this level of the API contains no useful functions.
+ * Studies API script. Currently, this level of the API contains no useful
+ * functions.
  *
  * Returns a bad request response.
  *
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    April, 12 2013
  * @package    api.user_studies
  * @link       http://ros.org/wiki/rms
  */
@@ -18,8 +19,7 @@ include_once(dirname(__FILE__).'/../api.inc.php');
 header('Content-type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
 
-$result = create_404_state(array());
+$result = api::create_404_state(array());
 $result['msg'] = $_SERVER['REQUEST_METHOD'].' method is unavailable.';
 
 echo json_encode($result);
-?>

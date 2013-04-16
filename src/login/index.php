@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    December, 5 2012
+ * @version    April, 13 2013
  * @package    login
  * @link       http://ros.org/wiki/rms
  */
@@ -16,7 +16,7 @@
 session_start();
 
 // check if there is a user logged in
-if(isset($_SESSION['userid'])) {
+if (isset($_SESSION['userid'])) {
   header('Location: ../menu');
 }
 
@@ -30,7 +30,7 @@ $pagename = 'User Login';
 <!DOCTYPE html>
 <html>
 <head>
-<?php import_head('../')?>
+<?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?></title>
 <script type="text/javascript">
   /**
@@ -50,12 +50,14 @@ $pagename = 'User Login';
       type : 'POST',
       beforeSend: function (xhr) {
         // set the username and password
-        var auth = base64Encode($('#username').val() + ':' + $('#password').val());
+        var auth = base64Encode($('#username').val() + 
+                ':' + $('#password').val());
         xhr.setRequestHeader('Authorization', 'Basic ' + auth);
       },
       success : function(data){
         // success
-         window.location = '<?php echo isset($_GET['goto']) ? '../'.$_GET['goto'] : '../menu'?>';
+         window.location = '<?php echo isset($_GET['goto']) ? 
+                                    '../'.$_GET['goto'] : '../menu'?>';
       },
       error : function(data){
         // display the error
@@ -68,8 +70,8 @@ $pagename = 'User Login';
 </script>
 </head>
 <body>
-<?php create_header(null, $pagename, '../')?>
-  <section id="page">
+<?php content::create_header(null, $pagename, '../')?>
+  <section class="page">
     <article>
       <h2>User Login</h2>
       <div class="line"></div>
@@ -95,7 +97,7 @@ $pagename = 'User Login';
         </tr>
       </table>
     </article>
-    <?php create_footer()?>
+    <?php content::create_footer()?>
   </section>
 </body>
 </html>
