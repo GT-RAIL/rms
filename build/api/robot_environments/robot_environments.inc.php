@@ -315,11 +315,10 @@ class robot_environments
             if ($envid === $cur['envid']) {
                 $result .= '<option value="'.$cur['envid'].
                     '" selected="selected">'.$cur['envid'].": ".$cur['envaddr'].
-                    " -- ".$cur['type']." :: ".$cur['notes'].'</option>';
+                        '</option>';
             } else {
                 $result .= '<option value="'.$cur['envid'].'">'.$cur['envid'].
-                    ": ".$cur['envaddr']." -- ".$cur['type']." :: ".
-                    $cur['notes'].'</option>';
+                    ": ".$cur['envaddr'].'</option>';
             }
         }
         $result .= '  </select>

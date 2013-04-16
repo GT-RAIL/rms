@@ -9,12 +9,14 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 13 2013
+ * @version    April, 15 2013
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
 
 include_once(dirname(__FILE__).'/../../inc/config.inc.php');
+include_once(dirname(__FILE__).
+        '/../robot_environments/environments/environments.inc.php');
 
 /**
  * A static class to contain the update.inc.php static functions.
@@ -22,7 +24,7 @@ include_once(dirname(__FILE__).'/../../inc/config.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 13 2013
+ * @version    April, 15 2013
  * @package    api.config
  */
 class update
@@ -45,15 +47,46 @@ class update
         
         // drop the scripts column
         $sql = "ALTER TABLE `widgets` DROP COLUMN `script`";
-        mysqli_query($db, $sql);
         // try the update
         if (!mysqli_query($db, $sql)) {
             return mysqli_error($db);
         }
+        
+        // remove type and notes from environment
+        $sql = "ALTER TABLE `environments` DROP `type`, DROP `notes`";
+        // try the update
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
+        // add MJPEG server info
+        $sql = "ALTER TABLE `environments` 
+                ADD `mjpeg` VARCHAR( 255 ) NOT NULL COMMENT
+                    'The MJPEG server host address.' AFTER `port`,
+                ADD `mjpegport` INT( 11 ) NOT NULL COMMENT 
+                    'The MJPEG server port.' AFTER `mjpeg`";
+        // try the update
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
+        // add default information
+        $environments = environments::get_environments();
+        foreach ($environments as $env) {
+            $sql = sprintf(
+                "UPDATE `environments` SET `mjpeg`='%s', mjpegport='8080'
+                 WHERE `envid`='%d'",
+                api::cleanse($env['envaddr']), api::cleanse($env['envid'])
+            );
+            // try the update
+            if (!mysqli_query($db, $sql)) {
+                return mysqli_error($db);
+            }
+        }
 
         // update the database version
-        $sql = "UPDATE `version` SET `version`='0.3.0' '.
-                'WHERE `version`='0.2.12'";
+        $sql = "UPDATE `version` SET `version`='0.3.0' 
+                WHERE `version`='0.2.12'";
         if (!mysqli_query($db, $sql)) {
             return mysqli_error($db);
         } else {
@@ -83,8 +116,8 @@ class update
         }
     
         // update the database version
-        $sql = "UPDATE `version` SET `version`='0.2.12' '.
-                'WHERE `version`='0.2.11'";
+        $sql = "UPDATE `version` SET `version`='0.2.12' 
+                WHERE `version`='0.2.11'";
         if (!mysqli_query($db, $sql)) {
             return mysqli_error($db);
         } else {

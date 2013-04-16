@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 15 2013
  * @package    api.robot_environments.environments
  * @link       http://ros.org/wiki/rms
  */
@@ -31,7 +31,7 @@ if ($auth = user_accounts::authenticate()) {
                 if ($auth['type'] === 'admin') {
                     if ($error = environments::create_environment(
                         $_POST['protocol'], $_POST['envaddr'], $_POST['port'], 
-                        $_POST['type'], $_POST['notes'], $_POST['enabled']
+                        $_POST['mjpeg'], $_POST['mjpegport'], $_POST['enabled']
                     )) {
                         $result = api::create_404_state($error);
                     } else {
@@ -115,7 +115,7 @@ if ($auth = user_accounts::authenticate()) {
                             ' deleted environment ID '.$deleteArray['id'].'.'
                         );
                         $result = api::create_200_state(
-                            get_current_timestamp()
+                            api::get_current_timestamp()
                         );
                     }
                 } else {

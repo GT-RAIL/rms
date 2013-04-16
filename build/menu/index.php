@@ -9,7 +9,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 15 2013
  * @package    menu
  * @link       http://ros.org/wiki/rms
  */
@@ -50,7 +50,11 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 <head>
 <?php head::import_head('../') ?>
 <title><?php echo $title.' :: '.$pagename?></title>
-<script type="text/javascript" src="../js/ros/ros_bundle.min.js"></script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
 <script type="text/javascript">
   createMenuButtons();
 
@@ -73,8 +77,7 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 </head>
 <body>
     <?php content::create_header($sessionUser, $pagename, '../')?>
-    <section id="page">
-    <section id="articles">
+    <section class="page">
         <div class="line"></div>
         <?php
 //admin menu
@@ -91,8 +94,7 @@ if ($sessionUser['type'] === 'admin') {
             <article>
                 <div class="center">
                     <h3>
-                        <?php echo $cur['envid'].': '.
-                            $cur['envaddr'].' -- '.$cur['type']?>
+                        <?php echo $cur['envid'].': ',$cur['envaddr']?>
                     </h3>
                     <script type="text/javascript">
                         rosonline('<?php echo $cur['protocol']?>', 
@@ -108,11 +110,6 @@ if ($sessionUser['type'] === 'admin') {
                     </script>
                     <div id="envstatus-<?php echo $cur['envid']?>"
                         class="environment-status">Acquiring connection...</div>
-        <?php
-        if (strlen($cur['notes']) > 0) {
-            echo $cur['notes'];
-        }
-        ?>
                     <div class="line"></div>
         <?php
         // check if the environment is enabled
@@ -174,7 +171,7 @@ if ($sessionUser['type'] === 'admin') {
                 $cur['end'].')</h3>';
 
             // grab the current timestamp from the SQL server
-            $time = get_current_timestamp();
+            $time = api::get_current_timestamp();
             if ($time >= $cur['start'] && $time <= $cur['end']) {
                 echo '<button onclick="javascript:beginStudy('.$cur['expid'].
                     ', '.$cond['intid'].', '.
@@ -190,8 +187,7 @@ if ($sessionUser['type'] === 'admin') {
         <?php
 }
 ?>
-    </section>
-        <?php content::create_footer()?>
+    <?php content::create_footer()?>
     </section>
 </body>
 </html>

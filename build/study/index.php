@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 15 2013
  * @package    study
  * @link       http://ros.org/wiki/rms
  */
@@ -59,7 +59,8 @@ if ($sessionUser['type'] !== 'admin') {
 <?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
-<script type="text/javascript" src="../js/jquery/jquery.tablesorter.js">
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/tablesorter/2.0.5b/tablesorter.min.js">
 </script>
 <script type="text/javascript">
   /**
@@ -153,12 +154,12 @@ if ($sessionUser['type'] !== 'admin') {
 </head>
 <body onload="start()">
     <?php content::create_header($sessionUser, $pagename, '../')?>
-    <section id="page">
+    <section class="page">
         <section>
             <div class="line"></div>
             <article>
                 <div class="admin-tabs-container">
-                    <div id="admin-tabs">
+                    <div id="admin-tabs" class="admin-tabs">
                         <ul>
                             <li><a href="#studies-tab">Manage Studies</a>
                             </li>

@@ -101,8 +101,8 @@ CREATE TABLE IF NOT EXISTS `environments` (
   `protocol` enum('ws://','wss://') NOT NULL COMMENT 'WebSocket server protocol.',
   `envaddr` varchar(255) NOT NULL COMMENT 'Address of the robot environment''s ROS server.',
   `port` int(11) NOT NULL COMMENT 'Port of the rosbridge server.',
-  `type` enum('simulation','physical') NOT NULL COMMENT 'The type of robot environment.',
-  `notes` varchar(255) NOT NULL COMMENT 'Notes about the enironment.',
+  `mjpeg` varchar(255) NOT NULL COMMENT 'The MJPEG server host address.',
+  `mjpegport` int(11) NOT NULL COMMENT 'The MJPEG server port.',
   `enabled` tinyint(1) NOT NULL COMMENT 'If this environment is currently enabled.',
   PRIMARY KEY (`envid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Configuration information for robot environments.' AUTO_INCREMENT=3 ;
@@ -111,9 +111,9 @@ CREATE TABLE IF NOT EXISTS `environments` (
 -- Dumping data for table `environments`
 --
 
-INSERT INTO `environments` (`envid`, `protocol`, `envaddr`, `port`, `type`, `notes`, `enabled`) VALUES
-(1, 'ws://', 'localhost', 9090, 'simulation', 'YouBot simulator.', 1),
-(2, 'ws://', 'localhost', 9090, 'simulation', 'PR2 Simulator.', 1);
+INSERT INTO `environments` (`envid`, `protocol`, `envaddr`, `port`, `mjpeg`, `mjpegport`, `enabled`) VALUES
+(1, 'ws://', 'localhost', 9090, 'localhost', '8080', 1),
+(2, 'ws://', 'localhost', 9090, 'localhost', '8080', 1);
 
 -- --------------------------------------------------------
 
