@@ -7,7 +7,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    setup
  * @link       http://ros.org/wiki/rms
  */
@@ -60,7 +60,7 @@ include_once(dirname(__FILE__).'/../inc/head.inc.php');
             <h1>Robot Management System Setup</h1>
         </div>
     </header>
-    <section id="page">
+    <section class="page">
         <div class="line"></div>
         <article>
             <div class="center">

@@ -128,7 +128,7 @@ if ($auth = user_accounts::authenticate()) {
                             ' deleted content page ID '.$deleteArray['id'].'.'
                         );
                         $result = api::create_200_state(
-                            get_current_timestamp()
+                            api::get_current_timestamp()
                         );
                     }
                 } else {

@@ -62,19 +62,11 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                 ) {
                     $result = api::create_404_state($error);
                 } else {
-                    // now delete any old Javascript files and download
-                    include_once(dirname(__FILE__).
-                            '/javascript_files/javascript_files.inc.php');
-                    if ($error = delete_local_javascript_files() 
-                            || $error = download_javascript_files()) {
-                        $result = api::create_404_state($error);
-                    } else {
-                        include_once(dirname(__FILE__).'/logs/logs.inc.php');
-                        logs::write_to_log('SYSTEM: Site created.');
-                        // return the timestamp
-                        $t = get_current_timestamp();
-                        $result = api::create_200_state($t);
-                    }
+                    include_once(dirname(__FILE__).'/logs/logs.inc.php');
+                    logs::write_to_log('SYSTEM: Site created.');
+                    // return the timestamp
+                    $t = api::get_current_timestamp();
+                    $result = api::create_200_state($t);
                 }
             }
         } else {
@@ -159,7 +151,7 @@ if (!file_exists(dirname(__FILE__).'/../../inc/config.inc.php')) {
                             $log = 'SYSTEM: '.$auth['username'].
                                 ' modified the site settings.';
                             logs::write_to_log($log);
-                            $t = get_current_timestamp();
+                            $t = api::get_current_timestamp();
                             $result = api::create_200_state($t);
                         }
                     } else {

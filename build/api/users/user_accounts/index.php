@@ -35,7 +35,7 @@ if ($auth = user_accounts::authenticate()) {
                             $msg = 'SESSION: '.$auth['username'].
                                 ' created a new session.';
                             logs::write_to_log($msg);
-                            $t = get_current_timestamp();
+                            $t = api::get_current_timestamp();
                             $result = api::create_200_state($t);
                         } else {
                             $msg = 'Too many fields provided.';
@@ -50,7 +50,7 @@ if ($auth = user_accounts::authenticate()) {
                                 session_destroy();
                                 $msg = 'Too many fields provided.';
                                 logs::write_to_log($msg);
-                                $t = get_current_timestamp();
+                                $t = api::get_current_timestamp();
                                 $result = api::create_200_state($t);
                             } else {
                                 $msg = 'No session to destroy.';
@@ -80,7 +80,8 @@ if ($auth = user_accounts::authenticate()) {
                             $_POST['username'].'.';
                         logs::write_to_log($msg);
                         $username = $_POST['username'];
-                        $account = get_user_account_by_username($username);
+                        $account = user_accounts::
+                            get_user_account_by_username($username);
                         // remove the password info
                         unset($account['password']);
                         unset($account['salt']);
@@ -180,7 +181,7 @@ if ($auth = user_accounts::authenticate()) {
                         $msg = 'EDIT: '.$auth['username'].' deleted user ID '.
                             $deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {

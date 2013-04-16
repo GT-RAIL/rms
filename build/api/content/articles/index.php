@@ -138,7 +138,7 @@ if ($auth = user_accounts::authenticate()) {
                             $deleteArray['id'].'.'
                         );
                         $result = api::create_200_state(
-                            get_current_timestamp()
+                            api::get_current_timestamp()
                         );
                     }
                 } else {

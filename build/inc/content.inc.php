@@ -8,7 +8,7 @@
  * @author    Russell Toris <rctoris@wpi.edu>
  * @copyright 2013 Russell Toris, Worcester Polytechnic Institute
  * @license   BSD -- see LICENSE file
- * @version   April, 11 2013
+ * @version   April, 13 2013
  * @package   inc
  * @link      http://ros.org/wiki/rms
  */
@@ -23,7 +23,7 @@ include_once(dirname(__FILE__).
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @package    inc
  */
 class content
@@ -45,7 +45,7 @@ class content
         <figure><img src="'.$path.'img/logo.png" /></figure>
         <hgroup><h1>'.$title.'</h1><h2>'.$pagename.'</h2></hgroup>
         </header>
-        <div id="nav"><center><nav><ul>';
+        <div class="nav"><center><nav><ul>';
     
         // list all of the content pages
         $pages = content_pages::get_content_pages();

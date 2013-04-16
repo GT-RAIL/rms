@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 13 2013
  * @link       http://ros.org/wiki/rms
  */
 
@@ -82,7 +82,8 @@ if ($page['js']) {?>
 
 // check for the slideshow
 if ($ishome) {?>
-<script type="text/javascript" src="js/jquery/slides.min.jquery.js"></script>
+<script type="text/javascript"
+    src="http://cdn.robotwebtools.org/Slides/1.1.8/slides.min.js"></script>
 <script type="text/javascript">
   createSlideshow();
 </script>
@@ -93,7 +94,7 @@ if ($ishome) {?>
 
 <body>
     <?php content::create_header($sessionUser, $page['title'], '')?>
-    <section id="page">
+    <section class="page">
         <?php
         // check if this is the homepage
         if ($ishome) {

@@ -112,7 +112,7 @@ if ($auth = user_accounts::authenticate()) {
                             } else if (count($_GET) === 2 
                                     && isset($_GET['id'])) {
                                 $id = $_GET['id'];
-                                $edit = slides::get_slide_editor($id = null);
+                                $edit = slides::get_slide_editor($id);
                                 $result = api::create_200_state($edit);
                             } else {
                                 $msg = 'Too many fields provided.';
@@ -146,7 +146,7 @@ if ($auth = user_accounts::authenticate()) {
                         $msg = 'EDIT: '.$auth['username'].' deleted slide ID '.
                             $deleteArray['id'].'.';
                         logs::write_to_log($msg);
-                        $t = get_current_timestamp();
+                        $t = api::get_current_timestamp();
                         $result = api::create_200_state($t);
                     }
                 } else {
