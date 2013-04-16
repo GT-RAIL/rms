@@ -9,7 +9,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 11 2013
+ * @version    April, 15 2013
  * @package    menu
  * @link       http://ros.org/wiki/rms
  */
@@ -94,8 +94,7 @@ if ($sessionUser['type'] === 'admin') {
             <article>
                 <div class="center">
                     <h3>
-                        <?php echo $cur['envid'].': '.
-                            $cur['envaddr'].' -- '.$cur['type']?>
+                        <?php echo $cur['envid'].': ',$cur['envaddr']?>
                     </h3>
                     <script type="text/javascript">
                         rosonline('<?php echo $cur['protocol']?>', 
@@ -111,11 +110,6 @@ if ($sessionUser['type'] === 'admin') {
                     </script>
                     <div id="envstatus-<?php echo $cur['envid']?>"
                         class="environment-status">Acquiring connection...</div>
-        <?php
-        if (strlen($cur['notes']) > 0) {
-            echo $cur['notes'];
-        }
-        ?>
                     <div class="line"></div>
         <?php
         // check if the environment is enabled

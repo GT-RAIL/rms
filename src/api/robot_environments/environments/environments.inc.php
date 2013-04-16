@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 15 2013
  * @package    api.robot_environments.environments
  * @link       http://ros.org/wiki/rms
  */
@@ -22,7 +22,7 @@ include_once(dirname(__FILE__).'/../../api.inc.php');
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 15 2013
  * @package    api.robot_environments.environments
  */
 class environments
@@ -38,7 +38,7 @@ class environments
     static function valid_environment_fields($array)
     {
         return isset($array['protocol']) && isset($array['envaddr']) 
-            && isset($array['type']) && isset($array['notes']) 
+            && isset($array['mjpeg']) && isset($array['mjpegport']) 
             && isset($array['enabled']) && isset($array['port'])
             && (count($array) === 6);
     }
@@ -89,25 +89,25 @@ class environments
      * @param string $protocol The protocol to use
      * @param string $envaddr The environment's address
      * @param integer $port The environment's port
-     * @param string $type The the environment type
-     * @param string $notes Any notes about the environment
+     * @param string $mjpeg The MJPEG server host
+     * @param string $mjpegport The MJPEG server port
      * @param integer $enabled If the environment is currently enabled
      * @return string|null An error message or null if the create was sucessful
      */
-    static function create_environment($protocol, $envaddr, $port, $type,
-            $notes, $enabled)
+    static function create_environment($protocol, $envaddr, $port, $mjpeg,
+            $mjpegport, $enabled)
     {
         global $db;
 
         // insert into the database
         $sql = sprintf(
             "INSERT INTO `environments`
-                (`protocol`, `envaddr`, `port`, `type`, `notes`, `enabled`)
+              (`protocol`, `envaddr`, `port`, `mjpeg`, `mjpegport`, `enabled`)
              VALUES
-                ('%s', '%s', '%d', '%s', '%s', '%d')", 
+              ('%s', '%s', '%d', '%s', '%s', '%d')", 
             api::cleanse($protocol), api::cleanse($envaddr), 
-            api::cleanse($port), api::cleanse($type), api::cleanse($notes), 
-            api::cleanse($enabled)
+            api::cleanse($port), api::cleanse($mjpeg), 
+            api::cleanse($mjpegport), api::cleanse($enabled)
         );
         mysqli_query($db, $sql);
 
@@ -176,15 +176,17 @@ class environments
                 ", `port`='%d'", api::cleanse($fields['port'])
             );
         }
-        if (isset($fields['type'])) {
+        if (isset($fields['mjpeg'])) {
             $numFields++;
             $sql .= sprintf(
-                ", `type`='%s'", api::cleanse($fields['type'])
+                ", `mjpeg`='%s'", api::cleanse($fields['mjpeg'])
             );
         }
-        if (isset($fields['notes'])) {
+        if (isset($fields['mjpegport'])) {
             $numFields++;
-            $sql .= sprintf(", `notes`='%s'", api::cleanse($fields['notes']));
+            $sql .= sprintf(
+                ", `mjpegport`='%s'", api::cleanse($fields['mjpegport'])
+            );
         }
         if (isset($fields['enabled'])) {
             $numFields++;
@@ -249,16 +251,6 @@ class environments
     }
 
     /**
-     * Get the enum types for environments in an array.
-     *
-     * @return array An array containing the enum types for environments
-     */
-    static function get_environment_types()
-    {
-        return api::get_enum_types('environments', 'type');
-    }
-
-    /**
      * Get the HTML for an editor used to create or edit the given environment
      * entry. If this is not an edit, null can be given as the ID.
      *
@@ -275,15 +267,15 @@ class environments
             $protocol = $cur['protocol'];
             $envaddr = $cur['envaddr'];
             $port = $cur['port'];
-            $type = $cur['type'];
-            $notes = $cur['notes'];
+            $mjpeg = $cur['mjpeg'];
+            $mjpegport = $cur['mjpegport'];
             $enabled = ($cur['enabled'] === '0') ? '' : 'checked';
         } else {
             $protocol = '';
             $envaddr = '';
             $port = '';
-            $type = '';
-            $notes = '';
+            $mjpeg = '';
+            $mjpegport = '';
             $enabled = 'checked';
         }
 
@@ -308,7 +300,7 @@ class environments
         $protocols = environments::get_protocol_types();
         foreach ($protocols as $curprot) {
             // check if this type is the same
-            if ($type === $curprot) {
+            if ($protocol === $curprot) {
                 $result .= '<option value="'.$curprot.'" selected="selected">'.
                     $curprot.'</option>';
             } else {
@@ -331,27 +323,14 @@ class environments
                     placeholder="e.g., 9090" required />
                 </li>
                 <li>
-                <label for="type">Type</label>
-                <select name="type" id="type" required>';
-
-        // grab the types of environments
-        $types = environments::get_environment_types();
-        foreach ($types as $curtype) {
-            // check if this type is the same
-            if ($type === $curtype) {
-                $result .= '<option value="'.$curtype.'" selected="selected">'.
-                    $curtype.'</option>';
-            } else {
-                $result .= '<option value="'.$curtype.'">'.$curtype.'</option>';
-            }
-        }
-
-        $result .= '      </select>
+                <label for="mjpeg">MJPEG Server</label>
+                <input type="text" name="mjpeg" id="mjpeg" value="'.$mjpeg.'"
+                    placeholder="e.g., streams.robot-college.edu" required />
                 </li>
                 <li>
-                <label for="notes">Notes</label>
-                <input type="text" name="notes" id="notes" value="'.$notes.'"
-                    placeholder="Environment notes" required />
+                <label for="mjpegport">MJPEG Port</label>
+                <input type="text" name="mjpegport" id="mjpegport" value="'.
+                    $mjpegport.'" placeholder="e.g., 8080" required />
                 </li>
                 <li>
                 <label for="enabled">Enabled</label>

@@ -230,8 +230,7 @@ $designedBy = \'Site design by
         $prot = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
         $url = $prot.$_SERVER['HTTP_HOST'].'/api/config/init.sql';
         $codeVersion = config::get_init_sql_version($url);
-    
-    
+
         if (config::get_db_version() < '0.2.0') {
             return 'ERROR: Version '.$codeVersion.
                 ' is not backwards compatible with version '.

@@ -9,6 +9,8 @@ DEVEL **0.3.0**
  * Widget PHP script management removed from RMS [(rctoris)](https://github.com/rctoris/)
  * rmsdisplay.js removed [(rctoris)](https://github.com/rctoris/)
  * Local JQuery copy removed [(rctoris)](https://github.com/rctoris/)
+ * Type and description removed from environment [(rctoris)](https://github.com/rctoris/)
+ * MJPEG Server host and port added to environment [(rctoris)](https://github.com/rctoris/)
 
 2013-03-08 **0.2.12**
  * Admin panel now correctly URI encodes the URL before making an AJAX call [(rctoris)](https://github.com/rctoris/)

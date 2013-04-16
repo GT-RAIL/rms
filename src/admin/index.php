@@ -8,7 +8,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 12 2013
+ * @version    April, 15 2013
  * @package    admin
  * @link       http://ros.org/wiki/rms
  */
@@ -636,8 +636,8 @@ for ($i = 0; $i < $numLogs; $i++) {
                                 <th>Protocol</th>
                                 <th>Address</th>
                                 <th>Port</th>
-                                <th>Type</th>
-                                <th>Notes</th>
+                                <th>MJPEG Server</th>
+                                <th>MJPEG Port</th>
                                 <th>Status</th>
                             </tr>
                             <tr>
@@ -671,9 +671,9 @@ for ($i = 0; $i < $numEnvironments; $i++) {
         </td>
         <td class="content-cell"><?php echo $cur['port']?>
         </td>
-        <td class="content-cell"><?php echo $cur['type']?>
+        <td class="content-cell"><?php echo $cur['mjpeg']?>
         </td>
-        <td class="content-cell"><?php echo $cur['notes']?>
+        <td class="content-cell"><?php echo $cur['mjpegport']?>
         </td>
 <?php
     if ($cur['enabled']) {// check if the environment is enabled?
@@ -823,8 +823,7 @@ for ($i = 0; $i < $numPairs; $i++) {
         </td>
         <td class="content-cell"><?php echo $cur['pairid']?>
         </td>
-        <td class="content-cell"><?php echo $env['envid'].': '.$env['envaddr'].
-                           ' -- '.$env['type'].' :: '.$env['notes']?>
+        <td class="content-cell"><?php echo $env['envid'].': '.$env['envaddr']?>
         </td>
         <td class="content-cell"><?php echo $int['intid'].': '.$int['name'].
             ' -- api/robot_environments/interfaces/'.$int['location']?>
@@ -972,7 +971,7 @@ foreach ($widgets as $w) {?>
             if ($label === 'envid') {
             $env = environments::get_environment_by_id($cur[$label]);
             echo '<td class="content-cell">'.$env['envid'].': '.$env['envaddr'].
-                ' -- '.$env['type'].' :: '.$env['notes'].'</td>';
+                '</td>';
             } else {
                 echo '<td class="content-cell">'.$cur[$label].'</td>';
             }
