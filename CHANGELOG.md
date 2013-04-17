@@ -1,4 +1,4 @@
-DEVEL **0.3.0**
+2013-04-16 **0.3.0**
  * Source moved from www to src [(rctoris)](https://github.com/rctoris/)
  * ROS XML and build scripts removed [(rctoris)](https://github.com/rctoris/)
  * Main devel branch started [(rctoris)](https://github.com/rctoris/)
