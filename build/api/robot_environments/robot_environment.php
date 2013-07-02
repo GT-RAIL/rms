@@ -64,6 +64,31 @@ class robot_environment
      * @var array|null
      */
     private $_experiment;
+    
+    /**
+     * The random string used in the MAC string.
+     * @var string
+     */
+    private $_rand;
+
+    /**
+     * The time of the request for the MAC string.
+     * @var int
+     */
+    private $_t;
+    
+
+    /**
+     * The end time of the request for the MAC string.
+     * @var int
+     */
+    private $_end;
+    
+    /**
+     * The MAC string.
+     * @var string
+     */
+    private $_mac;
 
     /**
      * Creates a robot_environment using the given information.
@@ -74,6 +99,8 @@ class robot_environment
      */
     function __construct($userid, $envid, $intid)
     {
+        global $db;
+        
         $this->_userAccount = user_accounts::get_user_account_by_id($userid);
         $this->_environment = environments::get_environment_by_id($envid);
         $this->_interface = interfaces::get_interface_by_id($intid);
@@ -94,6 +121,88 @@ class robot_environment
                 $this->_widgets[$cur['name']] = $curAll;
             }
         }
+        
+        // create the MAC
+        $key = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM `authkey`"));
+        $this->_rand = user_accounts::generate_salt();
+        $this->_t = time();
+        $this->_end = $this->_experiment['end'] ? 
+            $this->_experiment['end'] : PHP_INT_MAX;
+        $this->_mac = sha1(
+            substr($key['authkey'], 0, 16).$_SERVER['REMOTE_ADDR'].
+            $this->_environment['envaddr'].$this->_rand.$this->_t.
+            $this->_userAccount['type'].$this->_end
+        );
+    }
+    
+    /**
+     * Get the MAC for authentication.
+     *
+     * @return string The hashed MAC
+     */
+    function mac()
+    {
+        return $this->_mac;
+    }
+    
+    /**
+     * Get the client used in the MAC string.
+     *
+     * @return string The client
+     */
+    function client()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+    
+    /**
+     * Get the dest used in the MAC string.
+     *
+     * @return string The dest
+     */
+    function dest()
+    {
+        return $this->_environment['envaddr'];
+    }
+    
+    /**
+     * Get the rand used in the MAC string.
+     *
+     * @return string The rand
+     */
+    function rand()
+    {
+        return $this->_rand;
+    }
+    
+    /**
+     * Get the time t used in the MAC string.
+     *
+     * @return int The time t
+     */
+    function t()
+    {
+        return $this->_t;
+    }
+    
+    /**
+     * Get the level used in the MAC string.
+     *
+     * @return string The level
+     */
+    function level()
+    {
+        return $this->_userAccount['type'];
+    }
+    
+    /**
+     * Get the end time used in the MAC string.
+     *
+     * @return int The end time
+     */
+    function end()
+    {
+        return $this->_end;
     }
 
     /**

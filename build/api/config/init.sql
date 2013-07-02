@@ -50,6 +50,18 @@ INSERT INTO `articles` (`artid`, `title`, `content`, `pageid`, `index`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `authkey`
+--
+
+CREATE TABLE IF NOT EXISTS `authkey` (
+  `authkey` varchar(255) NOT NULL COMMENT 'Secret authentication key for rosauth.'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Holds the secret key for rosauth.';
+
+INSERT INTO `authkey` (`authkey`) VALUES (MD5(RAND()));
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `conditions`
 --
 
@@ -398,7 +410,7 @@ CREATE TABLE IF NOT EXISTS `version` (
 --
 
 INSERT INTO `version` (`version`) VALUES
-('0.3.0');
+('0.3.1');
 
 -- --------------------------------------------------------
 

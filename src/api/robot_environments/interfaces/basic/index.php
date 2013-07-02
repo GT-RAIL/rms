@@ -78,6 +78,11 @@ class basic
   var ros = new ROSLIB.Ros({
       url : '<?php echo $re->rosbridge_url()?>'
   });
+
+  ros.authenticate('<?php echo $re->mac()?>', '<?php echo $re->client()?>',
+		  '<?php echo $re->dest()?>', '<?php echo $re->rand()?>', 
+		  <?php echo $re->t()?>, '<?php echo $re->level()?>', 
+		  <?php echo $re->end()?>);
   
   ros.on('error', function() {
         alert('Lost communication with ROS.');

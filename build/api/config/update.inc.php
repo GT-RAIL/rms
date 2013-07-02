@@ -9,7 +9,7 @@
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 15 2013
+ * @version    July, 2 2013
  * @package    api.config
  * @link       http://ros.org/wiki/rms
  */
@@ -24,11 +24,47 @@ include_once(dirname(__FILE__).
  * @author     Russell Toris <rctoris@wpi.edu>
  * @copyright  2013 Russell Toris, Worcester Polytechnic Institute
  * @license    BSD -- see LICENSE file
- * @version    April, 15 2013
+ * @version    July, 2 2013
  * @package    api.config
  */
 class update
 {
+    /**
+     * Update the RMS database from version 0.3.0 to version 0.3.1.
+     *
+     * @return string|null an error message or null if the update was sucessful
+     */
+    static function update_0_3_0()
+    {
+        global $db;
+        
+        // create the new table for the key
+        $sql = "CREATE TABLE IF NOT EXISTS `authkey` (
+                    `authkey` varchar(255) NOT NULL
+                         COMMENT 'Secret authentication key for rosauth.'
+                 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 
+                   COMMENT='Holds the secret key for rosauth.';";
+        // try the update
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
+        // add the key
+        $sql = "INSERT INTO `authkey` (`authkey`) VALUES (MD5(RAND()));";
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
+        // update the database version
+        $sql = "UPDATE `version` SET `version`='0.3.1'
+                WHERE `version`='0.3.0'";
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Update the RMS database from version 0.2.12 to version 0.3.0.
      *
