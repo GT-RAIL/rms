@@ -128,7 +128,8 @@ class robot_environment
         $this->_t = time();
         $this->_end = $this->_experiment['end'] ? 
             $this->_experiment['end'] : PHP_INT_MAX;
-        $this->_mac = sha1(
+        $this->_mac = hash(
+            'sha512',
             substr($key['authkey'], 0, 16).$_SERVER['REMOTE_ADDR'].
             $this->_environment['envaddr'].$this->_rand.$this->_t.
             $this->_userAccount['type'].$this->_end
