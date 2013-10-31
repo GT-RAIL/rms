@@ -77,6 +77,29 @@ class simple_nav2d
 <head>
 <?php $re->create_head() // grab the header information ?>
 <title>Simple Navigation Interface</title>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/EaselJS/0.6.0/easeljs.min.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/roslibjs/r5/roslib.min.js"></script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/mjpegcanvasjs/r1/mjpegcanvas.min.js">
+</script>
+<script type="text/javascript"
+  src="https://robotsfor.me/cdn/keyboardteleopjs/r1/keyboardteleop.min.js">
+</script>
+  <script type="text/javascript"
+  src="https://robotsfor.me/cdn/ros2djs/r1/ros2d.min.js">
+</script>
+<script type="text/javascript"
+  src="https://robotsfor.me/cdn/nav2djs/r1/nav2d.min.js">
+</script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/EaselJS/0.6.0/easeljs.min.js">
 </script>
@@ -94,9 +117,11 @@ class simple_nav2d
   <script type="text/javascript"
   src="http://cdn.robotwebtools.org/ros2djs/r1/ros2d.min.js">
 </script>
-  <script type="text/javascript"
+<script type="text/javascript"
   src="http://cdn.robotwebtools.org/nav2djs/r1/nav2d.min.js">
 </script>
+<?php 
+} ?>
 
 <script type="text/javascript">
   //connect to ROS

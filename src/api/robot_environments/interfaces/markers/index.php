@@ -67,10 +67,33 @@ class markers
 <head>
 <?php $re->create_head() // grab the header information ?>
 <title>Interactive Markers</title>
+<?php $collada = 'ColladaAnimationCompress/0.0.1/ColladaLoader2.min.js'?>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/threejs/r56/three.min.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/<?php echo $collada?>">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/roslibjs/r5/roslib.min.js"></script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/mjpegcanvasjs/r1/mjpegcanvas.min.js">
+</script>
+<script type="text/javascript"
+  src="https://robotsfor.me/cdn/keyboardteleopjs/r1/keyboardteleop.min.js">
+</script>
+  <script type="text/javascript"
+  src="https://robotsfor.me/cdn/ros3djs/r4/ros3d.min.js">
+</script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/threejs/r56/three.min.js">
 </script>
-<?php $collada = 'ColladaAnimationCompress/0.0.1/ColladaLoader2.min.js'?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/<?php echo $collada?>">
 </script>
@@ -88,7 +111,8 @@ class markers
   <script type="text/javascript"
   src="http://cdn.robotwebtools.org/ros3djs/r4/ros3d.min.js">
 </script>
-  
+<?php 
+} ?>
 <script type="text/javascript">
   //connect to ROS
   var ros = new ROSLIB.Ros({

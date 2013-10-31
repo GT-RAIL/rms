@@ -59,9 +59,17 @@ if ($sessionUser['type'] !== 'admin') {
 <?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/tablesorter/2.0.5b/tablesorter.min.js">
+</script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/tablesorter/2.0.5b/tablesorter.min.js">
 </script>
+<?php 
+} ?>
 <script type="text/javascript">
   /**
    * The start function creates all of the JQuery UI elements and button 

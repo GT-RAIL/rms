@@ -75,6 +75,17 @@ $liveVersion = config::get_init_sql_version(
 <?php head::import_head('../')?>
 <title><?php echo $title.' :: '.$pagename?>
 </title>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/tablesorter/2.0.5b/tablesorter.min.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/roslibjs/r5/roslib.min.js"></script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/tablesorter/2.0.5b/tablesorter.min.js">
 </script>
@@ -83,6 +94,8 @@ $liveVersion = config::get_init_sql_version(
 </script>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
+<?php 
+} ?>
 <script type="text/javascript">
   var script = '';
 

@@ -50,11 +50,22 @@ $sessionUser = user_accounts::get_user_account_by_id($_SESSION['userid']);
 <head>
 <?php head::import_head('../') ?>
 <title><?php echo $title.' :: '.$pagename?></title>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/EventEmitter2/0.4.11/eventemitter2.js">
+</script>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/roslibjs/r5/roslib.min.js"></script>
+</script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/EventEmitter2/0.4.11/eventemitter2.js">
 </script>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/roslibjs/r5/roslib.min.js"></script>
+<?php 
+} ?>
 <script type="text/javascript">
   createMenuButtons();
 

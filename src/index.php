@@ -82,8 +82,15 @@ if ($page['js']) {?>
 
 // check for the slideshow
 if ($ishome) {?>
+<?php if (isset($_SERVER['HTTPS'])) {?>
+<script type="text/javascript"
+    src="https://robotsfor.me/cdn/Slides/1.1.8/slides.min.js"></script>
+<?php 
+} else {?>
 <script type="text/javascript"
     src="http://cdn.robotwebtools.org/Slides/1.1.8/slides.min.js"></script>
+<?php 
+} ?>
 <script type="text/javascript">
   createSlideshow();
 </script>
