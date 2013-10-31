@@ -66,7 +66,7 @@ $codeVersion = config::get_init_sql_version(
 );
 // find our the live version
 $liveVersion = config::get_init_sql_version(
-    'https://raw.github.com/WPI-RAIL/rms/stable/www/api/config/init.sql'
+    'https://raw.github.com/WPI-RAIL/rms/stable/src/api/config/init.sql'
 );
 ?>
 <!DOCTYPE html>

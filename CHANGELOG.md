@@ -1,6 +1,7 @@
 DEVEL **0.3.x**
  * rosauth authentication integrated [(rctoris)](https://github.com/rctoris/)
  * HTTPS CDN JavaScript added [(rctoris)](https://github.com/rctoris/)
+ * Fixed release version in admin panel [(rctoris)](https://github.com/rctoris/)
 
 2013-04-16 **0.3.0**
  * Source moved from www to src [(rctoris)](https://github.com/rctoris/)
