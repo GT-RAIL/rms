@@ -102,7 +102,11 @@ class study_logs
             // insert the message into the database
             $str = "INSERT INTO `study_logs` (`expid`, `entry`)
                     VALUES ('%d','%s')";
-            $sql = sprintf($str, api::cleanse($expid), api::cleanse($entry));
+            $sql = sprintf(
+                $str,
+                api::cleanse($expid, false),
+                api::cleanse($entry, false)
+            );
             mysqli_query($db, $sql);
         }
     }

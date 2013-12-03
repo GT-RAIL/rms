@@ -55,6 +55,16 @@ class update
             return mysqli_error($db);
         }
         
+        // change study log to text
+        $sql = "ALTER TABLE `study_logs`
+                CHANGE `entry` `entry`
+                TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci
+                NOT NULL COMMENT
+                'The log entry.'";
+        if (!mysqli_query($db, $sql)) {
+            return mysqli_error($db);
+        }
+        
         // update the database version
         $sql = "UPDATE `version` SET `version`='0.3.1'
                 WHERE `version`='0.3.0'";

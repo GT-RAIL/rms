@@ -51,7 +51,11 @@ $fullUrl = $prot.$_SERVER['HTTP_HOST'].'/api/robot_environments/'.$get;
 curl_setopt($curl, CURLOPT_URL, $fullUrl);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
 curl_setopt($curl, CURLOPT_HEADER, false);
-curl_setopt($curl, CURLOPT_HTTPHEADER, array('RMS-Use-Session: true'));
+curl_setopt(
+    $curl,
+    CURLOPT_HTTPHEADER,
+    array('RMS-Use-Session: true', 'X-Forwarded-For: '.$_SERVER['REMOTE_ADDR'])
+);
 curl_setopt($curl, CURLOPT_COOKIESESSION, true);
 curl_setopt($curl, CURLOPT_COOKIE, session_name().'='.session_id());
 

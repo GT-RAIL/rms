@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `study_logs` (
   `logid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the log entry.',
   `expid` int(11) NOT NULL COMMENT 'Unique identifier for the experiment.',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp for the entry.',
-  `entry` varchar(255) NOT NULL COMMENT 'The log entry.',
+  `entry` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'The log entry.',
   PRIMARY KEY (`logid`),
   KEY `expid` (`expid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A table to hold log information during studies.' AUTO_INCREMENT=1 ;
