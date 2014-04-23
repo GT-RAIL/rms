@@ -1,4 +1,5 @@
 <?php
+// check if this is the homepage
 $home = isset($home) && $home;
 $title = 'Test Title';
 ?>
@@ -7,38 +8,17 @@ $title = 'Test Title';
 <html>
 <?php echo $this->element('head'); ?>
 <body class="<?php echo ($home) ? 'index' : 'no-sidebar'; ?> loading">
-	<?php echo $this->Session->flash(); ?>
+	<?php
+	echo $this->element(
+		'menu',
+		array(
+			'home' => $home,
+			'title' => $title
+		)
+	);
+	?>
 
-	<header id="header" class="<?php echo ($home) ? 'alt' : ''; ?>">
-		<h1 id="logo"><?php echo $this->Html->link($title, '/'); ?></h1>
-		<nav id="nav">
-			<ul>
-				<li class="current"><?php echo $this->Html->link('Home', '/'); ?></li>
-				<li class="submenu">
-					<a href="">Menu</a>
-					<ul>
-						<?php foreach($pages as $page): ?>
-							<li>
-								<?php
-								echo $this->Html->link(
-									$page['Page']['menu'],
-									array(
-										'controller' => 'pages',
-										'action' => 'view',
-										$page['Page']['id']
-									)
-								);
-								?>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</li>
-				<li><a href="#" class="button special">Sign Up</a></li>
-			</ul>
-		</nav>
-	</header>
-
-	<?php if ($home):?>
+	<?php if ($home): ?>
 		<section id="banner">
 			<div class="inner">
 				<header>
@@ -53,6 +33,22 @@ $title = 'Test Title';
 				<footer>
 					<ul class="buttons vertical">
 						<li><a href="#main" class="button fit scrolly">Learn More</a></li>
+						<?php if(!AuthComponent::user('id')): ?>
+							<li>
+								<?php
+								echo $this->Html->link(
+									'Sign In',
+									array(
+										'controller' => 'users',
+										'action' => 'login'
+									),
+									array(
+										'class' => 'button fit special'
+									)
+								);
+								?>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</footer>
 			</div>
@@ -60,6 +56,7 @@ $title = 'Test Title';
 	<?php endif; ?>
 
 	<article id="main">
+		<?php echo $this->Session->flash(); ?>
 		<?php echo $this->fetch('content'); ?>
 	</article>
 

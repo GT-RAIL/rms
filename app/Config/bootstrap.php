@@ -96,3 +96,8 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+/**
+ * Configures authentication
+ */
+App::uses('AuthComponent', 'Controller/Component');
