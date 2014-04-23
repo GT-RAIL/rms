@@ -56,6 +56,27 @@ CREATE DATABASE IF NOT EXISTS $DB; \
 GRANT ALL PRIVILEGES ON $DB.* TO '$USER'@'localhost' IDENTIFIED BY '$PASS';\G " -p
 mysql -D $DB -u $USER -p$PASS < rms.sql
 
+## Setup the CakePHP configuration
+echo
+echo "Setting CakePHP configuration file(s)..."
+echo
+
+CONFIG="<?php\n
+class DATABASE_CONFIG {\n
+\n
+\tpublic \$default = array(\n
+\t\t'datasource' => 'Database/Mysql',\n
+\t\t'persistent' => false,\n
+\t\t'host' => 'localhost',\n
+\t\t'login' => '$USER',\n
+\t\t'password' => '$PASS',\n
+\t\t'database' => '$DB',\n
+\t\t'encoding' => 'utf8'\n
+\t);\n
+}"
+
+rm -f ../app/Config/database.php
+echo $CONFIG >> ../app/Config/database.php
 
 echo
 echo "Setup complete!"
