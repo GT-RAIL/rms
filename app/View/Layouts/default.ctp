@@ -1,52 +1,68 @@
 <?php
-/**
- *
- *
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.View.Layouts
- * @since         CakePHP(tm) v 0.10.0.1076
- */
-
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+$home = isset($home) && $home;
+$title = 'Test Title';
 ?>
+
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
+<?php echo $this->element('head'); ?>
+<body class="<?php echo ($home) ? 'index' : 'no-sidebar'; ?> loading">
+	<?php echo $this->Session->flash(); ?>
 
-		echo $this->Html->css('cake.generic');
+	<header id="header" class="<?php echo ($home) ? 'alt' : ''; ?>">
+		<h1 id="logo"><?php echo $this->Html->link($title, '/'); ?></h1>
+		<nav id="nav">
+			<ul>
+				<li class="current"><?php echo $this->Html->link('Home', '/'); ?></li>
+				<li class="submenu">
+					<a href="">Menu</a>
+					<ul>
+						<?php foreach($pages as $page): ?>
+							<li>
+								<?php
+								echo $this->Html->link(
+									$page['Page']['menu'],
+									array(
+										'controller' => 'pages',
+										'action' => 'view',
+										$page['Page']['id']
+									)
+								);
+								?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</li>
+				<li><a href="#" class="button special">Sign Up</a></li>
+			</ul>
+		</nav>
+	</header>
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
+	<?php if ($home):?>
+		<section id="banner">
+			<div class="inner">
+				<header>
+					<h2><?php echo h($title); ?></h2>
+				</header>
+				<p>
+					Powered by the <br />
+					<strong>
+						<?php echo $this->Html->link('Robot Management System', 'http://wiki.ros.org/rms'); ?>
+					</strong>
+				</p>
+				<footer>
+					<ul class="buttons vertical">
+						<li><a href="#main" class="button fit scrolly">Learn More</a></li>
+					</ul>
+				</footer>
+			</div>
+		</section>
+	<?php endif; ?>
 
-			<?php echo $this->Session->flash(); ?>
+	<article id="main">
+		<?php echo $this->fetch('content'); ?>
+	</article>
 
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
-		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	<?php echo $this->element('footer'); ?>
 </body>
 </html>
