@@ -3,7 +3,6 @@
 	<h2>Sign Up</h2>
 </header>
 
-
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
