@@ -1,1 +1,0 @@
-function studyLog(a){if("undefined"!=typeof _EXPID){var b=new FormData;b.append("expid",_EXPID),b.append("entry",a),$.ajax("../../api/user_studies/study_logs/",{data:b,cache:!1,contentType:!1,processData:!1,type:"POST",beforeSend:function(a){a.setRequestHeader("RMS-Use-Session","true")}})}}
