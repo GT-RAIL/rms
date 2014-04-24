@@ -22,11 +22,7 @@ if($loggedIn) {
 							<?php
 							echo $this->Html->link(
 								$page['Page']['menu'],
-								array(
-									'controller' => 'pages',
-									'action' => 'view',
-									$page['Page']['id']
-								)
+								array('admin' => false, 'controller' => 'pages', 'action' => 'view', $page['Page']['id'])
 							);
 							?>
 						</li>
@@ -34,15 +30,26 @@ if($loggedIn) {
 				</ul>
 			</li>
 			<?php if ($loggedIn): ?>
+				<?php if ($admin): ?>
+					<li class="submenu">
+						<a href="">Admin</a>
+						<ul>
+							<li>
+								<?php
+								echo $this->Html->link(
+									'Pages',
+									array('admin' => true, 'controller' => 'pages', 'action' => 'index')
+								);
+								?>
+							</li>
+						</ul>
+					</li>
+				<?php endif; ?>
 				<li>
 					<?php
 					echo $this->Html->link(
 						'Account',
-						array(
-							'controller' => 'users',
-							'action' => 'view',
-							AuthComponent::user('id')
-						)
+						array('admin' => false, 'controller' => 'users', 'action' => 'view', AuthComponent::user('id'))
 					);
 					?>
 				</li>
@@ -50,13 +57,8 @@ if($loggedIn) {
 					<?php
 					echo $this->Html->link(
 						'Log Out',
-						array(
-							'controller' => 'users',
-							'action' => 'logout'
-						),
-						array(
-							'class' => 'button special'
-						)
+						array('admin' => false, 'controller' => 'users', 'action' => 'logout'),
+						array('class' => 'button special')
 					);
 					?>
 				</li>
@@ -65,13 +67,8 @@ if($loggedIn) {
 					<?php
 					echo $this->Html->link(
 						'Sign Up',
-						array(
-							'controller' => 'users',
-							'action' => 'signup'
-						),
-						array(
-							'class' => 'button special'
-						)
+						array('controller' => 'users', 'action' => 'signup'),
+						array('class' => 'button special')
 					);
 					?>
 				</li>

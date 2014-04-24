@@ -1,7 +1,5 @@
 <?php
-App::import('Controller', 'Rms');
-
-class UsersController extends RmsController {
+class UsersController extends AppController {
 	public $uses = array('User', 'Role');
 
 	public $components = array(
@@ -41,12 +39,18 @@ class UsersController extends RmsController {
 		$this->set('user', $user);
 	}
 
+	public function admin_login() {
+		// no different login system for admins
+		unset($this->request->params['admin']);
+		$this->redirect(array('action' => 'login'));
+	}
+
 	public function login() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// check if we have valid login credentials
 			if ($this->Auth->login()) {
-				return $this->redirect(array('action' => 'view'));
+				return $this->redirect($this->Auth->redirectUrl());
 			}
 			$this->Session->setFlash(__('Invalid username or password, try again'));
 		}

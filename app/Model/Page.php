@@ -31,19 +31,11 @@ class Page extends AppModel {
 				'message' => 'This menu name already exists.'
 			)
 		),
-		'index' => array(
+		'modified' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'required' => true,
-				'message' => 'Please enter a valid index.'
-			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This index already exists.'
-			),
-			'numeric' => array(
-				'rule' => 'numeric',
-				'message' => 'The index must be numeric.'
+				'message' => 'Please enter a valid modification date.'
 			)
 		)
 	);
