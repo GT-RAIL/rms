@@ -1,31 +1,49 @@
 <?php
-/**
- * Application level Controller
- *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
- *
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Controller
- * @since         CakePHP(tm) v 0.2.9
- */
-
 App::uses('Controller', 'Controller');
 
 /**
- * Application Controller
+ * Main Application Controller
  *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
+ * Add your application-wide methods in the class below, your controllers will inherit them. This is useful for setting
+ * global flags and menu variables for views.
  *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
  * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
 
-	public function isAuthorized($user = null) {
+	/**
+	 * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the
+	 * `admin` flag for admin checking.
+	 */
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		// set the main menu for the pages
+		$this->loadModel('Page');
+		$this->set('pages', $this->Page->find('all'), array('order' => array('Page.index' => 'ASC')));
+
+		// set the admin flag
+		$this->loadModel('Role');
+		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
+		$admin = AuthComponent::user('role_id') === $role['Role']['id'];
+		$this->set('admin', $admin);
+	}
+
+	/**
+	 * The global authorization method. This will be automatically called and used if the authorize controller is an
+	 * an included component in the given controller.
+	 *
+	 * @param array $user The current user, if any.
+	 * @return bool If the user is authorized for the current controller action.
+	 */
+	public function isAuthorized() {
 		// any registered user can access public functions
-		if ($user && empty($this->request->params['admin'])) {
+		if (empty($this->request->params['admin'])) {
 			return true;
 		}
 
@@ -36,27 +54,5 @@ class AppController extends Controller {
 
 		// default deny
 		return false;
-	}
-
-	public function beforeFilter()  {
-		parent::beforeFilter();
-		// set the menu items
-		$this->setMenuItems();
-		// set the admin flag
-		$this->setAdminFlag();
-	}
-
-	private function setMenuItems() {
-		// set the main menu for the pages
-		$this->loadModel('Page');
-		$this->set('pages', $this->Page->find('all'), array('order' => array('Page.index' => 'ASC')));
-	}
-
-	private function setAdminFlag() {
-		// check if the logged in user is an admin
-		$this->loadModel('Role');
-		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
-		$admin = AuthComponent::user('role_id') === $role['Role']['id'];
-		$this->set('admin', $admin);
 	}
 }

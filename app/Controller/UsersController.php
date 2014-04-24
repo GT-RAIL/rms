@@ -46,6 +46,11 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
+		// check if we are already logged in
+		if ($this->Auth->user('id')) {
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// check if we have valid login credentials
