@@ -1,5 +1,7 @@
 <?php
-class PagesController extends AppController {
+App::import('Controller', 'Rms');
+
+class PagesController extends RmsController {
 	public $helpers = array('Html', 'Form');
 
 	public function view($id = null) {
@@ -17,6 +19,6 @@ class PagesController extends AppController {
 		// store the entry
 		$this->set('page', $page);
 		$this->set('home', $home['Page']['id'] === $page['Page']['id']);
-		$this->set('pages', $this->Page->find('all'), array('order' => array('Page.index' => 'ASC')));
+		$this->set('title_for_layout', $page['Page']['title']);
 	}
 }

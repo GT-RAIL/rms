@@ -1,12 +1,14 @@
 <?php
-class UsersController extends AppController {
+App::import('Controller', 'Rms');
+
+class UsersController extends RmsController {
 	public $uses = array('User', 'Role');
 
 	public $components = array(
 		'Session',
 		'Auth' => array(
 			'loginRedirect' => array(
-				'controller' => 'pages',
+				'controller' => 'users',
 				'action' => 'view'
 			),
 			'logoutRedirect' => array(
@@ -27,7 +29,16 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
-		$this->Auth->allow('signup');
+		$this->Auth->allow('signup', 'login');
+	}
+
+	public function view($id = null) {
+		// check if an ID was given -- if not, use the ID
+		$id = ($id) ? $id : $this->Auth->user('id');
+		// grab the entry
+		$user = $this->User->findById($id);
+		// store the entry
+		$this->set('user', $user);
 	}
 
 	public function login() {
@@ -35,7 +46,7 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			// check if we have valid login credentials
 			if ($this->Auth->login()) {
-				return $this->redirect($this->Auth->redirectUrl());
+				return $this->redirect(array('action' => 'view'));
 			}
 			$this->Session->setFlash(__('Invalid username or password, try again'));
 		}
@@ -46,7 +57,12 @@ class UsersController extends AppController {
 		return $this->redirect($this->Auth->logout());
 	}
 
-	public function signup() {
+	public function signUp() {
+		// check if we are already logged in
+		if ($this->Auth->user('id')) {
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// create a new entry
@@ -58,10 +74,9 @@ class UsersController extends AppController {
 			$this->request->data['User']['role_id'] = $role['Role']['id'];
 			// attempt to save the entry
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
 				return $this->redirect(array('controller' => 'pages', 'action' => 'view'));
 			}
-			$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+			$this->Session->setFlash(__('The user could not be created. Please, try again.'));
 		}
 	}
 }

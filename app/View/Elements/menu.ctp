@@ -33,9 +33,21 @@ if($loggedIn) {
 					<?php endforeach; ?>
 				</ul>
 			</li>
-			<li>
-				<?php
-				if ($loggedIn) {
+			<?php if ($loggedIn): ?>
+				<li>
+					<?php
+					echo $this->Html->link(
+						'Account',
+						array(
+							'controller' => 'users',
+							'action' => 'view',
+							AuthComponent::user('id')
+						)
+					);
+					?>
+				</li>
+				<li>
+					<?php
 					echo $this->Html->link(
 						'Log Out',
 						array(
@@ -46,7 +58,11 @@ if($loggedIn) {
 							'class' => 'button special'
 						)
 					);
-				} else {
+					?>
+				</li>
+			<?php else: ?>
+				<li>
+					<?php
 					echo $this->Html->link(
 						'Sign Up',
 						array(
@@ -57,9 +73,9 @@ if($loggedIn) {
 							'class' => 'button special'
 						)
 					);
-				}
-				?>
-			</li>
+					?>
+				</li>
+			<?php endif; ?>
 		</ul>
 	</nav>
 </header>
