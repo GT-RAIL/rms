@@ -119,7 +119,6 @@ class ArticlesController extends AppController {
 			// move the next entry down
 			$article = $articles[$index + 1];
 			$article['Article']['index'] = $index;
-			$article['Article']['modified'] = date('Y-m-d H:i:s');
 			$this->Article->save($article);
 
 			// and finally place the target in the correct spot
@@ -176,7 +175,6 @@ class ArticlesController extends AppController {
 			// move the previous entry up
 			$article = $articles[$index - 1];
 			$article['Article']['index'] = $index;
-			$article['Article']['modified'] = date('Y-m-d H:i:s');
 			$this->Article->save($article);
 
 			// and finally place the target in the correct spot
@@ -239,14 +237,31 @@ class ArticlesController extends AppController {
 	 * @param int $id The ID of the entry to delete.
 	 * @throws MethodNotAllowedException Thrown if a GET request is made.
 	 */
-	public function admin_delete($id) {
+	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
 			throw new MethodNotAllowedException();
 		}
 
+		// check the page this article belongs to
+		$article = $this->Article->findById($id);
+
 		// attempt to delete the entry
 		if ($this->Article->delete($id)) {
+			// reindex the entries
+			$articles = $this->Article->find(
+				'all',
+				array(
+					'conditions' => array('Article.page_id' => $article['Article']['page_id']),
+					'order' => array('Article.index' => 'ASC')
+				)
+			);
+			for ($i = 0; $i < count($articles); $i++) {
+				$article = $articles[$i];
+				$article['Article']['index'] = $i;
+				$this->Article->save($article);
+			}
+
 			$this->Session->setFlash('The article has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}

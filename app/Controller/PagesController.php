@@ -109,7 +109,6 @@ class PagesController extends AppController {
 			// move the next entry down
 			$page = $pages[$index + 1];
 			$page['Page']['index'] = $index;
-			$page['Page']['modified'] = date('Y-m-d H:i:s');
 			$this->Page->save($page);
 
 			// and finally place the target in the correct spot
@@ -160,7 +159,6 @@ class PagesController extends AppController {
 			// move the previous entry up
 			$page = $pages[$index - 1];
 			$page['Page']['index'] = $index;
-			$page['Page']['modified'] = date('Y-m-d H:i:s');
 			$this->Page->save($page);
 
 			// and finally place the target in the correct spot
@@ -219,7 +217,7 @@ class PagesController extends AppController {
 	 * @param int $id The ID of the entry to delete.
 	 * @throws MethodNotAllowedException Thrown if a GET request is made.
 	 */
-	public function admin_delete($id) {
+	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
 			throw new MethodNotAllowedException();
@@ -227,6 +225,14 @@ class PagesController extends AppController {
 
 		// attempt to delete the entry
 		if ($this->Page->delete($id)) {
+			// reindex the entries
+			$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+			for ($i = 0; $i < count($pages); $i++) {
+				$page = $pages[$i];
+				$page['Page']['index'] = $i;
+				$this->Page->save($page);
+			}
+
 			$this->Session->setFlash('The page has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}

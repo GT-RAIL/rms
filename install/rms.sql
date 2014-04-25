@@ -75,8 +75,8 @@ CREATE TABLE IF NOT EXISTS `pages` (
 
 INSERT INTO `pages` (`id`, `title`, `menu`, `index`, `created`, `modified`) VALUES
 (1, 'About Us', 'About', 0, NOW(), NOW()),
-(2, 'Our Research', 'Research', 3, NOW(), NOW()),
-(3, 'Contact Information', 'Contact', 5, NOW(), NOW());
+(2, 'Our Research', 'Research', 1, NOW(), NOW()),
+(3, 'Contact Information', 'Contact', 2, NOW(), NOW());
 
 -- --------------------------------------------------------
 
