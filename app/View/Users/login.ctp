@@ -16,6 +16,9 @@
 			echo $this->Form->input('password');
 			echo $this->Form->end('Login');
 			?>
+			<br />
+			<p>Don't have an account? Click
+				<?php echo $this->Html->link('here', array('action' => 'signup')); ?> to get started.</p>
 		</section>
 	</div>
 </section>

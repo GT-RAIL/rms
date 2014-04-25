@@ -5,7 +5,7 @@ $home = isset($home) && $home;
 // check if a user is logged in
 $loggedIn = AuthComponent::user('id') !== null;
 if($loggedIn) {
-	$title = __(AuthComponent::user('fname').' '.AuthComponent::user('lname'));
+	$title = __('%s %s', AuthComponent::user('fname'), AuthComponent::user('lname'));
 }
 ?>
 
@@ -22,7 +22,12 @@ if($loggedIn) {
 							<?php
 							echo $this->Html->link(
 								$page['Page']['menu'],
-								array('admin' => false, 'controller' => 'pages', 'action' => 'view', $page['Page']['id'])
+								array(
+									'admin' => false,
+									'controller' => 'pages',
+									'action' => 'view',
+									$page['Page']['id']
+								)
 							);
 							?>
 						</li>
@@ -34,13 +39,26 @@ if($loggedIn) {
 					<li class="submenu">
 						<a href="">Admin</a>
 						<ul>
-							<li>
-								<?php
-								echo $this->Html->link(
-									'Pages',
-									array('admin' => true, 'controller' => 'pages', 'action' => 'index')
-								);
-								?>
+							<li class="submenu">
+								<a href="">Content</a>
+								<ul>
+									<li>
+										<?php
+										echo $this->Html->link(
+											'Pages',
+											array('admin' => true, 'controller' => 'pages', 'action' => 'index')
+										);
+										?>
+									</li>
+									<li>
+										<?php
+										echo $this->Html->link(
+											'Articles',
+											array('admin' => true, 'controller' => 'articles', 'action' => 'index')
+										);
+										?>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>

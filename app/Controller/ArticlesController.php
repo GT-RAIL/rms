@@ -1,10 +1,8 @@
 <?php
 /**
- * Content Pages Controller
+ * Content Articles Controller
  *
- * Content pages contain information about the given RMS site. Each content page has a number of articles associated
- * with it. Menu items for these pages are automatically generated. The content page with the first index will be
- * defined as the homepage.
+ * Content articles contain information that is displayed on a given page. Each page has a number of content articles.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -13,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Controller
  */
-class PagesController extends AppController {
+class ArticlesController extends AppController {
 
 	/**
 	 * The used helpers for the controller.
@@ -30,20 +28,13 @@ class PagesController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
-	public function beforeFilter() {
-		// only allow unauthenticated viewing of a single page
-		parent::beforeFilter();
-		$this->Auth->allow('view');
-	}
-
-	/**
-	 * The admin index page lists information about all pages. This allows the admin to add, edit, or delete entries.
+	 * The admin index page lists information about all articles. This allows the admin to add, edit, or delete entries.
 	 */
 	public function admin_index() {
 		// grab all the entries
-		$this->set('pages', $this->Page->find('all', array('order' => array('Page.index' => 'ASC'))));
+		$this->set(
+			'articles',
+			$this->Article->find('all', array('order' => array('Article.page_id, Article.index' => 'ASC'))));
 	}
 
 	/**
@@ -228,29 +219,5 @@ class PagesController extends AppController {
 			);
 			return $this->redirect(array('action' => 'index'));
 		}
-	}
-
-	/**
-	 * View the given page. If no page ID is given, the homepage is rendered.
-	 *
-	 * @param int|null $id The ID of the entry to view.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
-	public function view($id = null) {
-		// get the homepage
-		$home = $this->Page->find('first', array('order' => array('Page.index' => 'ASC')));
-
-		// check if an ID was given -- if not, use the first one
-		$page = (!$id) ? $home : $this->Page->findById($id);
-
-		if (!$page) {
-			// no valid entry found for the given ID
-			throw new NotFoundException(__('Invalid page'));
-		}
-
-		// store the entry
-		$this->set('page', $page);
-		$this->set('home', $home['Page']['id'] === $page['Page']['id']);
-		$this->set('title_for_layout', $page['Page']['title']);
 	}
 }

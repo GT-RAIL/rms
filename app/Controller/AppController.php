@@ -1,11 +1,10 @@
 <?php
-App::uses('Controller', 'Controller');
-
 /**
  * Main Application Controller
  *
  * Add your application-wide methods in the class below, your controllers will inherit them. This is useful for setting
- * global flags and menu variables for views.
+ * global flags and menu variables for views. A global authorization function is also defined for all admin rights in
+ * RMS controllers.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -37,9 +36,6 @@ class AppController extends Controller {
 	/**
 	 * The global authorization method. This will be automatically called and used if the authorize controller is an
 	 * an included component in the given controller.
-	 *
-	 * @param array $user The current user, if any.
-	 * @return bool If the user is authorized for the current controller action.
 	 */
 	public function isAuthorized() {
 		// any registered user can access public functions

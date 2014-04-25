@@ -18,6 +18,9 @@
 			echo $this->Form->input('lname', array('label' => 'Last Name'));
 			echo $this->Form->end('Sign Up');
 			?>
+			<br />
+			<p>Have an account? Click
+				<?php echo $this->Html->link('here', array('action' => 'login')); ?> to login.</p>
 		</section>
 	</div>
 </section>
