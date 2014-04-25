@@ -39,7 +39,7 @@ class PagesController extends AppController {
 	}
 
 	/**
-	 * The admin index page lists information about all pages. This allows the admin to add, edit, or delete entries.
+	 * The admin index action lists information about all pages. This allows the admin to add, edit, or delete entries.
 	 */
 	public function admin_index() {
 		// grab all the entries
@@ -47,7 +47,7 @@ class PagesController extends AppController {
 	}
 
 	/**
-	 * The admin add page. This will allow the admin to create a new entry.
+	 * The admin add action. This will allow the admin to create a new entry.
 	 */
 	public function admin_add() {
 		// only work for POST requests
@@ -67,11 +67,13 @@ class PagesController extends AppController {
 			}
 			$this->Session->setFlash('Unable to add the page.');
 		}
+
+		$this->set('title_for_layout', 'Add Page');
 	}
 
 	/**
-	 * Increment the index of the given page ID. This assumes the database is in a consistent state and that all IDs are
-	 * sequential. This essentially swaps the entry after the given index with the target entry.
+	 * Increment the index of the given page ID. This assumes the database is in a consistent state and that all indexes
+	 * are sequential. This essentially swaps the entry after the given index with the target entry.
 	 *
 	 * @param int $id The entry ID to increment the index of.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
@@ -101,7 +103,7 @@ class PagesController extends AppController {
 		// make sure we can actually increment
 		if($index + 1 < count($pages)) {
 			// place the target at the end temporarily
-			$target['Page']['index'] = count($pages) + 1;
+			$target['Page']['index'] = count($pages);
 			$this->Page->save($target);
 
 			// move the next entry down
@@ -121,8 +123,8 @@ class PagesController extends AppController {
 	}
 
 	/**
-	 * Decrement the index of the given page ID. This assumes the database is in a consistent state and that all IDs are
-	 * sequential. This essentially swaps the entry before the given index with the target entry.
+	 * Decrement the index of the given page ID. This assumes the database is in a consistent state and that all indexes
+	 * are sequential. This essentially swaps the entry before the given index with the target entry.
 	 *
 	 * @param int $id The entry ID to decrement the index of.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
@@ -146,13 +148,13 @@ class PagesController extends AppController {
 		}
 		$index = $target['Page']['index'];
 
-		// grab all pages
-		$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
-
 		// make sure we can actually decrement
 		if($index > 0) {
+			// grab all pages
+			$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+
 			// place the target at the end temporarily
-			$target['Page']['index'] = count($pages)+1;
+			$target['Page']['index'] = count($pages);
 			$this->Page->save($target);
 
 			// move the previous entry up
@@ -172,7 +174,7 @@ class PagesController extends AppController {
 	}
 
 	/**
-	 * The admin edit page. This allows the admin to edit an existing entry.
+	 * The admin edit action. This allows the admin to edit an existing entry.
 	 *
 	 * @param int $id The ID of the entry to edit.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
@@ -190,7 +192,7 @@ class PagesController extends AppController {
 		}
 
 		// only work for PUT requests
-		if ($this->request->is(array('role', 'put'))) {
+		if ($this->request->is(array('page', 'put'))) {
 			// set the ID
 			$this->Page->id = $id;
 			// set the current timestamp for modification
@@ -207,10 +209,12 @@ class PagesController extends AppController {
 		if (!$this->request->data) {
 			$this->request->data = $page;
 		}
+
+		$this->set('title_for_layout', __('Edit Page - %s', $page['Page']['title']));
 	}
 
 	/**
-	 * The admin delete page. This allows the admin to delete an existing entry.
+	 * The admin delete action. This allows the admin to delete an existing entry.
 	 *
 	 * @param int $id The ID of the entry to delete.
 	 * @throws MethodNotAllowedException Thrown if a GET request is made.
@@ -223,9 +227,7 @@ class PagesController extends AppController {
 
 		// attempt to delete the entry
 		if ($this->Page->delete($id)) {
-			$this->Session->setFlash(
-				__('The role with id: %s has been deleted.', h($id))
-			);
+			$this->Session->setFlash('The page has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
 	}

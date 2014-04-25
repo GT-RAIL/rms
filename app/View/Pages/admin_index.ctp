@@ -10,68 +10,74 @@
 			<br /><br />
 			<table>
 				<tr>
+					<th></th>
 					<th>ID</th>
 					<th>Title</th>
 					<th>Menu</th>
-					<th>Articles</th>
-					<th>Actions</th>
-					<th>Index</th>
+					<th><?php echo $this->Html->link('Articles', array('controller' => 'articles')); ?></th>
 					<th>Created</th>
 					<th>Modified</th>
 				</tr>
 				<?php foreach ($pages as $page): ?>
 					<tr>
-						<td><?php echo $page['Page']['id']; ?></td>
+						<td class="center">
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('action' => 'delete', $page['Page']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('action' => 'edit', $page['Page']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+							<?php
+							if($page['Page']['index'] > 0) {
+								echo $this->Form->postLink(
+									'',
+									array('action' => 'decrementIndex', $page['Page']['id']),
+									array('class' => 'icon fa-arrow-circle-up')
+								);
+							} else {
+								echo '<span class="icon fa-circle-o"></span>';
+							}
+							?>
+							<?php
+							if($page['Page']['index'] < count($pages) - 1) {
+								echo $this->Form->postLink(
+									'',
+									array('action' => 'incrementIndex', $page['Page']['id']),
+									array('class' => 'icon fa-arrow-circle-down')
+								);
+							} else {
+								echo '<span class="icon fa-circle-o"></span>';
+							}
+							?>
+						</td>
+						<td><?php echo h($page['Page']['id']); ?></td>
 						<td>
 							<?php
 							echo $this->Html->link(
-								$page['Page']['title'],
+								h($page['Page']['title']),
 								array('admin' => false, 'action' => 'view', $page['Page']['id'])
 							);
 							?>
 						</td>
 						<td>
-							<?php echo $page['Page']['menu']; ?>
+							<?php echo h($page['Page']['menu']); ?>
 						</td>
 						<td>
-							<?php echo count($page['Article']); ?>
+							<?php echo __('%d', count($page['Article'])); ?>
 						</td>
 						<td>
-							<?php
-							echo $this->Form->postLink(
-								'Delete',
-								array('action' => 'delete', $page['Page']['id']),
-								array('confirm' => 'Are you sure?')
-							);
-							?>
-							<?php
-							echo $this->Html->link(
-								'Edit', array('action' => 'edit', $page['Page']['id'])
-							);
-							?>
+							<?php echo h($page['Page']['created']); ?>
 						</td>
 						<td>
-							<?php echo $page['Page']['index']; ?>
-							<?php
-							echo $this->Form->postLink(
-								'',
-								array('action' => 'decrementIndex', $page['Page']['id']),
-								array('class' => 'icon fa-arrow-circle-up')
-							);
-							?>
-							<?php
-							echo $this->Form->postLink(
-								'',
-								array('action' => 'incrementIndex', $page['Page']['id']),
-								array('class' => 'icon fa-arrow-circle-down')
-							);
-							?>
-						</td>
-						<td>
-							<?php echo $page['Page']['created']; ?>
-						</td>
-						<td>
-							<?php echo $page['Page']['modified']; ?>
+							<?php echo h($page['Page']['modified']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

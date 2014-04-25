@@ -28,41 +28,56 @@ class ArticlesController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
-	 * The admin index page lists information about all articles. This allows the admin to add, edit, or delete entries.
+	 * The admin index action lists information about all articles. This allows the admin to add, edit, or delete
+	 * entries.
 	 */
 	public function admin_index() {
+		// load the pages list
+		$pages = $this->Article->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+		$this->set('pages', $pages);
+
 		// grab all the entries
 		$this->set(
 			'articles',
-			$this->Article->find('all', array('order' => array('Article.page_id, Article.index' => 'ASC'))));
+			$this->Article->find('all', array('order' => array('Article.page_id, Article.index' => 'ASC')))
+		);
 	}
 
 	/**
-	 * The admin add page. This will allow the admin to create a new entry.
+	 * The admin add action. This will allow the admin to create a new entry.
 	 */
 	public function admin_add() {
+		// load the pages list
+		$pages = $this->Article->Page->find('list', array('order' => array('Page.index' => 'ASC')));
+		$this->set('pages', $pages);
+
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// create a new entry
-			$this->Page->create();
+			$this->Article->create();
 			// place at the end
-			$numPages = $this->Page->find('count');
-			$this->Page->data['Page']['index'] = $numPages;
+			$numArticles = $this->Article->find(
+				'count',
+				array('conditions' => array('Article.page_id' => $this->request->data['Article']['page_id']))
+			);
+			$this->Article->data['Article']['index'] = $numArticles;
 			// set the current timestamp for creation and modification
-			$this->Page->data['Page']['created'] = date('Y-m-d H:i:s');
-			$this->Page->data['Page']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->data['Article']['created'] = date('Y-m-d H:i:s');
+			$this->Article->data['Article']['modified'] = date('Y-m-d H:i:s');
 			// attempt to save the entry
-			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('The page has been saved.');
+			if ($this->Article->save($this->request->data)) {
+				$this->Session->setFlash('The article has been saved.');
 				return $this->redirect(array('action' => 'index'));
 			}
-			$this->Session->setFlash('Unable to add the page.');
+			$this->Session->setFlash('Unable to add the article.');
 		}
+
+		$this->set('title_for_layout', 'Add Article');
 	}
 
 	/**
-	 * Increment the index of the given page ID. This assumes the database is in a consistent state and that all IDs are
-	 * sequential. This essentially swaps the entry after the given index with the target entry.
+	 * Increment the index of the given article ID. This assumes the database is in a consistent state and that all
+	 * indexes are sequential. This essentially swaps the entry after the given index with the target entry.
 	 *
 	 * @param int $id The entry ID to increment the index of.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
@@ -76,35 +91,41 @@ class ArticlesController extends AppController {
 
 		if (!$id) {
 			// no ID provided
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
 
-		$target = $this->Page->findById($id);
+		$target = $this->Article->findById($id);
 		if (!$target) {
 			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
-		$index = $target['Page']['index'];
+		$index = $target['Article']['index'];
 
-		// grab all pages
-		$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+		// grab all articles for the same page
+		$articles = $this->Article->find(
+			'all',
+			array(
+				'conditions' => array('Article.page_id' => $target['Article']['page_id']),
+				'order' => array('Article.index' => 'ASC')
+			)
+		);
 
 		// make sure we can actually increment
-		if($index + 1 < count($pages)) {
+		if($index + 1 < count($articles)) {
 			// place the target at the end temporarily
-			$target['Page']['index'] = count($pages) + 1;
-			$this->Page->save($target);
+			$target['Article']['index'] = count($articles);
+			$this->Article->save($target);
 
 			// move the next entry down
-			$page = $pages[$index + 1];
-			$page['Page']['index'] = $index;
-			$page['Page']['modified'] = date('Y-m-d H:i:s');
-			$this->Page->save($page);
+			$article = $articles[$index + 1];
+			$article['Article']['index'] = $index;
+			$article['Article']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->save($article);
 
 			// and finally place the target in the correct spot
-			$target['Page']['index'] = $index + 1;
-			$target['Page']['modified'] = date('Y-m-d H:i:s');
-			$this->Page->save($target);
+			$target['Article']['index'] = $index + 1;
+			$target['Article']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->save($target);
 		}
 
 		// return to the index
@@ -112,8 +133,8 @@ class ArticlesController extends AppController {
 	}
 
 	/**
-	 * Decrement the index of the given page ID. This assumes the database is in a consistent state and that all IDs are
-	 * sequential. This essentially swaps the entry before the given index with the target entry.
+	 * Decrement the index of the given article ID. This assumes the database is in a consistent state and that all
+	 * indexes are sequential. This essentially swaps the entry before the given index with the target entry.
 	 *
 	 * @param int $id The entry ID to decrement the index of.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
@@ -127,35 +148,41 @@ class ArticlesController extends AppController {
 
 		if (!$id) {
 			// no ID provided
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
 
-		$target = $this->Page->findById($id);
+		$target = $this->Article->findById($id);
 		if (!$target) {
 			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
-		$index = $target['Page']['index'];
-
-		// grab all pages
-		$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+		$index = $target['Article']['index'];
 
 		// make sure we can actually decrement
 		if($index > 0) {
+			// grab all articles for the same page
+			$articles = $this->Article->find(
+				'all',
+				array(
+					'conditions' => array('Article.page_id' => $target['Article']['page_id']),
+					'order' => array('Article.index' => 'ASC')
+				)
+			);
+
 			// place the target at the end temporarily
-			$target['Page']['index'] = count($pages)+1;
-			$this->Page->save($target);
+			$target['Article']['index'] = count($articles);
+			$this->Article->save($target);
 
 			// move the previous entry up
-			$page = $pages[$index - 1];
-			$page['Page']['index'] = $index;
-			$page['Page']['modified'] = date('Y-m-d H:i:s');
-			$this->Page->save($page);
+			$article = $articles[$index - 1];
+			$article['Article']['index'] = $index;
+			$article['Article']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->save($article);
 
 			// and finally place the target in the correct spot
-			$target['Page']['index'] = $index - 1;
-			$target['Page']['modified'] = date('Y-m-d H:i:s');
-			$this->Page->save($target);
+			$target['Article']['index'] = $index - 1;
+			$target['Article']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->save($target);
 		}
 
 		// return to the index
@@ -163,45 +190,51 @@ class ArticlesController extends AppController {
 	}
 
 	/**
-	 * The admin edit page. This allows the admin to edit an existing entry.
+	 * The admin edit action. This allows the admin to edit an existing entry.
 	 *
 	 * @param int $id The ID of the entry to edit.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
 	 */
 	public function admin_edit($id = null) {
+		// load the pages list
+		$pages = $this->Article->Page->find('list', array('order' => array('Page.index' => 'ASC')));
+		$this->set('pages', $pages);
+
 		if (!$id) {
 			// no ID provided
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
 
-		$page = $this->Page->findById($id);
-		if (!$page) {
+		$article = $this->Article->findById($id);
+		if (!$article) {
 			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid page.');
+			throw new NotFoundException('Invalid article.');
 		}
 
 		// only work for PUT requests
-		if ($this->request->is(array('role', 'put'))) {
+		if ($this->request->is(array('article', 'put'))) {
 			// set the ID
-			$this->Page->id = $id;
+			$this->Article->id = $id;
 			// set the current timestamp for modification
-			$this->Page->data['Page']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->data['Page']['modified'] = date('Y-m-d H:i:s');
 			// attempt to save the entry
-			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('The page has been updated.');
+			if ($this->Article->save($this->request->data)) {
+				$this->Session->setFlash('The article has been updated.');
 				return $this->redirect(array('action' => 'index'));
 			}
-			$this->Session->setFlash('Unable to update the page.');
+			$this->Session->setFlash('Unable to update the article.');
 		}
 
 		// store the entry data if it was not a PUT request
 		if (!$this->request->data) {
-			$this->request->data = $page;
+			$this->request->data = $article;
 		}
+
+		$this->set('title_for_layout', __('Edit Article - %s', $article['Article']['title']));
 	}
 
 	/**
-	 * The admin delete page. This allows the admin to delete an existing entry.
+	 * The admin delete action. This allows the admin to delete an existing entry.
 	 *
 	 * @param int $id The ID of the entry to delete.
 	 * @throws MethodNotAllowedException Thrown if a GET request is made.
@@ -213,10 +246,8 @@ class ArticlesController extends AppController {
 		}
 
 		// attempt to delete the entry
-		if ($this->Page->delete($id)) {
-			$this->Session->setFlash(
-				__('The role with id: %s has been deleted.', h($id))
-			);
+		if ($this->Article->delete($id)) {
+			$this->Session->setFlash('The article has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
 	}

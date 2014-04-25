@@ -17,7 +17,7 @@ if($loggedIn) {
 			<li class="submenu">
 				<a href="">Menu</a>
 				<ul>
-					<?php foreach($pages as $page): ?>
+					<?php foreach($menu as $page): ?>
 						<li>
 							<?php
 							echo $this->Html->link(

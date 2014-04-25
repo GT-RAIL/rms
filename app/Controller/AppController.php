@@ -24,7 +24,7 @@ class AppController extends Controller {
 
 		// set the main menu for the pages
 		$this->loadModel('Page');
-		$this->set('pages', $this->Page->find('all'), array('order' => array('Page.index' => 'ASC')));
+		$this->set('menu', $this->Page->find('all', array('order' => array('Page.index' => 'ASC'))));
 
 		// set the admin flag
 		$this->loadModel('Role');

@@ -30,13 +30,6 @@ class Page extends AppModel {
 				'rule' => 'isUnique',
 				'message' => 'This menu name already exists.'
 			)
-		),
-		'modified' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'required' => true,
-				'message' => 'Please enter a valid modification date.'
-			)
 		)
 	);
 

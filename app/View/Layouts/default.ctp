@@ -56,7 +56,13 @@ $title = 'Test Title';
 	<?php endif; ?>
 
 	<article id="main">
-		<?php echo $this->Session->flash(); ?>
+
+		<?php  if($this->Session->check('Message.flash')): ?>
+			<section class="flash">
+				<p><?php echo $this->Session->flash(); ?></p>
+			</section>
+		<?php endif; ?>
+
 		<?php echo $this->fetch('content'); ?>
 	</article>
 
