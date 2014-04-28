@@ -67,7 +67,7 @@ if($loggedIn) {
 					<?php
 					echo $this->Html->link(
 						'Account',
-						array('admin' => false, 'controller' => 'users', 'action' => 'view', AuthComponent::user('id'))
+						array('admin' => false, 'controller' => 'users', 'action' => 'view')
 					);
 					?>
 				</li>

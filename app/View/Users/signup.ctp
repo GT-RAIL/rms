@@ -13,6 +13,7 @@
 			echo $this->Form->create('User');
 			echo $this->Form->input('username');
 			echo $this->Form->input('password');
+			echo $this->Form->input('repass', array('label' => 'Password Confirmation', 'type' => 'password'));
 			echo $this->Form->input('email');
 			echo $this->Form->input('fname', array('label' => 'First Name'));
 			echo $this->Form->input('lname', array('label' => 'Last Name'));

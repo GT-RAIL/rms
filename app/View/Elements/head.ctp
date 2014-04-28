@@ -8,14 +8,16 @@
 		echo $this->Html->meta('description', '');
 		echo $this->Html->meta('keywords', '');
 	?>
-	<!--[if lte IE 8]><?php echo $this->Html->script('../css/ie/html5shiv'); ?><![endif]-->
+
+	<!--[if lte IE 8]><?php echo $this->Html->script('../css/ie/html5shiv.min'); ?><![endif]-->
+
 	<?php
 	echo $this->Html->script(array(
 		'//code.jquery.com/jquery-1.11.0.min.js',
 		'jquery.dropotron.min',
 		'skel.min',
 		'skel-layers.min',
-		'init'
+		'init.min'
 	));
 	?>
 

@@ -36,6 +36,7 @@ class UsersController extends AppController {
 	public $components = array(
 		'Session',
 		'Auth' => array(
+			'authorize' => 'Controller',
 			'loginRedirect' => array('controller' => 'users', 'action' => 'view'),
 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view'),
 			'authenticate' => array(
@@ -53,12 +54,18 @@ class UsersController extends AppController {
 		$this->Auth->allow('signup', 'login');
 	}
 
+	/**
+	 * A redirect to the normal login. Admins do not need a separate login.
+	 */
 	public function admin_login() {
 		// no different login system for admins
 		unset($this->request->params['admin']);
 		$this->redirect(array('action' => 'login'));
 	}
 
+	/**
+	 * Log the user in if they are not already logged in. This will check the credentials provided in a POST request.
+	 */
 	public function login() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -75,20 +82,17 @@ class UsersController extends AppController {
 		}
 	}
 
-	public function view($id = null) {
-		// check if an ID was given -- if not, use the ID
-		$id = ($id) ? $id : $this->Auth->user('id');
-		// grab the entry
-		$user = $this->User->findById($id);
-		// store the entry
-		$this->set('user', $user);
-	}
-
+	/**
+	 * Log the logged in user out.
+	 */
 	public function logout() {
 		// simply log the user out
 		return $this->redirect($this->Auth->logout());
 	}
 
+	/**
+	 * The main sign up page. This will allow any user to register to the site with a basic user account.
+	 */
 	public function signup() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -114,5 +118,72 @@ class UsersController extends AppController {
 			}
 			$this->Session->setFlash(__('The user could not be created. Please, try again.'));
 		}
+	}
+
+	/**
+	 * The default index simply redirects to the view action.
+	 */
+	public function index() {
+		return $this->redirect(array('action' => 'view'));
+	}
+
+	/**
+	 * View the logged in user. A user may only view their own page.
+	 *
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function view() {
+		// find the ID
+		$id = $this->Auth->user('id');
+		// grab the entry
+		$user = $this->User->findById($id);
+
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// store the entry
+		$this->set('user', $user);
+	}
+
+	/**
+	 * The default edit action. This allows the user to edit their entry.
+	 *
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function edit() {
+		// find the ID
+		$id = $this->Auth->user('id');
+		// grab the entry
+		$user = $this->User->findById($id);
+
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// only work for PUT requests
+		if ($this->request->is(array('user', 'put'))) {
+			// set the ID
+			$this->User->id = $id;
+			// set the current timestamp for modification
+			$this->User->data['Page']['modified'] = date('Y-m-d H:i:s');
+			// attempt to save the entry
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash('Your information has been updated.');
+				// update the user's session
+				$this->Session->write('Auth', $this->User->read(null, $this->Auth->User('id')));
+				return $this->redirect(array('action' => 'view'));
+			}
+			$this->Session->setFlash('Unable to update your information.');
+		}
+
+		// store the entry data if it was not a PUT request
+		if (!$this->request->data) {
+			$this->request->data = $user;
+		}
+
+		$this->set('title_for_layout', __('Edit User - %s', $user['User']['username']));
 	}
 }

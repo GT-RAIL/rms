@@ -3,32 +3,32 @@ App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
 	public $validate = array(
-		'username' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'required' => true,
-				'message' => 'Please enter a valid username.'
-			),
-			'maxLength' => array(
-				'rule' => array('maxLength', 16),
-				'message' => 'Usernames cannot be longer than 16 characters.'
-			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This username already exists.'
-			)
-		),
-		'password' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'required' => true,
-				'message' => 'Please enter a valid password.'
-			),
-			'maxLength' => array(
-				'rule' => array('maxLength', 64),
-				'message' => 'Password cannot be longer than 64 characters.'
-			)
-		),
+//		'username' => array(
+//			'notEmpty' => array(
+//				'rule' => 'notEmpty',
+//				'required' => true,
+//				'message' => 'Please enter a valid username.'
+//			),
+//			'maxLength' => array(
+//				'rule' => array('maxLength', 16),
+//				'message' => 'Usernames cannot be longer than 16 characters.'
+//			),
+//			'isUnique' => array(
+//				'rule' => 'isUnique',
+//				'message' => 'This username already exists.'
+//			)
+//		),
+//		'password' => array(
+//			'notEmpty' => array(
+//				'rule' => 'notEmpty',
+//				'required' => true,
+//				'message' => 'Please enter a valid password.'
+//			),
+//			'maxLength' => array(
+//				'rule' => array('maxLength', 64),
+//				'message' => 'Password cannot be longer than 64 characters.'
+//			)
+//		),
 		'email' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -68,6 +68,13 @@ class User extends AppModel {
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'Last names cannot be longer than 32 characters.'
+			)
+		),
+		'repass' => array(
+			'equalToField' => array(
+				'rule' => array('equalToField', 'password'),
+				'message' => 'Password confirmation must match.',
+				'on' => 'signup'
 			)
 		)
 	);

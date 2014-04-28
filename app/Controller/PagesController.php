@@ -239,6 +239,13 @@ class PagesController extends AppController {
 	}
 
 	/**
+	 * The default index simply redirects to the homepage action.
+	 */
+	public function index() {
+		return $this->redirect(array('action' => 'view'));
+	}
+
+	/**
 	 * View the given page. If no page ID is given, the homepage is rendered.
 	 *
 	 * @param int|null $id The ID of the entry to view.
@@ -253,7 +260,7 @@ class PagesController extends AppController {
 
 		if (!$page) {
 			// no valid entry found for the given ID
-			throw new NotFoundException(__('Invalid page'));
+			throw new NotFoundException('Invalid page.');
 		}
 
 		// store the entry

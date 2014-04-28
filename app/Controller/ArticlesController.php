@@ -266,4 +266,11 @@ class ArticlesController extends AppController {
 			return $this->redirect(array('action' => 'index'));
 		}
 	}
+
+	/**
+	 * The default index simply redirects to the page's homepage action.
+	 */
+	public function index() {
+		return $this->redirect(array('controller' => 'pages', 'action' => 'view'));
+	}
 }

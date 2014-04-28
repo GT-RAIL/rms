@@ -21,4 +21,14 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+
+	function equalToField($check, $otherfield) {
+		//get name of field
+		$fname = '';
+		foreach ($check as $key => $value){
+			$fname = $key;
+			break;
+		}
+		return $this->data[$this->name][$otherfield] === $this->data[$this->name][$fname];
+	}
 }
