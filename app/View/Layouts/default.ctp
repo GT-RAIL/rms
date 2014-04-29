@@ -1,4 +1,19 @@
 <?php
+/**
+ * Default Layout
+ *
+ * The main, default layout uses the RMS template to create a new page with a menu, content section, and footer.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Layouts
+ */
+?>
+
+<?php
 // check if this is the homepage
 $home = isset($home) && $home;
 $title = 'Test Title';
