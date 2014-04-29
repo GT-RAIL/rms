@@ -1,16 +1,30 @@
 <?php
+/**
+ * Default Menu
+ *
+ * The main menu contains links to all pages and a sign up button. If a user is logged in, a user menu and logout button
+ * is displayed as well.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Elements
+ */
+?>
+
+
+<?php
 // check if this is the homepage
 $home = isset($home) && $home;
 
 // check if a user is logged in
 $loggedIn = AuthComponent::user('id') !== null;
-if($loggedIn) {
-	$title = __('%s %s', AuthComponent::user('fname'), AuthComponent::user('lname'));
-}
 ?>
 
 <header id="header" class="<?php echo ($home) ? 'alt' : ''; ?>">
-	<h1 id="logo"><?php echo $this->Html->link($title, '/'); ?></h1>
+	<h1 id="logo"><?php echo $this->Html->image('/img/logo.png', array('alt' => 'rms')); ?></h1>
 	<nav id="nav">
 		<ul>
 			<li class="current"><?php echo $this->Html->link('Home', '/'); ?></li>

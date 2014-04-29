@@ -1,8 +1,8 @@
 <?php
 /**
- * Default Internal Server Error
+ * Default Fatal Error Page
  *
- * The 500 page will display a simple error message stating the name of the error.
+ * The fatal error page will display a simple error message stating the name of the error.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute

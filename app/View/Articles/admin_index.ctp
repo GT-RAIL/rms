@@ -1,3 +1,19 @@
+<?php
+/**
+ * Admin Article Index View
+ *
+ * The article index page displays a list of all articles in the database. An admin may edit, add, or delete from this
+ * list as well as re-index the articles.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Articles
+ */
+?>
+
 <header class="special container">
 	<span class="icon fa-gear"></span>
 	<h2>Articles</h2>

@@ -1,24 +1,18 @@
 <?php
-/**
- * Application level View Helper
- *
- * This file is application-wide helper file. You can put all
- * application-wide helper-related methods here.
- *
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.View.Helper
- * @since         CakePHP(tm) v 0.2.9
- */
-
+// apps will use the view and helper classes
 App::uses('Helper', 'View');
 
 /**
  * Application helper
  *
- * Add your application-wide methods in the class below, your helpers
- * will inherit them.
+ * Add your application-wide methods in the class below, your helpers will inherit them.
  *
- * @package       app.View.Helper
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Helper
  */
 class AppHelper extends Helper {
 }

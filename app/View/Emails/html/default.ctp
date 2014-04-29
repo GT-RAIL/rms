@@ -1,25 +1,22 @@
 <?php
 /**
+ * Default HTML Email Template
  *
+ * The default HTML email template will separate each new line as a new <p> element.
  *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.View.Emails.html
- * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Emails.html
  */
 ?>
-<?php
-$content = explode("\n", $content);
 
-foreach ($content as $line):
-	echo '<p> ' . $line . "</p>\n";
-endforeach;
+<?php
+// create a new paragraph for each new line
+$content = explode('\n', $content);
+foreach ($content as $line) {
+	echo '<p> ' . $line . '</p>\n';
+}
 ?>

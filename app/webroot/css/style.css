@@ -164,6 +164,13 @@ header.special {
 			opacity: 0.35;
 		}
 
+#logo img {
+	height: 45px;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
 footer > :last-child {
 	margin-bottom: 0;
 }
