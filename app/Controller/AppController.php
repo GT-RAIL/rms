@@ -13,7 +13,7 @@
  * @version		2.0.0
  * @package		app.Controller
  */
-class AppController extends Controller {
+abstract class AppController extends Controller {
 
 	/**
 	 * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the

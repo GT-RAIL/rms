@@ -214,7 +214,20 @@ class ArticlesController extends AppController {
 			// set the ID
 			$this->Article->id = $id;
 			// set the current timestamp for modification
-			$this->Article->data['Page']['modified'] = date('Y-m-d H:i:s');
+			$this->Article->data['Article']['modified'] = date('Y-m-d H:i:s');
+
+			// check if we are changing pages
+			if($article['Article']['page_id'] !== $this->request->data['Article']['page_id']) {
+				// grab all articles for the same page
+				$index = $this->Article->find(
+					'count',
+					array(
+						'conditions' => array('Article.page_id' => $this->request->data['Article']['page_id']),
+					)
+				);
+				$this->Article->data['Article']['index'] = $index;
+			}
+
 			// attempt to save the entry
 			if ($this->Article->save($this->request->data)) {
 				$this->Session->setFlash('The article has been updated.');

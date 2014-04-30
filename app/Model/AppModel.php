@@ -1,34 +1,34 @@
 <?php
-/**
- * Application model for Cake.
- *
- * This file is application-wide model file. You can put all
- * application-wide model-related methods here.
- *
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Model
- * @since         CakePHP(tm) v 0.2.9
- */
 
 App::uses('Model', 'Model');
 
 /**
- * Application model for Cake.
+ * Main Application Model
  *
- * Add your application-wide methods in the class below, your models
- * will inherit them.
+ * The application model base class contains useful functions and definitions for all models in the RMS.
  *
- * @package       app.Model
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.Model
  */
-class AppModel extends Model {
+abstract class  AppModel extends Model {
 
-	function equalToField($check, $otherfield) {
-		//get name of field
-		$fname = '';
-		foreach ($check as $key => $value){
-			$fname = $key;
+	/**
+	 * Check if a field is equal to another. This is useful for password validations.
+	 *
+	 * @param string $check The name of the field to check.
+	 * @param $otherField The name of the other field to check with the first one.
+	 * @return bool Returns if the two fields have equal contents.
+	 */
+	function equalToField($check, $otherField) {
+		$name = '';
+		foreach ($check as $key => $value) {
+			$name = $key;
 			break;
 		}
-		return $this->data[$this->name][$otherfield] === $this->data[$this->name][$fname];
+		return $this->data[$this->name][$otherField] === $this->data[$this->name][$name];
 	}
 }
