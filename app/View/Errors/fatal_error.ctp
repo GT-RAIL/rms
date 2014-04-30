@@ -15,15 +15,5 @@
 
 <header class="special container">
 	<span class="icon fa-warning"></span>
-	<h2><?php echo $name; ?></h2>
+	<h2><?php echo h($name); ?></h2>
 </header>
-
-<section class="wrapper style4 container">
-	<div class="content">
-		<section>
-			<p>
-				<strong>Error:</strong> An Internal Error Has Occurred.
-			</p>
-		</section>
-	</div>
-</section>

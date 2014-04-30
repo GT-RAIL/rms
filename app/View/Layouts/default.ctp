@@ -16,28 +16,19 @@
 <?php
 // check if this is the homepage
 $home = isset($home) && $home;
-$title = 'Test Title';
 ?>
 
 <!DOCTYPE html>
 <html>
 <?php echo $this->element('head'); ?>
 <body class="<?php echo ($home) ? 'index' : 'no-sidebar'; ?> loading">
-	<?php
-	echo $this->element(
-		'menu',
-		array(
-			'home' => $home,
-			'title' => $title
-		)
-	);
-	?>
+	<?php echo $this->element('menu', array('home' => $home)); ?>
 
 	<?php if ($home): ?>
 		<section id="banner">
 			<div class="inner">
 				<header>
-					<h2><?php echo h($title); ?></h2>
+					<h2><?php echo h($setting['title']); ?></h2>
 				</header>
 				<p>
 					Powered by the <br />

@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`description`)
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `description` (`description`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Roles for various users.' AUTO_INCREMENT=3 ;
 
 --
@@ -101,6 +102,34 @@ CREATE TABLE IF NOT EXISTS `roles` (
 INSERT INTO `roles` (`id`, `name`, `description`, `created`, `modified`) VALUES
 (1, 'admin', 'Administrator of the site.', NOW(), NOW()),
 (2, 'basic', 'Basic user level.', NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` tinyint(1) NOT NULL COMMENT 'ID of the settings (should remain 1).',
+  `title` varchar(16) NOT NULL COMMENT 'Site name.',
+  `copyright` varchar(32) NOT NULL COMMENT 'Copyright message.',
+  `version` varchar(16) NOT NULL COMMENT 'RMS version number.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`),
+  UNIQUE KEY `copyright` (`copyright`),
+  UNIQUE KEY `version` (`version`),
+  UNIQUE KEY `created` (`created`),
+  UNIQUE KEY `modified` (`modified`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Site settings for the RMS.';
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `title`, `copyright`, `version`, `created`, `modified`) VALUES
+  (1, 'My Robot Site', 'Worcester Polytechnic Institute', '2.0.0', NOW(), NOW());
 
 -- --------------------------------------------------------
 

@@ -26,6 +26,15 @@ abstract class AppController extends Controller {
 		$this->loadModel('Page');
 		$this->set('menu', $this->Page->find('all', array('order' => array('Page.index' => 'ASC'))));
 
+		// grab site settings
+		$this->loadModel('Setting');
+		$setting = $this->Setting->find('first');
+		$settingSubset = array(
+			'title' => $setting['Setting']['title'],
+			'copyright' => $setting['Setting']['copyright']
+		);
+		$this->set('setting', $settingSubset);
+
 		// set the admin flag
 		$this->loadModel('Role');
 		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));

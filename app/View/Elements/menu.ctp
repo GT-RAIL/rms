@@ -74,6 +74,14 @@ $loggedIn = AuthComponent::user('id') !== null;
 									</li>
 								</ul>
 							</li>
+							<li>
+								<?php
+								echo $this->Html->link(
+									'Site Settings',
+									array('admin' => true, 'controller' => 'settings', 'action' => 'index')
+								);
+								?>
+							</li>
 						</ul>
 					</li>
 				<?php endif; ?>
