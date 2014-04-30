@@ -9,6 +9,23 @@ For full documentation, see [the ROS wiki](http://ros.org/wiki/rms) or check out
 
 This project is released as part of the [Robot Web Tools](http://robotwebtools.org/) effort.
 
+### Setup
+To setup RMS on an Ubuntu web server, run the automated script in the [install](install) directory:
+
+```bash
+cd install
+./install.bash
+```
+
+This script will do the following tasks:
+* Update and install the LAMP server
+* Setup [CakePHP](http://cakephp.org/)
+* Install the RMS
+* Create a tmp folder
+* Setup the SQL server
+
+The RMS has been tested and developed on Ubuntu 14.04.
+
 ### License
 rms is released with a BSD license. For full terms and conditions, see the [LICENSE](LICENSE) file.
 

@@ -33,10 +33,5 @@ class Page extends AppModel {
 		)
 	);
 
-	public $hasMany = array(
-		'Article' => array(
-			'className' => 'Article',
-			'dependent' => true
-		)
-	);
+	public $hasMany = array('Article' => array('className' => 'Article', 'dependent' => true));
 }

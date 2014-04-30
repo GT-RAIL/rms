@@ -1,31 +1,22 @@
 <?php
 /**
- * Routes configuration
+ * Routes Configuration
  *
- * In this file, you set up routes to your controllers and their actions.
- * Routes are very important mechanism that allows you to freely connect
- * different URLs to chosen controllers and their actions (functions).
+ * This file configures static routes for URLs. The most common example is the homepage to default to a page view.
  *
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Config
- * @since         CakePHP(tm) v 0.2.9
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.Controller
  */
 
-/**
- * Here, we are connecting '/' (base path) to controller called 'Pages',
- * its action called 'display', and we pass a param to select the view file
- * to use (in this case, /app/View/Pages/home.ctp)...
- */
+// default view for pages is the homepage
 Router::connect('/', array('controller' => 'pages', 'action' => 'view'));
 
-/**
- * Load all plugin routes. See the CakePlugin documentation on
- * how to customize the loading of plugin routes.
- */
+// load any plugin routes as well
 CakePlugin::routes();
 
-/**
- * Load the CakePHP default routes. Only remove this if you do not want to use
- * the built-in default routes.
- */
+// default routes from CakePHP
 require CAKE . 'Config' . DS . 'routes.php';

@@ -29,10 +29,5 @@ class Role extends AppModel {
 		)
 	);
 
-	public $hasMany = array(
-		'User' => array(
-			'className' => 'User',
-			'dependent' => true
-		)
-	);
+	public $hasMany = array('User' => array('className' => 'User', 'dependent' => true));
 }
