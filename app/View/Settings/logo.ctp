@@ -1,16 +1,15 @@
 <?php
 /**
- * Default Fatal Error Page
+ * Logo View
  *
- * The fatal error page will display a simple error message stating the name of the error.
+ * The logo view will echo the binary image contents of the logo.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
  * @version		2.0.0
- * @package		app.View.Errors
+ * @package		app.View.Settings
  */
-?>
 
-<?php echo $this->element('error_header'); ?>
+echo $setting['Setting']['logo'];

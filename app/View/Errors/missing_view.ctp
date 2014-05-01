@@ -1,8 +1,8 @@
 <?php
 /**
- * Default Fatal Error Page
+ * Default Missing View Error Page
  *
- * The fatal error page will display a simple error message stating the name of the error.
+ * The missing view error page will display a simple error message stating the name of the error.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute

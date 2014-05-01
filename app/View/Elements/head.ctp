@@ -17,7 +17,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo __('%s: %s', h($setting['title']), h($title_for_layout)); ?>
+		<?php echo __('%s: %s', h($setting['Setting']['title']), h($title_for_layout)); ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');

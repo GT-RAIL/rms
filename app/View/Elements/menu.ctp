@@ -24,7 +24,14 @@ $loggedIn = AuthComponent::user('id') !== null;
 ?>
 
 <header id="header" class="<?php echo ($home) ? 'alt' : ''; ?>">
-	<h1 id="logo"><?php echo $this->Html->image('/img/logo.png', array('alt' => 'rms')); ?></h1>
+	<h1 id="logo">
+		<?php
+		echo $this->Html->image(
+			array('admin' => false, 'controller' =>'settings', 'action' => 'logo'),
+			array('alt' => 'rms')
+		);
+		?>
+	</h1>
 	<nav id="nav">
 		<ul>
 			<li class="current"><?php echo $this->Html->link('Home', '/'); ?></li>

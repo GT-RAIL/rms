@@ -13,10 +13,7 @@
  */
 ?>
 
-<header class="special container">
-	<span class="icon fa-warning"></span>
-	<h2><?php echo h($name); ?></h2>
-</header>
+<?php echo $this->element('error_header'); ?>
 
 <section class="wrapper style4 container">
 	<div class="content">

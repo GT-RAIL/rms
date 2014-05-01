@@ -12,4 +12,11 @@
  * @package		app.Model
  */
 class Setting extends AppModel {
+
+	/**
+	 * The default ID for the single settings entry.
+	 *
+	 * @var int
+	 */
+	public static $DEFAULT_ID = 1;
 }

@@ -28,10 +28,12 @@ abstract class AppController extends Controller {
 
 		// grab site settings
 		$this->loadModel('Setting');
-		$setting = $this->Setting->find('first');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
 		$settingSubset = array(
-			'title' => $setting['Setting']['title'],
-			'copyright' => $setting['Setting']['copyright']
+			'Setting' => array(
+				'title' => $setting['Setting']['title'],
+				'copyright' => $setting['Setting']['copyright']
+			)
 		);
 		$this->set('setting', $settingSubset);
 

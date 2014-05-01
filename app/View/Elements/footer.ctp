@@ -15,7 +15,7 @@
 
 <footer id="footer">
 	<span class="copyright">
-		&copy; <?php echo __('%s %s', date('Y'), h($setting['copyright'])); ?>
+		&copy; <?php echo __('%s %s', date('Y'), h($setting['Setting']['copyright'])); ?>
 		<br />
 		Powered by the
 		<strong><?php echo $this->Html->link('Robot Management System', 'http://wiki.ros.org/rms'); ?></strong>

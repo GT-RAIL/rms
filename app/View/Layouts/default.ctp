@@ -28,7 +28,7 @@ $home = isset($home) && $home;
 		<section id="banner">
 			<div class="inner">
 				<header>
-					<h2><?php echo h($setting['title']); ?></h2>
+					<h2><?php echo h($setting['Setting']['title']); ?></h2>
 				</header>
 				<p>
 					Powered by the <br />

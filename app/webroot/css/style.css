@@ -171,6 +171,13 @@ header.special {
 	margin: 0;
 }
 
+#logo-preview img {
+	width: 300px;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
 footer > :last-child {
 	margin-bottom: 0;
 }
@@ -580,14 +587,15 @@ table {
 		padding: 0 4em 1em 4em;
 	}
 
+	.wrapper.style4 .center {
+		text-align: center;
+	}
+
 		.wrapper.style4 th {
 			text-align: left;
 			font-weight: 400;
 		}
 
-		.wrapper.style4 td.center {
-			text-align: center;
-		}
 
 /* Header */
 @-moz-keyframes reveal-header { 0% { top: -5em; } 100% { top: 0; } }
