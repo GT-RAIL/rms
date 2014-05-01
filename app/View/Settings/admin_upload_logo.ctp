@@ -19,8 +19,8 @@
 </header>
 
 <section class="wrapper style4 container">
-	<div class="content">
-		<section class="center">
+	<div class="content center">
+		<section>
 			<?php
 			echo $this->Form->create('Setting', array('type' => 'file'));
 			echo $this->Form->input('id', array('type' => 'hidden'));

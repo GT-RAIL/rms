@@ -52,17 +52,21 @@ class SettingsController extends AppController {
 	 */
 	public function admin_edit() {
 		// only work for PUT requests
-		if ($this->request->is(array('page', 'put'))) {
+		if ($this->request->is(array('setting', 'put'))) {
 			// set the ID
-			$this->Page->id = Setting::$DEFAULT_ID;
+			$this->Setting->id = Setting::$DEFAULT_ID;
 			// set the current timestamp for modification
-			$this->Page->data['Page']['modified'] = date('Y-m-d H:i:s');
+			$this->Setting->data['Setting']['modified'] = date('Y-m-d H:i:s');
+			// check the analytics ID
+			if (strlen($this->request->data['Setting']['analytics']) === 0) {
+				$this->request->data['Setting']['analytics'] = NULL;
+			}
 			// attempt to save the entry
-			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('The page has been updated.');
+			if ($this->Setting->save($this->request->data)) {
+				$this->Session->setFlash('The settings have been updated.');
 				return $this->redirect(array('action' => 'index'));
 			}
-			$this->Session->setFlash('Unable to update the page.');
+			$this->Session->setFlash('Unable to update the settings.');
 		}
 
 		// store the entry data if it was not a PUT request

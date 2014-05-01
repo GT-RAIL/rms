@@ -20,7 +20,7 @@
 </header>
 
 <section class="wrapper style4 container">
-	<div class="content">
+	<div class="content center">
 		<section>
 			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
 			<br /><br />
@@ -36,7 +36,7 @@
 				</tr>
 				<?php foreach ($pages as $page): ?>
 					<tr>
-						<td class="center">
+						<td>
 							<?php
 							echo $this->Form->postLink(
 								'',

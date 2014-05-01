@@ -57,7 +57,7 @@
 					<br />
 					<?php
 					echo $this->Html->link(
-						'Upload ',
+						' Upload',
 						array('action' => 'uploadLogo'),
 						array('class' => 'icon fa-upload')
 					);
