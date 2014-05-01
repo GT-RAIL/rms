@@ -22,10 +22,25 @@
 			if (isset($edit) && $edit) {
 				echo $this->Form->input('id', array('type' => 'hidden'));
 			}
-			echo $this->Form->input('title');
-			echo $this->Form->input('content');
-			echo $this->Form->input('page_id');
-			echo $this->Form->end(array('label' => 'Save', 'class' => 'button special')); ?>
+			?>
+			<div class="row">
+				<section class="8u">
+					<?php echo $this->Form->input('title'); ?>
+				</section>
+				<section class="4u">
+					<?php echo $this->Form->input('page_id', array('label' => 'Page<br />', 'class' => 'button')); ?>
+				</section>
+			</div>
+			<div class="row">
+				<section class="12u">
+					<?php echo $this->Form->input('content'); ?>
+				</section>
+			</div>
+			<div class="row">
+				<section class="12u">
+					<?php echo $this->Form->end(array('label' => 'Save', 'class' => 'button special')); ?>
+				</section>
+			</div>
 		</section>
 	</div>
 </section>
