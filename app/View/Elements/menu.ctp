@@ -2,7 +2,7 @@
 /**
  * Default Menu
  *
- * The main menu contains links to all pages and a sign up button. If a user is logged in, a user menu and logout button
+ * The main menu contains links to all pages and a sign in button. If a user is logged in, a user menu and logout button
  * is displayed as well.
  *
  * @author		Russell Toris - rctoris@wpi.edu
@@ -28,7 +28,7 @@ $loggedIn = AuthComponent::user('id') !== null;
 		<?php
 		echo $this->Html->image(
 			array('admin' => false, 'controller' =>'settings', 'action' => 'logo'),
-			array('alt' => 'rms')
+			array('alt' => 'rms', 'url' => array('admin' => false, 'controller' => 'pages'))
 		);
 		?>
 	</h1>
@@ -113,8 +113,8 @@ $loggedIn = AuthComponent::user('id') !== null;
 				<li>
 					<?php
 					echo $this->Html->link(
-						'Sign Up',
-						array('controller' => 'users', 'action' => 'signup'),
+						'Sign In',
+						array('controller' => 'users', 'action' => 'login'),
 						array('class' => 'button special')
 					);
 					?>

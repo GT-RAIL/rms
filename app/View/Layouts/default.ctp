@@ -24,42 +24,11 @@ $home = isset($home) && $home;
 <body class="<?php echo ($home) ? 'index' : 'no-sidebar'; ?> loading">
 	<?php echo $this->element('menu', array('home' => $home)); ?>
 
-	<?php if ($home): ?>
-		<section id="banner">
-			<div class="inner">
-				<header>
-					<h2><?php echo h($setting['Setting']['title']); ?></h2>
-				</header>
-				<p>
-					Powered by the <br />
-					<strong>
-						<?php echo $this->Html->link('Robot Management System', 'http://wiki.ros.org/rms'); ?>
-					</strong>
-				</p>
-				<footer>
-					<ul class="buttons vertical">
-						<li><a href="#main" class="button fit scrolly">Learn More</a></li>
-						<?php if(!AuthComponent::user('id')): ?>
-							<li>
-								<?php
-								echo $this->Html->link(
-									'Sign In',
-									array(
-										'controller' => 'users',
-										'action' => 'login'
-									),
-									array(
-										'class' => 'button fit special'
-									)
-								);
-								?>
-							</li>
-						<?php endif; ?>
-					</ul>
-				</footer>
-			</div>
-		</section>
-	<?php endif; ?>
+	<?php
+	if ($home) {
+		echo $this->element('banner');
+	}
+	?>
 
 	<article id="main">
 
