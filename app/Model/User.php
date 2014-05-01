@@ -25,8 +25,8 @@ class User extends AppModel {
 //				'message' => 'Please enter a valid password.'
 //			),
 //			'maxLength' => array(
-//				'rule' => array('maxLength', 64),
-//				'message' => 'Password cannot be longer than 64 characters.'
+//				'rule' => array('maxLength', 32),
+//				'message' => 'Password cannot be longer than 32 characters.'
 //			)
 //		),
 		'email' => array(
