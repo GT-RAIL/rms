@@ -24,12 +24,23 @@
 			<?php
 			echo $this->Form->create('Setting');
 			echo $this->Form->input('id', array('type' => 'hidden'));
-			echo $this->Form->input('title');
-			echo $this->Form->input('copyright');
-			echo $this->Form->input('analytics', array('label' => 'Google Analytics ID (optional)'));
-			echo $this->Form->input('email', array('label' => 'Enable Emails'));
-			echo $this->Form->end(array('label' => 'Save', 'class' => 'button special'));
 			?>
+			<div class="row">
+				<section class="6u">
+					<?php echo $this->Form->input('title'); ?>
+					<?php echo $this->Form->input('analytics', array('label' => 'Google Analytics ID (optional)')); ?>
+				</section>
+				<section class="6u">
+					<?php echo $this->Form->input('copyright'); ?>
+					<br />
+					<?php echo $this->Form->input('email', array('label' => 'Emails Enabled', 'type' => 'checkbox')); ?>
+				</section>
+			</div>
+			<div class="row">
+				<section class="12u">
+					<?php echo $this->Form->end(array('label' => 'Save', 'class' => 'button special')); ?>
+				</section>
+			</div>
 		</section>
 	</div>
 </section>

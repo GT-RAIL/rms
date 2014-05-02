@@ -87,7 +87,16 @@ abstract class AppController extends Controller {
 					),
 					array(
 						'title' => 'Settings',
-						'url' => array('admin' => true, 'controller' => 'settings', 'action' => 'index')
+						'menu' => array(
+							array(
+								'title' => 'Site Settings',
+								'url' => array('admin' => true, 'controller' => 'settings', 'action' => 'index')
+							),
+							array(
+								'title' => 'Email Settings',
+								'url' => array('admin' => true, 'controller' => 'smtp', 'action' => 'index')
+							)
+						)
 					)
 				);
 				$this->set('adminMenu', $adminMenu);
