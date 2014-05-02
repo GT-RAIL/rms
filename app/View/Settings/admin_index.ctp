@@ -20,22 +20,22 @@
 </header>
 
 <section class="wrapper style4 container">
-	<div class="content">
+	<div class="content center">
 		<section>
 			<div class="row">
-				<section class="4u center">
+				<section class="3u">
 					<strong><u>Site Title</u></strong>
 					<br />
 					<?php echo h($setting['Setting']['title']); ?>
 					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
-				<section class="4u center">
+				<section class="4u">
 					<strong><u>Copyright Message</u></strong>
 					<br />
 					<?php echo h($setting['Setting']['copyright']); ?>
 					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
-				<section class="4u center">
+				<section class="3u">
 					<strong>
 						<?php echo $this->Html->link('Google Analytics', 'http://www.google.com/analytics/'); ?>
 					</strong>
@@ -43,9 +43,17 @@
 					<?php echo ($setting['Setting']['analytics']) ? h($setting['Setting']['analytics']) : 'N/A'; ?>
 					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
+				<section class="2u">
+					<strong>
+						<?php echo $this->Html->link('Emails', array('controller' => 'smtp', 'action' => 'index')); ?>
+					</strong>
+					<br />
+					<?php echo ($setting['Setting']['email']) ? 'Enabled' : 'Disabled'; ?>
+					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
+				</section>
 			</div>
 			<div class="row">
-				<section class="12u center" id="logo-preview">
+				<section class="12u" id="logo-preview">
 					<strong><u>Site Logo</u></strong>
 					<br />
 					<?php

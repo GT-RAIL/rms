@@ -13,10 +13,7 @@
  */
 ?>
 
-<?php
-// check if this is the homepage
-$home = isset($home) && $home;
-?>
+<?php $home = isset($home) && $home; ?>
 
 <!DOCTYPE html>
 <html>
