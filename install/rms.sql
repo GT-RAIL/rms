@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `title` varchar(16) NOT NULL COMMENT 'Site name.',
   `copyright` varchar(32) NOT NULL COMMENT 'Copyright message.',
   `analytics` varchar(16) DEFAULT NULL COMMENT 'Optional Google Analytics ID.',
-  `email` tinyint(1) unsigned NOT NULL COMMENT 'If email sending is enabled.',
+  `email` boolean NOT NULL COMMENT 'If email sending is enabled.',
   `encrypt` varchar(256) NOT NULL COMMENT 'Random encryption key.',
   `logo` longblob NOT NULL COMMENT 'The actual logo image data (prevents Git conflicts).',
   `version` varchar(16) NOT NULL COMMENT 'RMS version number.',

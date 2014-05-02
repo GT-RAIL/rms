@@ -27,6 +27,7 @@
 			echo $this->Form->input('title');
 			echo $this->Form->input('copyright');
 			echo $this->Form->input('analytics', array('label' => 'Google Analytics ID (optional)'));
+			echo $this->Form->input('email', array('label' => 'Enable Emails'));
 			echo $this->Form->end(array('label' => 'Save', 'class' => 'button special'));
 			?>
 		</section>
