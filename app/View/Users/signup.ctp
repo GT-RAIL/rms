@@ -1,3 +1,18 @@
+<?php
+/**
+ * Sign Up View
+ *
+ * The sign up page will allow a new user to create an account.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Users
+ */
+?>
+
 <header class="special container">
 	<span class="icon fa-users"></span>
 	<h2>Sign Up</h2>

@@ -1,8 +1,8 @@
 <?php
 /**
- * User Edit View
+ * User Change Password View
  *
- * The user edit view allows a user to change their own name and email.
+ * The user change password view allows a user to change their own password.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -14,8 +14,8 @@
 ?>
 
 <header class="special container">
-	<span class="icon fa-pencil"></span>
-	<h2>Edit User</h2>
+	<span class="icon fa-lock"></span>
+	<h2>Change Password</h2>
 </header>
 
 <section class="wrapper style4 container">
@@ -27,15 +27,15 @@
 			?>
 			<div class="row">
 				<section class="6u">
-					<?php echo $this->Form->input('fname', array('label' => 'First Name')); ?>
+					<?php echo $this->Form->input('password', array('value' => '')); ?>
 				</section>
 				<section class="6u">
-					<?php echo $this->Form->input('lname', array('label' => 'Last Name')); ?>
-				</section>
-			</div>
-			<div class="row">
-				<section class="12u">
-					<?php echo $this->Form->input('email'); ?>
+					<?php
+					echo $this->Form->input(
+						'repass',
+						array('label' => 'Password Confirmation', 'type' => 'password')
+					);
+					?>
 				</section>
 			</div>
 			<div class="row">

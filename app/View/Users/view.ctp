@@ -1,3 +1,18 @@
+<?php
+/**
+ * User View
+ *
+ * The user view displays account information for the given user. This will allow the user to edit their information.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.View.Users
+ */
+?>
+
 <header class="special container">
 	<span class="icon fa-user"></span>
 	<h2><?php echo h($user['User']['fname'].' '.$user['User']['lname']); ?></h2>

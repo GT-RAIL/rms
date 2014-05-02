@@ -587,6 +587,12 @@ table {
 		padding: 0 4em 1em 4em;
 	}
 
+	.wrapper.style4 .error-message {
+		color: #db6b67;
+		font-weight: 600;
+		font-size: small;
+	}
+
 	.wrapper.style4 .center {
 		text-align: center;
 	}
