@@ -19,7 +19,7 @@ class UsersController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Paginator');
 
 	/**
 	 * The used models for the controller.
@@ -34,6 +34,7 @@ class UsersController extends AppController {
 	 * @var array
 	 */
 	public $components = array(
+		'Paginator',
 		'Session',
 		'Auth' => array(
 			'authorize' => 'Controller',
@@ -46,12 +47,226 @@ class UsersController extends AppController {
 	);
 
 	/**
+	 * Define pagination criteria.
+	 *
+	 * @var array
+	 */
+	public $paginate = array(
+		'limit' => 25,
+		'order' => array(
+			'User.role_id' => 'ASC', 'User.created' => 'ASC'
+		)
+	);
+
+	/**
 	 * Define the actions which can be used by any user, authorized or not.
 	 */
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
 		$this->Auth->allow('signup', 'login');
+	}
+
+	/**
+	 * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
+	 */
+	public function admin_index() {
+		$this->Paginator->settings = $this->paginate;
+		// grab all the fetched entries
+		$this->set('users', $this->Paginator->paginate('User'));
+	}
+
+	/**
+	 * The admin view allows and admin to view any user's extended information.
+	 *
+	 * @param int $id The ID of the entry to view.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function admin_view($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// store the entry
+		$this->set('user', $user);
+		$this->set('title_for_layout', $user['User']['username']);
+	}
+
+	/**
+	 * The admin add action. This will allow the admin to create a new entry.
+	 */
+	public function admin_add() {
+		// load the roles list
+		$roles = $this->User->Role->find('list');
+		$this->set('roles', $roles);
+
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// create a new entry
+			$this->User->create();
+			// set the current timestamp for creation and modification
+			$this->User->data['User']['created'] = date('Y-m-d H:i:s');
+			$this->User->data['User']['modified'] = date('Y-m-d H:i:s');
+			// attempt to save the entry
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash('The user has been saved.');
+				return $this->redirect(array('action' => 'index'));
+			}
+			$this->Session->setFlash('Unable to add the user.');
+		}
+
+		$this->set('title_for_layout', 'Add User');
+	}
+
+	/**
+	 * The admin edit action. This allows the admin to edit an existing entry.
+	 *
+	 * @param int $id The ID of the entry to edit.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function admin_edit($id = null) {
+		// load the roles list
+		$roles = $this->User->Role->find('list');
+		$this->set('roles', $roles);
+
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// only work for PUT requests
+		if ($this->request->is(array('user', 'put'))) {
+			// set the ID
+			$this->User->id = $id;
+			// set the current timestamp for modification
+			$this->User->data['User']['modified'] = date('Y-m-d H:i:s');
+
+			// attempt to save the entry
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash('The user has been updated.');
+				return $this->redirect(array('action' => 'index'));
+			}
+			$this->Session->setFlash('Unable to update the article.');
+		}
+
+		// store the entry data if it was not a PUT request
+		if (!$this->request->data) {
+			$this->request->data = $user;
+		}
+
+		$this->set('title_for_layout', __('Edit User - %s', $user['User']['username']));
+	}
+
+	/**
+	 * Revoke admin privileges from the given user. An admin may not revoke themselves.
+	 *
+	 * @param int $id The entry ID to revoke admin privileges from.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 * @throws MethodNotAllowedException Thrown if a GET request is made.
+	 */
+	public function admin_revoke($id = null) {
+		// do not allow GET requests
+		if ($this->request->is('get')) {
+			throw new MethodNotAllowedException();
+		}
+
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// make sure we can revoke
+		if($this->Auth->user('id') !== $user['User']['id']) {
+			// grab the basic ID
+			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'basic')));
+			if($user['User']['role_id'] !==  $role['Role']['id']) {
+				// update the role
+				$this->User->read(null, $user['User']['id']);
+				$this->User->saveField('role_id', $role['Role']['id']);
+				$this->User->saveField('modified', date('Y-m-d H:i:s'));
+			}
+		}
+
+		// return to the index
+		return $this->redirect(array('action' => 'index'));
+	}
+
+	/**
+	 * Grant admin privileges to the given user.
+	 *
+	 * @param int $id The entry ID to grant admin privileges to.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 * @throws MethodNotAllowedException Thrown if a GET request is made.
+	 */
+	public function admin_grant($id = null) {
+		// do not allow GET requests
+		if ($this->request->is('get')) {
+			throw new MethodNotAllowedException();
+		}
+
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// make sure we can revoke
+		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
+		if($user['User']['role_id'] !==  $role['Role']['id']) {
+			// update the role
+			$this->User->read(null, $user['User']['id']);
+			$this->User->saveField('role_id', $role['Role']['id']);
+			$this->User->saveField('modified', date('Y-m-d H:i:s'));
+		}
+
+		// return to the index
+		return $this->redirect(array('action' => 'index'));
+	}
+
+	/**
+	 * The admin delete action. This allows the admin to delete an existing entry. An admin may not delete themselves.
+	 *
+	 * @param int $id The ID of the entry to delete.
+	 * @throws MethodNotAllowedException Thrown if a GET request is made.
+	 */
+	public function admin_delete($id = null) {
+		// do not allow GET requests
+		if ($this->request->is('get')) {
+			throw new MethodNotAllowedException();
+		}
+
+		// check the ID
+		if ($this->Auth->user('id') === $id) {
+			$this->Session->setFlash('You many not delete yourself.');
+			return $this->redirect(array('action' => 'index'));
+		} else if ($this->User->delete($id)) {
+			$this->Session->setFlash('The user has been deleted.');
+			return $this->redirect(array('action' => 'index'));
+		}
 	}
 
 	/**
@@ -156,6 +371,7 @@ class UsersController extends AppController {
 
 		// store the entry
 		$this->set('user', $user);
+		$this->set('title_for_layout', 'Account');
 	}
 
 	/**

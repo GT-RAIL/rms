@@ -15,7 +15,7 @@
 
 <header class="special container">
 	<span class="icon fa-user"></span>
-	<h2><?php echo h($user['User']['fname'].' '.$user['User']['lname']); ?></h2>
+	<h2><?php echo __('%s %s', h($user['User']['fname']), h($user['User']['lname'])); ?></h2>
 	<p><?php echo h($user['User']['email']); ?></p>
 	<p>
 		<?php echo $this->Html->link('Edit Information', array('action' => 'edit')); ?> |

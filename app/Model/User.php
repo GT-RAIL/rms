@@ -38,85 +38,85 @@ class User extends AppModel {
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid username.',
-				'required' => 'create'
+				'on' => array('signup', 'add', 'edit')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 16),
 				'message' => 'Usernames cannot be longer than 16 characters.',
-				'required' => 'create'
+				'on' => array('signup', 'add', 'edit')
 			),
 			'minLength' => array(
 				'rule' => array('minLength', 3),
 				'message' => 'Usernames cannot be shorter than 3 characters.',
-				'required' => 'create'
+				'on' => array('signup', 'add', 'edit')
 			),
 			'isUnique' => array(
 				'rule' => 'isUnique',
 				'message' => 'This username already exists.',
-				'required' => 'create'
+				'on' => array('signup', 'add', 'edit')
 			)
 		),
 		'password' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid password.',
-				'on' => array('signup', 'password')
+				'on' => array('signup', 'password', 'add')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'Password cannot be longer than 32 characters.',
-				'on' => array('signup', 'password')
+				'on' => array('signup', 'password', 'add')
 			),
 			'minLength' => array(
 				'rule' => array('minLength', 6),
 				'message' => 'Password cannot be shorter than 6 characters.',
-				'on' => array('signup', 'password')
+				'on' => array('signup', 'password', 'add')
 			),
 		),
 		'email' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid email.',
-				'on' => array('signup')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
 				'message' => 'Emails cannot be longer than 255 characters.',
-				'on' => array('signup')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			),
 			'email' => array(
 				'rule' => array('email', true),
 				'message' => 'Please supply a valid email address.',
-				'on' => array('signup')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			),
 			'isUnique' => array(
 				'rule' => 'isUnique',
 				'message' => 'This email already exists.',
-				'on' => array('signup', 'edit')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			)
 		),
 		'fname' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid first name.',
-				'on' => array('signup', 'edit')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'First names cannot be longer than 32 characters.',
-				'on' => array('signup', 'edit')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			)
 		),
 		'lname' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid last name.',
-				'on' => array('signup', 'edit')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'Last names cannot be longer than 32 characters.',
-				'on' => array('signup', 'edit')
+				'on' => array('signup', 'edit', 'add', 'edit')
 			)
 		),
 		'repass' => array(
