@@ -31,13 +31,11 @@ $home = isset($home) && $home;
 	?>
 
 	<article id="main">
-
-		<?php  if($this->Session->check('Message.flash')): ?>
+		<?php if($this->Session->check('Message.flash')): ?>
 			<section class="flash">
 				<p><?php echo $this->Session->flash(); ?></p>
 			</section>
 		<?php endif; ?>
-
 		<?php echo $this->fetch('content'); ?>
 	</article>
 
