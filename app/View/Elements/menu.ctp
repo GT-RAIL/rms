@@ -15,13 +15,7 @@
 ?>
 
 
-<?php
-// check if this is the homepage
-$home = isset($home) && $home;
-
-// check if a user is logged in
-$loggedIn = AuthComponent::user('id') !== null;
-?>
+<?php $home = isset($home) && $home; ?>
 
 <header id="header" class="<?php echo ($home) ? 'alt' : ''; ?>">
 	<h1 id="logo">
@@ -38,19 +32,9 @@ $loggedIn = AuthComponent::user('id') !== null;
 			<li class="submenu">
 				<a href="">Menu</a>
 				<ul>
-					<?php foreach($menu as $page): ?>
+					<?php foreach($menu as $m): ?>
 						<li>
-							<?php
-							echo $this->Html->link(
-								$page['Page']['menu'],
-								array(
-									'admin' => false,
-									'controller' => 'pages',
-									'action' => 'view',
-									$page['Page']['id']
-								)
-							);
-							?>
+							<?php echo $this->Html->link($m['title'], $m['url']);?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -60,35 +44,24 @@ $loggedIn = AuthComponent::user('id') !== null;
 					<li class="submenu">
 						<a href="">Admin</a>
 						<ul>
-							<li class="submenu">
-								<a href="">Content</a>
-								<ul>
-									<li>
-										<?php
-										echo $this->Html->link(
-											'Pages',
-											array('admin' => true, 'controller' => 'pages', 'action' => 'index')
-										);
-										?>
+							<?php foreach($adminMenu as $am): ?>
+								<?php if (isset($am['menu'])): ?>
+									<li class="submenu">
+										<?php echo $this->Html->link($am['title'], ''); ?>
+										<ul>
+											<?php foreach($am['menu'] as $m): ?>
+												<li>
+													<?php echo $this->Html->link($m['title'], $m['url']);?>
+												</li>
+											<?php endforeach; ?>
+										</ul>
 									</li>
+								<?php else: ?>
 									<li>
-										<?php
-										echo $this->Html->link(
-											'Articles',
-											array('admin' => true, 'controller' => 'articles', 'action' => 'index')
-										);
-										?>
+										<?php echo $this->Html->link($am['title'], $am['url']); ?>
 									</li>
-								</ul>
-							</li>
-							<li>
-								<?php
-								echo $this->Html->link(
-									'Site Settings',
-									array('admin' => true, 'controller' => 'settings', 'action' => 'index')
-								);
-								?>
-							</li>
+								<?php endif; ?>
+							<?php endforeach; ?>
 						</ul>
 					</li>
 				<?php endif; ?>

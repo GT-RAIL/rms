@@ -22,10 +22,6 @@ abstract class AppController extends Controller {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		// set the main menu for the pages
-		$this->loadModel('Page');
-		$this->set('menu', $this->Page->find('all', array('order' => array('Page.index' => 'ASC'))));
-
 		// grab site settings
 		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
@@ -37,16 +33,69 @@ abstract class AppController extends Controller {
 		);
 		$this->set('setting', $settingSubset);
 
-		// set the admin flag
-		$this->loadModel('Role');
-		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
-		$admin = AuthComponent::user('role_id') === $role['Role']['id'];
-		$this->set('admin', $admin);
+		// set the main menu for the pages
+		$this->loadModel('Page');
+		$pages =  $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+		$menu = array();
+		foreach ($pages as $page) {
+			$menu[] = array(
+				'title' => $page['Page']['menu'],
+				'url' => array(
+					'admin' => false,
+					'controller' => 'pages',
+					'action' => 'view',
+					$page['Page']['id']
+				)
+			);
+		}
+		$this->set('menu', $menu);
+
+		// check for a logged in user
+		$loggedIn = AuthComponent::user('id') !== null;
+		$this->set('loggedIn', $loggedIn);
+
+		// set default admin flag and admin menu
+		$this->set('admin', false);
+		$this->set('adminMenu', NULL);
+
+		if($loggedIn) {
+			// now check the admin flag
+			$this->loadModel('Role');
+			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
+			$admin = AuthComponent::user('role_id') === $role['Role']['id'];
+			$this->set('admin', $admin);
+
+			// check if we should create the admin menu
+			if ($admin) {
+				$adminMenu = array(
+					array(
+						'title' => 'Content',
+						'menu' => array(
+							array(
+								'title' => 'Pages',
+								'url' => array('admin' => true, 'controller' => 'pages', 'action' => 'index')
+							),
+							array(
+								'title' => 'Articles',
+								'url' => array('admin' => true, 'controller' => 'Articles', 'action' => 'index')
+							)
+						)
+					),
+					array(
+						'title' => 'Settings',
+						'url' => array('admin' => true, 'controller' => 'Settings')
+					)
+				);
+				$this->set('adminMenu', $adminMenu);
+			}
+		}
 	}
 
 	/**
 	 * The global authorization method. This will be automatically called and used if the authorize controller is an
 	 * an included component in the given controller.
+	 *
+	 * @return bool Returns if the user is authorized.
 	 */
 	public function isAuthorized() {
 		// any registered user can access public functions
