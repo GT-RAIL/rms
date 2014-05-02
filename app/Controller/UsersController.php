@@ -76,9 +76,15 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			// check if we have valid login credentials
 			if ($this->Auth->login()) {
+				// update the user's counter
+				$id = $this->Auth->user('id');
+				$this->User->read(null, $id);
+				$this->User->saveField('logins', $this->Auth->user('logins') + 1);
+				$this->User->saveField('visit', date('Y-m-d H:i:s'));
+
 				return $this->redirect($this->Auth->redirectUrl());
 			}
-			$this->Session->setFlash(__('Invalid username or password, try again'));
+			$this->Session->setFlash('Invalid username or password, try again');
 		}
 
 		$this->set('title_for_layout', 'Sign In');

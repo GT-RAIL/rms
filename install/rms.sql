@@ -143,20 +143,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `fname` varchar(32) NOT NULL COMMENT 'First name of the user.',
   `lname` varchar(32) NOT NULL COMMENT 'Last name of the user.',
   `role_id` int(10) unsigned NOT NULL COMMENT 'Role assignment for the user.',
+  `logins` int(11) NOT NULL DEFAULT '0' COMMENT 'The login counter for the user.',
+  `visit` timestamp NULL DEFAULT NULL COMMENT 'The last time the user logged in.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Roles for various users.' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Roles for various users.' AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `fname`, `lname`, `role_id`, `created`, `modified`) VALUES
-  (2, 'admin', '56d22830d7f723212a140d1d2061c6c75e7ac2b3008d2cc673be6831eb84d8b6', 'admin@mysite.com', 'System', 'Admin', 1, NOW(), NOW());
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `fname`, `lname`, `role_id`, `logins`, `visit`, `created`, `modified`) VALUES
+  (1, 'admin', '56d22830d7f723212a140d1d2061c6c75e7ac2b3008d2cc673be6831eb84d8b6', 'admin@mysite.com', 'System', 'Admin', 1, 0, NULL,  NOW(), NOW());
 
 --
 -- Constraints for dumped tables
