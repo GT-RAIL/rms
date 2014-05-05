@@ -111,6 +111,9 @@ class UsersController extends AppController {
 
 		// only work for POST requests
 		if ($this->request->is('post')) {
+			// store the original password
+			$password = $this->request->data['User']['password'];
+
 			// create a new entry
 			$this->User->create();
 			// set the current timestamp for creation and modification
@@ -118,6 +121,8 @@ class UsersController extends AppController {
 			$this->User->data['User']['modified'] = date('Y-m-d H:i:s');
 			// attempt to save the entry
 			if ($this->User->save($this->request->data)) {
+				// send the welcome email
+				$this->sendCreationEmail($this->User->id, $password);
 				$this->Session->setFlash('The user has been saved.');
 				return $this->redirect(array('action' => 'index'));
 			}
@@ -236,7 +241,7 @@ class UsersController extends AppController {
 			throw new NotFoundException('Invalid user.');
 		}
 
-		// make sure we can revoke
+		// make sure we can grant
 		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
 		if($user['User']['role_id'] !==  $role['Role']['id']) {
 			// update the role
@@ -489,6 +494,48 @@ class UsersController extends AppController {
 			$content = __('Dear %s,\n\n', h($user['User']['fname']));
 			$content .= __('Welcome to %s! This email is to confirm your account. ', h($setting['Setting']['title']));
 			$content .= 'No additional action is required at this time. Welcome and have fun!\n\n';
+			$content .= __('--The %s Team', h($setting['Setting']['title']));
+			$email->send($content);
+		}
+	}
+
+	/**
+	 * Send a welcome email if email is enabled in the site settings for an admin created user.
+	 *
+	 * @param int $id The user ID to send the welcome email to.
+	 * @param string $password The un-hashed password to send to the new user.
+	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 */
+	private function sendCreationEmail($id = null, $password = '') {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// check if we are sending a welcome email
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		if($setting['Setting']['email']) {
+			$email = new CakeEmail('dynamic');
+			$email->to($user['User']['email']);
+			$email->subject(__('Account Created for %s', h($setting['Setting']['title'])));
+
+			// generate the content
+			$content = __('Dear %s,\n\n', h($user['User']['fname']));
+			$content .= __('An admin has created you an account for use with %s! ', h($setting['Setting']['title']));
+			$content .= 'This email is to confirm your account. Below are you login credentials. ';
+			$content .= 'No additional action is required at this time. Welcome and have fun!\n\n';
+			$content .= __(
+				'<center><strong>Username:</strong> %s<br /><strong>Password:</strong> %s</center>\n\n',
+				h($user['User']['username']),
+				h($password)
+			);
 			$content .= __('--The %s Team', h($setting['Setting']['title']));
 			$email->send($content);
 		}
