@@ -54,6 +54,8 @@ echo -e "\tinstalling PhpMyAdmin and PEAR..."
 sudo apt-get install phpmyadmin php-pear >> /dev/null
 echo -e "\tenabling Apache mod-rewrite..."
 sudo a2enmod rewrite >> /dev/null
+echo -e "\tenabling PHP mcrypt..."
+sudo php5enmod mcrypt >> /dev/null
 sudo service apache2 restart > /dev/null 2>&1
 
 ## Setup CakePHP
@@ -62,7 +64,7 @@ echo "Setting up CakePHP..."
 echo -e "\tadding CakePHP channel to PEAR..."
 sudo pear channel-discover pear.cakephp.org >> /dev/null
 echo -e "\tinstalling CakePHP via PEAR..."
-sudo pear install cakephp/CakePHP-2.4.9 >> /dev/null
+sudo pear install cakephp/CakePHP-2.5.0RC2 >> /dev/null
 
 ## Install the app
 echo

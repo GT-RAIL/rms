@@ -136,34 +136,37 @@ INSERT INTO `settings` (`id`, `title`, `copyright`, `analytics`, `email`, `encry
 -- --------------------------------------------------------
 
 --
--- Table structure for table `smtps`
+-- Table structure for table `emails`
 --
 
-CREATE TABLE IF NOT EXISTS `smtps` (
+CREATE TABLE IF NOT EXISTS `emails` (
   `id` tinyint(1) unsigned NOT NULL COMMENT 'ID of the email settings (should remain 1).',
   `from` varchar(255) DEFAULT NULL COMMENT 'Sender''s email address.',
   `alias` varchar(32) DEFAULT NULL COMMENT 'Alias for the sender.',
   `host` varchar(255) DEFAULT NULL COMMENT 'The SMTP host address.',
   `port` int(11) unsigned DEFAULT NULL COMMENT 'THe SMTP server port.',
   `username` varchar(255) DEFAULT NULL COMMENT 'The username for the SMTP server.',
-  `password` varchar(32) DEFAULT NULL COMMENT 'The encrypted password for the SMTP user.',
-  `tls` tinyint(1) unsigned DEFAULT NULL COMMENT 'If TLS should be used.',
+  `password` tinyblob DEFAULT NULL COMMENT 'The encrypted password for the SMTP user.',
+  `tls` boolean DEFAULT NULL COMMENT 'If TLS should be used.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `from` (`from`),
   UNIQUE KEY `alias` (`alias`),
   UNIQUE KEY `host` (`host`),
   UNIQUE KEY `port` (`port`),
   UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `password` (`password`),
-  UNIQUE KEY `tls` (`tls`)
+  UNIQUE KEY `tls` (`tls`),
+  UNIQUE KEY `created` (`created`),
+  UNIQUE KEY `modified` (`modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='SMTP email settings.';
 
 --
--- Dumping data for table `smtps`
+-- Dumping data for table `emails`
 --
 
-INSERT INTO `rms`.`smtps` (`id`, `from`, `alias`, `host`, `port`, `username`, `password`, `tls`) VALUES
-  ('1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `emails` (`id`, `from`, `alias`, `host`, `port`, `username`, `password`, `tls`, `created`, `modified`) VALUES
+  ('1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NOW(), NOW());
 
 -- --------------------------------------------------------
 

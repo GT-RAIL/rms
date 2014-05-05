@@ -84,6 +84,28 @@ class Setting extends AppModel {
 				'allowEmpty' => true
 			)
 		),
+		'email' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Email settings cannot be blank.',
+				'required' => true
+			),
+			'geq' => array(
+				'rule' =>  array('comparison', '>=', 0),
+				'message' => 'Email settings must be boolean.',
+				'required' => true
+			),
+			'leq' => array(
+				'rule' =>  array('comparison', '<=', 1),
+				'message' => 'Email settings must be boolean.',
+				'required' => true
+			),
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Email settings must be unique.',
+				'required' => true
+			)
+		),
 		'modified' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',

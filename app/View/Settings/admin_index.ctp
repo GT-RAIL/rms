@@ -45,7 +45,7 @@
 				</section>
 				<section class="2u">
 					<strong>
-						<?php echo $this->Html->link('Emails', array('controller' => 'smtp', 'action' => 'index')); ?>
+						<?php echo $this->Html->link('Emails', array('controller' => 'emails', 'action' => 'index')); ?>
 					</strong>
 					<br />
 					<?php echo ($setting['Setting']['email']) ? 'Enabled' : 'Disabled'; ?>

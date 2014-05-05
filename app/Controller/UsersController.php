@@ -1,4 +1,6 @@
 <?php
+App::uses('CakeEmail', 'Network/Email');
+
 /**
  * Users Controller
  *
@@ -334,8 +336,11 @@ class UsersController extends AppController {
 			$this->request->data['User']['role_id'] = $role['Role']['id'];
 			// attempt to save the entry
 			if ($this->User->save($this->request->data)) {
-				// log the user in
 				$id = $this->User->id;
+				// try to send the welcome email
+				$this->sendWelcomeEmail($id);
+
+				// log the user in
 				$this->request->data['User'] = array_merge($this->request->data['User'], array('id' => $id));
 				$this->Auth->login($this->request->data['User']);
 				return $this->redirect($this->Auth->redirectUrl());
@@ -452,5 +457,40 @@ class UsersController extends AppController {
 		}
 
 		$this->set('title_for_layout', __('Change Password - %s', $user['User']['username']));
+	}
+
+	/**
+	 * Send a welcome email if email is enabled in the site settings.
+	 *
+	 * @param int $id The user ID to send the welcome email to.
+	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 */
+	private function sendWelcomeEmail($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// check if we are sending a welcome email
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		if($setting['Setting']['email']) {
+			$email = new CakeEmail('dynamic');
+			$email->to($user['User']['email']);
+			$email->subject(__('Welcome to %s', h($setting['Setting']['title'])));
+
+			// generate the content
+			$content = __('Dear %s,\n\n', h($user['User']['fname']));
+			$content .= __('Welcome to %s! This email is to confirm your account. ', h($setting['Setting']['title']));
+			$content .= 'No additional action is required at this time. Welcome and have fun!\n\n';
+			$content .= __('--The %s Team', h($setting['Setting']['title']));
+			$email->send($content);
+		}
 	}
 }

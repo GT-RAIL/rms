@@ -94,7 +94,7 @@ abstract class AppController extends Controller {
 							),
 							array(
 								'title' => 'Email Settings',
-								'url' => array('admin' => true, 'controller' => 'smtp', 'action' => 'index')
+								'url' => array('admin' => true, 'controller' => 'emails', 'action' => 'index')
 							)
 						)
 					)
