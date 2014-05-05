@@ -248,6 +248,9 @@ class UsersController extends AppController {
 			$this->User->read(null, $user['User']['id']);
 			$this->User->saveField('role_id', $role['Role']['id']);
 			$this->User->saveField('modified', date('Y-m-d H:i:s'));
+
+			// notify the user
+			$this->sendAdminGrantEmail($id);
 		}
 
 		// return to the index
@@ -536,6 +539,44 @@ class UsersController extends AppController {
 				h($user['User']['username']),
 				h($password)
 			);
+			$content .= __('--The %s Team', h($setting['Setting']['title']));
+			$email->send($content);
+		}
+	}
+
+
+
+	/**
+	 * Send an email notifying a user they are now an admin.
+	 *
+	 * @param int $id The user ID to send the welcome email to.
+	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 */
+	private function sendAdminGrantEmail($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// check if we are sending a welcome email
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		if($setting['Setting']['email']) {
+			$email = new CakeEmail('dynamic');
+			$email->to($user['User']['email']);
+			$email->subject(__('Admin Status for %s', h($setting['Setting']['title'])));
+
+			// generate the content
+			$content = __('Dear %s,\n\n', h($user['User']['fname']));
+			$content .= __('An admin has granted your admin privileges on %s! ', h($setting['Setting']['title']));
+			$content .= 'No additional action is required at this time. ';
+			$content .= 'Remember, with great power comes great responsibility!\n\n';
 			$content .= __('--The %s Team', h($setting['Setting']['title']));
 			$email->send($content);
 		}
