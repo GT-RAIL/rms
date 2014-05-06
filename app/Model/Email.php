@@ -113,14 +113,6 @@ class Email extends AppModel {
 				'allowEmpty' => true
 			)
 		),
-		'password' => array(
-			//TODO
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This password already exists.',
-				'allowEmpty' => true
-			)
-		),
 		'tls' => array(
 			'geq' => array(
 				'rule' =>  array('comparison', '>=', 0),

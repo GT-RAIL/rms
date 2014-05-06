@@ -28,7 +28,8 @@ abstract class AppController extends Controller {
 		$settingSubset = array(
 			'Setting' => array(
 				'title' => $setting['Setting']['title'],
-				'copyright' => $setting['Setting']['copyright']
+				'copyright' => $setting['Setting']['copyright'],
+				'analytics' => $setting['Setting']['analytics']
 			)
 		);
 		$this->set('setting', $settingSubset);

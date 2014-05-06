@@ -574,7 +574,7 @@ class UsersController extends AppController {
 
 			// generate the content
 			$content = __('Dear %s,\n\n', h($user['User']['fname']));
-			$content .= __('An admin has granted your admin privileges on %s! ', h($setting['Setting']['title']));
+			$content .= __('An admin has granted you admin privileges on %s! ', h($setting['Setting']['title']));
 			$content .= 'No additional action is required at this time. ';
 			$content .= 'Remember, with great power comes great responsibility!\n\n';
 			$content .= __('--The %s Team', h($setting['Setting']['title']));
