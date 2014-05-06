@@ -159,7 +159,7 @@ class User extends AppModel {
 	 *
 	 * @var string
 	 */
-	public $hasOne = 'Subscription';
+	public $hasOne = array('Subscription' => array('className' => 'Subscription', 'dependent' => true));
 
 	/**
 	 * Check if a new password was provided. If so, hash the password and store it.
@@ -173,6 +173,28 @@ class User extends AppModel {
 			$this->data['User']['password'] = $passwordHasher->hash(
 				$this->data['User']['password']
 			);
+		}
+		return true;
+	}
+
+	/**
+	 * After saving a new user, create a subscription settings entry.
+	 *
+	 * @param bool $created If the save was a creation or update.
+	 * @param array $options Unused in this implementation.
+	 * @return bool If the save was successful.
+	 */
+	public function afterSave($created = false, $options = array()) {
+		if ($created) {
+			$subscriptionModel = ClassRegistry::init('Subscription');
+			$subscriptionModel->create();
+			$subscriptionModel->data['Subscription']['user_id'] = $this->data['User']['id'];
+			$subscriptionModel->data['Subscription']['newsletter'] = true;
+			$subscriptionModel->data['Subscription']['studies'] = true;
+			$subscriptionModel->data['Subscription']['reminders'] = true;
+			$subscriptionModel->data['Subscription']['created'] = date('Y-m-d H:i:s');
+			$subscriptionModel->data['Subscription']['modified'] = date('Y-m-d H:i:s');
+			return $subscriptionModel->save();
 		}
 		return true;
 	}
