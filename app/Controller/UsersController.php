@@ -66,7 +66,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
-		$this->Auth->allow('signup', 'login');
+		$this->Auth->allow('signup', 'login', 'username', 'reset');
 	}
 
 	/**
@@ -111,7 +111,8 @@ class UsersController extends AppController {
 
 		// only work for POST requests
 		if ($this->request->is('post')) {
-			// store the original password
+			// store the original password and username
+			$username = $this->request->data['User']['username'];
 			$password = $this->request->data['User']['password'];
 
 			// create a new entry
@@ -122,7 +123,7 @@ class UsersController extends AppController {
 			// attempt to save the entry
 			if ($this->User->save($this->request->data)) {
 				// send the welcome email
-				$this->sendCreationEmail($this->User->id, $password);
+				$this->sendCreationEmail($this->User->id, $username, $password);
 				$this->Session->setFlash('The user has been saved.');
 				return $this->redirect(array('action' => 'index'));
 			}
@@ -166,7 +167,7 @@ class UsersController extends AppController {
 				$this->Session->setFlash('The user has been updated.');
 				return $this->redirect(array('action' => 'index'));
 			}
-			$this->Session->setFlash('Unable to update the article.');
+			$this->Session->setFlash('Unable to update the user.');
 		}
 
 		// store the entry data if it was not a PUT request
@@ -175,6 +176,35 @@ class UsersController extends AppController {
 		}
 
 		$this->set('title_for_layout', __('Edit User - %s', $user['User']['username']));
+	}
+
+	/**
+	 * The admin message action. This allows the admin to send an email message to a given user.
+	 *
+	 * @param int $id The ID of the entry to message.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function admin_message($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			$this->sendEmail($id, 'New Private Message', $this->request->data['User']['message']);
+			$this->Session->setFlash('The message has been sent.');
+			return $this->redirect(array('action' => 'index'));
+		}
+
+		$this->set('user', $user);
+		$this->set('title_for_layout', __('Message User - %s', $user['User']['username']));
 	}
 
 	/**
@@ -360,6 +390,75 @@ class UsersController extends AppController {
 	}
 
 	/**
+	 * Send a username reminder to a given user.
+	 */
+	public function username() {
+		// check if we are already logged in
+		if ($this->Auth->user('id')) {
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// check for the email
+			$user = $this->User->find(
+				'first',
+				array('conditions' => array('User.email' => $this->request->data['User']['email']))
+			);
+			if ($user) {
+				// send the email
+				$this->sendUsernameReminderEmail($user['User']['id'], $user['User']['username']);
+				$this->Session->setFlash(__('Username reminder sent to %s.', h($this->request->data['User']['email'])));
+				return $this->redirect(array('action' => 'login'));
+			}
+			$this->Session->setFlash('Email does not exist. Please try again.');
+		}
+
+		$this->set('title_for_layout', 'Username Reminder');
+	}
+
+	/**
+	 * Send a password reset link to a given user.
+	 */
+	public function reset() {
+		// check if we are already logged in
+		if ($this->Auth->user('id')) {
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// check for the email
+			$user = $this->User->find(
+				'first',
+				array('conditions' => array('User.username' => $this->request->data['User']['username']))
+			);
+			if ($user) {
+				$username = $user['User']['username'];
+				// create a new password
+				$pw = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0 ,10);
+
+				// update the user
+				$this->User->read(null, $user['User']['id']);
+				// set the current timestamp for modification
+				$this->User->data['User']['modified'] = date('Y-m-d H:i:s');
+				$this->User->data['User']['password'] = $pw;
+				// attempt to save the entry
+				if ($this->User->save($this->User->data)) {
+					// send the email
+					$this->sendPasswordResetEmail($user['User']['id'], $username, $pw);
+					$this->Session->setFlash(__('New password sent to %s.', h($user['User']['email'])));
+					return $this->redirect(array('action' => 'login'));
+				}
+				$this->Session->setFlash('Unable to reset your password.');
+			}
+			$this->Session->setFlash('Username does not exist. Please try again.');
+		}
+
+		$this->set('title_for_layout', 'Password Reset');
+	}
+
+	/**
 	 * The default index simply redirects to the view action.
 	 */
 	public function index() {
@@ -468,117 +567,143 @@ class UsersController extends AppController {
 	}
 
 	/**
-	 * Send a welcome email if email is enabled in the site settings.
+	 * The user delete action. This allows the user to delete their own account.
 	 *
-	 * @param int $id The user ID to send the welcome email to.
-	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 * @throws MethodNotAllowedException Thrown if a GET request is made.
+	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
 	 */
-	private function sendWelcomeEmail($id = null) {
-		if (!$id) {
-			// no ID provided
-			throw new NotFoundException('Invalid user.');
+	public function delete() {
+		// do not allow GET requests
+		if ($this->request->is('get')) {
+			throw new MethodNotAllowedException();
 		}
 
+		// find the ID
+		$id = $this->Auth->user('id');
+		// grab the entry
 		$user = $this->User->findById($id);
+
 		if (!$user) {
 			// no valid entry found for the given ID
 			throw new NotFoundException('Invalid user.');
 		}
 
-		// check if we are sending a welcome email
+		// delete the user
+		if ($this->User->delete($id)) {
+			// log the user out
+			return $this->redirect($this->Auth->logout());
+		}
+	}
+
+	/**
+	 * Send a welcome email if email is enabled in the site settings.
+	 *
+	 * @param int $id The user ID to send the welcome email to.
+	 */
+	private function sendWelcomeEmail($id = null) {
+		// create the subject
 		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
-		if($setting['Setting']['email']) {
-			$email = new CakeEmail('dynamic');
-			$email->to($user['User']['email']);
-			$email->subject(__('Welcome to %s', h($setting['Setting']['title'])));
+		$subject = __('Welcome to %s', h($setting['Setting']['title']));
 
-			// generate the content
-			$content = __('Dear %s,\n\n', h($user['User']['fname']));
-			$content .= __('Welcome to %s! This email is to confirm your account. ', h($setting['Setting']['title']));
-			$content .= 'No additional action is required at this time. Welcome and have fun!\n\n';
-			$content .= __('--The %s Team', h($setting['Setting']['title']));
-			$email->send($content);
-		}
+		// generate the message
+		$message = __('Welcome to %s! This email is to confirm your account. ', h($setting['Setting']['title']));
+		$message .= 'No additional action is required at this time. Welcome and have fun!';
+
+		// send the message
+		$this->sendEmail($id, $subject, $message);
 	}
 
 	/**
 	 * Send a welcome email if email is enabled in the site settings for an admin created user.
 	 *
 	 * @param int $id The user ID to send the welcome email to.
+	 * @param string $username The username send to the new user.
 	 * @param string $password The un-hashed password to send to the new user.
-	 * @throws NotFoundException Thrown if an invalid user ID is given.
 	 */
-	private function sendCreationEmail($id = null, $password = '') {
-		if (!$id) {
-			// no ID provided
-			throw new NotFoundException('Invalid user.');
-		}
-
-		$user = $this->User->findById($id);
-		if (!$user) {
-			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid user.');
-		}
-
-		// check if we are sending a welcome email
+	private function sendCreationEmail($id = null, $username = '', $password = '') {
+		// create the subject
 		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
-		if($setting['Setting']['email']) {
-			$email = new CakeEmail('dynamic');
-			$email->to($user['User']['email']);
-			$email->subject(__('Account Created for %s', h($setting['Setting']['title'])));
+		$subject = __('Account Created for %s', h($setting['Setting']['title']));
 
-			// generate the content
-			$content = __('Dear %s,\n\n', h($user['User']['fname']));
-			$content .= __('An admin has created you an account for use with %s! ', h($setting['Setting']['title']));
-			$content .= 'This email is to confirm your account. Below are you login credentials. ';
-			$content .= 'No additional action is required at this time. Welcome and have fun!\n\n';
-			$content .= __(
-				'<center><strong>Username:</strong> %s<br /><strong>Password:</strong> %s</center>\n\n',
-				h($user['User']['username']),
-				h($password)
-			);
-			$content .= __('--The %s Team', h($setting['Setting']['title']));
-			$email->send($content);
-		}
+		// generate the message
+		$message = __('An admin has created you an account for use with %s! ', h($setting['Setting']['title']));
+		$message .= 'This email is to confirm your account. Below are you login credentials. ';
+		$message .= 'No additional action is required at this time. Welcome and have fun!\n\n';
+		$message .= __(
+			'<center><strong>Username:</strong> %s<br /><strong>Password:</strong> %s</center>',
+			h($username),
+			h($password)
+		);
+
+		// send the message
+		$this->sendEmail($id, $subject, $message);
 	}
-
-
 
 	/**
 	 * Send an email notifying a user they are now an admin.
 	 *
-	 * @param int $id The user ID to send the welcome email to.
-	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 * @param int $id The user ID to send the access email to.
 	 */
 	private function sendAdminGrantEmail($id = null) {
-		if (!$id) {
-			// no ID provided
-			throw new NotFoundException('Invalid user.');
-		}
-
-		$user = $this->User->findById($id);
-		if (!$user) {
-			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid user.');
-		}
-
-		// check if we are sending a welcome email
+		// create the subject
 		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
-		if($setting['Setting']['email']) {
-			$email = new CakeEmail('dynamic');
-			$email->to($user['User']['email']);
-			$email->subject(__('Admin Status for %s', h($setting['Setting']['title'])));
+		$subject = __('Admin Status for %s', h($setting['Setting']['title']));
 
-			// generate the content
-			$content = __('Dear %s,\n\n', h($user['User']['fname']));
-			$content .= __('An admin has granted you admin privileges on %s! ', h($setting['Setting']['title']));
-			$content .= 'No additional action is required at this time. ';
-			$content .= 'Remember, with great power comes great responsibility!\n\n';
-			$content .= __('--The %s Team', h($setting['Setting']['title']));
-			$email->send($content);
-		}
+		// generate the message
+		$message = __('An admin has granted you admin privileges on %s! ', h($setting['Setting']['title']));
+		$message .= 'No additional action is required at this time. ';
+		$message .= 'Remember, with great power comes great responsibility!\n\n';
+
+		// send the message
+		$this->sendEmail($id, $subject, $message);
+	}
+
+	/**
+	 * Send an email with a username reminder.
+	 *
+	 * @param int $id The user ID to send the reminder email to.
+	 * @param string $username The username send to the user.
+	 */
+	private function sendUsernameReminderEmail($id = null, $username = '') {
+		// create the subject
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$subject = __('Username for %s', h($setting['Setting']['title']));
+
+		// generate the message
+		$message = 'Below is your requested username reminder. No additional action is required at this time.\n\n';
+		$message .= __('<center><strong>Username:</strong> %s<br /></center>', h($username));
+
+		// send the message
+		$this->sendEmail($id, $subject, $message);
+	}
+
+	/**
+	 * Send an email with a new password.
+	 *
+	 * @param int $id The user ID to send the reminder email to.
+	 * @param string $username The username send to the user.
+	 * @param string $password The un-hashed password to send to the user.
+	 */
+	private function sendPasswordResetEmail($id = null, $username = '', $password = '') {
+		// create the subject
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$subject = __('New Password for %s', h($setting['Setting']['title']));
+
+		// generate the message
+		$message = 'Below is your requested new password.';
+		$message .= ' It is recommended that you change your password after logging in.\n\n';
+		$message .= __(
+			'<center><strong>Username:</strong> %s<br /><strong>Password:</strong> %s</center>',
+			h($username),
+			h($password)
+		);
+
+		// send the message
+		$this->sendEmail($id, $subject, $message);
 	}
 }

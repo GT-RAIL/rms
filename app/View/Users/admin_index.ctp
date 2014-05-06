@@ -59,6 +59,13 @@
 								array('class' => 'icon fa-edit')
 							);
 							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('action' => 'message', $user['User']['id']),
+								array('class' => 'icon fa-envelope-o')
+							);
+							?>
 						</td>
 						<td><?php echo h($user['User']['id']); ?></td>
 						<td>

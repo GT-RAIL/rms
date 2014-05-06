@@ -22,3 +22,17 @@
 		<?php echo $this->Html->link('Change Password', array('action' => 'password')); ?>
 	</p>
 </header>
+
+<section class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<?php
+			echo $this->Form->postLink(
+				' Deactivate My Account',
+				array('action' => 'delete'),
+				array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+			);
+			?>
+		</section>
+	</div>
+</section>

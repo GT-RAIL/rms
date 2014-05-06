@@ -1,4 +1,6 @@
 <?php
+App::uses('CakeEmail', 'Network/Email');
+
 /**
  * Main Application Controller
  *
@@ -29,7 +31,8 @@ abstract class AppController extends Controller {
 			'Setting' => array(
 				'title' => $setting['Setting']['title'],
 				'copyright' => $setting['Setting']['copyright'],
-				'analytics' => $setting['Setting']['analytics']
+				'analytics' => $setting['Setting']['analytics'],
+				'email' => $setting['Setting']['email']
 			)
 		);
 		$this->set('setting', $settingSubset);
@@ -124,5 +127,42 @@ abstract class AppController extends Controller {
 
 		// default deny
 		return false;
+	}
+
+	/**
+	 * Send an email message to a user. No effect is made if email is disabled.
+	 *
+	 * @param int $id The user ID to send the message email to.
+	 * @param string $subject The message subject.
+	 * @param string $message The message text.
+	 * @throws NotFoundException Thrown if an invalid user ID is given.
+	 */
+	public function sendEmail($id = null, $subject = '', $message = '') {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid user.');
+		}
+
+		$this->loadModel('User');
+		$user = $this->User->findById($id);
+		if (!$user) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid user.');
+		}
+
+		// check if we are sending a welcome email
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		if ($setting['Setting']['email']) {
+			$email = new CakeEmail('dynamic');
+			$email->to($user['User']['email']);
+			$email->subject(h($subject));
+
+			// generate the content
+			$content = __('Dear %s,\n\n', h($user['User']['fname']));
+			$content .= $message . '\n\n';
+			$content .= __('--The %s Team', h($setting['Setting']['title']));
+			$email->send($content);
+		}
 	}
 }

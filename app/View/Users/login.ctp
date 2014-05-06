@@ -41,8 +41,15 @@
 				</section>
 			</div>
 			<br />
-			<p>Don't have an account? Click
-				<?php echo $this->Html->link('here', array('action' => 'signup')); ?> to get started.</p>
+			<p>
+				Don't have an account? Click
+				<?php echo $this->Html->link('here', array('action' => 'signup')); ?> to get started.
+				<?php if ($setting['Setting']['email']): ?>
+					<br />
+					<?php echo $this->Html->link('Forget Your Username?', array('action' => 'username')); ?> |
+					<?php echo $this->Html->link('Forget Your Password?', array('action' => 'reset')); ?>
+				<?php endif; ?>
+			</p>
 		</section>
 	</div>
 </section>

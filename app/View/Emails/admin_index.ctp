@@ -58,7 +58,8 @@
 					echo $this->Html->link(
 						'Site Settings',
 						array('controller' => 'settings', 'action' => 'edit')
-					); ?>.
+					);
+					?>
 				</p>
 			<?php endif; ?>
 		</section>
