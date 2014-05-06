@@ -13,7 +13,9 @@
  */
 ?>
 
-<?php echo $this->Session->flash('auth'); ?>
+<section class="flash">
+	<?php echo $this->Session->flash('auth'); ?>
+</section>
 
 <header class="special container">
 	<span class="icon fa-lock"></span>

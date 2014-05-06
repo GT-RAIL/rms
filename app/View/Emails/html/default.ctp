@@ -143,8 +143,9 @@ $setting = $settingModel->findById(Setting::$DEFAULT_ID);
 																	'Unsubscribe',
 																	Router::url(
 																		array(
+																			'admin' => false,
 																			'controller' => 'subscriptions',
-																			'action' => 'edit'
+																			'action' => 'view'
 																		),
 																		true
 																	),

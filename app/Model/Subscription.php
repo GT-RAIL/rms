@@ -121,9 +121,9 @@ class Subscription extends AppModel {
 	);
 
 	/**
-	 * All subscriptions have a single user.
+	 * All subscriptions have a user.
 	 *
 	 * @var string
 	 */
-	public $hasOne = 'User';
+	public $belongsTo = 'User';
 }

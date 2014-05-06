@@ -33,6 +33,13 @@
 				array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
 			);
 			?>
+			|
+			<?php
+			echo $this->Html->link( ' Email Subscriptions',
+				array('controller' => 'subscriptions', 'action' => 'view'),
+				array('class' => 'icon fa-envelope-o')
+			);
+			?>
 		</section>
 	</div>
 </section>
