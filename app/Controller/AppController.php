@@ -101,6 +101,10 @@ abstract class AppController extends Controller {
 								'url' => array('admin' => true, 'controller' => 'emails', 'action' => 'index')
 							)
 						)
+					),
+					array(
+						'title' => 'Send Newsletter',
+						'url' => array('admin' => true, 'controller' => 'subscriptions', 'action' => 'newsletter')
 					)
 				);
 				$this->set('adminMenu', $adminMenu);
@@ -161,6 +165,29 @@ abstract class AppController extends Controller {
 			// generate the content
 			$content = __('Dear %s,\n\n', h($user['User']['fname']));
 			$content .= $message . '\n\n';
+			$content .= __('--The %s Team', h($setting['Setting']['title']));
+			$email->send($content);
+		}
+	}
+
+	/**
+	 * Send an email to a group of given users. No effect is made if email is disabled.
+	 *
+	 * @param array $bcc The email addresses to send to.
+	 * @param string $subject The message subject.
+	 * @param string $message The message text.
+	 */
+	public function sendBatchEmail($bcc = array(), $subject = '', $message = '') {
+		// check if we are sending a welcome email
+		$this->loadModel('Setting');
+		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		if ($setting['Setting']['email']) {
+			$email = new CakeEmail('dynamic');
+			$email->bcc($bcc);
+			$email->subject(h($subject));
+
+			// generate the content
+			$content = $message . '\n\n';
 			$content .= __('--The %s Team', h($setting['Setting']['title']));
 			$email->send($content);
 		}

@@ -28,6 +28,33 @@ class SubscriptionsController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
+	 * The admin newsletter action. This allows the admin to send a newsletter to subscribers.
+	 */
+	public function admin_newsletter() {
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// grab the email data
+			$users = $this->Subscription->find(
+				'all',
+				array(
+					'conditions' => array('Subscription.newsletter' => true),
+					'fields' => array('User.email')
+				)
+			);
+			$bcc = array();
+			foreach ($users as $user) {
+				$bcc[] = $user['User']['email'];
+			}
+
+			$this->sendBatchEmail($bcc, 'Newsletter', $this->request->data['Newsletter']['message']);
+			$this->Session->setFlash('The newsletter has been sent.');
+			return $this->redirect(array('controller' => 'settings', 'action' => 'index'));
+		}
+
+		$this->set('title_for_layout','Send Newsletter');
+	}
+
+	/**
 	 * The default index simply redirects to the view action.
 	 */
 	public function index() {
