@@ -1,6 +1,4 @@
 <?php
-App::uses('Security', 'Utility');
-
 /**
  * Email Settings Controller
  *
@@ -47,12 +45,6 @@ class EmailsController extends AppController {
 
 		// grab the only email settings entry
 		$email = $this->Email->findById(Email::$DEFAULT_ID);
-
-		// check if we need to decrypt the password
-		if(strlen($email['Email']['password']) > 0) {
-			$pw = Security::decrypt($email['Email']['password'], $setting['Setting']['encrypt']);
-			$email['Email']['password'] = $pw;
-		}
 		$this->set('email', $email);
 	}
 
@@ -87,16 +79,8 @@ class EmailsController extends AppController {
 			if (strlen($this->request->data['Email']['tls']) === 0 || !$this->request->data['Email']['tls']) {
 				$this->request->data['Email']['tls'] = NULL;
 			}
-
-			// check for a password
 			if (strlen($this->request->data['Email']['password']) === 0) {
 				$this->request->data['Email']['password'] = NULL;
-			} else {
-				// grab the only setting
-				$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
-				// encrypt the password
-				$pw = Security::encrypt($this->request->data['Email']['password'], $setting['Setting']['encrypt']);
-				$this->request->data['Email']['password'] = $pw;
 			}
 
 			// attempt to save the entry
@@ -106,16 +90,8 @@ class EmailsController extends AppController {
 			}
 			$this->Session->setFlash('Unable to update the email settings.');
 		} else {
-			// grab the only settings entry
-			$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
 			// grab the only email settings entry
 			$email = $this->Email->findById(Email::$DEFAULT_ID);
-
-			// check if we need to decrypt the password
-			if(strlen($email['Email']['password']) > 0) {
-				$pw = Security::decrypt($email['Email']['password'], $setting['Setting']['encrypt']);
-				$email['Email']['password'] = $pw;
-			}
 			$this->set('email', $email);
 		}
 

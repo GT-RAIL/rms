@@ -1,4 +1,6 @@
 <?php
+App::uses('Security', 'Utility');
+
 /**
  * SMTP Email Settings Model
  *
@@ -36,6 +38,11 @@ class Email extends AppModel {
 				'rule' => array('comparison', '>', 0),
 				'message' => 'IDs must be greater than 0.',
 				'required' => true
+			),
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This user ID already exists.',
+				'required' => 'update'
 			)
 		),
 		'from' => array(
@@ -140,6 +147,45 @@ class Email extends AppModel {
 	);
 
 	/**
+	 * Check if a new password was provided. If so, hash the encrypt and store it.
+	 *
+	 * @param array $options Unused in this implementation.
+	 * @return bool If the save was successful.
+	 */
+	public function beforeSave($options = array()) {
+		if (isset($this->data['Email']['password'])) {
+			// grab the only setting
+			$settingModel = ClassRegistry::init('Setting');
+			$setting = $settingModel->findById(Setting::$DEFAULT_ID);
+			// encrypt the password
+			$pw = Security::encrypt($this->data['Email']['password'], $setting['Setting']['encrypt']);
+			$this->data['Email']['password'] = $pw;
+		}
+		return true;
+	}
+
+	/**
+	 * Decrypt the password in any results.
+	 *
+	 * @param array $results The results to decrypt the password.
+	 * @param bool $primary Unused in this implementation.
+	 * @return array The results withe a decrypted password.
+	 */
+	public function afterFind($results = array(), $primary = false) {
+		// grab the only settings entry
+		$settingModel = ClassRegistry::init('Setting');
+		$setting = $settingModel->findById(Setting::$DEFAULT_ID);
+		foreach ($results as $key => $val) {
+			if (isset($val['Email']['password'])) {
+				// decrypt the password
+				$pw = Security::decrypt($val['Email']['password'], $setting['Setting']['encrypt']);
+				$results[$key]['Email']['password'] = $pw;
+			}
+		}
+		return $results;
+	}
+
+	/**
 	 * Create the email settings array for a CakeEmail object.
 	 *
 	 * @return array The email settings array for CakeEmail.
@@ -174,12 +220,7 @@ class Email extends AppModel {
 			$smtp['username'] = $email['Email']['username'];
 		}
 		if (strlen($email['Email']['password']) > 0) {
-			// grab the only settings entry
-			$settingModel = ClassRegistry::init('Setting');
-			$setting = $settingModel->findById(Setting::$DEFAULT_ID);
-			// decrypt the password
-			$pw = Security::decrypt($email['Email']['password'], $setting['Setting']['encrypt']);
-			$smtp['password'] = $pw;
+			$smtp['password'] = $email['Email']['password'];
 		}
 		if (strlen($email['Email']['tls']) > 0 && $email['Email']['tls']) {
 			$smtp['tls'] = true;

@@ -171,6 +171,31 @@ INSERT INTO `emails` (`id`, `from`, `alias`, `host`, `port`, `username`, `passwo
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscriptions`
+--
+
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The ID of the subscription.',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'The user ID for the subscription settings.',
+  `newsletter` boolean NOT NULL COMMENT 'If the user is subscribed to the newsletter.',
+  `studies` boolean NOT NULL COMMENT 'If the user is subscribed to new study announcements.',
+  `reminders` boolean NOT NULL COMMENT 'If the user is subscribed to study reminders.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Email subscription settings for a user.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `subscriptions`
+--
+
+INSERT INTO `subscriptions` (`id`, `user_id`, `newsletter`, `studies`, `reminders`, `created`, `modified`) VALUES
+  (1, true, true, true, true, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -208,6 +233,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `fname`, `lname`, `r
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`);
+
+--
+-- Constraints for table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  ADD CONSTRAINT `subscriptions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `users`

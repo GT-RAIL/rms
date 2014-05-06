@@ -32,6 +32,11 @@ class User extends AppModel {
 				'rule' => array('comparison', '>', 0),
 				'message' => 'IDs must be greater than 0.',
 				'required' => 'update'
+			),
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This user ID already exists.',
+				'required' => 'update'
 			)
 		),
 		'username' => array(
@@ -143,11 +148,18 @@ class User extends AppModel {
 	);
 
 	/**
-	 * All roles belong to a single role.
+	 * All users belong to a single role.
 	 *
 	 * @var string
 	 */
 	public $belongsTo = 'Role';
+
+	/**
+	 * All users have a single subscription setting.
+	 *
+	 * @var string
+	 */
+	public $hasOne = 'Subscription';
 
 	/**
 	 * Check if a new password was provided. If so, hash the password and store it.

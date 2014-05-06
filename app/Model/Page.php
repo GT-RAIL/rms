@@ -30,6 +30,11 @@ class Page extends AppModel {
 				'rule' => array('comparison', '>', 0),
 				'message' => 'IDs must be greater than 0.',
 				'required' => 'update'
+			),
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This user ID already exists.',
+				'required' => 'update'
 			)
 		),
 		'title' => array(

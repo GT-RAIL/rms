@@ -34,7 +34,7 @@
 					<?php echo ($email['Email']['username']) ? h($email['Email']['username']) : 'N/A'; ?>
 					<br />
 					<strong><u>SMTP Password</u>:</strong>
-					<?php echo ($email['Email']['password']) ? '****************' : 'N/A'; ?>
+					<?php echo ($email['Email']['password']) ? h($email['Email']['password']) : 'N/A'; ?>
 				</section>
 				<section class="6u">
 					<strong><u>Sender</u>:</strong>
