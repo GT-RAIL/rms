@@ -101,6 +101,108 @@ INSERT INTO `roles` (`id`, `name`, `description`, `created`, `modified`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `protocols`
+--
+
+CREATE TABLE IF NOT EXISTS `protocols` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(16) NOT NULL COMMENT 'Name of the rosbridge transport protocol.',
+  `description` varchar(255) NOT NULL COMMENT 'Short description of the rosbridge transport protocol.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `description` (`description`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Transport protocols for rosbridge.' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `protocols`
+--
+
+INSERT INTO `protocols` (`id`, `name`, `description`, `created`, `modified`) VALUES
+  (1, 'ws', 'WebSocket', NOW(), NOW()),
+  (2, 'wss', 'WebSocket Secure', NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rosbridges`
+--
+
+CREATE TABLE IF NOT EXISTS `rosbridges` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(255) NOT NULL COMMENT 'Name of the rosbridge server.',
+  `protocol_id` int(10) unsigned NOT NULL COMMENT 'rosbridge transport protocol used.',
+  `host` varchar(255) NOT NULL COMMENT 'IP address or hostname of the rosbridge server.',
+  `port` int(11) unsigned NOT NULL COMMENT 'The rosbridge server port.',
+  `rosauth` tinyblob DEFAULT NULL COMMENT 'The encrypted rosauth secret key.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `protocol_id` (`protocol_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='rosbridge servers.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `rosbridges`
+--
+
+INSERT INTO `rosbridges` (`id`, `name`, `protocol_id`, `host`, `port`, `rosauth`, `created`, `modified`) VALUES
+  (1, 'Local rosbridge Server', 1, 'localhost', 9090, NULL, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mjpegs`
+--
+
+CREATE TABLE IF NOT EXISTS `mjpegs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(255) NOT NULL COMMENT 'Name of the MJPEG server.',
+  `host` varchar(255) NOT NULL COMMENT 'IP address or hostname of the MJPEG server.',
+  `port` int(11) unsigned NOT NULL COMMENT 'The MJPEG server port.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='MJPEG servers.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `mjpegs`
+--
+
+INSERT INTO `mjpegs` (`id`, `name`, `host`, `port`, `created`, `modified`) VALUES
+  (1, 'Local MJPEG Server', 'localhost', 8080, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `environments`
+--
+
+CREATE TABLE IF NOT EXISTS `environments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(255) NOT NULL COMMENT 'Name of the robot environment.',
+  `rosbridge_id` int(10) unsigned DEFAULT NULL COMMENT 'ID of the associated rosbridge server.',
+  `mjpeg_id` int(10) unsigned DEFAULT NULL COMMENT 'ID of the associated MJPEG server.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `rosbridge_id` (`rosbridge_id`),
+  KEY `mjpeg_id` (`mjpeg_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Robot environments.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `environments`
+--
+
+INSERT INTO `environments` (`id`, `name`, `rosbridge_id`, `mjpeg_id`, `created`, `modified`) VALUES
+  (1, 'Demo Environment', 1, 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -144,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `emails` (
   `from` varchar(255) DEFAULT NULL COMMENT 'Sender''s email address.',
   `alias` varchar(32) DEFAULT NULL COMMENT 'Alias for the sender.',
   `host` varchar(255) DEFAULT NULL COMMENT 'The SMTP host address.',
-  `port` int(11) unsigned DEFAULT NULL COMMENT 'THe SMTP server port.',
+  `port` int(11) unsigned DEFAULT NULL COMMENT 'The SMTP server port.',
   `username` varchar(255) DEFAULT NULL COMMENT 'The username for the SMTP server.',
   `password` tinyblob DEFAULT NULL COMMENT 'The encrypted password for the SMTP user.',
   `tls` boolean DEFAULT NULL COMMENT 'If TLS should be used.',
@@ -175,7 +277,7 @@ INSERT INTO `emails` (`id`, `from`, `alias`, `host`, `port`, `username`, `passwo
 --
 
 CREATE TABLE IF NOT EXISTS `subscriptions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The ID of the subscription.',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `user_id` int(10) unsigned NOT NULL COMMENT 'The user ID for the subscription settings.',
   `newsletter` boolean NOT NULL COMMENT 'If the user is subscribed to the newsletter.',
   `studies` boolean NOT NULL COMMENT 'If the user is subscribed to new study announcements.',
@@ -233,6 +335,19 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `fname`, `lname`, `r
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`);
+
+--
+-- Constraints for table `rosbridges`
+--
+ALTER TABLE `rosbridges`
+  ADD CONSTRAINT `rosbridges_ibfk_1` FOREIGN KEY (`protocol_id`) REFERENCES `protocols` (`id`);
+
+--
+-- Constraints for table `environments`
+--
+ALTER TABLE `environments`
+  ADD CONSTRAINT `environments_ibfk_1` FOREIGN KEY (`rosbridge_id`) REFERENCES `rosbridges` (`id`),
+  ADD CONSTRAINT `environments_ibfk_2` FOREIGN KEY (`mjpeg_id`) REFERENCES `mjpegs` (`id`);
 
 --
 -- Constraints for table `subscriptions`

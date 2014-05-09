@@ -82,6 +82,31 @@ abstract class AppController extends Controller {
 							array(
 								'title' => 'Articles',
 								'url' => array('admin' => true, 'controller' => 'articles', 'action' => 'index')
+							),
+							array(
+								'title' => 'Send Newsletter',
+								'url' => array(
+									'admin' => true,
+									'controller' => 'subscriptions',
+									'action' => 'newsletter'
+								)
+							)
+						)
+					),
+					array(
+						'title' => 'ROS Settings',
+						'menu' => array(
+							array(
+								'title' => 'Environments',
+								'url' => array('admin' => true, 'controller' => 'environments', 'action' => 'index')
+							),
+							array(
+								'title' => 'rosbridge',
+								'url' => array('admin' => true, 'controller' => 'rosbridges', 'action' => 'index')
+							),
+							array(
+								'title' => 'MJPEG Server',
+								'url' => array('admin' => true, 'controller' => 'mjpegs', 'action' => 'index')
 							)
 						)
 					),
@@ -101,10 +126,6 @@ abstract class AppController extends Controller {
 								'url' => array('admin' => true, 'controller' => 'emails', 'action' => 'index')
 							)
 						)
-					),
-					array(
-						'title' => 'Send Newsletter',
-						'url' => array('admin' => true, 'controller' => 'subscriptions', 'action' => 'newsletter')
 					)
 				);
 				$this->set('adminMenu', $adminMenu);

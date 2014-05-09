@@ -82,46 +82,46 @@ class User extends AppModel {
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid email.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
 				'message' => 'Emails cannot be longer than 255 characters.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			),
 			'email' => array(
 				'rule' => array('email', true),
 				'message' => 'Please supply a valid email address.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			),
 			'isUnique' => array(
 				'rule' => 'isUnique',
 				'message' => 'This email already exists.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			)
 		),
 		'fname' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid first name.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'First names cannot be longer than 32 characters.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			)
 		),
 		'lname' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid last name.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 32),
 				'message' => 'Last names cannot be longer than 32 characters.',
-				'on' => array('signup', 'edit', 'add', 'edit')
+				'on' => array('signup', 'edit', 'add')
 			)
 		),
 		'repass' => array(
@@ -129,6 +129,18 @@ class User extends AppModel {
 				'rule' => array('equalToField', 'password'),
 				'message' => 'Password confirmation must match.',
 				'on' => array('signup', 'password')
+			)
+		),
+		'role_id' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid role.',
+				'on' => array('signup', 'edit', 'add')
+			),
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Role IDs must be greater than 0.',
+				'on' => array('signup', 'edit', 'add')
 			)
 		),
 		'created' => array(

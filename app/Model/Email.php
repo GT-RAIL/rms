@@ -87,11 +87,6 @@ class Email extends AppModel {
 			)
 		),
 		'port' => array(
-			'maxLength' => array(
-				'rule' => array('maxLength', 255),
-				'message' => 'SMTP hosts cannot be longer than 255 characters.',
-				'allowEmpty' => true
-			),
 			'gt' => array(
 				'rule' => array('comparison', '>', 0),
 				'message' => 'Ports must be greater than 0.',
