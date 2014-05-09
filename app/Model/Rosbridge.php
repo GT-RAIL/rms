@@ -2,7 +2,7 @@
 /**
  * Rosbridges Model
  *
- * Rosbridges represent a rosbridge server. It contains information about the port, host, and protocol.
+ * Rosbridges represent a rosbridge servers. It contains information about the port, host, and protocol.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
