@@ -35,21 +35,7 @@ class MjpegsController extends AppController {
 	 */
 	public function admin_index() {
 		// grab all the entries
-		$mjpegs = $this->Mjpeg->find('all');
-		$mjpegsEdit = array();
-		// check the connection
-		$http = new HttpSocket(array('timeout' => 1));
-		foreach ($mjpegs as $mjpeg) {
-			$uri = 'http://' . $mjpeg['Mjpeg']['host'] . ':' . $mjpeg['Mjpeg']['port'] . '/';
-			try {
-				$get = $http->get($uri);
-				$mjpeg['Mjpeg']['status'] = strlen($get) === 0;
-			} catch (Exception $e) {
-				$mjpeg['Mjpeg']['status'] = false;
-			}
-			$mjpegsEdit[] = $mjpeg;
-		}
-		$this->set('mjpegs', $mjpegsEdit);
+		$this->set('mjpegs', $this->Mjpeg->find('all'));
 	}
 
 	/**

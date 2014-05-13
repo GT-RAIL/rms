@@ -30,8 +30,6 @@
 					<th>ID</th>
 					<th>Title</th>
 					<th><?php echo $this->Html->link('Page', array('controller' => 'pages')); ?></th>
-					<th>Created</th>
-					<th>Modified</th>
 				</tr>
 				<?php foreach ($articles as $article): ?>
 					<tr>

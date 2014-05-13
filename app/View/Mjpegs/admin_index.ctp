@@ -64,11 +64,16 @@
 							?>
 						</td>
 						<td>
-							<?php
-							echo ($mjpeg['Mjpeg']['status']) ?
-								'<span class="icon green fa-thumbs-o-up"></span>' :
-									'<span class="icon red fa-thumbs-o-down"></span>';
-							?>
+							<div id="<?php echo __('mjpeg-%s', h($mjpeg['Mjpeg']['id'])); ?>">
+								<span class="icon orange fa-spinner"></span>
+							</div>
+							<script type="text/javascript">
+								RMS.verifyMjpegServer(
+									'<?php echo (h($mjpeg['Mjpeg']['host'])); ?>',
+									<?php echo (h($mjpeg['Mjpeg']['port'])); ?>,
+									'<?php echo __('mjpeg-%s', h($mjpeg['Mjpeg']['id'])); ?>'
+								);
+							</script>
 						</td>
 						<td>
 							<?php echo h($mjpeg['Mjpeg']['created']); ?>

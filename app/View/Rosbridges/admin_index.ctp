@@ -32,7 +32,6 @@
 					<th>URI</th>
 					<th>Status</th>
 					<th>rosauth Key</th>
-					<th>Modified</th>
 				</tr>
 				<?php foreach ($rosbridges as $rosbridge): ?>
 					<tr>
@@ -84,9 +83,6 @@
 							<?php
 							echo ($rosbridge['Rosbridge']['rosauth']) ? h($rosbridge['Rosbridge']['rosauth']) : 'N/A';
 							?>
-						</td>
-						<td>
-							<?php echo h($rosbridge['Rosbridge']['modified']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

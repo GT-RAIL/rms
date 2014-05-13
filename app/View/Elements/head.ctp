@@ -28,7 +28,7 @@
 
 	<?php
 	echo $this->Html->script(array(
-		'//code.jquery.com/jquery-1.11.0.min.js',
+		'//code.jquery.com/jquery-1.11.0.js',
 		'jquery.dropotron.min',
 		'skel.min',
 		'skel-layers.min',
