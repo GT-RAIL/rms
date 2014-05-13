@@ -133,4 +133,29 @@ class RosbridgesController extends AppController {
 			return $this->redirect(array('action' => 'index'));
 		}
 	}
+
+	/**
+	 * View the given entry.
+	 *
+	 * @param intl $id The ID of the entry to view.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function admin_view($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid rosbridge.');
+		}
+
+		$rosbridge = $this->Rosbridge->findById($id);
+		if (!$rosbridge) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid rosbridge.');
+		}
+
+		// store the entry
+		$this->set('rosbridge', $rosbridge);
+		$this->set('title_for_layout', $rosbridge['Rosbridge']['name']);
+		// we will need some RWT libraries
+		$this->set('rwt', array('roslibjs' => true));
+	}
 }

@@ -42,7 +42,7 @@
 		if (isset($rwt['roslibjs']) && $rwt['roslibjs']) {
 			echo $this->Html->script(array(
 				'//cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
-				'//cdn.robotwebtools.org/roslibjs/current/roslib.min.js',
+				'//cdn.robotwebtools.org/roslibjs/r7/roslib.min.js',
 			));
 			$eventEmitter = true;
 		}

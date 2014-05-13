@@ -60,11 +60,15 @@
 						</td>
 						<td>
 							<?php
-							echo __(
-								'%s://%s:%s',
-								h($rosbridge['Protocol']['name']),
-								h($rosbridge['Rosbridge']['host']),
-								h($rosbridge['Rosbridge']['port']));
+							echo $this->Html->link(
+								__(
+									'%s://%s:%s',
+									h($rosbridge['Protocol']['name']),
+									h($rosbridge['Rosbridge']['host']),
+									h($rosbridge['Rosbridge']['port'])
+								),
+								array('action' => 'view', $rosbridge['Rosbridge']['id'])
+							);
 							?>
 						</td>
 						<td>
