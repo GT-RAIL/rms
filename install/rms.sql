@@ -346,8 +346,8 @@ ALTER TABLE `rosbridges`
 -- Constraints for table `environments`
 --
 ALTER TABLE `environments`
-  ADD CONSTRAINT `environments_ibfk_1` FOREIGN KEY (`rosbridge_id`) REFERENCES `rosbridges` (`id`),
-  ADD CONSTRAINT `environments_ibfk_2` FOREIGN KEY (`mjpeg_id`) REFERENCES `mjpegs` (`id`);
+  ADD CONSTRAINT `environments_ibfk_2` FOREIGN KEY (`mjpeg_id`) REFERENCES `mjpegs` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `environments_ibfk_1` FOREIGN KEY (`rosbridge_id`) REFERENCES `rosbridges` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `subscriptions`

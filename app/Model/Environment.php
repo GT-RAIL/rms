@@ -53,6 +53,20 @@ class Environment extends AppModel {
 				'required' => true
 			)
 		),
+		'rosbridge_id' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'rosbridge IDs must be greater than 0.',
+				'allowEmpty' => true
+			)
+		),
+		'mjpeg_id' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'MJPEG IDs must be greater than 0.',
+				'allowEmpty' => true
+			)
+		),
 		'created' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -75,6 +89,7 @@ class Environment extends AppModel {
 	 * @var string
 	 */
 	public $belongsTo = array(
-		'Rosbridge' => array('className' => 'Rosbridge')
+		'Rosbridge' => array('className' => 'Rosbridge'),
+		'Mjpeg' => array('className' => 'Mjpeg')
 	);
 }

@@ -38,6 +38,7 @@ class RosbridgesController extends AppController {
 		$this->set('rosbridges', $this->Rosbridge->find('all'));
 		// we will need some RWT libraries
 		$this->set('rwt', array('roslibjs' => true));
+		$this->set('title_for_layout', 'rosbridge Servers');
 	}
 
 	/**

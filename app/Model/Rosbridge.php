@@ -130,6 +130,13 @@ class Rosbridge extends AppModel {
 	public $belongsTo = 'Protocol';
 
 	/**
+	 * rosbridge servers may have many environments.
+	 *
+	 * @var array
+	 */
+	public $hasMany = array('Environment' => array('className' => 'Environment'));
+
+	/**
 	 * Check if a new rosauth key was provided. If so, hash the encrypt and store it.
 	 *
 	 * @param array $options Unused in this implementation.

@@ -27,6 +27,9 @@ RMS.verifyRosbridge = function(protocol, host, port, id) {
   ros.on('error', function() {
     ele.html('<span class="icon red fa-thumbs-o-down"></span>');
   });
+  ros.on('close', function() {
+    ele.html('<span class="icon red fa-thumbs-o-down"></span>');
+  });
   ros.connect(protocol + '://' + host + ':' + port);
 };
 

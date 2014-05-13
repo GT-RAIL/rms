@@ -29,10 +29,8 @@
 					<th></th>
 					<th>ID</th>
 					<th>Name</th>
-					<th><?php echo $this->Html->link('MJPEG Server', array('controller' => 'mjpegs')); ?></th>
 					<th><?php echo $this->Html->link('rosbridge Server', array('controller' => 'rosbridges')); ?></th>
-					<th>Created</th>
-					<th>Modified</th>
+					<th><?php echo $this->Html->link('MJPEG Server', array('controller' => 'mjpegs')); ?></th>
 				</tr>
 				<?php foreach ($environments as $env): ?>
 					<tr>
@@ -59,15 +57,50 @@
 							<?php echo h($env['Environment']['name']); ?>
 						</td>
 						<td>
-							<?php echo h($env['Rosbridge']['name']); ?></td>
-						<td>
-							<?php echo h($env['Mjpeg']['name']); ?>
+							<?php if (!$env['Rosbridge']['id']): ?>
+								N/A
+							<?php else: ?>
+								<?php echo h($env['Rosbridge']['name']); ?>
+								<br />
+								<?php
+								echo __(
+									'%s://%s:%s',
+									h($env['Rosbridge']['Protocol']['name']),
+									h($env['Rosbridge']['host']),
+									h($env['Rosbridge']['port'])
+								);
+								?>
+								<span id="<?php echo __('rosbridge-%s', h($env['Rosbridge']['id'])); ?>">
+									<span class="icon orange fa-spinner"></span>
+								</span>
+								<script type="text/javascript">
+									RMS.verifyRosbridge(
+										'<?php echo (h($env['Rosbridge']['Protocol']['name'])); ?>',
+										'<?php echo (h($env['Rosbridge']['host'])); ?>',
+										<?php echo (h($env['Rosbridge']['port'])); ?>,
+										'<?php echo __('rosbridge-%s', h($env['Rosbridge']['id'])); ?>'
+									);
+								</script>
+							<?php endif; ?>
 						</td>
 						<td>
-							<?php echo h($env['Environment']['created']); ?>
-						</td>
-						<td>
-							<?php echo h($env['Environment']['modified']); ?>
+							<?php if (!$env['Mjpeg']['id']): ?>
+								N/A
+							<?php else: ?>
+								<?php echo h($env['Mjpeg']['name']); ?>
+								<br />
+								<?php echo __('http://%s:%s', h($env['Mjpeg']['host']), h($env['Mjpeg']['port'])); ?>
+								<span id="<?php echo __('mjpeg-%s', h($env['Mjpeg']['id'])); ?>">
+									<span class="icon orange fa-spinner"></span>
+								</span>
+								<script type="text/javascript">
+									RMS.verifyMjpegServer(
+										'<?php echo (h($env['Mjpeg']['host'])); ?>',
+										<?php echo (h($env['Mjpeg']['port'])); ?>,
+										'<?php echo __('mjpeg-%s', h($env['Mjpeg']['id'])); ?>'
+									);
+								</script>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

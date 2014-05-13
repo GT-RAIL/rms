@@ -36,6 +36,7 @@ class MjpegsController extends AppController {
 	public function admin_index() {
 		// grab all the entries
 		$this->set('mjpegs', $this->Mjpeg->find('all'));
+		$this->set('title_for_layout', 'MJPEG Servers');
 	}
 
 	/**

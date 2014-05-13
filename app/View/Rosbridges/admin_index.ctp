@@ -32,6 +32,7 @@
 					<th>URI</th>
 					<th>Status</th>
 					<th>rosauth Key</th>
+					<th><?php echo $this->Html->link('Environments', array('controller' => 'environments')); ?></th>
 				</tr>
 				<?php foreach ($rosbridges as $rosbridge): ?>
 					<tr>
@@ -83,6 +84,9 @@
 							<?php
 							echo ($rosbridge['Rosbridge']['rosauth']) ? h($rosbridge['Rosbridge']['rosauth']) : 'N/A';
 							?>
+						</td>
+						<td>
+							<?php echo count($rosbridge['Environment']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

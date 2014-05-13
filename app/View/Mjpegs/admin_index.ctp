@@ -31,8 +31,7 @@
 					<th>Name</th>
 					<th>URI</th>
 					<th>Status</th>
-					<th>Created</th>
-					<th>Modified</th>
+					<th><?php echo $this->Html->link('Environments', array('controller' => 'environments')); ?></th>
 				</tr>
 				<?php foreach ($mjpegs as $mjpeg): ?>
 					<tr>
@@ -76,10 +75,7 @@
 							</script>
 						</td>
 						<td>
-							<?php echo h($mjpeg['Mjpeg']['created']); ?>
-						</td>
-						<td>
-							<?php echo h($mjpeg['Mjpeg']['modified']); ?>
+							<?php echo count($mjpeg['Environment']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

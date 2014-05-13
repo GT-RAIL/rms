@@ -97,4 +97,11 @@ class Mjpeg extends AppModel {
 			)
 		)
 	);
+
+	/**
+	 * MJPEG servers may have many environments.
+	 *
+	 * @var array
+	 */
+	public $hasMany = array('Environment' => array('className' => 'Environment'));
 }
