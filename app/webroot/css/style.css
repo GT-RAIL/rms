@@ -313,6 +313,10 @@ input[type="email"] {
 		color: red;
 	}
 
+	.icon.orange {
+		 color: orange;
+	 }
+
 /* Lists */
 
 ol.default {

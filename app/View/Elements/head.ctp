@@ -13,7 +13,6 @@
  */
 ?>
 
-
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
@@ -33,8 +32,21 @@
 		'jquery.dropotron.min',
 		'skel.min',
 		'skel-layers.min',
-		'init.min'
+		'init.min',
+		'rms'
 	));
+
+	// check for RWT libraries
+	if (isset($rwt)) {
+		$eventEmitter = false;
+		if (isset($rwt['roslibjs']) && $rwt['roslibjs']) {
+			echo $this->Html->script(array(
+				'//cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
+				'//cdn.robotwebtools.org/roslibjs/current/roslib.min.js',
+			));
+			$eventEmitter = true;
+		}
+	}
 	?>
 
 	<noscript>
@@ -45,7 +57,7 @@
 	<!--[if lte IE 9]><?php echo $this->Html->css('ie/v9'); ?><![endif]-->
 
 	<?php if ($setting['Setting']['analytics']): ?>
-		<script type="text/javascript">
+		<script>
 			var _gaq = _gaq || [];
 			_gaq.push(["_setAccount", "<?php echo h($setting['Setting']['analytics']); ?>"]);
 			_gaq.push(["_trackPageview"]);

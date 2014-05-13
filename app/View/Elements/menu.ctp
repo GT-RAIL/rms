@@ -22,7 +22,7 @@
 		<?php
 		echo $this->Html->image(
 			array('admin' => false, 'controller' =>'settings', 'action' => 'logo'),
-			array('alt' => 'rms', 'url' => array('admin' => false, 'controller' => 'pages'))
+			array('alt' => 'rms', 'url' => '/')
 		);
 		?>
 	</h1>

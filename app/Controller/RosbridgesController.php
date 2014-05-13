@@ -35,22 +35,9 @@ class RosbridgesController extends AppController {
 	 */
 	public function admin_index() {
 		// grab all the entries
-		$rosbridges = $this->Rosbridge->find('all');
-		$rosbridgesEdit = array();
-		// check the connection
-		$http = new HttpSocket(array('timeout' => 1));
-		foreach ($rosbridges as $rosbridge) {
-			$uri = ($rosbridge['Protocol']['name'] === 'ws') ? 'http://' : 'https://';
-			$uri .= $rosbridge['Rosbridge']['host'] . ':' . $rosbridge['Rosbridge']['port'] . '/';
-			try {
-				$get = $http->get($uri);
-				$rosbridge['Rosbridge']['status'] = strpos($get, 'Can "Upgrade" only to "WebSocket".') !== false;
-			} catch (Exception $e) {
-				$rosbridge['Rosbridge']['status'] = false;
-			}
-			$rosbridgesEdit[] = $rosbridge;
-		}
-		$this->set('rosbridges', $rosbridgesEdit);
+		$this->set('rosbridges', $this->Rosbridge->find('all'));
+		// we will need some RWT libraries
+		$this->set('rwt', array('roslibjs' => true));
 	}
 
 	/**
