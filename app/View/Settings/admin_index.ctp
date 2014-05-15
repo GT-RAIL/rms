@@ -22,18 +22,24 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<header>
+				<p>
+					Site settings can be edited to change things such as the title or logo for the site. Email settings
+					can also be enabled from this page.
+				</p>
+			</header>
+			<?php echo $this->Html->link('Edit Settings', array('action' => 'edit'), array('class' => 'button')); ?>
+			<br /><br />
 			<div class="row">
 				<section class="3u">
 					<strong><u>Site Title</u></strong>
 					<br />
 					<?php echo h($setting['Setting']['title']); ?>
-					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
 				<section class="4u">
 					<strong><u>Copyright Message</u></strong>
 					<br />
 					<?php echo h($setting['Setting']['copyright']); ?>
-					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
 				<section class="3u">
 					<strong>
@@ -41,15 +47,15 @@
 					</strong>
 					<br />
 					<?php echo ($setting['Setting']['analytics']) ? h($setting['Setting']['analytics']) : 'N/A'; ?>
-					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
 				<section class="2u">
 					<strong>
-						<?php echo $this->Html->link('Emails', array('controller' => 'emails', 'action' => 'index')); ?>
+						<?php
+						echo $this->Html->link('Email Settings', array('controller' => 'emails', 'action' => 'index'));
+						?>
 					</strong>
 					<br />
 					<?php echo ($setting['Setting']['email']) ? 'Enabled' : 'Disabled'; ?>
-					<?php echo $this->Html->link('', array('action' => 'edit'), array('class' => 'icon fa-edit')); ?>
 				</section>
 			</div>
 			<div class="row">
@@ -67,7 +73,7 @@
 					echo $this->Html->link(
 						' Upload',
 						array('action' => 'uploadLogo'),
-						array('class' => 'icon fa-upload')
+						array('class' => 'icon fa-upload button small')
 					);
 					?>
 				</section>

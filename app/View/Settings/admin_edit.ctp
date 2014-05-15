@@ -21,6 +21,9 @@
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
+			<header>
+				<h3>Enter New Site Settings Below</h3>
+			</header>
 			<?php
 			echo $this->Form->create('Setting');
 			echo $this->Form->input('id', array('type' => 'hidden'));

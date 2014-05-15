@@ -21,6 +21,10 @@
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
+			<header>
+				<h3>Enter New SMTP Settings Below</h3>
+				<p><strong>All Fields Are Optional</strong></p>
+			</header>
 			<?php
 			echo $this->Form->create('Email');
 			echo $this->Form->input('id', array('type' => 'hidden'));

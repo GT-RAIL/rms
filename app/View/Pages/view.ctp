@@ -17,11 +17,6 @@
 <header class="special container">
 	<span class="icon fa-spinner"></span>
 	<h2><?php echo h($page['Page']['title']); ?></h2>
-	<?php
-	if($admin) {
-		echo $this->Html->link('Edit', array('admin' => true, 'action' => 'edit', $page['Page']['id']));
-	}
-	?>
 </header>
 
 <?php foreach ($page['Article'] as $article): ?>
@@ -38,7 +33,8 @@
 		if($admin) {
 			echo $this->Html->link(
 				'Edit',
-				array('admin' => true, 'controller' => 'articles', 'action' => 'edit', $article['id'])
+				array('admin' => true, 'controller' => 'articles', 'action' => 'edit', $article['id']),
+				array('class' => 'button small')
 			);
 		}
 		?>

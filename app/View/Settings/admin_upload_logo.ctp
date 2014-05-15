@@ -21,6 +21,9 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<header>
+				<h3>Upload a New Logo Image Below</h3>
+			</header>
 			<?php
 			echo $this->Form->create('Setting', array('type' => 'file'));
 			echo $this->Form->input('id', array('type' => 'hidden'));

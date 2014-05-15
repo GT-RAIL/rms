@@ -166,15 +166,8 @@ header.special {
 			opacity: 0.35;
 		}
 
-#logo img {
+#logo img, #logo-preview img  {
 	height: 45px;
-	padding: 0;
-	border: 0;
-	margin: 0;
-}
-
-#logo-preview img {
-	width: 300px;
 	padding: 0;
 	border: 0;
 	margin: 0;

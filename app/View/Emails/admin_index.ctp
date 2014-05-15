@@ -21,36 +21,56 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<header>
+				<p>
+					SMTP email settings can be set to allow the RMS to send automated emails such as password resets,
+					newsletters, or study announcements.
+				</p>
+			</header>
 			<?php if($setting['Setting']['email']): ?>
-			<div class="row">
-				<section class="6u">
-					<strong><u>SMTP Host</u>:</strong>
-					<?php echo ($email['Email']['host']) ? h($email['Email']['host']) : 'N/A'; ?>
-					<br />
-					<strong><u>SMTP Port</u>:</strong>
-					<?php echo ($email['Email']['port']) ? h($email['Email']['port']) : 'N/A'; ?>
-					<br />
-					<strong><u>SMTP Username</u>:</strong>
-					<?php echo ($email['Email']['username']) ? h($email['Email']['username']) : 'N/A'; ?>
-					<br />
-					<strong><u>SMTP Password</u>:</strong>
-					<?php echo ($email['Email']['password']) ? h($email['Email']['password']) : 'N/A'; ?>
-				</section>
-				<section class="6u">
-					<strong><u>Sender</u>:</strong>
-					<?php echo ($email['Email']['from']) ? h($email['Email']['from']) : 'N/A'; ?>
-					<br />
-					<strong><u>Sender Alias</u>:</strong>
-					<?php echo ($email['Email']['alias']) ? h($email['Email']['alias']) : 'N/A'; ?>
-					<br />
-					<strong><u>TLS</u>:</strong>
-					<?php echo ($email['Email']['tls']) ? 'Enabled' : 'Disabled'; ?>
-					<br />
-					<?php
-					echo $this->Html->link(' Edit All', array('action' => 'edit'), array('class' => 'icon fa-edit'));
-					?>
-				</section>
-			</div>
+				<?php echo $this->Html->link('Edit Settings', array('action' => 'edit'), array('class' => 'button')); ?>
+				<br /><br />
+				<div class="row">
+					<section class="6u">
+						<strong><u>SMTP Host</u></strong>
+						<br />
+						<?php echo ($email['Email']['host']) ? h($email['Email']['host']) : 'N/A'; ?>
+					</section>
+					<section class="3u">
+						<strong><u>SMTP Port</u></strong>
+						<br />
+						<?php echo ($email['Email']['port']) ? h($email['Email']['port']) : 'N/A'; ?>
+					</section>
+					<section class="3u">
+						<strong><u>TLS</u></strong>
+						<br />
+						<?php echo ($email['Email']['tls']) ? 'Enabled' : 'Disabled'; ?>
+					</section>
+				</div>
+				<div class="row">
+					<section class="6u">
+						<strong><u>SMTP Username</u></strong>
+						<br />
+						<?php echo ($email['Email']['username']) ? h($email['Email']['username']) : 'N/A'; ?>
+					</section>
+					<section class="6u">
+						<strong><u>SMTP Password</u></strong>
+						<br />
+						<?php echo ($email['Email']['password']) ? h($email['Email']['password']) : 'N/A'; ?>
+					</section>
+				</div>
+				<div class="row">
+					<section class="6u">
+						<strong><u>Sender's Email</u></strong>
+						<br />
+						<?php echo ($email['Email']['from']) ? h($email['Email']['from']) : 'N/A'; ?>
+					</section>
+					<section class="6u">
+						<strong><u>Sender Alias</u></strong>
+						<br />
+						<?php echo ($email['Email']['alias']) ? h($email['Email']['alias']) : 'N/A'; ?>
+					</section>
+				</div>
 			<?php else: ?>
 				<p>
 					Email settings have been <strong>disabled</strong>. Please enable them in the
