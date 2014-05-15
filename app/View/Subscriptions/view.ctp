@@ -21,6 +21,9 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<header>
+				<h3>Use the Checkboxes Below to Toggle Email Subscription Settings</h3>
+			</header>
 			<div class="row">
 				<section class="4u">
 					<strong><u>Newsletter</u></strong>

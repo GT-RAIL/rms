@@ -22,7 +22,10 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>Content articles are publicly visible. Each article will automatically be added to its assigned page.
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />
 			<table>
 				<tr>
@@ -30,6 +33,7 @@
 					<th>ID</th>
 					<th>Title</th>
 					<th><?php echo $this->Html->link('Page', array('controller' => 'pages')); ?></th>
+					<th>Modified</th>
 				</tr>
 				<?php foreach ($articles as $article): ?>
 					<tr>
@@ -79,11 +83,13 @@
 							}
 							?>
 						</td>
-						<td><?php echo h($article['Article']['id']); ?></td>
-						<td>
+						<td data-title="ID">
+							<?php echo h($article['Article']['id']); ?>
+						</td>
+						<td data-title="Title">
 							<?php echo h($article['Article']['title']); ?>
 						</td>
-						<td>
+						<td data-title="Page">
 							<?php
 							echo $this->Html->link(
 								h($article['Page']['title']),
@@ -96,10 +102,7 @@
 							);
 							?>
 						</td>
-						<td>
-							<?php echo h($article['Article']['created']); ?>
-						</td>
-						<td>
+						<td data-title="Modified">
 							<?php echo h($article['Article']['modified']); ?>
 						</td>
 					</tr>

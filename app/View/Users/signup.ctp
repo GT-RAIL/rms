@@ -50,8 +50,13 @@
 				</section>
 			</div>
 			<br />
-			<p>Have an account? Click
-				<?php echo $this->Html->link('here', array('action' => 'login')); ?> to login.</p>
+			<div class="row center">
+				<section class="3u">
+					Have an account?
+					<br />
+					Click <?php echo $this->Html->link('here', array('action' => 'login')); ?> to login.
+				</section>
+			</div>
 		</section>
 	</div>
 </section>

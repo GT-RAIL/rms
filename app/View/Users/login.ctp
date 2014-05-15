@@ -43,15 +43,23 @@
 				</section>
 			</div>
 			<br />
-			<p>
-				Don't have an account? Click
-				<?php echo $this->Html->link('here', array('action' => 'signup')); ?> to get started.
-				<?php if ($setting['Setting']['email']): ?>
+			<div class="row center">
+				<section class="6u">
+					Don't have an account?
 					<br />
-					<?php echo $this->Html->link('Forget Your Username?', array('action' => 'username')); ?> |
-					<?php echo $this->Html->link('Forget Your Password?', array('action' => 'reset')); ?>
-				<?php endif; ?>
-			</p>
+					Click <?php echo $this->Html->link('here', array('action' => 'signup')); ?> to get started.
+				</section>
+			</div>
+			<?php if ($setting['Setting']['email']): ?>
+				<div class="row center">
+					<section class="3u">
+						<?php echo $this->Html->link('Forget Your Username?', array('action' => 'username')); ?>
+					</section>
+					<section class="3u">
+						<?php echo $this->Html->link('Forget Your Password?', array('action' => 'reset')); ?>
+					</section>
+				</div>
+			<?php endif; ?>
 		</section>
 	</div>
 </section>

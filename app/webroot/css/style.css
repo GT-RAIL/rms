@@ -80,7 +80,9 @@ h2 {
 
 h3 {
 	font-size: 1.15em;
-	letter-spacing: 0.025em;
+	text-transform: capitalize;
+	font-variant: small-caps;
+	font-weight: 350;
 }
 
 sub {
@@ -406,29 +408,6 @@ table {
 	width: 100%;
 }
 
-	table.default {
-		width: 100%;
-	}
-
-		table.default tbody tr {
-			border-bottom: solid 1px rgba(124, 128, 129, 0.2);
-		}
-
-		table.default td {
-			padding: 0.5em 1em 0.5em 1em;
-		}
-
-		table.default th {
-			font-weight: 400;
-			padding: 0.5em 1em 0.5em 1em;
-			text-align: left;
-		}
-
-		table.default thead {
-			background: #7c8081;
-			color: #fff;
-		}
-
 /* Button */
 
 .button {
@@ -530,6 +509,7 @@ table {
 
 		.wrapper.style4 th {
 			font-weight: 400;
+			font-variant: small-caps;
 		}
 
 

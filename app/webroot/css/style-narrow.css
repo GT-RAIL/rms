@@ -70,3 +70,42 @@ footer.major {
 	background-size: 15em, 15em, auto, cover;
 	padding: 3em;
 }
+
+/* Tables */
+
+table, thead, tbody, th, td, tr {
+	display: block;
+}
+
+	th {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	tr {
+		border: 1px solid #7c8081;
+	}
+
+	td {
+		border: none;
+		border-bottom: 1px solid rgba(124, 128, 129, 0.25);
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align:left;
+	}
+
+		td:before {
+			vertical-align: middle;
+			position: absolute;
+			top: 6px;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+			text-align:left;
+			font-weight: 400;
+			content: attr(data-title);
+			font-variant: small-caps;
+		}

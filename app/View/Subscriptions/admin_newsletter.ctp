@@ -21,6 +21,12 @@
 <section class="wrapper style4 container">
 	<?php if($setting['Setting']['email']): ?>
 		<div class="content">
+			<header>
+				<p>
+					Newsletters will be sent to all active subscribers. By default, new users are subscribed to
+					newsletters.
+				</p>
+			</header>
 			<section>
 				<?php echo $this->Form->create('Newsletter'); ?>
 				<div class="row">

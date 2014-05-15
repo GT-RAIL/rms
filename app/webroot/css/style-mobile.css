@@ -163,3 +163,7 @@ body.contact #main {
 #footer {
 	padding: 3em 1.5em;
 }
+
+	#footer .copyright {
+		font-size: 12px;
+	}

@@ -22,7 +22,11 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>Content pages are publicly visible. Each page will automatically be added to the main menu. The page at
+				the top of the list will become the homepage.</p>
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />
 			<table>
 				<tr>
@@ -31,7 +35,6 @@
 					<th>Title</th>
 					<th>Menu</th>
 					<th><?php echo $this->Html->link('Articles', array('controller' => 'articles')); ?></th>
-					<th>Created</th>
 					<th>Modified</th>
 				</tr>
 				<?php foreach ($pages as $page): ?>
@@ -74,8 +77,10 @@
 							}
 							?>
 						</td>
-						<td><?php echo h($page['Page']['id']); ?></td>
-						<td>
+						<td data-title="ID">
+							<?php echo h($page['Page']['id']); ?>
+						</td>
+						<td data-title="Title">
 							<?php
 							echo $this->Html->link(
 								h($page['Page']['title']),
@@ -83,16 +88,13 @@
 							);
 							?>
 						</td>
-						<td>
+						<td data-title="Menu">
 							<?php echo h($page['Page']['menu']); ?>
 						</td>
-						<td>
+						<td data-title="Articles">
 							<?php echo __('%d', count($page['Article'])); ?>
 						</td>
-						<td>
-							<?php echo h($page['Page']['created']); ?>
-						</td>
-						<td>
+						<td data-title="Modified">
 							<?php echo h($page['Page']['modified']); ?>
 						</td>
 					</tr>

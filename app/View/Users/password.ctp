@@ -21,6 +21,9 @@
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
+			<header>
+				<h3>Enter Your New Password Below</h3>
+			</header>
 			<?php
 			echo $this->Form->create('User');
 			echo $this->Form->input('id', array('type' => 'hidden'));

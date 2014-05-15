@@ -17,6 +17,9 @@
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
+			<header>
+				<h3>Enter the Article Information Below</h3>
+			</header>
 			<?php
 			echo $this->Form->create('Article');
 			if (isset($edit) && $edit) {
@@ -33,7 +36,7 @@
 			</div>
 			<div class="row">
 				<section class="12u">
-					<?php echo $this->Form->input('content'); ?>
+					<?php echo $this->Form->input('content', array('label' => 'HTML Content')); ?>
 				</section>
 			</div>
 			<div class="row">
