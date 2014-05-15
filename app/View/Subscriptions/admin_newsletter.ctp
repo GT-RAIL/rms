@@ -24,7 +24,7 @@
 			<header>
 				<p>
 					Newsletters will be sent to all active subscribers. By default, new users are subscribed to
-					newsletters.
+					newsletters. This form accepts HTML as input.
 				</p>
 			</header>
 			<section>
