@@ -93,6 +93,8 @@ table, thead, tbody, th, td, tr {
 		position: relative;
 		padding-left: 50%;
 		white-space: normal;
+		overflow-x: auto;
+		overflow-y: hidden;
 		text-align:left;
 	}
 
@@ -107,5 +109,4 @@ table, thead, tbody, th, td, tr {
 			text-align:left;
 			font-weight: 400;
 			content: attr(data-title);
-			font-variant: small-caps;
 		}

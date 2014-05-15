@@ -22,10 +22,15 @@
 	<?php if($setting['Setting']['email']): ?>
 		<div class="content">
 			<section>
+				<header>
+					<p>
+						Messages will be emailed to the given user. This form accepts HTML as input.
+					</p>
+				</header>
 				<?php echo $this->Form->create('User'); ?>
 				<div class="row">
 					<section class="12u">
-						<p><?php echo __('Dear %s,', $user['User']['fname']);?></p>
+						<?php echo __('Dear %s,', $user['User']['fname']);?>
 						<?php
 						echo $this->Form->input(
 							'message',

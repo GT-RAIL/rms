@@ -22,7 +22,10 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>Users come in two forms: admin and basic. Users who sign up on their own are basic users.</p>
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<?php if ($this->Paginator->hasPrev() || $this->Paginator->hasNext()): ?>
 				<br /><br />
 			<?php endif; ?>
@@ -36,7 +39,8 @@
 					<th>Role</th>
 					<th>Email</th>
 					<th>Name</th>
-					<th>Created</th>
+					<th>Logins</th>
+					<th>Modified</th>
 				</tr>
 				<?php foreach ($users as $user): ?>
 					<tr>
@@ -67,16 +71,13 @@
 							);
 							?>
 						</td>
-						<td><?php echo h($user['User']['id']); ?></td>
-						<td>
-							<?php
-							echo $this->Html->link(
-								h($user['User']['username']),
-								array('action' => 'view', $user['User']['id'])
-							);
-							?>
+						<td data-title="ID">
+							<?php echo h($user['User']['id']); ?>
 						</td>
-						<td>
+						<td data-title="Username">
+							<?php echo h($user['User']['username']); ?>
+						</td>
+						<td data-title="Role">
 						<?php
 							if($user['Role']['name'] === 'admin' && $user['User']['id'] !== AuthComponent::user('id')) {
 								echo $this->Form->postLink(
@@ -96,9 +97,18 @@
 							echo __(' %s', ucfirst(h($user['Role']['name'])));
 							?>
 						</td>
-						<td><?php echo h($user['User']['email']); ?></td>
-						<td><?php echo __('%s %s', h($user['User']['fname']), h($user['User']['lname'])); ?></td>
-						<td><?php echo h($user['User']['created']); ?></td>
+						<td data-title="Email">
+							<?php echo h($user['User']['email']); ?>
+						</td>
+						<td data-title="Name">
+							<?php echo __('%s %s', h($user['User']['fname']), h($user['User']['lname'])); ?>
+						</td>
+						<td data-title="Logins">
+							<?php echo h($user['User']['logins']); ?>
+						</td>
+						<td data-title="Modified">
+							<?php echo h($user['User']['modified']); ?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</table>

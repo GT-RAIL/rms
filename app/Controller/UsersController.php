@@ -54,7 +54,7 @@ class UsersController extends AppController {
 	 * @var array
 	 */
 	public $paginate = array(
-		'limit' => 25,
+		'limit' => 30,
 		'order' => array(
 			'User.role_id' => 'ASC', 'User.created' => 'ASC'
 		)
@@ -76,29 +76,6 @@ class UsersController extends AppController {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
 		$this->set('users', $this->Paginator->paginate('User'));
-	}
-
-	/**
-	 * The admin view allows and admin to view any user's extended information.
-	 *
-	 * @param int $id The ID of the entry to view.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
-	public function admin_view($id = null) {
-		if (!$id) {
-			// no ID provided
-			throw new NotFoundException('Invalid user.');
-		}
-
-		$user = $this->User->findById($id);
-		if (!$user) {
-			// no valid entry found for the given ID
-			throw new NotFoundException('Invalid user.');
-		}
-
-		// store the entry
-		$this->set('user', $user);
-		$this->set('title_for_layout', $user['User']['username']);
 	}
 
 	/**
