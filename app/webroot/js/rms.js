@@ -80,9 +80,11 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
     html += '<strong>ROS Topics<br /></strong>';
     html += '<select class="button" id="topics">';
     html += '<option>Loading...</option>';
-    html += '<br />';
-    html += '<textarea rows="5" cols="50" id="echo" readonly style="resize: none;">Awaiting data...</textarea>';
     html += '</select>';
+    html += '<br />';
+    html += '<strong>Type:</strong> <span id="type">N/A</span>';
+    html += '<br />';
+    html += '<pre class="rostopic"><code id="rostopic">Awaiting data...</code></pre>';
     html += '</section>';
     html += '</div>';
     ele.html(html);
@@ -108,8 +110,8 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
       if (topic !== null) {
         topic.unsubscribe();
       }
-      var echoEle = $('#echo');
-      echoEle.val('Awaiting data...');
+      var echoEle = $('#rostopic');
+      echoEle.html('Awaiting data...');
 
       var selected = $('#topics option:selected').text();
       topic = new ROSLIB.Topic({
@@ -117,26 +119,23 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
         name : selected
       });
       topic.subscribe(function(message) {
-          var newLine = true;
-          if (echoEle.val() === 'Awaiting data...') {
-            echoEle.val('');
-            newLine = false;
-          }
-          if (newLine) {
-            echoEle.val(echoEle.val() + '\n');
-          }
-          echoEle.val(echoEle.val() + '> ' + JSON.stringify(message));
-          echoEle.scrollTop(
-            echoEle[0].scrollHeight - echoEle.height()
-          );
+          echoEle.html(RMS.prettyJson(message));
+      });
+      // grab the topic type
+      ros.getTopicType(selected, function(type) {
+        if (type === '') {
+          $('#type').html('N/A');
+        } else {
+          $('#type').html(type);
+        }
       });
     });
   });
   ros.on('error', function() {
-    ele.html('<h2>Connection failed! <span class="icon red fa-thumbs-o-down"></span></h2>');
+    ele.html('<h2>Connection Failed <span class="icon red fa-thumbs-o-down"></span></h2>');
   });
   ros.on('close', function() {
-    ele.html('<h2>Connection lost! <span class="icon red fa-thumbs-o-down"></span></h2>');
+    ele.html('<h2>Connection Lost <span class="icon red fa-thumbs-o-down"></span></h2>');
   });
   ros.connect(protocol + '://' + host + ':' + port);
 
@@ -196,4 +195,36 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
 
   // calls in order
   getNodes();
+};
+
+
+/**
+ * Prettify the JSON object as formatted HTML.
+ *
+ * @param json The JSON object to format.
+ * @return The formatted HTML.
+ */
+RMS.prettyJson = function(json) {
+  // replacement function
+  var replacer = function(match, pIndent, pKey, pVal, pEnd) {
+    var key = '<span class=json-key>';
+    var val = '<span class=json-value>';
+    var str = '<span class=json-string>';
+    var r = pIndent || '';
+    if (pKey) {
+      r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+    }
+    if (pVal) {
+      r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+    }
+    return r + (pEnd || '');
+  };
+
+  // define what should be on a new line
+  var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+  // return the HTML
+  return html = JSON.stringify(json, null, 3)
+    .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(jsonLine, replacer);
 };

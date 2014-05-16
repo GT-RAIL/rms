@@ -973,3 +973,26 @@ section.flash {
 		display: inline-block;
 		width: 5em;
 	}
+
+/* ROS */
+
+pre.rostopic {
+	text-align: left;
+	background-color: ghostwhite;
+	border: 1px solid silver;
+	padding: 5px;
+	overflow: auto;
+	max-height: 300px;
+	font-family:'Lucida Console', monospace;
+	font-size: 11px;
+}
+
+	pre.rostopic .json-key {
+		color: brown;
+	}
+	pre.rostopic .json-value {
+		color: navy;
+	}
+	pre.rostopic .json-string {
+		color: olive;
+	}
