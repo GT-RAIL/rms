@@ -22,7 +22,13 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>
+					MJPEG server is a streaming server that subscribes to requested image topics in ROS and publishes
+					those topics as MJPEG streams via HTTP.
+				</p>
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />
 			<table>
 				<tr>
@@ -51,18 +57,21 @@
 							);
 							?>
 						</td>
-						<td>
+						<td data-title="ID">
 							<?php echo h($mjpeg['Mjpeg']['id']); ?>
 						</td>
-						<td>
+						<td data-title="Name">
 							<?php echo h($mjpeg['Mjpeg']['name']); ?>
 						</td>
-						<td>
+						<td data-title="URI">
 							<?php
-							echo __('http://%s:%s', h($mjpeg['Mjpeg']['host']), h($mjpeg['Mjpeg']['port']));
+							echo $this->Html->link(
+								__('http://%s:%s', h($mjpeg['Mjpeg']['host']), h($mjpeg['Mjpeg']['port'])),
+								array('action' => 'view', $mjpeg['Mjpeg']['id'])
+							);
 							?>
 						</td>
-						<td>
+						<td data-title="Status">
 							<div id="<?php echo __('mjpeg-%s', h($mjpeg['Mjpeg']['id'])); ?>">
 								<span class="icon orange fa-spinner"></span>
 							</div>
@@ -74,7 +83,7 @@
 								);
 							</script>
 						</td>
-						<td>
+						<td data-title="Environments">
 							<?php echo count($mjpeg['Environment']); ?>
 						</td>
 					</tr>

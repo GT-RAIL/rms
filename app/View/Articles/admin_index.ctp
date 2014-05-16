@@ -23,7 +23,10 @@
 	<div class="content center">
 		<section>
 			<header>
-				<p>Content articles are publicly visible. Each article will automatically be added to its assigned page.
+				<p>
+					Content articles are publicly visible. Each article will automatically be added to its assigned
+					page.
+				</p>
 			</header>
 			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />

@@ -22,7 +22,14 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>
+					Environments are the central component of the RMS. A robot environment can consist of a rosbridge
+					and MJPEG server, as well as associated topics and image streams. An interface can be linked
+					together with an environment to gain access to this information.
+				</p>
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />
 			<table>
 				<tr>
@@ -50,29 +57,32 @@
 							);
 							?>
 						</td>
-						<td>
+						<td data-title="ID">
 							<?php echo h($env['Environment']['id']); ?>
 						</td>
-						<td>
+						<td data-title="Name">
 							<?php echo h($env['Environment']['name']); ?>
 						</td>
-						<td>
+						<td data-title="rosbridge Server">
 							<?php if (!$env['Rosbridge']['id']): ?>
 								N/A
 							<?php else: ?>
 								<?php echo h($env['Rosbridge']['name']); ?>
-								<br />
-								<?php
-								echo __(
-									'%s://%s:%s',
-									h($env['Rosbridge']['Protocol']['name']),
-									h($env['Rosbridge']['host']),
-									h($env['Rosbridge']['port'])
-								);
-								?>
 								<span id="<?php echo __('rosbridge-%s', h($env['Rosbridge']['id'])); ?>">
 									<span class="icon orange fa-spinner"></span>
 								</span>
+								<br />
+								<?php
+								echo $this->Html->link(
+									__(
+										'%s://%s:%s',
+										h($env['Rosbridge']['Protocol']['name']),
+										h($env['Rosbridge']['host']),
+										h($env['Rosbridge']['port'])
+									),
+									array('controller' => 'rosbridges', 'action' => 'view', $env['Rosbridge']['id'])
+								);
+								?>
 								<script type="text/javascript">
 									RMS.verifyRosbridge(
 										'<?php echo (h($env['Rosbridge']['Protocol']['name'])); ?>',
@@ -83,16 +93,21 @@
 								</script>
 							<?php endif; ?>
 						</td>
-						<td>
+						<td data-title="MJPEG Server">
 							<?php if (!$env['Mjpeg']['id']): ?>
 								N/A
 							<?php else: ?>
 								<?php echo h($env['Mjpeg']['name']); ?>
-								<br />
-								<?php echo __('http://%s:%s', h($env['Mjpeg']['host']), h($env['Mjpeg']['port'])); ?>
 								<span id="<?php echo __('mjpeg-%s', h($env['Mjpeg']['id'])); ?>">
 									<span class="icon orange fa-spinner"></span>
 								</span>
+								<br />
+								<?php
+								echo $this->Html->link(
+									__('http://%s:%s', h($env['Mjpeg']['host']), h($env['Mjpeg']['port'])),
+									array('controller' => 'mjpegs', 'action' => 'view', $env['Mjpeg']['id'])
+								);
+								?>
 								<script type="text/javascript">
 									RMS.verifyMjpegServer(
 										'<?php echo (h($env['Mjpeg']['host'])); ?>',

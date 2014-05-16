@@ -85,6 +85,7 @@ table, thead, tbody, th, td, tr {
 
 	tr {
 		border: 1px solid #7c8081;
+		margin-bottom: 0.75em;
 	}
 
 	td {

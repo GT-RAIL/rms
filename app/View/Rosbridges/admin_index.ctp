@@ -22,7 +22,13 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
-			<?php echo $this->Html->link('Create New Entry', array('action' => 'add')); ?>
+			<header>
+				<p>
+					rosbridge provides a JSON interface to ROS, allowing any client to send JSON to publish or subscribe
+					to ROS topics, call ROS services, and more.
+				</p>
+			</header>
+			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
 			<br /><br />
 			<table>
 				<tr>
@@ -52,13 +58,13 @@
 							);
 							?>
 						</td>
-						<td>
+						<td data-title="ID">
 							<?php echo h($rosbridge['Rosbridge']['id']); ?>
 						</td>
-						<td>
+						<td data-title="Name">
 							<?php echo h($rosbridge['Rosbridge']['name']); ?>
 						</td>
-						<td>
+						<td data-title="URI">
 							<?php
 							echo $this->Html->link(
 								__(
@@ -71,7 +77,7 @@
 							);
 							?>
 						</td>
-						<td>
+						<td data-title="Status">
 							<div id="<?php echo __('rosbridge-%s', h($rosbridge['Rosbridge']['id'])); ?>">
 								<span class="icon orange fa-spinner"></span>
 							</div>
@@ -84,12 +90,12 @@
 								);
 							</script>
 						</td>
-						<td>
+						<td data-title="rosauth Key">
 							<?php
 							echo ($rosbridge['Rosbridge']['rosauth']) ? h($rosbridge['Rosbridge']['rosauth']) : 'N/A';
 							?>
 						</td>
-						<td>
+						<td data-title="Environments">
 							<?php echo count($rosbridge['Environment']); ?>
 						</td>
 					</tr>

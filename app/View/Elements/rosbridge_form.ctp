@@ -17,6 +17,9 @@
 <section class="wrapper style4 container">
 	<div class="content">
 		<section>
+			<header>
+				<h3>Enter the rosbridge Server Information Below</h3>
+			</header>
 			<?php
 			echo $this->Form->create('Rosbridge');
 			if (isset($edit) && $edit) {
