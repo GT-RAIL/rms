@@ -177,6 +177,25 @@ INSERT INTO `mjpegs` (`id`, `name`, `host`, `port`, `created`, `modified`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `streams`
+--
+
+CREATE TABLE IF NOT EXISTS `streams` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(32) NOT NULL COMMENT 'Name of the MJPEG server stream.',
+  `topic` varchar(255) NOT NULL COMMENT 'ROS image topic for the stream.',
+  `width` int(10) unsigned DEFAULT NULL COMMENT 'The width of the streaming image.',
+  `height` int(10) unsigned DEFAULT NULL COMMENT 'The height of the streaming image.',
+  `quality` int(10) unsigned DEFAULT NULL COMMENT 'The quality of the streaming image.',
+  `invert` boolean DEFAULT FALSE COMMENT 'If the stream should be inverted.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='MJPEG server streams.' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `environments`
 --
 
