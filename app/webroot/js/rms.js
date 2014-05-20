@@ -197,6 +197,50 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
   getNodes();
 };
 
+/**
+ * Attempt to connect to the given MJPEG server. If a connection is made, a green thumbs up is placed in the HTML of the
+ * element with the given ID. If a connection is not made, a red thumbs down is placed in the HTML of the element with
+ * the given ID.
+ *
+ * @param host The host to connect to.
+ * @param port The port to connect to.
+ * @param id The ID of the element to place the icon in.
+ */
+RMS.generateStream = function(host, port, topic, id, options) {
+  // parse the options
+  options = options || {};
+  var width = options.width || null;
+  var height = options.height || null;
+  var quality = options.quality || null;
+  var invert = options.invert;
+
+  // setup the image
+  var ele = $('#' + id);
+  var img = new Image();
+  img.onerror = function(a) {
+    ele.html('<h2>Stream Currently Unavailable <span class="icon red fa-thumbs-o-down"></span></h2>');
+  }
+  img.onload = function() {
+    ele.html('');
+    ele.append(img);
+  }
+
+  // setup the URL
+  var url = 'http://' + host + ':' + port + '/stream?topic=' + topic;
+  if (width) {
+    url += '?width=' + width;
+  }
+  if (height) {
+    url += '?height=' + height;
+  }
+  if (quality) {
+    url += '?quality=' + quality;
+  }
+  if (invert) {
+    url += '?invert=true';
+  }
+  img.src = url;
+}
 
 /**
  * Prettify the JSON object as formatted HTML.

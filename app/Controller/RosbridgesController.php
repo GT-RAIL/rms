@@ -53,6 +53,10 @@ class RosbridgesController extends AppController {
 		if ($this->request->is('post')) {
 			// create a new entry
 			$this->Rosbridge->create();
+			// check for empty key
+			if (strlen($this->request->data['Rosbridge']['rosauth']) === 0) {
+				$this->request->data['Rosbridge']['rosauth'] = NULL;
+			}
 			// set the current timestamp for creation and modification
 			$this->Rosbridge->data['Rosbridge']['created'] = date('Y-m-d H:i:s');
 			$this->Rosbridge->data['Rosbridge']['modified'] = date('Y-m-d H:i:s');

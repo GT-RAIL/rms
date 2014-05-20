@@ -25,7 +25,7 @@
 			h($rosbridge['Rosbridge']['port'])
 		);
 		?>
-	<p>
+	</p>
 </header>
 
 <section class="wrapper style4 container">

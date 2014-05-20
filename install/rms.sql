@@ -188,9 +188,11 @@ CREATE TABLE IF NOT EXISTS `streams` (
   `height` int(10) unsigned DEFAULT NULL COMMENT 'The height of the streaming image.',
   `quality` int(10) unsigned DEFAULT NULL COMMENT 'The quality of the streaming image.',
   `invert` boolean DEFAULT FALSE COMMENT 'If the stream should be inverted.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `environment_id` (`environment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='MJPEG server streams.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -360,6 +362,12 @@ ALTER TABLE `articles`
 --
 ALTER TABLE `rosbridges`
   ADD CONSTRAINT `rosbridges_ibfk_1` FOREIGN KEY (`protocol_id`) REFERENCES `protocols` (`id`);
+
+--
+-- Constraints for table `streams`
+--
+ALTER TABLE `streams`
+  ADD CONSTRAINT `streams_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
 
 --
 -- Constraints for table `environments`

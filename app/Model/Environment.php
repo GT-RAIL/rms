@@ -86,10 +86,17 @@ class Environment extends AppModel {
 	/**
 	 * All environments have a rosbridge and MJPEG server.
 	 *
-	 * @var string
+	 * @var array
 	 */
 	public $belongsTo = array(
 		'Rosbridge' => array('className' => 'Rosbridge'),
 		'Mjpeg' => array('className' => 'Mjpeg')
 	);
+
+	/**
+	 * Environments can have associated streams and topics.
+	 *
+	 * @var array
+	 */
+	public $hasMany = array('Stream' => array('className' => 'Stream', 'dependent' => true));
 }

@@ -107,6 +107,10 @@ abstract class AppController extends Controller {
 							array(
 								'title' => 'MJPEG Server',
 								'url' => array('admin' => true, 'controller' => 'mjpegs', 'action' => 'index')
+							),
+							array(
+								'title' => 'MJPEG Streams',
+								'url' => array('admin' => true, 'controller' => 'streams', 'action' => 'index')
 							)
 						)
 					),

@@ -52,7 +52,7 @@ class MjpegsController extends AppController {
 			$this->Mjpeg->data['Mjpeg']['modified'] = date('Y-m-d H:i:s');
 			// attempt to save the entry
 			if ($this->Mjpeg->save($this->request->data)) {
-				$this->Session->setFlash('The Mjpeg server has been saved.');
+				$this->Session->setFlash('The MJPEG server has been saved.');
 				return $this->redirect(array('action' => 'index'));
 			}
 			$this->Session->setFlash('Unable to add the MJPEG server.');

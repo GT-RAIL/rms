@@ -996,3 +996,7 @@ pre.rostopic {
 	pre.rostopic .json-string {
 		color: olive;
 	}
+
+.stream img {
+	max-width: 100%;
+}
