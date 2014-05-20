@@ -85,7 +85,7 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($stream['Environment']['name']); ?>
-							<span id="<?php echo __('mjpeg-%s', h($stream['Environment']['Mjpeg']['id'])); ?>">
+							<span id="<?php echo __('mjpeg-%s', h($stream['Stream']['id'])); ?>">
 								<span class="icon orange fa-spinner"></span>
 							</span>
 							<br />
@@ -107,7 +107,7 @@
 								RMS.verifyMjpegServer(
 									'<?php echo (h($stream['Environment']['Mjpeg']['host'])); ?>',
 									<?php echo (h($stream['Environment']['Mjpeg']['port'])); ?>,
-									'<?php echo __('mjpeg-%s', h($stream['Environment']['Mjpeg']['id'])); ?>'
+									'<?php echo __('mjpeg-%s', h($stream['Stream']['id'])); ?>'
 								);
 							</script>
 						</td>

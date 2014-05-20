@@ -52,6 +52,14 @@ RMS.verifyMjpegServer = function(host, port, id) {
   img.src = 'http://' + host + ':' + port + '/stream?topic=/';
 };
 
+/**
+ * Generate a rosbridge diagnostic panel in the given element.
+ *
+ * @param protocol The WebSocket protocol type.
+ * @param host The host to connect to.
+ * @param port The port to connect to.
+ * @param id The ID of the element to place the panel in.
+ */
 RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
   var ros = new ROSLIB.Ros();
   var ele = $('#' + id);
@@ -198,13 +206,72 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
 };
 
 /**
- * Attempt to connect to the given MJPEG server. If a connection is made, a green thumbs up is placed in the HTML of the
- * element with the given ID. If a connection is not made, a red thumbs down is placed in the HTML of the element with
- * the given ID.
+ * Generate a MJPEG server diagnostic panel in the given element.
  *
  * @param host The host to connect to.
  * @param port The port to connect to.
- * @param id The ID of the element to place the icon in.
+ * @param topics An array of topics.
+ * @param id The ID of the element to place the panel in.
+ */
+RMS.generateMjpegDiagnosticPanel = function(host, port, topics, id) {
+  var ele = $('#' + id);
+
+  // check the topics
+  var html = '';
+  if (topics.length === 0) {
+    ele.html('<h2>No Associated Streams Found</h2>');
+  } else {
+    var html = '';
+    // use unique topics
+    var uniqueTopics = [];
+    $.each(topics, function(i, el){
+      if($.inArray(el, uniqueTopics) === -1) uniqueTopics.push(el);
+    });
+
+    // create the dropdown
+    html += 'Stream: ';
+    html += '<select id="streams">';
+    uniqueTopics.forEach(function(topic){
+       html += '<option value="'+ topic + '">' + topic + '</option>';
+    });
+    html += '</select>';
+    html += '<br /><br />';
+    html += '<section id="stream" class="stream center">';
+    html += '<h2>Acquiring connection... <span class="icon orange fa-spinner"></span></h2>';
+    html += '</section>';
+    ele.html(html);
+
+    // function to change streams
+    var changeStream = function(topic) {
+      $('#stream').html('<h2>Acquiring connection... <span class="icon orange fa-spinner"></span></h2>');
+      RMS.generateStream(host, port, topic, 'stream');
+    };
+
+    // start with the default
+    changeStream(uniqueTopics[0]);
+
+    $('#streams').change(function(){
+      var selected = $('#streams option:selected').text();
+      changeStream(selected);
+    });
+  }
+
+  // test the server connection
+  var img = new Image();
+  img.onerror = function(a) {
+    ele.html('<h2>Server Currently Unavailable <span class="icon red fa-thumbs-o-down"></span></h2>');
+  }
+  img.src = 'http://' + host + ':' + port + '/stream?topic=/';
+};
+
+/**
+ * Attempt to stream the given image topic from an MJPEG server.
+ *
+ * @param host The host to connect to.
+ * @param port The port to connect to.
+ * @param topic The ROS image topic to stream.
+ * @param id The ID of the element to place the stream in.
+ * @param options A JSON object of MJPEG server options (optional).
  */
 RMS.generateStream = function(host, port, topic, id, options) {
   // parse the options

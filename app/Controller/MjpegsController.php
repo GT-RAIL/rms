@@ -35,7 +35,7 @@ class MjpegsController extends AppController {
 	 */
 	public function admin_index() {
 		// grab all the entries
-		$this->set('mjpegs', $this->Mjpeg->find('all'));
+		$this->set('mjpegs', $this->Mjpeg->find('all', array('recursive' => 2)));
 		$this->set('title_for_layout', 'MJPEG Servers');
 	}
 
@@ -118,5 +118,29 @@ class MjpegsController extends AppController {
 			$this->Session->setFlash('The MJPEG server has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
+	}
+
+	/**
+	 * View the given entry.
+	 *
+	 * @param intl $id The ID of the entry to view.
+	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
+	 */
+	public function admin_view($id = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid mjpeg.');
+		}
+
+		$this->Mjpeg->recursive = 2;
+		$mjpeg = $this->Mjpeg->findById($id);
+		if (!$mjpeg) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid mjpeg.');
+		}
+
+		// store the entry
+		$this->set('mjpeg', $mjpeg);
+		$this->set('title_for_layout', $mjpeg['Mjpeg']['name']);
 	}
 }

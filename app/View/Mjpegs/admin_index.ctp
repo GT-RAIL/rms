@@ -38,6 +38,7 @@
 					<th>URI</th>
 					<th>Status</th>
 					<th><?php echo $this->Html->link('Environments', array('controller' => 'environments')); ?></th>
+					<th><?php echo $this->Html->link('Streams', array('controller' => 'streams')); ?></th>
 				</tr>
 				<?php foreach ($mjpegs as $mjpeg): ?>
 					<tr>
@@ -85,6 +86,15 @@
 						</td>
 						<td data-title="Environments">
 							<?php echo count($mjpeg['Environment']); ?>
+						</td>
+						<td data-title="Streams">
+							<?php
+							$streams = 0;
+							foreach ($mjpeg['Environment'] as $env) {
+								$streams += count($env['Stream']);
+							}
+							echo h($streams);
+							?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
