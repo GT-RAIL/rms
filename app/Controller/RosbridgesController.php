@@ -1,6 +1,4 @@
 <?php
-App::uses('HttpSocket', 'Network/Http');
-
 /**
  * rosbridge Servers Controller
  *
@@ -20,7 +18,7 @@ class RosbridgesController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Rms');
 
 	/**
 	 * The used components for the controller.
@@ -141,7 +139,7 @@ class RosbridgesController extends AppController {
 	/**
 	 * View the given entry.
 	 *
-	 * @param intl $id The ID of the entry to view.
+	 * @param int $id The ID of the entry to view.
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
 	 */
 	public function admin_view($id = null) {

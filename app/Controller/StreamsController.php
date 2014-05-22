@@ -1,6 +1,4 @@
 <?php
-App::uses('HttpSocket', 'Network/Http');
-
 /**
  * MJPEG Server Streams Controller
  *
@@ -20,7 +18,7 @@ class StreamsController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Rms');
 
 	/**
 	 * The used components for the controller.
@@ -30,13 +28,10 @@ class StreamsController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
-	 * The admin index action lists information about all environments. This allows the admin to add, edit, or delete
-	 * entries.
+	 * The admin index action redirects to the main ROS index.
 	 */
 	public function admin_index() {
-		// grab all the entries
-		$this->set('streams', $this->Stream->find('all', array('recursive' => 2)));
-		$this->set('title_for_layout', 'MJPEG Server Streams');
+		return $this->redirect(array('controller' => 'ros', 'action' => 'index'));
 	}
 
 	/**

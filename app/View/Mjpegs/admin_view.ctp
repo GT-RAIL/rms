@@ -23,25 +23,14 @@
 
 <section class="wrapper style4 container">
 	<div class="content">
-		<section id="panel" class="center">
-			<h2>Acquiring connection... <span class="icon orange fa-spinner"></span></h2>
-		</section>
+		<?php
+		$topics = array();
+		foreach ($mjpeg['Environment'] as $env) {
+			foreach ($env['Stream'] as $stream) {
+				$topics[] = $stream['topic'];
+			}
+		}
+		echo $this->Rms->mjpegPanel($mjpeg['Mjpeg']['host'], $mjpeg['Mjpeg']['port'], $topics);
+		?>
 	</div>
 </section>
-
-<script>
-	var topics = [];
-	<?php foreach ($mjpeg['Environment'] as $env): ?>
-		<?php foreach ($env['Stream'] as $stream): ?>
-			topics.push('<?php echo h($stream['topic']); ?>');
-		<?php endforeach; ?>
-	<?php endforeach; ?>
-
-	// attempt to get the connection
-	RMS.generateMjpegDiagnosticPanel(
-		'<?php echo (h($mjpeg['Mjpeg']['host'])); ?>',
-		<?php echo (h($mjpeg['Mjpeg']['port'])); ?>,
-		topics,
-		'panel'
-	);
-</script>

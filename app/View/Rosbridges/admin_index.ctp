@@ -78,17 +78,13 @@
 							?>
 						</td>
 						<td data-title="Status">
-							<div id="<?php echo __('rosbridge-%s', h($rosbridge['Rosbridge']['id'])); ?>">
-								<span class="icon orange fa-spinner"></span>
-							</div>
-							<script type="text/javascript">
-								RMS.verifyRosbridge(
-									'<?php echo (h($rosbridge['Protocol']['name'])); ?>',
-									'<?php echo (h($rosbridge['Rosbridge']['host'])); ?>',
-									<?php echo (h($rosbridge['Rosbridge']['port'])); ?>,
-									'<?php echo __('rosbridge-%s', h($rosbridge['Rosbridge']['id'])); ?>'
-								);
-							</script>
+							<?php
+							echo $this->Rms->rosbridgeStatus(
+								$rosbridge['Protocol']['name'],
+								$rosbridge['Rosbridge']['host'],
+								$rosbridge['Rosbridge']['port']
+							);
+							?>
 						</td>
 						<td data-title="rosauth Key">
 							<?php

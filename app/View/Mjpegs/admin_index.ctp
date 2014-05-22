@@ -73,16 +73,9 @@
 							?>
 						</td>
 						<td data-title="Status">
-							<div id="<?php echo __('mjpeg-%s', h($mjpeg['Mjpeg']['id'])); ?>">
-								<span class="icon orange fa-spinner"></span>
-							</div>
-							<script type="text/javascript">
-								RMS.verifyMjpegServer(
-									'<?php echo (h($mjpeg['Mjpeg']['host'])); ?>',
-									<?php echo (h($mjpeg['Mjpeg']['port'])); ?>,
-									'<?php echo __('mjpeg-%s', h($mjpeg['Mjpeg']['id'])); ?>'
-								);
-							</script>
+							<?php
+							echo $this->Rms->mjpegServerStatus($mjpeg['Mjpeg']['host'], $mjpeg['Mjpeg']['port']);
+							?>
 						</td>
 						<td data-title="Environments">
 							<?php echo count($mjpeg['Environment']); ?>

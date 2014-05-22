@@ -109,8 +109,8 @@ abstract class AppController extends Controller {
 								'url' => array('admin' => true, 'controller' => 'mjpegs', 'action' => 'index')
 							),
 							array(
-								'title' => 'MJPEG Streams',
-								'url' => array('admin' => true, 'controller' => 'streams', 'action' => 'index')
+								'title' => 'Topics & Widgets',
+								'url' => array('admin' => true, 'controller' => 'ros', 'action' => 'index')
 							)
 						)
 					),

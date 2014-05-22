@@ -21,24 +21,13 @@
 
 <section class="wrapper style4 container">
 	<div class="content">
-		<section id="stream" class="stream center">
-			<h2>Acquiring connection... <span class="icon orange fa-spinner"></span></h2>
-		</section>
+		<?php
+		echo $this->Rms->mjpegStream(
+			$stream['Environment']['Mjpeg']['host'],
+			$stream['Environment']['Mjpeg']['port'],
+			$stream['Stream']['topic'],
+			$stream['Stream']
+		);
+		?>
 	</div>
 </section>
-
-<script>
-	// attempt to get the stream
-	RMS.generateStream(
-		'<?php echo h($stream['Environment']['Mjpeg']['host']); ?>',
-		<?php echo h($stream['Environment']['Mjpeg']['port']); ?>,
-		'<?php echo h($stream['Stream']['topic']); ?>',
-		'stream',
-		{
-			width : <?php echo ($stream['Stream']['width']) ? h($stream['Stream']['width']) : 'null'; ?>,
-			height : <?php echo ($stream['Stream']['height']) ? h($stream['Stream']['height']) : 'null'; ?>,
-			quality : <?php echo ($stream['Stream']['quality']) ? h($stream['Stream']['quality']) : 'null'; ?>,
-			invert : <?php echo ($stream['Stream']['invert']) ? 'true' : 'false'; ?>
-		}
-	);
-</script>

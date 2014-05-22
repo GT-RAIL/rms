@@ -1,6 +1,4 @@
 <?php
-App::uses('HttpSocket', 'Network/Http');
-
 /**
  * MJPEG Servers Controller
  *
@@ -20,7 +18,7 @@ class MjpegsController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Rms');
 
 	/**
 	 * The used components for the controller.

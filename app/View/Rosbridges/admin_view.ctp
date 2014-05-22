@@ -30,18 +30,12 @@
 
 <section class="wrapper style4 container">
 	<div class="content">
-		<section id="panel" class="center">
-			<h2>Acquiring connection... <span class="icon orange fa-spinner"></span></h2>
-		</section>
+		<?php
+		echo $this->Rms->rosbridgePanel(
+			$rosbridge['Protocol']['name'],
+			$rosbridge['Rosbridge']['host'],
+			$rosbridge['Rosbridge']['port']
+		);
+		?>
 	</div>
 </section>
-
-<script>
-	// attempt to get the connection
-	RMS.generateRosbridgeDiagnosticPanel(
-		'<?php echo (h($rosbridge['Protocol']['name'])); ?>',
-		'<?php echo (h($rosbridge['Rosbridge']['host'])); ?>',
-		<?php echo (h($rosbridge['Rosbridge']['port'])); ?>,
-		'panel'
-	);
-</script>
