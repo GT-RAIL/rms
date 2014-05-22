@@ -224,6 +224,30 @@ INSERT INTO `environments` (`id`, `name`, `rosbridge_id`, `mjpeg_id`, `created`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ifaces`
+--
+
+CREATE TABLE IF NOT EXISTS `ifaces` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(64) NOT NULL COMMENT 'Name of the interface.',
+  `anonymous` boolean DEFAULT FALSE COMMENT 'If anonymous access is allowed.',
+  `unrestricted` boolean DEFAULT FALSE COMMENT 'If unrestricted access is allowed.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='RMS interfaces.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ifaces`
+--
+
+INSERT INTO `ifaces` (`id`, `name`, `anonymous`, `unrestricted`, `created`, `modified`) VALUES
+  (1, 'Basic', TRUE, TRUE, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 

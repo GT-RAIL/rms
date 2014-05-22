@@ -25,7 +25,7 @@
 				<p>Choose from the following options to edit ROS settings.</p>
 			</header>
 			<div class="row">
-				<section class="3u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'Environments',
@@ -34,7 +34,7 @@
 					);
 					?>
 				</section>
-				<section class="3u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'rosbridge Servers',
@@ -43,7 +43,7 @@
 					);
 					?>
 				</section>
-				<section class="3u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'MJPEG Servers',
@@ -52,11 +52,22 @@
 					);
 					?>
 				</section>
-				<section class="3u">
+			</div>
+			<div class="row">
+				<section class="6u">
 					<?php
 					echo $this->Html->link(
 						'Topics & Widgets',
 						array('controller' => 'widget', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="6u">
+					<?php
+					echo $this->Html->link(
+						'Interfaces',
+						array('controller' => 'ifaces', 'action' => 'index'),
 						array('class' => 'button special')
 					);
 					?>

@@ -28,7 +28,7 @@ class MjpegsController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
-	 * The admin index action lists information about all environments. This allows the admin to add, edit, or delete
+	 * The admin index action lists information about all MJPEG servers. This allows the admin to add, edit, or delete
 	 * entries.
 	 */
 	public function admin_index() {

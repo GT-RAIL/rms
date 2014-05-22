@@ -112,6 +112,10 @@ abstract class AppController extends Controller {
 							array(
 								'title' => 'Topics & Widgets',
 								'url' => array('admin' => true, 'controller' => 'widget', 'action' => 'index')
+							),
+							array(
+								'title' => 'Interfaces',
+								'url' => array('admin' => true, 'controller' => 'ifaces', 'action' => 'index')
 							)
 						),
 						'url' => array('admin' => true, 'controller' => 'ros', 'action' => 'index')
