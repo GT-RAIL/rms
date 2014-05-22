@@ -1,9 +1,8 @@
 <?php
 /**
- * Admin MJPEG Stream Index View
+ * Admin ROS View
  *
- * The MJPEG stream index page displays a list of all MJPEG streams in the database. An admin may edit, add, or delete
- * from this list.
+ * The ROS index view displays menu information for the relevant controllers.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -15,123 +14,54 @@
 ?>
 
 <header class="special container">
-	<span class="icon fa-gear"></span>
-	<h2>ROS Topics and Widgets</h2>
+	<span class="icon fa-cloud"></span>
+	<h2>ROS Settings</h2>
 </header>
 
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
 			<header>
-				<p>
-					ROS topics and widgets can be assigned to a particular environment.
-				</p>
+				<p>Choose from the following options to edit ROS settings.</p>
 			</header>
-			<ul class="buttons">
-				<li><a href="#streams" class="button special scrolly">MJPEG Streams</a></li>
-			</ul>
-		</section>
-	</div>
-</section>
-
-<section id="streams" class="wrapper style4 container">
-	<div class="content center">
-		<section>
-			<header>
-				<h2>MJPEG Server Streams</h2>
-				<p>
-					MJPEG streams correspond to ROS image topics streamed via the MJPEG Server node.
-				</p>
-			</header>
-			<?php
-			echo $this->Html->link(
-				'Create New Entry',
-				array('controller' => 'streams', 'action' => 'add'),
-				array('class' => 'button')
-			);
-			?>
-			<br /><br />
-			<table>
-				<tr>
-					<th></th>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Topic</th>
-					<th>Size</th>
-					<th>Quality</th>
-					<th>Invert</th>
-					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
-				</tr>
-				<?php foreach ($streams as $stream): ?>
-					<tr>
-						<td>
-							<?php
-							echo $this->Form->postLink(
-								'',
-								array('controller' => 'streams', 'action' => 'delete', $stream['Stream']['id']),
-								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
-							);
-							?>
-							<?php
-							echo $this->Html->link(
-								'',
-								array('controller' => 'streams', 'action' => 'edit', $stream['Stream']['id']),
-								array('class' => 'icon fa-edit')
-							);
-							?>
-						</td>
-						<td data-title="ID">
-							<?php echo h($stream['Stream']['id']); ?>
-						</td>
-						<td data-title="Name">
-							<?php echo h($stream['Stream']['name']); ?>
-						</td>
-						<td data-title="Topic">
-							<?php
-							echo $this->Html->link(
-								h($stream['Stream']['topic']),
-								array('controller' => 'streams', 'action' => 'view', $stream['Stream']['id'])
-							);
-							?>
-						</td>
-						<td data-title="Size">
-							<?php echo ($stream['Stream']['width']) ? h($stream['Stream']['width']) : 'original'; ?>
-							x
-							<?php echo ($stream['Stream']['height']) ? h($stream['Stream']['height']) : 'original'; ?>
-						</td>
-						<td data-title="Quality">
-							<?php echo ($stream['Stream']['quality']) ? h($stream['Stream']['quality']) : 'N/A'; ?>
-						</td>
-						<td data-title="Invert">
-							<?php echo ($stream['Stream']['invert']) ? 'Yes' : 'No'; ?>
-						</td>
-						<td data-title="Environment">
-							<?php echo h($stream['Environment']['name']); ?>
-							<?php
-							echo $this->Rms->mjpegServerStatus(
-								$stream['Environment']['Mjpeg']['host'],
-								$stream['Environment']['Mjpeg']['port']
-							);
-							?>
-							<br />
-							<?php
-							echo $this->Html->link(
-								__(
-									'http://%s:%s',
-									h($stream['Environment']['Mjpeg']['host']),
-									h($stream['Environment']['Mjpeg']['port'])
-								),
-								array(
-									'controller' => 'mjpegs',
-									'action' => 'view',
-									$stream['Environment']['Mjpeg']['id']
-								)
-							);
-							?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
+			<div class="row">
+				<section class="3u">
+					<?php
+					echo $this->Html->link(
+						'Environments',
+						array('controller' => 'environments', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="3u">
+					<?php
+					echo $this->Html->link(
+						'rosbridge Servers',
+						array('controller' => 'rosbridges', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="3u">
+					<?php
+					echo $this->Html->link(
+						'MJPEG Servers',
+						array('controller' => 'mjpegs', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="3u">
+					<?php
+					echo $this->Html->link(
+						'Topics & Widgets',
+						array('controller' => 'widget', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+			</div>
 		</section>
 	</div>
 </section>

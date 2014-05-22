@@ -1,8 +1,8 @@
 <?php
 /**
- * ROS Controller
+ * Global Controller
  *
- * The ROS controller has a single index action for the ROS menu items.
+ * The global settings controller has a single index action for the site settings menu items.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -11,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Controller
  */
-class RosController extends AppController {
+class GlobalController extends AppController {
 
 	/**
 	 * The used helpers for the controller.
@@ -31,6 +31,6 @@ class RosController extends AppController {
 	 * The admin index displays the relevant menu items.
 	 */
 	public function admin_index() {
-		$this->set('title_for_layout', 'ROS Settings');
+		$this->set('title_for_layout', 'Global Site Settings');
 	}
 }

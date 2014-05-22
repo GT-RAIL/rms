@@ -47,9 +47,7 @@
 							<?php foreach($adminMenu as $am): ?>
 								<?php if (isset($am['menu'])): ?>
 									<li class="submenu">
-										<?php
-										echo $this->Html->link($am['title'], $am['menu'][key($am['menu'])]['url']);
-										?>
+										<?php echo $this->Html->link($am['title'], $am['url']); ?>
 										<ul>
 											<?php foreach($am['menu'] as $m): ?>
 												<li>

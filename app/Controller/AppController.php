@@ -91,7 +91,8 @@ abstract class AppController extends Controller {
 									'action' => 'newsletter'
 								)
 							)
-						)
+						),
+						'url' => array('admin' => true, 'controller' => 'content', 'action' => 'index')
 					),
 					array(
 						'title' => 'ROS Settings',
@@ -110,9 +111,10 @@ abstract class AppController extends Controller {
 							),
 							array(
 								'title' => 'Topics & Widgets',
-								'url' => array('admin' => true, 'controller' => 'ros', 'action' => 'index')
+								'url' => array('admin' => true, 'controller' => 'widget', 'action' => 'index')
 							)
-						)
+						),
+						'url' => array('admin' => true, 'controller' => 'ros', 'action' => 'index')
 					),
 					array(
 						'title' => 'Accounts',
@@ -129,8 +131,10 @@ abstract class AppController extends Controller {
 								'title' => 'Email Settings',
 								'url' => array('admin' => true, 'controller' => 'emails', 'action' => 'index')
 							)
-						)
-					)
+						),
+						'url' => array('admin' => true, 'controller' => 'global', 'action' => 'index')
+					),
+
 				);
 				$this->set('adminMenu', $adminMenu);
 			}

@@ -28,10 +28,10 @@ class StreamsController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
-	 * The admin index action redirects to the main ROS index.
+	 * The admin index action redirects to the main widget index.
 	 */
 	public function admin_index() {
-		return $this->redirect(array('controller' => 'ros', 'action' => 'index'));
+		return $this->redirect(array('controller' => 'widget', 'action' => 'index'));
 	}
 
 	/**
