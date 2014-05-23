@@ -31,7 +31,7 @@ class StreamsController extends AppController {
 	 * The admin index action redirects to the main widget index.
 	 */
 	public function admin_index() {
-		return $this->redirect(array('controller' => 'widget', 'action' => 'index'));
+		return $this->redirect(array('controller' => 'widget', 'action' => 'index', '#' => 'streams'));
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?php
 /**
- * Environments Model
+ * Telops Model
  *
- * Environments are linked to a rosbridge and MJPEG server. Each has a unique name.
+ * Teleops represent teleoperation settings. It contains information about the ROS topic and throttle rates.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -11,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Environment extends AppModel {
+class Teleop extends AppModel {
 
 	/**
 	 * The validation criteria for the model.
@@ -36,35 +36,35 @@ class Environment extends AppModel {
 				'required' => 'update'
 			)
 		),
-		'name' => array(
+		'topic' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid name.',
+				'message' => 'Please enter a valid ROS topic.',
 				'required' => true
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
-				'message' => 'Names cannot be longer than 255 characters.',
+				'message' => 'Topics cannot be longer than 255 characters.',
+				'required' => true
+			)
+		),
+		'throttle' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Throttle rates must be greater than 0.',
+				'allowEmpty' => true
+			)
+		),
+		'environment_id' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid environment.',
 				'required' => true
 			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This namee already exists.',
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Environment IDs must be greater than 0.',
 				'required' => true
-			)
-		),
-		'rosbridge_id' => array(
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'rosbridge IDs must be greater than 0.',
-				'allowEmpty' => true
-			)
-		),
-		'mjpeg_id' => array(
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'MJPEG IDs must be greater than 0.',
-				'allowEmpty' => true
 			)
 		),
 		'created' => array(
@@ -84,38 +84,9 @@ class Environment extends AppModel {
 	);
 
 	/**
-	 * All environments have a rosbridge and MJPEG server.
+	 * All teleops belong to a single environment.
 	 *
-	 * @var array
+	 * @var string
 	 */
-	public $belongsTo = array(
-		'Rosbridge' => array('className' => 'Rosbridge'),
-		'Mjpeg' => array('className' => 'Mjpeg')
-	);
-
-	/**
-	 * Environments can have associated streams and topics.
-	 *
-	 * @var array
-	 */
-	public $hasMany = array(
-		'Stream' => array('className' => 'Stream', 'dependent' => true),
-		'Teleop' => array('className' => 'Teleop', 'dependent' => true)
-	);
-
-	/**
-	 * Environments can have associated interfaces.
-	 *
-	 * @var array
-	 */
-	public $hasAndBelongsToMany = array(
-		'Iface' =>
-			array(
-				'className' => 'Iface',
-				'joinTable' => 'ifaces_environments',
-				'foreignKey' => 'environment_id',
-				'associationForeignKey' => 'iface_id',
-				'unique' => true
-			)
-	);
+	public $belongsTo = 'Environment';
 }

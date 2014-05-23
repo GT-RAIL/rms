@@ -193,7 +193,39 @@ CREATE TABLE IF NOT EXISTS `streams` (
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
   KEY `environment_id` (`environment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='MJPEG server streams.' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='MJPEG server streams.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `streams`
+--
+
+INSERT INTO `streams` (`id`, `name`, `topic`, `width`, `height`, `quality`, `invert`, `environment_id`, `created`, `modified`) VALUES
+  (1, 'RGB Stream', '/rgb/image', NULL, NULL, NULL, FALSE, 1, NOW(), NOW());
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teleops`
+--
+
+CREATE TABLE IF NOT EXISTS `teleops` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `topic` varchar(255) NOT NULL COMMENT 'ROS geometry_msgs/Twist topic for the teleop.',
+  `throttle` float unsigned DEFAULT NULL COMMENT 'The throttle rate.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  KEY `environment_id` (`environment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Keyboard teleop settings.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `teleops`
+--
+
+INSERT INTO `teleops` (`id`, `topic`, `throttle`, `environment_id`, `created`, `modified`) VALUES
+  (1, '/cmd_vel', NULL, 1, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -412,7 +444,13 @@ ALTER TABLE `rosbridges`
 -- Constraints for table `streams`
 --
 ALTER TABLE `streams`
-  ADD CONSTRAINT `streams_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+ADD CONSTRAINT `streams_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+
+--
+-- Constraints for table `teleops`
+--
+ALTER TABLE `teleops`
+  ADD CONSTRAINT `teleops_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
 
 --
 -- Constraints for table `environments`

@@ -27,9 +27,14 @@
 					ROS topics and widgets can be assigned to a particular environment.
 				</p>
 			</header>
-			<ul class="buttons">
-				<li><a href="#streams" class="button special scrolly">MJPEG Streams</a></li>
-			</ul>
+			<div class="row">
+				<section class="6u">
+					<a href="#streams" class="button special scrolly">MJPEG Streams</a>
+				</section>
+				<section class="6u">
+					<a href="#teleops" class="button special scrolly">Teleop Settings</a>
+				</section>
+			</div>
 		</section>
 	</div>
 </section>
@@ -107,29 +112,69 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($stream['Environment']['name']); ?>
-							<?php if(isset($stream['Environment']['Mjpeg']['host'])): ?>
-								<?php
-								echo $this->Rms->mjpegServerStatus(
-									$stream['Environment']['Mjpeg']['host'],
-									$stream['Environment']['Mjpeg']['port']
-								);
-								?>
-								<br />
-								<?php
-								echo $this->Html->link(
-									__(
-										'http://%s:%s',
-										h($stream['Environment']['Mjpeg']['host']),
-										h($stream['Environment']['Mjpeg']['port'])
-									),
-									array(
-										'controller' => 'mjpegs',
-										'action' => 'view',
-										$stream['Environment']['Mjpeg']['id']
-									)
-								);
-								?>
-							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
+
+<section id="teleops" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>Teleoperation Settings</h2>
+				<p>
+					Teleoperation settings store information about a geometry_msgs/Twist topic with an optional throttle
+					rate.
+				</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'teleops', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Topic</th>
+					<th>Throttle</th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+				</tr>
+				<?php foreach ($teleops as $teleop): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'teleops', 'action' => 'delete', $teleop['Teleop']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'teleops', 'action' => 'edit', $teleop['Teleop']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($teleop['Teleop']['id']); ?>
+						</td>
+						<td data-title="Topic">
+							<?php echo h($teleop['Teleop']['topic']); ?>
+						</td>
+						<td data-title="Throttle">
+							<?php echo ($teleop['Teleop']['throttle']) ? h($teleop['Teleop']['throttle']) : 'N/A'; ?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($teleop['Environment']['name']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

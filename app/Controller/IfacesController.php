@@ -19,7 +19,7 @@ class IfacesController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Rms');
 
 	/**
 	 * The used components for the controller.
@@ -169,7 +169,7 @@ class IfacesController extends AppController {
 		}
 
 		// call the correct controller
-		$controller = str_replace(' ', '', ucwords(h($iface['Iface']['name'])));
+		$controller = __('%sInterface', str_replace(' ', '', ucwords(h($iface['Iface']['name']))));
 		return $this->redirect(array('controller' => $controller, 'action' => 'view', $environmentID));
 	}
 }
