@@ -99,4 +99,20 @@ class Environment extends AppModel {
 	 * @var array
 	 */
 	public $hasMany = array('Stream' => array('className' => 'Stream', 'dependent' => true));
+
+	/**
+	 * Environments can have associated interfaces.
+	 *
+	 * @var array
+	 */
+	public $hasAndBelongsToMany = array(
+		'Iface' =>
+			array(
+				'className' => 'Iface',
+				'joinTable' => 'ifaces_environments',
+				'foreignKey' => 'environment_id',
+				'associationForeignKey' => 'iface_id',
+				'unique' => true
+			)
+	);
 }

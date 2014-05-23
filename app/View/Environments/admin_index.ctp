@@ -38,6 +38,7 @@
 					<th>Name</th>
 					<th><?php echo $this->Html->link('rosbridge Server', array('controller' => 'rosbridges')); ?></th>
 					<th><?php echo $this->Html->link('MJPEG Server', array('controller' => 'mjpegs')); ?></th>
+					<th><?php echo $this->Html->link('Interfaces', array('controller' => 'ifaces')); ?></th>
 				</tr>
 				<?php foreach ($environments as $env): ?>
 					<tr>
@@ -110,6 +111,9 @@
 								);
 								?>
 							<?php endif; ?>
+						</td>
+						<td data-title="Interfaces">
+							<?php echo count($env['Iface']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

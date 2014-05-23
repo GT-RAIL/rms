@@ -107,27 +107,29 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($stream['Environment']['name']); ?>
-							<?php
-							echo $this->Rms->mjpegServerStatus(
-								$stream['Environment']['Mjpeg']['host'],
-								$stream['Environment']['Mjpeg']['port']
-							);
-							?>
-							<br />
-							<?php
-							echo $this->Html->link(
-								__(
-									'http://%s:%s',
-									h($stream['Environment']['Mjpeg']['host']),
-									h($stream['Environment']['Mjpeg']['port'])
-								),
-								array(
-									'controller' => 'mjpegs',
-									'action' => 'view',
-									$stream['Environment']['Mjpeg']['id']
-								)
-							);
-							?>
+							<?php if(isset($stream['Environment']['Mjpeg']['host'])): ?>
+								<?php
+								echo $this->Rms->mjpegServerStatus(
+									$stream['Environment']['Mjpeg']['host'],
+									$stream['Environment']['Mjpeg']['port']
+								);
+								?>
+								<br />
+								<?php
+								echo $this->Html->link(
+									__(
+										'http://%s:%s',
+										h($stream['Environment']['Mjpeg']['host']),
+										h($stream['Environment']['Mjpeg']['port'])
+									),
+									array(
+										'controller' => 'mjpegs',
+										'action' => 'view',
+										$stream['Environment']['Mjpeg']['id']
+									)
+								);
+								?>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

@@ -21,13 +21,17 @@
 
 <section class="wrapper style4 container">
 	<div class="content">
-		<?php
-		echo $this->Rms->mjpegStream(
-			$stream['Environment']['Mjpeg']['host'],
-			$stream['Environment']['Mjpeg']['port'],
-			$stream['Stream']['topic'],
-			$stream['Stream']
-		);
-		?>
+		<?php if(isset($stream['Environment']['Mjpeg']['host'])): ?>
+			<?php
+			echo $this->Rms->mjpegStream(
+				$stream['Environment']['Mjpeg']['host'],
+				$stream['Environment']['Mjpeg']['port'],
+				$stream['Stream']['topic'],
+				$stream['Stream']
+			);
+			?>
+		<?php else: ?>
+			<h2 class="center">Error: No MJPEG Server Defined for this Environment</h2>
+		<?php endif; ?>
 	</div>
 </section>

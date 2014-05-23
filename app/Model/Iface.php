@@ -103,4 +103,20 @@ class Iface extends AppModel {
 			)
 		)
 	);
+
+	/**
+	 * Interfaces can have associated environments.
+	 *
+	 * @var array
+	 */
+	public $hasAndBelongsToMany = array(
+		'Environment' =>
+			array(
+				'className' => 'Environment',
+				'joinTable' => 'ifaces_environments',
+				'foreignKey' => 'iface_id',
+				'associationForeignKey' => 'environment_id',
+				'unique' => true
+			)
+	);
 }

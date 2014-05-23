@@ -42,6 +42,9 @@ class IfacesController extends AppController {
 	 * The admin add action. This will allow the admin to create a new entry.
 	 */
 	public function admin_add() {
+		// grab the list of environments
+		$this->set('environments', $this->Iface->Environment->find('list'));
+
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// create a new entry
@@ -67,6 +70,9 @@ class IfacesController extends AppController {
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
 	 */
 	public function admin_edit($id = null) {
+		// grab the list of environments
+		$this->set('environments', $this->Iface->Environment->find('list'));
+
 		if (!$id) {
 			// no ID provided
 			throw new NotFoundException('Invalid interface.');

@@ -1,9 +1,9 @@
 <?php
 /**
- * Environment Add/Edit Form
+ * Interface Add/Edit Form
  *
- * The main add/edit environment form. Passing in 'true' as a parameter called 'edit' will result in a hidden ID field
- * allowing the user to edit an existing environment.
+ * The main add/edit interface form. Passing in 'true' as a parameter called 'edit' will result in a hidden ID field
+ * allowing the user to edit an existing page. Ifaces is used to prevent using the reserved PHP keyword interface.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -18,28 +18,32 @@
 	<div class="content">
 		<section>
 			<header>
-				<h3>Enter the Environment Information Below</h3>
+				<h3>Enter the Interface Information Below</h3>
 			</header>
 			<?php
-			echo $this->Form->create('Environment');
+			echo $this->Form->create('Iface');
 			if (isset($edit) && $edit) {
 				echo $this->Form->input('id', array('type' => 'hidden'));
 			}
 			?>
 			<div class="row">
-				<section class="8u">
+				<section class="12u">
 					<?php echo $this->Form->input('name'); ?>
-				</section>
-				<section class="4u">
-					<?php echo $this->Form->input('Iface.Iface', array('label' => 'Interface(s)<br />')); ?>
 				</section>
 			</div>
 			<div class="row">
 				<section class="6u">
-					<?php echo $this->Form->input('rosbridge_id', array('label' => 'rosbridge Server<br />')); ?>
+					<?php
+					echo $this->Form->input('Environment.Environment', array('label' => 'Environment(s)<br />'));
+					?>
 				</section>
-				<section class="6u">
-					<?php echo $this->Form->input('mjpeg_id', array('label' => 'MJPEG Server<br />')); ?>
+				<section class="3u">
+					<br />
+					<?php echo $this->Form->input('anonymous', array('label' => 'Anonymous Access')); ?>
+				</section>
+				<section class="3u">
+					<br />
+					<?php echo $this->Form->input('unrestricted', array('label' => 'Unrestricted Access')); ?>
 				</section>
 			</div>
 			<div class="row">

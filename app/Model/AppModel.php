@@ -14,7 +14,7 @@ App::uses('Model', 'Model');
  * @version		2.0.0
  * @package		app.Model
  */
-abstract class  AppModel extends Model {
+class AppModel extends Model {
 
 	/**
 	 * Check if a field is equal to another. This is useful for password validations.

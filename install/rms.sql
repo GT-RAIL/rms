@@ -248,6 +248,27 @@ INSERT INTO `ifaces` (`id`, `name`, `anonymous`, `unrestricted`, `created`, `mod
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ifaces_environments`
+--
+
+CREATE TABLE IF NOT EXISTS `ifaces_environments` (
+  `iface_id` int(10) unsigned NOT NULL COMMENT 'ID of the associated interface.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'ID of the associated interface.',
+  KEY `iface_id` (`iface_id`),
+  KEY `environment_id` (`environment_id`),
+  UNIQUE `iface_id_environment_id` (`iface_id`, `environment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Intreface-environment pairings.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ifaces_environments`
+--
+
+INSERT INTO `ifaces_environments` (`iface_id`, `environment_id`) VALUES
+  (1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -399,6 +420,13 @@ ALTER TABLE `streams`
 ALTER TABLE `environments`
   ADD CONSTRAINT `environments_ibfk_2` FOREIGN KEY (`mjpeg_id`) REFERENCES `mjpegs` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `environments_ibfk_1` FOREIGN KEY (`rosbridge_id`) REFERENCES `rosbridges` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ifaces_environments`
+--
+ALTER TABLE `ifaces_environments`
+  ADD CONSTRAINT `ifaces_environments_ibfk_1` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`),
+  ADD CONSTRAINT `ifaces_environments_ibfk_2` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
 
 --
 -- Constraints for table `subscriptions`

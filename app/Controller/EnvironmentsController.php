@@ -42,6 +42,8 @@ class EnvironmentsController extends AppController {
 	 * The admin add action. This will allow the admin to create a new entry.
 	 */
 	public function admin_add() {
+		// grab the list of interfaces
+		$this->set('ifaces', $this->Environment->Iface->find('list'));
 		// load the rosbridge and MJPEG server lists
 		$this->setServerLists();
 
@@ -79,6 +81,8 @@ class EnvironmentsController extends AppController {
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
 	 */
 	public function admin_edit($id = null) {
+		// grab the list of interfaces
+		$this->set('ifaces', $this->Environment->Iface->find('list'));
 		// load the rosbridge and MJPEG server lists
 		$this->setServerLists();
 

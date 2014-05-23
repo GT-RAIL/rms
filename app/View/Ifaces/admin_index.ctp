@@ -25,8 +25,8 @@
 			<header>
 				<p>
 					Interfaces can be linked to a set of environments. An interface can have <strong>anonymous</strong>
-					access (i.e., no login required) and/or <strong>unrestricted</strong> unrestricted access (i.e., no
-					scheduled session for basic users required).
+					access (i.e., no login required) and/or <strong>unrestricted</strong> access (i.e., no scheduled
+					session for basic users required).
 				</p>
 			</header>
 			<?php echo $this->Html->link('Create New Entry', array('action' => 'add'), array('class' => 'button')); ?>
@@ -79,7 +79,7 @@
 							<?php echo ($iface['Iface']['unrestricted']) ? 'Yes' : 'No'; ?>
 						</td>
 						<td data-title="Environments">
-							0
+							<?php echo count($iface['Environment']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
