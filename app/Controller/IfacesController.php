@@ -29,6 +29,15 @@ class IfacesController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
+	 * Define the actions which can be used by any user, authorized or not.
+	 */
+	public function beforeFilter() {
+		// allow anyone to view an interface (interface authorization will check this better)
+		parent::beforeFilter();
+		$this->Auth->allow('view');
+	}
+
+	/**
 	 * The admin index action lists information about all interfaces. This allows the admin to add, edit, or delete
 	 * entries.
 	 */
@@ -123,5 +132,44 @@ class IfacesController extends AppController {
 			$this->Session->setFlash('The interface has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
+	}
+
+	/**
+	 * Request to view the given interface with the given environment. This will make the correct redirect.
+	 *
+	 * @param int $id The ID of the interface to view.
+	 * @param int $environmentID The environment ID to use.
+	 * @throws NotFoundException Thrown if an entry with the given IDs is not found.
+	 */
+	public function view($id = null, $environmentID = null) {
+		if (!$id) {
+			// no ID provided
+			throw new NotFoundException('Invalid interface.');
+		}
+		if (!$environmentID) {
+			// no environment ID provided
+			throw new NotFoundException('Invalid environment.');
+		}
+
+		$this->Iface->recursive = 2;
+		$iface = $this->Iface->findById($id);
+		if (!$iface) {
+			// no valid entry found for the given ID
+			throw new NotFoundException('Invalid interface.');
+		}
+		$environment = null;
+		foreach ($iface['Environment'] as $env) {
+			if ($env['id'] === $environmentID) {
+				$environment = $env;
+			}
+		}
+		if (!$environment) {
+			// no valid entry found for the given environment ID
+			throw new NotFoundException('Invalid environment.');
+		}
+
+		// call the correct controller
+		$controller = str_replace(' ', '', ucwords(h($iface['Iface']['name'])));
+		return $this->redirect(array('controller' => $controller, 'action' => 'view', $environmentID));
 	}
 }
