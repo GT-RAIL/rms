@@ -69,3 +69,74 @@
 		</section>
 	</div>
 </section>
+
+<?php if($admin): ?>
+	<section class="wrapper style4 container">
+		<div class="content center">
+			<section>
+				<header>
+					<h2>Admin Interface Menu</h2>
+				</header>
+				<br /><hr />
+				<?php foreach ($environments as $env): ?>
+					<div class="row center">
+						<section class="4u">
+							<?php echo h($env['Environment']['name']); ?>
+						</section>
+						<section class="4u">
+							<?php if (!$env['Rosbridge']['id']): ?>
+								N/A
+							<?php else: ?>
+								<?php
+								echo __(
+										'%s://%s:%s',
+										h($env['Rosbridge']['Protocol']['name']),
+										h($env['Rosbridge']['host']),
+										h($env['Rosbridge']['port'])
+									);
+								?>
+								<?php
+								echo $this->Rms->rosbridgeStatus(
+									$env['Rosbridge']['Protocol']['name'],
+									$env['Rosbridge']['host'],
+									$env['Rosbridge']['port']
+								);
+								?>
+							<?php endif; ?>
+						</section>
+						<section class="4u">
+							<?php if (!$env['Mjpeg']['id']): ?>
+								N/A
+							<?php else: ?>
+								<?php echo __('http://%s:%s', h($env['Mjpeg']['host']), h($env['Mjpeg']['port'])); ?>
+								<?php
+								echo $this->Rms->mjpegServerStatus($env['Mjpeg']['host'], $env['Mjpeg']['port']);
+								?>
+								<br />
+							<?php endif; ?>
+						</section>
+					</div>
+					<div class="row center">
+						<section class="12u">
+							<?php foreach ($env['Iface'] as $iface): ?>
+								<?php
+								echo $this->Html->link(
+									$iface['name'],
+									array(
+										'controller' => 'ifaces',
+										'action' => 'view',
+										$iface['id'],
+										$env['Environment']['id']
+									)
+								);
+								?>
+								<br />
+							<?php endforeach; ?>
+						</section>
+					</div>
+					<br /><hr />
+				<?php endforeach; ?>
+			</section>
+		</div>
+	</section>
+<?php endif; ?>

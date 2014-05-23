@@ -21,14 +21,14 @@ class UsersController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form', 'Paginator');
+	public $helpers = array('Html', 'Form', 'Paginator', 'Rms');
 
 	/**
 	 * The used models for the controller.
 	 *
 	 * @var array
 	 */
-	public $uses = array('User', 'Role');
+	public $uses = array('User', 'Role', 'Environment');
 
 	/**
 	 * The used components for the controller.
@@ -458,9 +458,15 @@ class UsersController extends AppController {
 			throw new NotFoundException('Invalid user.');
 		}
 
+		// search for interfaces and environments (used by admin)
+		$this->set('environments', $this->Environment->find('all', array('recursive' => 2)));
+
 		// store the entry
 		$this->set('user', $user);
 		$this->set('title_for_layout', 'Account');
+
+		// we will need some RWT libraries
+		$this->set('rwt', array('roslibjs' => true));
 	}
 
 	/**
