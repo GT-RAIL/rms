@@ -52,6 +52,13 @@ abstract class InterfaceController extends AppController {
 				// no valid entry found for the given environment ID
 				throw new NotFoundException('Invalid environment.');
 			}
+			// set the URI for ease of use
+			$environment['Rosbridge']['uri'] = __(
+				'%s://%s:%d',
+				$environment['Rosbridge']['Protocol']['name'],
+				$environment['Rosbridge']['host'],
+				$environment['Rosbridge']['port']
+			);
 			$this->set('environment', $environment);
 
 			// check the interface

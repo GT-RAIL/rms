@@ -13,6 +13,13 @@
  */
 ?>
 
+<?php
+// setup the main ROS connection
+if($environment['Rosbridge']['host']) {
+	echo $this->Rms->ros($environment['Rosbridge']['uri'], $environment['Rosbridge']['rosauth']);
+}
+?>
+
 <header class="special container">
 	<span class="icon fa-cloud"></span>
 	<h2>Basic Interface</h2>
@@ -21,26 +28,47 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<header>
+				<p>Use the <strong>W, A, S, D, Q, E</strong> keys to drive your robot.</p>
+			</header>
 			<div class="row">
-				<section class="8u stream">
-					<?php if(count($environment['Stream']) > 0): ?>
-						<?php
-						echo $this->Rms->mjpegStream(
-							$environment['Mjpeg']['host'],
-							$environment['Mjpeg']['port'],
-							$environment['Stream'][0]['topic'],
-							$environment['Stream'][0]
-						);
-						?>
+				<section class="6u stream">
+					<?php if($environment['Mjpeg']['host']): ?>
+						<?php if(count($environment['Stream']) > 0): ?>
+							<?php
+							echo $this->Rms->mjpegStream(
+								$environment['Mjpeg']['host'],
+								$environment['Mjpeg']['port'],
+								$environment['Stream'][0]['topic'],
+								$environment['Stream'][0]
+							);
+							?>
+						<?php else: ?>
+							<h2>No Associated MJPEG Streams Found</h2>
+						<?php endif; ?>
 					<?php else: ?>
-						<h2>No Associated MJPEG Streams Found</h2>
+						<h2>No Associated MJPEG Server Found</h2>
 					<?php endif; ?>
 				</section>
-				<section class="4u">
-					<?php if(count($environment['Teleop']) > 0): ?>
-						TODO
+				<section class="6u">
+					<?php if($environment['Rosbridge']['host']): ?>
+						<?php if(count($environment['Teleop']) > 0): ?>
+							<?php echo $this->Rms->keyboardTeleop($environment['Teleop'][0]['topic']); ?>
+							<pre class="rostopic"><code id="speed">Awaiting data...</code></pre>
+							<script>
+								var topic = new ROSLIB.Topic({
+									ros : _ROS,
+									name : '<?php echo h($environment['Teleop'][0]['topic']);?>'
+								});
+								topic.subscribe(function(message) {
+									$('#speed').html(RMS.prettyJson(message));
+								});
+							</script>
+						<?php else: ?>
+							<h2>No Associated Telop Settings Found</h2>
+						<?php endif; ?>
 					<?php else: ?>
-						<h2>No Associated Telop Settings Found</h2>
+						<h2>No Associated rosbridge Server Found</h2>
 					<?php endif; ?>
 				</section>
 			</div>

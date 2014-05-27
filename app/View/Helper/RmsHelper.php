@@ -173,4 +173,44 @@ class RmsHelper extends Helper {
 
 		return $html;
 	}
+
+	/**
+	 * Create a global ROS connection. This will store the connection object in a JavaScript variable called _ROS.
+	 *
+	 * @param string $uri The complete rosbridge connection URI.
+	 * @param null|string $rosauth The optional rosauth connection key.
+	 * @return string The HTML for the entire script block.
+	 */
+	public function ros($uri, $rosauth = null) {
+		$html = '<script>';
+		// create the ROS connection
+		$html .= __('_ROS = new ROSLIB.Ros({url:"%s"});', h($uri));
+		// TODO: rosauth
+		$html .= '</script>';
+
+		return $html;
+	}
+
+	/**
+	 * Create a keyboard teleoperation connection via keyboardteleopjs.
+	 *
+	 * @param string $topic The teleoperation topic to publish to.
+	 * @param null|string $throttle The throttle rate.
+	 * @return string The HTML for the entire script block.
+	 */
+	public function keyboardTeleop($topic, $throttle = null) {
+		$html = '<script>';
+		// create the telop connection
+		$html .= __('_TELEOP = new KEYBOARDTELEOP.Teleop({ros:_ROS,topic:"%s"});', h($topic));
+		if ($throttle) {
+			$html .= __('_TELEOP.throttle=%f', h($throttle));
+		} else {
+			$html .= __(
+				'_TELEOP = new KEYBOARDTELEOP.Teleop({ros:_ROS,topic:"%s",throttle:%f});', h($topic), h($throttle)
+			);
+		}
+		$html .= '</script>';
+
+		return $html;
+	}
 }

@@ -38,13 +38,14 @@
 
 	// check for RWT libraries
 	if (isset($rwt)) {
-		$eventEmitter = false;
 		if (isset($rwt['roslibjs']) && $rwt['roslibjs']) {
 			echo $this->Html->script(array(
 				'//cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
 				'//cdn.robotwebtools.org/roslibjs/r7/roslib.min.js',
 			));
-			$eventEmitter = true;
+		}
+		if (isset($rwt['keyboardteleopjs']) && $rwt['keyboardteleopjs']) {
+			echo $this->Html->script(array('//cdn.robotwebtools.org/keyboardteleopjs/current/keyboardteleop.min.js'));
 		}
 	}
 	?>
