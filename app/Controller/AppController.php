@@ -121,6 +121,16 @@ abstract class AppController extends Controller {
 						'url' => array('admin' => true, 'controller' => 'ros', 'action' => 'index')
 					),
 					array(
+						'title' => 'Experiments',
+						'menu' => array(
+							array(
+								'title' => 'Studies',
+								'url' => array('admin' => true, 'controller' => 'studies', 'action' => 'index')
+							)
+						),
+						'url' => array('admin' => true, 'controller' => 'experiment', 'action' => 'index')
+					),
+					array(
 						'title' => 'Accounts',
 						'url' => array('admin' => true, 'controller' => 'users', 'action' => 'index')
 					),

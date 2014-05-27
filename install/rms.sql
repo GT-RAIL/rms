@@ -301,6 +301,83 @@ INSERT INTO `ifaces_environments` (`iface_id`, `environment_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `studies`
+--
+
+CREATE TABLE IF NOT EXISTS `studies` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(64) NOT NULL COMMENT 'Name of the robot study.',
+  `start` date NOT NULL COMMENT 'Start date of the study.',
+  `end` date NOT NULL COMMENT 'End date of the study.',
+  `length` int(10) unsigned NOT NULL COMMENT 'Length, in minutes, of a study session.',
+  `anonymous` boolean DEFAULT FALSE COMMENT 'If anonymous sessions are allowed.',
+  `otf` boolean DEFAULT FALSE COMMENT 'If on-the-fly sessions are allowed.',
+  `parallel` boolean DEFAULT FALSE COMMENT 'If parallel sessions are allowed.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='User studies.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `studies`
+--
+
+INSERT INTO `studies` (`id`, `name`, `start`, `end`, `length`, `anonymous`, `otf`, `parallel`, `created`, `modified`) VALUES
+  (1, 'Demo Study', CURDATE(), ADDDATE(CURDATE(), INTERVAL 1 YEAR), 10, FALSE, TRUE, FALSE, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `conditions`
+--
+
+CREATE TABLE IF NOT EXISTS `conditions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(64) NOT NULL COMMENT 'Name of the condition.',
+  `study_id`int(10) unsigned NOT NULL COMMENT 'ID of the associated study.',
+  `iface_id`int(10) unsigned NOT NULL COMMENT 'ID of the associated interface.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `conditions`
+--
+
+INSERT INTO `conditions` (`id`, `name`, `study_id`, `iface_id`, `created`, `modified`) VALUES
+  (1, 'Default Demo Condition', 1, 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'ID of the user associated with this study session.',
+  `condition_id`int(10) unsigned NOT NULL COMMENT 'ID of the environment associated study session.',
+  `environment_id`int(10) unsigned DEFAULT NULL COMMENT 'ID of the environment associated study session.',
+  `start` timestamp NULL DEFAULT NULL COMMENT 'Start time of the study session.',
+  `end` timestamp NULL DEFAULT NULL COMMENT 'End time of the study session.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `conditions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `condition_id`, `environment_id`, `start`, `end`, `created`, `modified`) VALUES
+  (1, NULL, 1, 1, NULL, NULL, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -465,6 +542,21 @@ ALTER TABLE `environments`
 ALTER TABLE `ifaces_environments`
   ADD CONSTRAINT `ifaces_environments_ibfk_1` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`),
   ADD CONSTRAINT `ifaces_environments_ibfk_2` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+
+--
+-- Constraints for table `conditions`
+--
+ALTER TABLE `conditions`
+  ADD CONSTRAINT `conditions_ibfk_1` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`),
+  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`);
+
+--
+-- Constraints for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `sessions_ibfk_2` FOREIGN KEY (`condition_id`) REFERENCES `conditions` (`id`),
+  ADD CONSTRAINT `sessions_ibfk_3` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `subscriptions`
