@@ -1,9 +1,8 @@
 <?php
 /**
- * RMS Interfaces Model
+ * Condition Model
  *
- * Interfaces represent an RMS interface. It contains information about the name and class information. Ifaces is used
- * to prevent using the reserved PHP keyword interface.
+ * Conditions represent a user study condition. It contains information about the name and associated interface.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -12,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Iface extends AppModel {
+class Condition extends AppModel {
 
 	/**
 	 * The validation criteria for the model.
@@ -54,37 +53,27 @@ class Iface extends AppModel {
 				'required' => true
 			)
 		),
-		'anonymous' => array(
+		'study_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Anonymous settings cannot be blank.',
+				'message' => 'Please enter a valid study ID.',
 				'required' => true
 			),
-			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
-				'message' => 'Anonymous settings must be boolean.',
-				'required' => true
-			),
-			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
-				'message' => 'Anonymous settings must be boolean.',
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Study IDs must be greater than 0.',
 				'required' => true
 			)
 		),
-		'unrestricted' => array(
+		'iface_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Unrestricted settings cannot be blank.',
+				'message' => 'Please enter a valid interface ID.',
 				'required' => true
 			),
-			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
-				'message' => 'Unrestricted settings must be boolean.',
-				'required' => true
-			),
-			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
-				'message' => 'Unrestricted settings must be boolean.',
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Interface IDs must be greater than 0.',
 				'required' => true
 			)
 		),
@@ -105,25 +94,16 @@ class Iface extends AppModel {
 	);
 
 	/**
-	 * Interfaces can have associated environments.
+	 * All conditions belong to a single study and interface.
 	 *
-	 * @var array
+	 * @var string
 	 */
-	public $hasAndBelongsToMany = array(
-		'Environment' =>
-			array(
-				'className' => 'Environment',
-				'joinTable' => 'ifaces_environments',
-				'foreignKey' => 'iface_id',
-				'associationForeignKey' => 'environment_id',
-				'unique' => true
-			)
-	);
+	public $belongsTo = array('Study' => array('className' => 'Study'), 'Iface' => array('className' => 'Iface'));
 
 	/**
-	 * Interfaces can have many conditions.
+	 * Conditions can have many sessions.
 	 *
 	 * @var array
 	 */
-	public $hasMany = array('Condition' => array('className' => 'Condition', 'dependent' => false));
+	public $hasMany = array('Session' => array('className' => 'Session', 'dependent' => true));
 }

@@ -336,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `conditions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `name` varchar(64) NOT NULL COMMENT 'Name of the condition.',
   `study_id`int(10) unsigned NOT NULL COMMENT 'ID of the associated study.',
-  `iface_id`int(10) unsigned NOT NULL COMMENT 'ID of the associated interface.',
+  `iface_id`int(10) unsigned DEFAULT NULL COMMENT 'ID of the associated interface.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
@@ -548,7 +548,7 @@ ALTER TABLE `ifaces_environments`
 --
 ALTER TABLE `conditions`
   ADD CONSTRAINT `conditions_ibfk_1` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`),
-  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`);
+  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sessions`

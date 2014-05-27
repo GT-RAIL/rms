@@ -77,7 +77,7 @@ class Study extends AppModel {
 				'required' => true
 			)
 		),
-		'start' => array(
+		'end' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid end date.',
@@ -155,4 +155,11 @@ class Study extends AppModel {
 			)
 		)
 	);
+
+	/**
+	 * Studies can have many conditions.
+	 *
+	 * @var array
+	 */
+	public $hasMany = array('Condition' => array('className' => 'Condition', 'dependent' => true));
 }
