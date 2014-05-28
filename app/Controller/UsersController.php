@@ -53,12 +53,7 @@ class UsersController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $paginate = array(
-		'limit' => 30,
-		'order' => array(
-			'User.role_id' => 'ASC', 'User.created' => 'ASC'
-		)
-	);
+	public $paginate = array('limit' => 30, 'order' => array('User.role_id' => 'ASC', 'User.created' => 'ASC'));
 
 	/**
 	 * Define the actions which can be used by any user, authorized or not.

@@ -25,7 +25,7 @@
 				<p>Choose from the following options to edit experiment settings.</p>
 			</header>
 			<div class="row">
-				<section class="6u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'Studies',
@@ -34,11 +34,20 @@
 					);
 					?>
 				</section>
-				<section class="6u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'Conditions',
 						array('controller' => 'conditions', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="4u">
+					<?php
+					echo $this->Html->link(
+						'Slots',
+						array('controller' => 'slots', 'action' => 'index'),
 						array('class' => 'button special')
 					);
 					?>

@@ -1,8 +1,9 @@
 <?php
 /**
- * Condition Model
+ * Slot Model
  *
- * Conditions represent a user study condition. It contains information about the name and associated interface.
+ * Slots represent a user study session slot. It contains information about the associated interface, environment, and
+ * start/end time.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -11,7 +12,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Condition extends AppModel {
+class Slot extends AppModel {
 
 	/**
 	 * The validation criteria for the model.
@@ -36,44 +37,41 @@ class Condition extends AppModel {
 				'required' => 'update'
 			)
 		),
-		'name' => array(
+		'condition_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid name.',
-				'required' => true
-			),
-			'maxLength' => array(
-				'rule' => array('maxLength', 64),
-				'message' => 'Names cannot be longer than 64 characters.',
-				'required' => true
-			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This name already exists.',
-				'required' => true
-			)
-		),
-		'study_id' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid study ID.',
+				'message' => 'Please enter a valid condition ID.',
 				'required' => true
 			),
 			'gt' => array(
 				'rule' => array('comparison', '>', 0),
-				'message' => 'Study IDs must be greater than 0.',
+				'message' => 'Condition IDs must be greater than 0.',
 				'required' => true
 			)
 		),
-		'iface_id' => array(
+		'environment_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid interface ID.',
+				'message' => 'Please enter a valid environment ID.',
 				'required' => true
 			),
 			'gt' => array(
 				'rule' => array('comparison', '>', 0),
-				'message' => 'Interface IDs must be greater than 0.',
+				'message' => 'Environment IDs must be greater than 0.',
+				'required' => true
+			)
+		),
+		'start' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid start time.',
+				'required' => true
+			)
+		),
+		'end' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid end time.',
 				'required' => true
 			)
 		),
@@ -94,16 +92,18 @@ class Condition extends AppModel {
 	);
 
 	/**
-	 * All conditions belong to a single study and interface.
+	 * All slots belong to a single condition and environment.
 	 *
 	 * @var array
 	 */
-	public $belongsTo = array('Study' => array('className' => 'Study'), 'Iface' => array('className' => 'Iface'));
+	public $belongsTo = array(
+		'Condition' => array('className' => 'Condition'), 'Environment' => array('className' => 'Environment')
+	);
 
 	/**
-	 * Conditions can have many sessions.
+	 * Conditions can have many appointments.
 	 *
 	 * @var array
 	 */
-	public $hasMany = array('Slot' => array('className' => 'Slot', 'dependent' => true));
+	public $hasMany = array('Appointment' => array('className' => 'Appointment', 'dependent' => true));
 }
