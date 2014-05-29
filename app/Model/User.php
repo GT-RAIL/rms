@@ -169,9 +169,16 @@ class User extends AppModel {
 	/**
 	 * All users have a single subscription setting.
 	 *
-	 * @var string
+	 * @var array
 	 */
 	public $hasOne = array('Subscription' => array('className' => 'Subscription', 'dependent' => true));
+
+	/**
+	 * Users have multiple appointments.
+	 *
+	 * @var string
+	 */
+	public $hasMany = 'Appointment';
 
 	/**
 	 * Check if a new password was provided. If so, hash the password and store it.

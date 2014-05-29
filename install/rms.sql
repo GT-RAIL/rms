@@ -340,7 +340,9 @@ CREATE TABLE IF NOT EXISTS `conditions` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `study_id` (`study_id`),
+  KEY `iface_id` (`iface_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=2 ;
 
 --
@@ -364,7 +366,9 @@ CREATE TABLE IF NOT EXISTS `slots` (
   `end` timestamp NULL DEFAULT NULL COMMENT 'End time of the study appointment.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `condition_id` (`condition_id`),
+  KEY `environment_id` (`environment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -379,7 +383,9 @@ CREATE TABLE IF NOT EXISTS `appointments` (
   `slot_id`int(10) unsigned NOT NULL COMMENT 'ID of the slot associated study appointment.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `slot_id` (`slot_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -568,7 +574,8 @@ ALTER TABLE `slots`
 -- Constraints for table `appointments`
 --
 ALTER TABLE `appointments`
-  ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`);
 
 --
 -- Constraints for table `subscriptions`

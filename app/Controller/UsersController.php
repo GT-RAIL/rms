@@ -21,14 +21,14 @@ class UsersController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form', 'Paginator', 'Rms');
+	public $helpers = array('Html', 'Form', 'Paginator', 'Time', 'Rms');
 
 	/**
 	 * The used models for the controller.
 	 *
 	 * @var array
 	 */
-	public $uses = array('User', 'Role', 'Environment');
+	public $uses = array('User', 'Role', 'Environment', 'Study', 'Appointment');
 
 	/**
 	 * The used components for the controller.
@@ -456,11 +456,30 @@ class UsersController extends AppController {
 		// search for interfaces and environments (used by admin)
 		$this->set('environments', $this->Environment->find('all', array('recursive' => 2)));
 
+		// search for studies (used by basic users)
+		$studies = $this->Study->find(
+			'all',
+			array(
+				'recursive' => 3,
+				'conditions' => array('Study.start <= CURDATE()', 'Study.end >= CURDATE()')
+			)
+		);
+		$this->set('studies', $studies);
+		$appointments = $this->Appointment->find(
+			'all',
+			array(
+				'recursive' => 3,
+				'conditions' => array('Appointment.user_id' => $id, 'Slot.end >= NOW()'),
+				'order' => array('Slot.start'),
+			)
+		);
+		$this->set('appointments', $appointments);
+
 		// store the entry
 		$this->set('user', $user);
 		$this->set('title_for_layout', 'Account');
 
-		// we will need some RWT libraries
+		// we will need some RWT libraries for admins
 		$this->set('rwt', array('roslibjs' => true));
 	}
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * Slot Model
+ * Appointment Model
  *
- * Slots represent a user study session slot. It contains information about the associated interface, environment, and
- * start/end time.
+ * Appointments represent a reserved user study session slot. It contains information about the associated user (if
+ * any) and slot.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -12,7 +12,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Slot extends AppModel {
+class Appointment extends AppModel {
 
 	/**
 	 * The validation criteria for the model.
@@ -37,41 +37,22 @@ class Slot extends AppModel {
 				'required' => 'update'
 			)
 		),
-		'condition_id' => array(
+		'user_id' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'User IDs must be greater than 0.',
+				'allowEmpty' => true
+			)
+		),
+		'slot_id' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid condition ID.',
+				'message' => 'Please enter a valid slot ID.',
 				'required' => true
 			),
 			'gt' => array(
 				'rule' => array('comparison', '>', 0),
-				'message' => 'Condition IDs must be greater than 0.',
-				'required' => true
-			)
-		),
-		'environment_id' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid environment ID.',
-				'required' => true
-			),
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Environment IDs must be greater than 0.',
-				'required' => true
-			)
-		),
-		'start' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid start time.',
-				'required' => true
-			)
-		),
-		'end' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid end time.',
+				'message' => 'Slot IDs must be greater than 0.',
 				'required' => true
 			)
 		),
@@ -92,18 +73,11 @@ class Slot extends AppModel {
 	);
 
 	/**
-	 * All slots belong to a single condition and environment.
+	 * All appointments have a slot and user.
 	 *
-	 * @var array
+	 * @var string
 	 */
 	public $belongsTo = array(
-		'Condition' => array('className' => 'Condition'), 'Environment' => array('className' => 'Environment')
+		'User' => array('className' => 'User'), 'Slot' => array('className' => 'Slot')
 	);
-
-	/**
-	 * Slots can have one appointments.
-	 *
-	 * @var array
-	 */
-	public $hasOne = array('Appointment' => array('className' => 'Appointment', 'dependent' => true));
 }

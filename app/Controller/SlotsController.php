@@ -203,7 +203,9 @@ class SlotsController extends AppController {
 				'count',
 				array(
 					'conditions' => array(
-						'Slot.condition_id' => $condition['Condition']['id'],
+						'Slot.id !=' => (isset($this->request->data['Slot']['id']))
+								? $this->request->data['Slot']['id'] : -1,
+						'Condition.study_id' => $condition['Study']['id'],
 						'Slot.end >' => $start,
 						'OR' => array(array('Slot.start <=' => $start), array('Slot.start <' => $end))
 					),

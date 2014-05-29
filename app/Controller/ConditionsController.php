@@ -33,7 +33,7 @@ class ConditionsController extends AppController {
 	 */
 	public function admin_index() {
 		// grab all the entries
-		$this->set('conditions', $this->Condition->find('all'));
+		$this->set('conditions', $this->Condition->find('all', array('recursive' => 2)));
 		$this->set('title_for_layout', 'Study Conditions');
 	}
 

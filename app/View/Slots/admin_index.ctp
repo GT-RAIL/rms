@@ -42,6 +42,7 @@
 					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
 					<th>Start Time</th>
 					<th>End Time</th>
+					<th>Taken</th>
 				</tr>
 				<?php foreach ($slots as $slot): ?>
 					<tr>
@@ -77,6 +78,9 @@
 						</td>
 						<td data-title="Time">
 							<?php echo h($slot['Slot']['end']); ?>
+						</td>
+						<td data-title="Taken">
+							<?php echo isset($slot['Appointment']['id']) ? 'Yes' : 'No'; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
