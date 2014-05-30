@@ -174,10 +174,7 @@
 						echo '<section class="5u">';
 						echo $this->Form->create('Appointment', array('action' => 'book'));
 						echo $this->Form->input(
-							'Time Slot: ',
-							array(
-								'options' => $free,
-							)
+							'slot_id', array('label' => 'Time Slot: ', 'options' => $free)
 						);
 						echo '</section>';
 						echo '<section class="2u">';
@@ -188,7 +185,6 @@
 						echo '<strong>No Free Reservation Slots Available</strong>';
 						echo '</section>';
 					}
-
 					echo '</div>';
 
 					// check for on-the-fly creation
@@ -211,7 +207,7 @@
 								echo $this->Html->link(
 									'Begin this Study Now',
 									array('controller' => 'studies', 'action' => 'otf', $study['Study']['id']),
-									array('class' => 'button special')
+									array('class' => 'button')
 								);
 							echo '</section>';
 							echo '</div>';
@@ -265,7 +261,7 @@
 									array(
 										'controller' => 'appointments',
 										'action' => 'delete',
-										$appointment['Slot']['id']
+										$appointment['Appointment']['id']
 									),
 									array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
 								);

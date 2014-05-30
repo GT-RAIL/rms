@@ -1,0 +1,105 @@
+<?php
+/**
+ * Study Session Appointments Controller
+ *
+ * A user study session appointments contains information about the associated user (if any) and slot.
+ *
+ * @author		Russell Toris - rctoris@wpi.edu
+ * @copyright	2014 Worcester Polytechnic Institute
+ * @link		https://github.com/WPI-RAIL/rms
+ * @since		RMS v 2.0.0
+ * @version		2.0.0
+ * @package		app.Controller
+ */
+class AppointmentsController extends AppController {
+
+	/**
+	 * The used components for the controller.
+	 *
+	 * @var array
+	 */
+	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
+
+	/**
+	 * The used models for the controller.
+	 *
+	 * @var array
+	 */
+	public $uses = array('Appointment', 'Slot');
+
+	/**
+	 * The book action allows a user to book a user study appointment.
+	 *
+	 * @throws MethodNotAllowedException Thrown if a post request is made.
+	 */
+	public function book() {
+		// only work for POST requests
+		if ($this->request->is(array('appointment', 'post'))) {
+			// grab the slot we are interested in
+			$this->Slot->recursive = 3;
+			$slot = $this->Slot->findById($this->request->data['Appointment']['slot_id']);
+
+			$appointments = $this->Appointment->find(
+				'all',
+				array('recursive' => 3, 'conditions' => array('Appointment.user_id' => $this->Auth->user('id')))
+			);
+
+			$next = null;
+			foreach ($appointments as $appointment) {
+				if ($appointment['Slot']['Condition']['Study']['id'] === $slot['Condition']['Study']['id']) {
+					// pick the latest
+					if(!$next || strtotime($slot['Slot']['start']) > strtotime($next['Slot']['start'])) {
+						$next = $appointment;
+					}
+				}
+			}
+
+			// verify that we can book this appointment
+			if ($next && strtotime($next['Slot']['end']) > strtotime('now')) {
+				$this->Session->setFlash('Error: you already booked this study.');
+			} else if ($next && !$slot['Condition']['Study']['repeatable']) {
+				$this->Session->setFlash('Error: you already completed this study.');
+			} else {
+				// create a new entry
+				$this->Appointment->create();
+				// set the current timestamp for creation and modification
+				$this->Appointment->data['Appointment']['created'] = date('Y-m-d H:i:s');
+				$this->Appointment->data['Appointment']['modified'] = date('Y-m-d H:i:s');
+				// set the user ID
+				$this->Appointment->data['Appointment']['user_id'] = $this->Auth->user('id');
+				// attempt to save the entry
+				if ($this->Appointment->save($this->request->data)) {
+					$this->Session->setFlash('Your study appointment has been booked.');
+				} else {
+					$this->Session->setFlash('Error: unable to book your appointment.');
+				}
+			}
+
+			return $this->redirect(array('controller' => 'users', 'action' => 'view'));
+		} else {
+			throw new MethodNotAllowedException();
+		}
+	}
+
+	/**
+	 * The delete action. This allows the user to delete an existing appointment that they own.
+	 *
+	 * @param int $id The ID of the entry to delete.
+	 * @throws MethodNotAllowedException Thrown if a GET request is made.
+	 */
+	public function delete($id = null) {
+		// do not allow GET requests
+		if ($this->request->is('get')) {
+			throw new MethodNotAllowedException();
+		}
+
+		// verify the entry
+		$appointment = $this->Appointment->findById($id);
+		if (!$appointment || $appointment['Appointment']['user_id'] !==  $this->Auth->user('id')) {
+			$this->Session->setFlash('Error: Unable to delete your appointment.');
+		} else if($this->Appointment->delete($id)) {
+			$this->Session->setFlash('The appointment has been deleted.');
+		}
+		return $this->redirect(array('controller' => 'users', 'action' => 'view'));
+	}
+}
