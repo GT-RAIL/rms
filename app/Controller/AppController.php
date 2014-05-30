@@ -163,6 +163,14 @@ abstract class AppController extends Controller {
 							array(
 								'title' => 'Slots',
 								'url' => array('admin' => true, 'controller' => 'slots', 'action' => 'index')
+							),
+							array(
+								'title' => 'Send Announcement',
+								'url' => array(
+									'admin' => true,
+									'controller' => 'subscriptions',
+									'action' => 'announcement'
+								)
 							)
 						),
 						'url' => array('admin' => true, 'controller' => 'experiment', 'action' => 'index')

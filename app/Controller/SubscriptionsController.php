@@ -48,10 +48,37 @@ class SubscriptionsController extends AppController {
 
 			$this->sendBatchEmail($bcc, 'Newsletter', $this->request->data['Newsletter']['message']);
 			$this->Session->setFlash('The newsletter has been sent.');
-			return $this->redirect(array('controller' => 'settings', 'action' => 'index'));
+			return $this->redirect(array('controller' => 'content', 'action' => 'index'));
 		}
 
-		$this->set('title_for_layout','Send Newsletter');
+		$this->set('title_for_layout', 'Send Newsletter');
+	}
+
+	/**
+	 * The admin study announcement action. This allows the admin to send an announcement to subscribers.
+	 */
+	public function admin_announcement() {
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// grab the email data
+			$users = $this->Subscription->find(
+				'all',
+				array(
+					'conditions' => array('Subscription.studies' => true),
+					'fields' => array('User.email')
+				)
+			);
+			$bcc = array();
+			foreach ($users as $user) {
+				$bcc[] = $user['User']['email'];
+			}
+
+			$this->sendBatchEmail($bcc, 'New Study Available', $this->request->data['Studies']['message']);
+			$this->Session->setFlash('The announcement has been sent.');
+			return $this->redirect(array('controller' => 'experiment', 'action' => 'index'));
+		}
+
+		$this->set('title_for_layout', 'Send Study Announcement');
 	}
 
 	/**
