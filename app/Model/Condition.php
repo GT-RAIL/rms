@@ -77,6 +77,18 @@ class Condition extends AppModel {
 				'required' => true
 			)
 		),
+		'environment_id' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid environment ID.',
+				'required' => true
+			),
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Environment IDs must be greater than 0.',
+				'required' => true
+			)
+		),
 		'created' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -94,11 +106,15 @@ class Condition extends AppModel {
 	);
 
 	/**
-	 * All conditions belong to a single study and interface.
+	 * All conditions belong to a single study, interface, and environment.
 	 *
 	 * @var array
 	 */
-	public $belongsTo = array('Study' => array('className' => 'Study'), 'Iface' => array('className' => 'Iface'));
+	public $belongsTo = array(
+		'Study' => array('className' => 'Study'),
+		'Iface' => array('className' => 'Iface'),
+		'Environment' => array('className' => 'Environment')
+	);
 
 	/**
 	 * Conditions can have many sessions.

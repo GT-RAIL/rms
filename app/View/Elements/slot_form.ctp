@@ -27,16 +27,11 @@
 			}
 			?>
 			<div class="row">
-				<section class="12u">
+				<section class="6u">
 					<?php echo $this->Form->input('start', array('label' => 'Start Time<br />')); ?>
 				</section>
-			</div>
-			<div class="row">
 				<section class="6u">
 					<?php echo $this->Form->input('condition_id', array('label' => 'Study/Condition<br />')); ?>
-				</section>
-				<section class="6u">
-					<?php echo $this->Form->input('environment_id', array('label' => 'Environment<br />')); ?>
 				</section>
 			</div>
 			<div class="row">

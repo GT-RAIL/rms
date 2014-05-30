@@ -34,6 +34,7 @@
 					<th>Name</th>
 					<th><?php echo $this->Html->link('Study', array('controller' => 'studies')); ?></th>
 					<th><?php echo $this->Html->link('Interface', array('controller' => 'ifaces')); ?></th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environment')); ?></th>
 					<th><?php echo $this->Html->link('Slots Reserved', array('controller' => 'slots')); ?></th>
 				</tr>
 				<?php foreach ($conditions as $condition): ?>
@@ -65,6 +66,9 @@
 						</td>
 						<td data-title="Interface">
 							<?php echo h($condition['Iface']['name']); ?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($condition['Environment']['name']); ?>
 						</td>
 						<td data-title="Slots Reserved">
 							<?php

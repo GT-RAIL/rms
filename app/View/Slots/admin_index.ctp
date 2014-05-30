@@ -35,14 +35,11 @@
 				<tr>
 					<th></th>
 					<th>ID</th>
-					<th>
-						<?php echo $this->Html->link('Study', array('controller' => 'studies')); ?> /
-						<?php echo $this->Html->link('Condition', array('controller' => 'conditions')); ?>
-					</th>
-					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+					<th><?php echo $this->Html->link('Study', array('controller' => 'studies')); ?></th>
+					<th><?php echo $this->Html->link('Condition', array('controller' => 'conditions')); ?></th>
 					<th>Start Time</th>
 					<th>End Time</th>
-					<th>Taken</th>
+					<th>Booked</th>
 				</tr>
 				<?php foreach ($slots as $slot): ?>
 					<tr>
@@ -66,12 +63,10 @@
 							<?php echo h($slot['Slot']['id']); ?>
 						</td>
 						<td data-title="Study / Condition">
-							<?php
-							echo  __('%s / %s', h($slot['Condition']['Study']['name']), h($slot['Condition']['name']));
-							?>
+							<?php echo h($slot['Condition']['Study']['name']); ?>
 						</td>
-						<td data-title="Environment">
-							<?php echo h($slot['Environment']['name']); ?>
+						<td data-title="Condition">
+							<?php echo h($slot['Condition']['name']); ?>
 						</td>
 						<td data-title="Time">
 							<?php echo h($slot['Slot']['start']); ?>
@@ -79,7 +74,7 @@
 						<td data-title="Time">
 							<?php echo h($slot['Slot']['end']); ?>
 						</td>
-						<td data-title="Taken">
+						<td data-title="Booked">
 							<?php echo isset($slot['Appointment']['id']) ? 'Yes' : 'No'; ?>
 						</td>
 					</tr>

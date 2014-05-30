@@ -94,14 +94,14 @@ class Environment extends AppModel {
 	);
 
 	/**
-	 * Environments can have associated streams and topics as well as study session slots.
+	 * Environments can have associated streams and topics as well as study conditions.
 	 *
 	 * @var array
 	 */
 	public $hasMany = array(
 		'Stream' => array('className' => 'Stream', 'dependent' => true),
 		'Teleop' => array('className' => 'Teleop', 'dependent' => true),
-		'Slot' => array('className' => 'Slot', 'dependent' => false)
+		'Condition' => array('className' => 'Condition', 'dependent' => false)
 	);
 
 	/**

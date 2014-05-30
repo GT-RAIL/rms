@@ -49,18 +49,6 @@ class Slot extends AppModel {
 				'required' => true
 			)
 		),
-		'environment_id' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid environment ID.',
-				'required' => true
-			),
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Environment IDs must be greater than 0.',
-				'required' => true
-			)
-		),
 		'start' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -92,13 +80,11 @@ class Slot extends AppModel {
 	);
 
 	/**
-	 * All slots belong to a single condition and environment.
+	 * All slots belong to a single condition.
 	 *
-	 * @var array
+	 * @var string
 	 */
-	public $belongsTo = array(
-		'Condition' => array('className' => 'Condition'), 'Environment' => array('className' => 'Environment')
-	);
+	public $belongsTo = 'Condition';
 
 	/**
 	 * Slots can have one appointments.

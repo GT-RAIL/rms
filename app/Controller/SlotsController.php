@@ -49,9 +49,8 @@ class SlotsController extends AppController {
 	 * The admin add action. This will allow the admin to create a new entry.
 	 */
 	public function admin_add() {
-		// load the condition and environment lists
+		// load the conditions
 		$this->setConditionsList();
-		$this->set('environments', $this->Slot->Environment->find('list'));
 
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -86,9 +85,8 @@ class SlotsController extends AppController {
 	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
 	 */
 	public function admin_edit($id = null) {
-		// load the condition and environment lists
+		// load the conditions
 		$this->setConditionsList();
-		$this->set('environments', $this->Slot->Environment->find('list'));
 
 		if (!$id) {
 			// no ID provided

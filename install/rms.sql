@@ -338,20 +338,22 @@ CREATE TABLE IF NOT EXISTS `conditions` (
   `name` varchar(64) NOT NULL COMMENT 'Name of the condition.',
   `study_id`int(10) unsigned NOT NULL COMMENT 'ID of the associated study.',
   `iface_id`int(10) unsigned DEFAULT NULL COMMENT 'ID of the associated interface.',
+  `environment_id`int(10) unsigned DEFAULT NULL COMMENT 'ID of the associated environment.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `study_id` (`study_id`),
-  KEY `iface_id` (`iface_id`)
+  KEY `iface_id` (`iface_id`),
+  KEY `environment_id` (`environment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `conditions`
 --
 
-INSERT INTO `conditions` (`id`, `name`, `study_id`, `iface_id`, `created`, `modified`) VALUES
-  (1, 'Default Demo Condition', 1, 1, NOW(), NOW());
+INSERT INTO `conditions` (`id`, `name`, `study_id`, `iface_id`, `environment_id`, `created`, `modified`) VALUES
+  (1, 'Default Demo Condition', 1, 1, 1, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -362,15 +364,13 @@ INSERT INTO `conditions` (`id`, `name`, `study_id`, `iface_id`, `created`, `modi
 CREATE TABLE IF NOT EXISTS `slots` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `condition_id`int(10) unsigned NOT NULL COMMENT 'ID of the environment associated study slot.',
-  `environment_id`int(10) unsigned DEFAULT NULL COMMENT 'ID of the environment associated study slot.',
   `start` timestamp NULL DEFAULT NULL COMMENT 'Start time of the study appointment.',
   `end` timestamp NULL DEFAULT NULL COMMENT 'End time of the study appointment.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
-  KEY `condition_id` (`condition_id`),
-  KEY `environment_id` (`environment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=1 ;
+  KEY `condition_id` (`condition_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study session slots.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `appointments` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `slot_id` (`slot_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study conditions.' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study session appointments.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -562,14 +562,14 @@ ALTER TABLE `ifaces_environments`
 --
 ALTER TABLE `conditions`
   ADD CONSTRAINT `conditions_ibfk_1` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`),
-  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `conditions_ibfk_2` FOREIGN KEY (`iface_id`) REFERENCES `ifaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `conditions_ibfk_3` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `slots`
 --
 ALTER TABLE `slots`
-  ADD CONSTRAINT `slots_ibfk_2` FOREIGN KEY (`condition_id`) REFERENCES `conditions` (`id`),
-  ADD CONSTRAINT `slots_ibfk_3` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `slots_ibfk_2` FOREIGN KEY (`condition_id`) REFERENCES `conditions` (`id`);
 
 --
 -- Constraints for table `appointments`

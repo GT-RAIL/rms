@@ -27,14 +27,19 @@
 			}
 			?>
 			<div class="row">
-				<section class="4u">
+				<section class="6u">
 					<?php echo $this->Form->input('name'); ?>
 				</section>
-				<section class="4u">
+				<section class="6u">
 					<?php echo $this->Form->input('study_id', array('label' => 'Study<br />')); ?>
 				</section>
+			</div>
+			<div class="row">
 				<section class="4u">
 					<?php echo $this->Form->input('iface_id', array('label' => 'Interface<br />')); ?>
+				</section>
+				<section class="6u">
+					<?php echo $this->Form->input('environment_id', array('label' => 'Environment<br />')); ?>
 				</section>
 			</div>
 			<div class="row">

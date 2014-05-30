@@ -44,6 +44,7 @@ class ConditionsController extends AppController {
 		// load the experiments and interface list
 		$this->set('studies', $this->Condition->Study->find('list'));
 		$this->set('ifaces', $this->Condition->Iface->find('list'));
+		$this->set('environments', $this->Condition->Environment->find('list'));
 
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -73,6 +74,7 @@ class ConditionsController extends AppController {
 		// load the experiments and interface list
 		$this->set('studies', $this->Condition->Study->find('list'));
 		$this->set('ifaces', $this->Condition->Iface->find('list'));
+		$this->set('environments', $this->Condition->Environment->find('list'));
 
 		if (!$id) {
 			// no ID provided

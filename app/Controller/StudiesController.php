@@ -28,6 +28,22 @@ class StudiesController extends AppController {
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
+	 * The used models for the controller.
+	 *
+	 * @var array
+	 */
+	public $uses = array('Study', 'Slot', 'Appointment', 'Condition');
+
+	/**
+	 * Define the actions which can be used by any user, authorized or not.
+	 */
+	public function beforeFilter() {
+		// only allow unauthenticated account creation
+		parent::beforeFilter();
+		$this->Auth->allow('otf');
+	}
+
+	/**
 	 * The admin index action lists information about all studies. This allows the admin to add, edit, or delete
 	 * entries.
 	 */
@@ -116,5 +132,74 @@ class StudiesController extends AppController {
 			$this->Session->setFlash('The study has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
+	}
+
+	public function otf($id = null) {
+		// check for the study
+		$study = $this->Study->findById($id);
+		if (!$study) {
+			throw new NotFoundException('Invalid study.');
+		}
+
+		// check for OTF
+		if (!$study['Study']['otf']) {
+			throw new ForbiddenException('On-the-Fly Study is Disabled');
+		}
+
+		// check if we are logged in or anonymous studies are allowed
+		if (!$this->Auth->user('id') && !$study['Study']['anonymous']) {
+			throw new ForbiddenException('Anonymous Study is Disabled');
+		}
+
+		// check if we are free to complete the study
+		if(!$study['Study']['parallel']) {
+			$slots = $this->Slot->find('all', array('recursive' => 2));
+			foreach ($slots as $slot) {
+				if ($slot['Condition']['Study']['id'] === $id && strtotime($slot['Slot']['end']) >  strtotime('now')) {
+					if (strtotime($slot['Slot']['start']) <=  strtotime('now')) {
+						throw new ForbiddenException('Study Session Already in Progress');
+					} else if (strtotime($slot['Slot']['start']) <= strtotime('now') + $study['Study']['length'] * 60) {
+						throw new ForbiddenException('Not Enough Free Time Before Next Scheduled Session');
+					}
+				}
+			}
+		}
+
+		// check if we are allowed to participate multiple times
+		if ($this->Auth->user('id') && !$study['Study']['repeatable']) {
+			$appointments = $this->Appointment->find(
+				'count',
+				array(
+					'conditions' => array('Appointment.user_id' => $this->Auth->user('id')),
+					'limit' => 1
+				)
+			);
+			if ($appointments > 0) {
+				throw new ForbiddenException('You Have Already Completed This Study');
+			}
+		}
+
+		// randomly pick a condition with the least amount of slots
+		$conditions = $this->Condition->find('all', array('recursive' => 3, 'conditions' => array('Study.id' => $id)));
+		$toPick = array();
+		foreach ($conditions as $condition) {
+			if(count($toPick) === 0 || count($toPick[0]['Slot']) === count($condition['Slot'])) {
+				$toPick[] = $condition;
+			} else if (count($toPick[0]['Slot']) < count($condition['Slot'])) {
+				unset($toPick);
+				$toPick = array();
+				$toPick[] = $condition;
+			}
+		}
+		$condition_id = $toPick[rand(0, count($toPick) - 1)];
+
+		// good to go! create the slot and appointment
+		$this->Slot->create();
+		// set the current timestamp for creation and modification
+		$this->Slot->data['Slot']['created'] = date('Y-m-d H:i:s');
+		$this->Slot->data['Slot']['modified'] = date('Y-m-d H:i:s');
+		// set the current timestamp for the start and compute the end time
+		$this->Slot->data['Slot']['start'] = date('Y-m-d H:i:s');
+		$this->Slot->data['Slot']['end'] = date('Y-m-d H:i:s', strtotime('now') + $study['Study']['length'] * 60);
 	}
 }
