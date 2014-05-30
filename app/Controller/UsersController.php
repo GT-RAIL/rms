@@ -303,6 +303,23 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			// check if we have valid login credentials
 			if ($this->Auth->login()) {
+				// check for a cookie
+				if ($this->request->data['User']['remember']) {
+					$cookieTime = '12 months';
+
+					// remove "remember me"
+					unset($this->request->data['User']['remember']);
+
+					// hash the user's password
+					$passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));
+					$this->request->data['User']['password'] = $passwordHasher->hash(
+						$this->request->data['User']['password']
+					);
+
+					// write the cookie
+					$this->Cookie->write('remember', $this->request->data['User'], true, $cookieTime);
+				}
+
 				// update the user's counter
 				$id = $this->Auth->user('id');
 				$this->User->read(null, $id);
@@ -321,7 +338,8 @@ class UsersController extends AppController {
 	 * Log the logged in user out.
 	 */
 	public function logout() {
-		// simply log the user out
+		// simply log the user out and remove the cookie
+		$this->Cookie->delete('remember');
 		return $this->redirect($this->Auth->logout());
 	}
 

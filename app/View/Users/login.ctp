@@ -32,6 +32,8 @@
 			<div class="row">
 				<section class="6u">
 					<?php echo $this->Form->input('username'); ?>
+					<br />
+					<?php echo $this->Form->input('remember', array('type' => 'checkbox', 'label' => 'Remember Me')); ?>
 				</section>
 				<section class="6u">
 					<?php echo $this->Form->input('password'); ?>

@@ -140,6 +140,23 @@ class Study extends AppModel {
 				'required' => true
 			)
 		),
+		'multiple' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Multiple settings cannot be blank.',
+				'required' => true
+			),
+			'geq' => array(
+				'rule' =>  array('comparison', '>=', 0),
+				'message' => 'Multiple settings must be boolean.',
+				'required' => true
+			),
+			'leq' => array(
+				'rule' =>  array('comparison', '<=', 1),
+				'message' => 'Multiple settings must be boolean.',
+				'required' => true
+			)
+		),
 		'created' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',

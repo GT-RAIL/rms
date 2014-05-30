@@ -17,12 +17,33 @@ App::uses('CakeEmail', 'Network/Email');
  */
 abstract class AppController extends Controller {
 
+	public $components = array('Cookie');
+
 	/**
 	 * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the
 	 * `admin` flag for admin checking.
 	 */
 	public function beforeFilter() {
 		parent::beforeFilter();
+
+		// set cookie options
+		$this->Cookie->httpOnly = true;
+		if (!$this->Auth->loggedIn() && $this->Cookie->read('remember')) {
+			$cookie = $this->Cookie->read('remember');
+			// load the user from the cookie
+			$this->loadModel('User');
+			$user = $this->User->find('first', array(
+				'conditions' => array(
+					'User.username' => $cookie['username'],
+					'User.password' => $cookie['password']
+				)
+			));
+
+			// destroy session & cookie
+			if ($user && !$this->Auth->login($user['User'])) {
+				$this->redirect('/users/logout');
+			}
+		}
 
 		// grab site settings
 		$this->loadModel('Setting');

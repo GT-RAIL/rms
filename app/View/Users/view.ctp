@@ -203,9 +203,17 @@
 			<?php
 			if(count($studies) > 0) {
 				foreach ($studies as $study) {
+					// check if we have an appointment
+					$scheduled = false;
+					foreach ($appointments as $appointment) {
+						if ($appointment['Slot']['Condition']['Study']['id'] === $study['Study']['id']) {
+							// TODO
+						}
+					}
+
 					echo '<hr />';
 					echo '<div class="row">';
-					echo '<section class="6u">';
+					echo '<section class="5u">';
 					echo __(
 						'<strong>%s</strong> (%d min.)', h($study['Study']['name']), h($study['Study']['length'])
 					);
@@ -214,17 +222,16 @@
 					// find slots with no appointment
 					$free = array();
 					foreach ($study['Condition'] as $condition) {
-						$reverse = array_reverse($condition['Slot']);
-						foreach ($reverse as $slot) {
+						foreach ($condition['Slot'] as $slot) {
 							if (!isset($slot['Appointment']['id'])
 								&& strtotime($slot['start']) >  strtotime('now')) {
-								$free[$slot['id']] = $slot['start'];
+								$free[$slot['id']] = $this->Time->format('F jS, Y h:i A', $slot['start']);
 							}
 						}
 					}
 
 					if (count($free) > 0) {
-						echo '<section class="4u">';
+						echo '<section class="5u">';
 						echo $this->Form->create('Appointment', array('action' => 'book'));
 						echo $this->Form->input(
 							'Time Slot: ',
