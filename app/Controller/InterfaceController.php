@@ -15,6 +15,13 @@
 abstract class InterfaceController extends AppController {
 
 	/**
+	 * The used models for the controller.
+	 *
+	 * @var array
+	 */
+	public $uses = array('Environment', 'Appointment');
+
+	/**
 	 * The used helpers for the controller.
 	 *
 	 * @var array
@@ -43,7 +50,6 @@ abstract class InterfaceController extends AppController {
 		// check the request
 		if ($this->request['action'] === 'view' && isset($this->request['pass'][0])) {
 			// grab the environment we need
-			$this->loadModel('Environment');
 			$this->Environment->recursive = 2;
 			$environment = $this->Environment->findById($this->request['pass'][0]);
 
@@ -75,19 +81,28 @@ abstract class InterfaceController extends AppController {
 			}
 			$this->set('iface', array('Interface' => $iface));
 
-			// now check if we are authorized
-			if ($iface['anonymous']) {
+			// check if this is a user study
+			if ($this->Session->read('appointment_id') > 0) {
+				// validate the appointment
+				$this->Appointment->recursive = 2;
+				$appointment = $this->Appointment->findById($this->Session->read('appointment_id'));
+				if ($appointment && $appointment['Appointment']['user_id'] === $this->Auth->user('id')
+					&& $appointment['Slot']['Condition']['iface_id'] === $iface['id']
+					&& $appointment['Slot']['Condition']['environment_id'] === $environment['Environment']['id']
+					&& strtotime($appointment['Slot']['start']) <= strtotime('now')
+					&& strtotime($appointment['Slot']['end']) > strtotime('now')) {
+					// valid study
+					$this->set('appointment', $appointment);
+					return;
+				}
+				// invalid study, don't try again
+				$this->Session->delete('appointment_id');
+			}
+
+			// no study -- check if we are authorized
+			if ($iface['anonymous'] || ($iface['unrestricted'] && $this->viewVars['loggedIn'])) {
 				// anyone can access
 				return;
-			} else {
-				if($iface['unrestricted']) {
-					if ($this->viewVars['loggedIn']) {
-						// no scheduled session required
-						return;
-					}
-				} else {
-					// TODO: check the study session
-				}
 			}
 
 			// this means we don't have access

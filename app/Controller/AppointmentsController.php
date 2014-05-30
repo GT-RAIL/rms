@@ -139,7 +139,7 @@ class AppointmentsController extends AppController {
 		}
 
 		// good to go -- notify the interface that we are approved
-		//$this->Session->write('appointment_id', $id);
+		$this->Session->write('appointment_id', $id);
 		return $this->redirect(
 			array(
 				'controller' => 'ifaces',
