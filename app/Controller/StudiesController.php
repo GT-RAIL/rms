@@ -175,7 +175,7 @@ class StudiesController extends AppController {
 				)
 			);
 			if ($appointments > 0) {
-				throw new ForbiddenException('You Have Already Completed This Study');
+				throw new ForbiddenException('You Have Already Signed Up for the Study');
 			}
 		}
 
@@ -191,15 +191,41 @@ class StudiesController extends AppController {
 				$toPick[] = $condition;
 			}
 		}
-		$condition_id = $toPick[rand(0, count($toPick) - 1)];
+		$conditionID = $toPick[rand(0, count($toPick) - 1)]['Condition']['id'];
 
 		// good to go! create the slot and appointment
 		$this->Slot->create();
-		// set the current timestamp for creation and modification
-		$this->Slot->data['Slot']['created'] = date('Y-m-d H:i:s');
-		$this->Slot->data['Slot']['modified'] = date('Y-m-d H:i:s');
-		// set the current timestamp for the start and compute the end time
-		$this->Slot->data['Slot']['start'] = date('Y-m-d H:i:s');
-		$this->Slot->data['Slot']['end'] = date('Y-m-d H:i:s', strtotime('now') + $study['Study']['length'] * 60);
+		// set the slot information
+		$slotData = array(
+			'Slot' => array(
+				'start' => date('Y-m-d H:i:s'),
+				'end' => date('Y-m-d H:i:s', strtotime('now') + $study['Study']['length'] * 60),
+				'condition_id' => $conditionID,
+				'created' => date('Y-m-d H:i:s'),
+				'modified' => date('Y-m-d H:i:s')
+			)
+		);
+
+		if($this->Slot->save($slotData)) {
+			$appointmentData = array(
+				'Appointment' => array(
+					'slot_id' => $this->Slot->id,
+					'user_id' => $this->Auth->user('id'),
+					'created' => date('Y-m-d H:i:s'),
+					'modified' => date('Y-m-d H:i:s')
+				)
+			);
+			if($this->Appointment->save($appointmentData)) {
+				// begin!
+				return $this->redirect(
+					array('controller' => 'appointments', 'action' => 'begin', $this->Appointment->id)
+				);
+			}
+		}
+
+		// oops -- that didn't work :(
+		$this->Session->setFlash('Unable to create appointment.');
+		return ($this->Auth->user('id')) ?
+			$this->redirect(array('controller' => 'users', 'action' => 'view')) : $this->redirect('/');
 	}
 }
