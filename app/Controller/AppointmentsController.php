@@ -28,6 +28,15 @@ class AppointmentsController extends AppController {
 	public $uses = array('Appointment', 'Slot');
 
 	/**
+	 * Define the actions which can be used by any user, authorized or not.
+	 */
+	public function beforeFilter() {
+		// only allow unauthenticated account creation
+		parent::beforeFilter();
+		$this->Auth->allow('begin');
+	}
+
+	/**
 	 * The book action allows a user to book a user study appointment.
 	 *
 	 * @throws MethodNotAllowedException Thrown if a post request is made.
@@ -101,5 +110,43 @@ class AppointmentsController extends AppController {
 			$this->Session->setFlash('The appointment has been deleted.');
 		}
 		return $this->redirect(array('controller' => 'users', 'action' => 'view'));
+	}
+
+	/**
+	 * Begin the scheduled appointment. This will verify the appointment and redirect the user to the interface.
+	 *
+	 * @param int $id The ID of the appointment.
+	 * @throws NotFoundException Thrown if the appointment is not found.
+	 * @throws ForbiddenException Thrown if the user does not have access to the appointment at this time.
+	 */
+	public function begin($id = null) {
+		// find the appointment
+		$this->Appointment->recursive = 2;
+		$appointment = $this->Appointment->findById($id);
+		if (!$appointment) {
+			throw new NotFoundException('Invalid appointment.');
+		}
+
+		// check for matching users
+		if ($appointment['Appointment']['user_id'] !== $this->Auth->user('id')) {
+			throw new ForbiddenException();
+		}
+
+		// check the time
+		if (strtotime($appointment['Slot']['start']) > strtotime('now')
+			|| strtotime($appointment['Slot']['end']) <= strtotime('now')) {
+			throw new ForbiddenException();
+		}
+
+		// good to go -- notify the interface that we are approved
+		//$this->Session->write('appointment_id', $id);
+		return $this->redirect(
+			array(
+				'controller' => 'ifaces',
+				'action' => 'view',
+				$appointment['Slot']['Condition']['iface_id'],
+				$appointment['Slot']['Condition']['environment_id']
+			)
+		);
 	}
 }

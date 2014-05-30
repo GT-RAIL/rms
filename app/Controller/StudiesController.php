@@ -134,6 +134,14 @@ class StudiesController extends AppController {
 		}
 	}
 
+	/**
+	 * Create a study appointment on-the-fly. This will validate that on-the-fly studies are enabled and the user is
+	 * allowed to participate at this time.
+	 *
+	 * @param int $id The study ID to create an appointment for.
+	 * @throws NotFoundException Thrown if an invalid study is given.
+	 * @throws ForbiddenException Thrown if the user is not allowed to access the study.
+	 */
 	public function otf($id = null) {
 		// check for the study
 		$study = $this->Study->findById($id);

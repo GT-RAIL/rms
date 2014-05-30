@@ -31,7 +31,7 @@
 						array(
 							'controller' => 'appointments',
 							'action' => 'begin',
-							$appointments[0]['Slot']['id']
+							$appointments[0]['Appointment']['id']
 						),
 						array('class' => 'button')
 					);
@@ -246,7 +246,7 @@
 									array(
 										'controller' => 'appointments',
 										'action' => 'begin',
-										$appointment['Slot']['id']
+										$appointment['Appointment']['id']
 									),
 									array('class' => 'button special')
 								);
