@@ -17,7 +17,19 @@ App::uses('CakeEmail', 'Network/Email');
  */
 abstract class AppController extends Controller {
 
-	public $components = array('Cookie');
+	/**
+	 * The used models for the controller.
+	 *
+	 * @var array
+	 */
+	public $uses = array('User', 'Setting', 'Page', 'Role', 'Appointment');
+
+	/**
+	 * The used components for the controller.
+	 *
+	 * @var array
+	 */
+	public $components = array('Cookie', 'Session', 'Auth' => array('authorize' => 'Controller'));
 
 	/**
 	 * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the
@@ -31,7 +43,6 @@ abstract class AppController extends Controller {
 		if (!$this->Auth->loggedIn() && $this->Cookie->read('remember')) {
 			$cookie = $this->Cookie->read('remember');
 			// load the user from the cookie
-			$this->loadModel('User');
 			$user = $this->User->find('first', array(
 				'conditions' => array(
 					'User.username' => $cookie['username'],
@@ -46,7 +57,6 @@ abstract class AppController extends Controller {
 		}
 
 		// grab site settings
-		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
 		$settingSubset = array(
 			'Setting' => array(
@@ -59,7 +69,6 @@ abstract class AppController extends Controller {
 		$this->set('setting', $settingSubset);
 
 		// set the main menu for the pages
-		$this->loadModel('Page');
 		$pages =  $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
 		$menu = array();
 		foreach ($pages as $page) {
@@ -85,7 +94,6 @@ abstract class AppController extends Controller {
 
 		if($loggedIn) {
 			// now check the admin flag
-			$this->loadModel('Role');
 			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
 			$admin = AuthComponent::user('role_id') === $role['Role']['id'];
 			$this->set('admin', $admin);
@@ -219,7 +227,6 @@ abstract class AppController extends Controller {
 			throw new NotFoundException('Invalid user.');
 		}
 
-		$this->loadModel('User');
 		$user = $this->User->findById($id);
 		if (!$user) {
 			// no valid entry found for the given ID
@@ -227,7 +234,6 @@ abstract class AppController extends Controller {
 		}
 
 		// check if we are sending a welcome email
-		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
 		if ($setting['Setting']['email']) {
 			$email = new CakeEmail('dynamic');
@@ -251,7 +257,6 @@ abstract class AppController extends Controller {
 	 */
 	public function sendBatchEmail($bcc = array(), $subject = '', $message = '') {
 		// check if we are sending a welcome email
-		$this->loadModel('Setting');
 		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
 		if ($setting['Setting']['email']) {
 			$email = new CakeEmail('dynamic');

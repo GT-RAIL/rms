@@ -140,20 +140,20 @@ class Study extends AppModel {
 				'required' => true
 			)
 		),
-		'multiple' => array(
+		'repeatable' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Multiple settings cannot be blank.',
+				'message' => 'Repeatable settings cannot be blank.',
 				'required' => true
 			),
 			'geq' => array(
 				'rule' =>  array('comparison', '>=', 0),
-				'message' => 'Multiple settings must be boolean.',
+				'message' => 'Repeatable settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
 				'rule' =>  array('comparison', '<=', 1),
-				'message' => 'Multiple settings must be boolean.',
+				'message' => 'Repeatable settings must be boolean.',
 				'required' => true
 			)
 		),

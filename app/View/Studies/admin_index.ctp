@@ -40,7 +40,7 @@
 					<th>Anonymous</th>
 					<th>On-the-Fly</th>
 					<th>Parallel</th>
-					<th>Multiple Signups</th>
+					<th>Repeatable</th>
 				</tr>
 				<?php foreach ($studies as $study): ?>
 					<tr>
@@ -81,8 +81,8 @@
 						<td data-title="Parallel">
 							<?php echo ($study['Study']['parallel']) ? 'Yes' : 'No'; ?>
 						</td>
-						<td data-title="Multiple Signups">
-							<?php echo ($study['Study']['multiple']) ? 'Yes' : 'No'; ?>
+						<td data-title="Repeatable">
+							<?php echo ($study['Study']['repeatable']) ? 'Yes' : 'No'; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

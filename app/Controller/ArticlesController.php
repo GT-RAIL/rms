@@ -18,7 +18,7 @@ class ArticlesController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form');
+	public $helpers = array('Html', 'Form', 'Time');
 
 	/**
 	 * The used components for the controller.

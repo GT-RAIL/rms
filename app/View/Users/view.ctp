@@ -19,7 +19,6 @@
 	<p><?php echo h($user['User']['email']); ?></p>
 </header>
 
-
 <?php if (count($appointments) > 0): ?>
 	<section class="wrapper style4 container">
 		<div class="content center">
@@ -40,7 +39,7 @@
 				<?php else: ?>
 					<strong>Next Scheduled Study</strong>
 					<br />
-					<?php echo $this->Time->format('F jS, Y h:i A', $appointments[0]['Slot']['start']); ?>
+					<?php echo $this->Time->format('F jS, Y h:i A T', $appointments[0]['Slot']['start']); ?>
 				<?php endif; ?>
 			</section>
 		</div>
@@ -51,18 +50,18 @@
 	<div class="content center">
 		<section>
 			<div class="row">
-				<?php $u = ($admin) ? '4u' : '6u'; ?>
-				<?php if($admin): ?>
-					<section class="<?php echo $u; ?>">
-						<a href="#interfaces" class="button special scrolly">Interfaces</a>
-					</section>
-				<?php endif; ?>
+				<?php $u = (count($ifaces) > 0) ? '4u' : '6u'; ?>
 				<section class="<?php echo $u; ?>">
 					<a href="#available" class="button special scrolly">Available Studies</a>
 				</section>
 				<section class="<?php echo $u; ?>">
 					<a href="#scheduled" class="button special scrolly">Scheduled Studies</a>
 				</section>
+				<?php if(count($ifaces) > 0): ?>
+					<section class="<?php echo $u; ?>">
+						<a href="#interfaces" class="button special scrolly">Interfaces</a>
+					</section>
+				<?php endif; ?>
 			</div>
 		</section>
 	</div>
@@ -120,78 +119,6 @@
 	</div>
 </section>
 
-<?php if($admin): ?>
-	<section id="interfaces" class="wrapper style4 container">
-		<div class="content center">
-			<section>
-				<header>
-					<h2>Admin Interface Menu</h2>
-					<p>Click an interface name to view the interface.</p>
-				</header>
-				<br /><hr />
-				<?php foreach ($environments as $env): ?>
-					<div class="row center">
-						<section class="4u">
-							<?php echo h($env['Environment']['name']); ?>
-						</section>
-						<section class="4u">
-							<?php if (!$env['Rosbridge']['id']): ?>
-								N/A
-							<?php else: ?>
-								<?php
-								echo __(
-										'%s://%s:%s',
-										h($env['Rosbridge']['Protocol']['name']),
-										h($env['Rosbridge']['host']),
-										h($env['Rosbridge']['port'])
-									);
-								?>
-								<?php
-								echo $this->Rms->rosbridgeStatus(
-									$env['Rosbridge']['Protocol']['name'],
-									$env['Rosbridge']['host'],
-									$env['Rosbridge']['port']
-								);
-								?>
-							<?php endif; ?>
-						</section>
-						<section class="4u">
-							<?php if (!$env['Mjpeg']['id']): ?>
-								N/A
-							<?php else: ?>
-								<?php echo __('http://%s:%s', h($env['Mjpeg']['host']), h($env['Mjpeg']['port'])); ?>
-								<?php
-								echo $this->Rms->mjpegServerStatus($env['Mjpeg']['host'], $env['Mjpeg']['port']);
-								?>
-								<br />
-							<?php endif; ?>
-						</section>
-					</div>
-					<div class="row center">
-						<section class="12u">
-							<?php foreach ($env['Iface'] as $iface): ?>
-								<?php
-								echo $this->Html->link(
-									$iface['name'],
-									array(
-										'controller' => 'ifaces',
-										'action' => 'view',
-										$iface['id'],
-										$env['Environment']['id']
-									)
-								);
-								?>
-								<br />
-							<?php endforeach; ?>
-						</section>
-					</div>
-					<br /><hr />
-				<?php endforeach; ?>
-			</section>
-		</div>
-	</section>
-<?php endif; ?>
-
 <hr />
 <section id="available" class="wrapper style4 container">
 	<div class="content center">
@@ -203,13 +130,6 @@
 			<?php
 			if(count($studies) > 0) {
 				foreach ($studies as $study) {
-					// check if we have an appointment
-					$scheduled = false;
-					foreach ($appointments as $appointment) {
-						if ($appointment['Slot']['Condition']['Study']['id'] === $study['Study']['id']) {
-							// TODO
-						}
-					}
 
 					echo '<hr />';
 					echo '<div class="row">';
@@ -219,18 +139,38 @@
 					);
 					echo '</section>';
 
+					// check if we have an appointment
+					$next = null;
+					foreach ($allAppointments as $appointment) {
+						if ($appointment['Slot']['Condition']['Study']['id'] === $study['Study']['id']) {
+							// pick the latest
+							if(!$next || strtotime($appointment['Slot']['start']) > strtotime($next['Slot']['start'])) {
+								$next = $appointment;
+							}
+						}
+					}
+
 					// find slots with no appointment
 					$free = array();
 					foreach ($study['Condition'] as $condition) {
 						foreach ($condition['Slot'] as $slot) {
 							if (!isset($slot['Appointment']['id'])
 								&& strtotime($slot['start']) >  strtotime('now')) {
-								$free[$slot['id']] = $this->Time->format('F jS, Y h:i A', $slot['start']);
+								$free[$slot['id']] = $this->Time->format('F jS, Y h:i A T', $slot['start']);
 							}
 						}
 					}
 
-					if (count($free) > 0) {
+					if ($next && strtotime($next['Slot']['end']) > strtotime('now')) {
+						echo '<section class="6u">';
+						echo '<strong>Next Appointment:</strong> ';
+						echo $this->Time->format('F jS, Y h:i A T', $next['Slot']['start']);
+						echo '</section>';
+					} else if ($next && !$study['Study']['repeatable']) {
+						echo '<section class="6u">';
+						echo '<strong>You Have Completed This Study</strong> ';
+						echo '</section>';
+					} else if (count($free) > 0) {
 						echo '<section class="5u">';
 						echo $this->Form->create('Appointment', array('action' => 'book'));
 						echo $this->Form->input(
@@ -318,7 +258,7 @@
 							</section>
 						<?php else: ?>
 							<section class="6u">
-								<?php echo $this->Time->format('F jS, Y h:i A', $appointment['Slot']['start']); ?>
+								<?php echo $this->Time->format('F jS, Y h:i A T', $appointment['Slot']['start']); ?>
 								<?php
 								echo $this->Form->postLink(
 									'Cancel',
@@ -341,3 +281,69 @@
 		</section>
 	</div>
 </section>
+
+<?php if(count($ifaces) > 0): ?>
+	<hr />
+	<section id="interfaces" class="wrapper style4 container">
+		<div class="content center">
+			<section>
+				<header>
+					<h2>Interface Menu</h2>
+					<p>Click an environment name to view the interface.</p>
+				</header>
+				<br /><hr />
+				<?php foreach ($ifaces as $iface): ?>
+					<div class="row center">
+						<section class="12u">
+							<strong><u><?php echo h($iface['Iface']['name']); ?></u></strong>
+						</section>
+						<?php foreach ($iface['Environment'] as $environment): ?>
+							<section class="4u">
+								<?php
+								echo $this->Html->link(
+										$environment['name'],
+										array(
+											'controller' => 'ifaces',
+											'action' => 'view',
+											$iface['Iface']['id'],
+											$environment['id']
+										)
+									);
+								?>
+							</section>
+							<section class="4u">
+								<strong>rosbridge Status:</strong>
+								<?php if (!$environment['Rosbridge']['id']): ?>
+									N/A
+								<?php else: ?>
+									<?php
+									echo $this->Rms->rosbridgeStatus(
+										$environment['Rosbridge']['Protocol']['name'],
+										$environment['Rosbridge']['host'],
+										$environment['Rosbridge']['port']
+									);
+									?>
+								<?php endif; ?>
+							</section>
+							<section class="4u">
+								<strong>MJPEG Status:</strong>
+								<?php if (!$environment['Mjpeg']['id']): ?>
+									N/A
+								<?php else: ?>
+									<?php
+									echo $this->Rms->mjpegServerStatus(
+										$environment['Mjpeg']['host'],
+										$environment['Mjpeg']['port']
+									);
+									?>
+									<br />
+								<?php endif; ?>
+							</section>
+						<?php endforeach; ?>
+					</div>
+					<hr />
+				<?php endforeach; ?>
+			</section>
+		</div>
+	</section>
+<?php endif; ?>

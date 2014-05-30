@@ -106,7 +106,7 @@
 							?>
 						</td>
 						<td data-title="Modified">
-							<?php echo h($article['Article']['modified']); ?>
+							<?php echo $this->Time->format('m/d/y h:i A T', $article['Article']['modified']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

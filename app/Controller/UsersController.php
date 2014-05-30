@@ -28,7 +28,7 @@ class UsersController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $uses = array('User', 'Role', 'Environment', 'Study', 'Appointment');
+	public $uses = array('User', 'Role', 'Iface', 'Study', 'Appointment');
 
 	/**
 	 * The used components for the controller.
@@ -471,10 +471,19 @@ class UsersController extends AppController {
 			throw new NotFoundException('Invalid user.');
 		}
 
-		// search for interfaces and environments (used by admin)
-		$this->set('environments', $this->Environment->find('all', array('recursive' => 2)));
+		// search for interfaces
+		if ($this->viewVars['admin']) {
+			$this->set('ifaces', $this->Iface->find('all', array('recursive' => 3)));
+		} else {
+			// only show the unrestricted interfaces
+			$ifaces = $this->Iface->find(
+				'all',
+				array('conditions' => array('Iface.unrestricted' => 1, 'recursive' => 3))
+			);
+			$this->set('ifaces', $ifaces);
+		}
 
-		// search for studies (used by basic users)
+		// search for studies
 		$studies = $this->Study->find(
 			'all',
 			array(
@@ -492,12 +501,21 @@ class UsersController extends AppController {
 			)
 		);
 		$this->set('appointments', $appointments);
+		$allAppointments = $this->Appointment->find(
+			'all',
+			array(
+				'recursive' => 3,
+				'conditions' => array('Appointment.user_id' => $id),
+				'order' => array('Slot.start'),
+			)
+		);
+		$this->set('allAppointments', $allAppointments);
 
 		// store the entry
 		$this->set('user', $user);
 		$this->set('title_for_layout', 'Account');
 
-		// we will need some RWT libraries for admins
+		// we will need some RWT libraries
 		$this->set('rwt', array('roslibjs' => true));
 	}
 

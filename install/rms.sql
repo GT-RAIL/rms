@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `studies` (
   `anonymous` boolean DEFAULT FALSE COMMENT 'If anonymous sessions are allowed.',
   `otf` boolean DEFAULT FALSE COMMENT 'If on-the-fly sessions are allowed.',
   `parallel` boolean DEFAULT FALSE COMMENT 'If parallel sessions are allowed.',
-  `multiple` boolean DEFAULT FALSE COMMENT 'If multiple signups are allowed by the same user.',
+  `repeatable` boolean DEFAULT FALSE COMMENT 'If repeatable studies are allowed by the same user.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `studies` (
 -- Dumping data for table `studies`
 --
 
-INSERT INTO `studies` (`id`, `name`, `start`, `end`, `length`, `anonymous`, `otf`, `parallel`, `multiple`, `created`, `modified`) VALUES
+INSERT INTO `studies` (`id`, `name`, `start`, `end`, `length`, `anonymous`, `otf`, `parallel`, `repeatable`, `created`, `modified`) VALUES
   (1, 'Demo Study', CURDATE(), ADDDATE(CURDATE(), INTERVAL 1 YEAR), 10, FALSE, TRUE, FALSE, TRUE, NOW(), NOW());
 
 -- --------------------------------------------------------

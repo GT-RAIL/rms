@@ -95,7 +95,7 @@
 							<?php echo __('%d', count($page['Article'])); ?>
 						</td>
 						<td data-title="Modified">
-							<?php echo h($page['Page']['modified']); ?>
+							<?php echo $this->Time->format('m/d/y h:i A T', $page['Page']['modified']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

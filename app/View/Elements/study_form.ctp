@@ -42,7 +42,7 @@
 					<?php echo $this->Form->input('anonymous', array('label' => 'Anonymous Access')); ?>
 					<?php echo $this->Form->input('otf', array('label' => 'On-the-Fly Sessions')); ?>
 					<?php echo $this->Form->input('parallel', array('label' => 'Parallel Sessions Allowed')); ?>
-					<?php echo $this->Form->input('multiple', array('label' => 'Multiple Signups')); ?>
+					<?php echo $this->Form->input('repeatable', array('label' => 'Repeatable')); ?>
 				</section>
 				<section class="4u">
 					<?php echo $this->Form->input('end', array('label' => 'End Date<br />')); ?>
