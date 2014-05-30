@@ -33,7 +33,7 @@ class SlotsController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $paginate = array('limit' => 30, 'order' => array('User.created' => 'ASC'), 'recursive' => 2);
+	public $paginate = array('limit' => 25, 'order' => array('Slot.start' => 'DESC'), 'recursive' => 2);
 
 	/**
 	 * The admin index action lists information about all appointments. This allows the admin to add, edit, or delete
