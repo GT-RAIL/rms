@@ -19,7 +19,7 @@ class SlotsController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $helpers = array('Html', 'Form', 'Paginator');
+	public $helpers = array('Html', 'Form', 'Paginator', 'Time');
 
 	/**
 	 * The used components for the controller.

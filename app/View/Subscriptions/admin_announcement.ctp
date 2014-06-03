@@ -28,7 +28,7 @@
 				</p>
 			</header>
 			<section>
-				<?php echo $this->Form->create('Newsletter'); ?>
+				<?php echo $this->Form->create('Studies'); ?>
 				<div class="row">
 					<section class="12u">
 						<?php

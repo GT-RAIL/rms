@@ -84,7 +84,8 @@ sudo /etc/init.d/apache2 restart > /dev/null 2>&1
 ## Create a tmp folder
 echo
 echo "Setting up site tmp folder..."
-mkdir -p ../app/tmp
+rm -rf ../app/tmp
+mkdir ../app/tmp
 sudo chown -R www-data ../app/tmp
 
 ## Setup the SQL server
@@ -119,6 +120,11 @@ class DATABASE_CONFIG {\n
 }"
 rm -f ../app/Config/database.php
 echo -e $CONFIG | sed "s/^[ ]*//" >> ../app/Config/database.php
+
+## Install the cron job
+echo
+echo "Installing cron job(s)..."
+echo "0,30 * * * * cd /var/www/rms && Console/cake Console/cake reminder" | sudo crontab -u www-data -
 
 echo
 echo "Setup complete!"

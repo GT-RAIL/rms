@@ -39,7 +39,7 @@
 				<?php else: ?>
 					<strong>Next Scheduled Study</strong>
 					<br />
-					<?php echo $this->Time->format('F jS, Y h:i A T', $appointments[0]['Slot']['start']); ?>
+					<?php echo $this->Time->format('F jS, Y g:i A T', $appointments[0]['Slot']['start']); ?>
 				<?php endif; ?>
 			</section>
 		</div>
@@ -156,7 +156,7 @@
 						foreach ($condition['Slot'] as $slot) {
 							if (!isset($slot['Appointment']['id'])
 								&& strtotime($slot['start']) >  strtotime('now')) {
-								$free[$slot['id']] = $this->Time->format('F jS, Y h:i A T', $slot['start']);
+								$free[$slot['id']] = $this->Time->format('F jS, Y g:i A T', $slot['start']);
 							}
 						}
 					}
@@ -164,7 +164,7 @@
 					if ($next && strtotime($next['Slot']['end']) > strtotime('now')) {
 						echo '<section class="6u">';
 						echo '<strong>Next Appointment:</strong> ';
-						echo $this->Time->format('F jS, Y h:i A T', $next['Slot']['start']);
+						echo $this->Time->format('F jS, Y g:i A T', $next['Slot']['start']);
 						echo '</section>';
 					} else if ($next && !$study['Study']['repeatable']) {
 						echo '<section class="6u">';
@@ -254,7 +254,7 @@
 							</section>
 						<?php else: ?>
 							<section class="6u">
-								<?php echo $this->Time->format('F jS, Y h:i A T', $appointment['Slot']['start']); ?>
+								<?php echo $this->Time->format('F jS, Y g:i A T', $appointment['Slot']['start']); ?>
 								<?php
 								echo $this->Form->postLink(
 									'Cancel',

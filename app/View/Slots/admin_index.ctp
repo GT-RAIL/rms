@@ -69,10 +69,10 @@
 							<?php echo h($slot['Condition']['name']); ?>
 						</td>
 						<td data-title="Time">
-							<?php echo h($slot['Slot']['start']); ?>
+							<?php echo $this->Time->format('m/d/y h:i A T', $slot['Slot']['start']); ?>
 						</td>
 						<td data-title="Time">
-							<?php echo h($slot['Slot']['end']); ?>
+							<?php echo $this->Time->format('m/d/y h:i A T', $slot['Slot']['end']); ?>
 						</td>
 						<td data-title="Booked">
 							<?php echo isset($slot['Appointment']['id']) ? 'Yes' : 'No'; ?>
