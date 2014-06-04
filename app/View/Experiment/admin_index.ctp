@@ -45,7 +45,7 @@
 				</section>
 			</div>
 			<div class="row">
-				<section class="6u">
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'Slots',
@@ -54,7 +54,16 @@
 					);
 					?>
 				</section>
-				<section class="6u">
+				<section class="4u">
+					<?php
+					echo $this->Html->link(
+						'Study Logs',
+						array('controller' => 'logs', 'action' => 'index'),
+						array('class' => 'button special')
+					);
+					?>
+				</section>
+				<section class="4u">
 					<?php
 					echo $this->Html->link(
 						'Send Announcement',

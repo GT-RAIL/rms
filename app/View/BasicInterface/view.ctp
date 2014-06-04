@@ -14,11 +14,16 @@
 ?>
 
 <?php
-// setup the main ROS connection
+// setup the main ROS connection and any study information
 if($environment['Rosbridge']['host']) {
 	echo $this->Rms->ros($environment['Rosbridge']['uri'], $environment['Rosbridge']['rosauth']);
 }
+echo $this->Rms->initStudy();
 ?>
+
+<script>
+	RMS.logString('start', 'User has connected.');
+</script>
 
 <header class="special container">
 	<span class="icon fa-cloud"></span>

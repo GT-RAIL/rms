@@ -379,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `slots` (
 --
 
 CREATE TABLE IF NOT EXISTS `appointments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `user_id` int(10) unsigned DEFAULT NULL COMMENT 'ID of the user associated with this study appointment.',
   `slot_id`int(10) unsigned NOT NULL COMMENT 'ID of the slot associated study appointment.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
@@ -388,6 +388,50 @@ CREATE TABLE IF NOT EXISTS `appointments` (
   KEY `user_id` (`user_id`),
   KEY `slot_id` (`slot_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study session appointments.' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `appointment_id` bigint unsigned NOT NULL COMMENT 'ID of the appointment associated with this log entry.',
+  `type_id`int(10) unsigned NOT NULL COMMENT 'ID of the log type.',
+  `label`varchar(255) NOT NULL COMMENT 'Log entry label.',
+  `entry` text NOT NULL COMMENT 'Value of the log entry.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  KEY `appointment_id` (`appointment_id`),
+  KEY `type_id` (`type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Study session log data.' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `types`
+--
+
+CREATE TABLE IF NOT EXISTS `types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(16) NOT NULL COMMENT 'Name of the type.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Log data types.' AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `types`
+--
+
+INSERT INTO `types` (`id`, `name`, `created`, `modified`) VALUES
+  (1, 'string', NOW(), NOW()),
+  (2, 'numeric', NOW(), NOW()),
+  (3, 'json', NOW(), NOW()),
+  (4, 'score', NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -575,8 +619,14 @@ ALTER TABLE `slots`
 -- Constraints for table `appointments`
 --
 ALTER TABLE `appointments`
-  ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`);
+ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+ADD CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`);
+--
+-- Constraints for table `logs`
+--
+ALTER TABLE `logs`
+  ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`),
+  ADD CONSTRAINT `logs_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`);
 
 --
 -- Constraints for table `subscriptions`

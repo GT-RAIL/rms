@@ -8,6 +8,12 @@ var RMS = RMS || {
   VERSION : '2.0.0'
 }
 
+// data types for logging
+RMS.LOG_TYPE_STRING = 1;
+RMS.LOG_TYPE_NUMERIC = 2;
+RMS.LOG_TYPE_JSON = 3;
+RMS.LOG_TYPE_SCORE = 4;
+
 /**
  * Attempt to connect to the given rosbridge server. If a connection is made, a green thumbs up is placed in the HTML of
  * the element with the given ID. If a connection is not made, a red thumbs down is placed in the HTML of the element
@@ -338,4 +344,62 @@ RMS.prettyJson = function(json) {
     .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
     .replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(jsonLine, replacer);
+};
+
+/**
+ * Log an entry into the study log.
+ *
+ * @param type The data type ID for the log entry.
+ * @param label The label for the log entry.
+ * @param entry The data for the log entry.
+ */
+RMS.log = function(type, label, entry) {
+  // check if we are logging
+  if (typeof _LOGGING !== 'undefined' && _LOGGING) {
+    $.post('/logs/add/', {
+      'type': type,
+      'label' : label,
+      'entry' : entry
+    });
+  }
+};
+
+/**
+ * Log a string entry into the study log.
+ *
+ * @param label The label for the log entry.
+ * @param entry The data for the log entry.
+ */
+RMS.logString = function(label, entry) {
+  RMS.log(RMS.LOG_TYPE_STRING, label, entry);
+};
+
+/**
+ * Log a numeric entry into the study log.
+ *
+ * @param label The label for the log entry.
+ * @param entry The data for the log entry.
+ */
+RMS.logNumeric = function(label, entry) {
+  RMS.log(RMS.LOG_TYPE_NUMERIC, label, entry);
+};
+
+/**
+ * Log a JSON entry into the study log.
+ *
+ * @param label The label for the log entry.
+ * @param entry The data for the log entry.
+ */
+RMS.logJson = function(label, entry) {
+  RMS.log(RMS.LOG_TYPE_JSON, label, entry);
+};
+
+/**
+ * Log a score entry into the study log.
+ *
+ * @param label The label for the log entry.
+ * @param entry The data for the log entry.
+ */
+RMS.logScore = function(label, entry) {
+  RMS.log(RMS.LOG_TYPE_SCORE, label, entry);
 };

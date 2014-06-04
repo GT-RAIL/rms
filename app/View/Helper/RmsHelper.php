@@ -213,4 +213,23 @@ class RmsHelper extends Helper {
 
 		return $html;
 	}
+
+	/**
+	 * Initialize study information if there is a valid study session. This method has no effect if no study session is
+	 * in progress.
+	 *
+	 * @return string The HTML for study initialization.
+	 */
+	public function initStudy() {
+		$html = '';
+
+		// check for a study session
+		if (isset($this->_View->viewVars['appointment'])) {
+			$html .= '<script>';
+			$html .= '_LOGGING = true;';
+			$html .= '</script>';
+		}
+
+		return $html;
+	}
 }

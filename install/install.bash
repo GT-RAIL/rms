@@ -124,7 +124,7 @@ echo -e $CONFIG | sed "s/^[ ]*//" >> ../app/Config/database.php
 ## Install the cron job
 echo
 echo "Installing cron job(s)..."
-echo "0,30 * * * * cd /var/www/rms && Console/cake Console/cake reminder" | sudo crontab -u www-data -
+echo "0,30 * * * * cd /var/www/rms && Console/cake reminder" | sudo crontab -u www-data -
 
 echo
 echo "Setup complete!"
