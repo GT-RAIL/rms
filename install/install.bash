@@ -49,13 +49,11 @@ echo "Setting up LAMP, PhpMyAdmin, and PEAR..."
 echo -e "\tupdating sources..."
 sudo apt-get update >> /dev/null
 echo -e "\tinstalling LAMP..."
-sudo apt-get install lamp-server^ -yy >> /dev/null
-echo -e "\tinstalling PhpMyAdmin and PEAR..."
-sudo apt-get install phpmyadmin php-pear >> /dev/null
+sudo apt-get install lamp-server^ php-pear php5-mcrypt -yy
 echo -e "\tenabling Apache mod-rewrite..."
 sudo a2enmod rewrite >> /dev/null
 echo -e "\tenabling PHP mcrypt..."
-sudo php5enmod mcrypt >> /dev/null
+sudo php5enmod mcrypt >> /dev/null 2>&1
 sudo service apache2 restart > /dev/null 2>&1
 
 ## Setup CakePHP
@@ -72,8 +70,7 @@ echo "Linking RMS to Apache..."
 echo -e "\tinstalling site configuration..."
 sudo cp rms.conf /etc/apache2/sites-available/
 echo -e "\tdisabling default Apache site(s)..."
-sudo a2dissite 000-default.conf > /dev/null 2>&1
-sudo a2dissite rms.conf > /dev/null 2>&1
+sudo a2dissite 000-default.conf 000-default rms.conf > /dev/null 2>&1
 echo -e "\tlinking RMS folder to Apache..."
 sudo rm -f /var/www/rms
 sudo ln -s $DIR/../app/ /var/www/rms
@@ -84,7 +81,7 @@ sudo /etc/init.d/apache2 restart > /dev/null 2>&1
 ## Create a tmp folder
 echo
 echo "Setting up site tmp folder..."
-rm -rf ../app/tmp
+sudo rm -rf ../app/tmp
 mkdir ../app/tmp
 sudo chown -R www-data ../app/tmp
 
