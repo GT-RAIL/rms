@@ -46,7 +46,7 @@
 
     <!-- PHP docs -->
     <target name="php-doc">
-        <phpdoc2 destdir="${php-doc.dir}" quiet="false">
+        <phpdoc2 destdir="${php-doc.dir}">
             <fileset dir="${src.dir}">
                 <include name="*.php" />
                 <include name="**/*.php" />

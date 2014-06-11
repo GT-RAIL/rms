@@ -1,4 +1,5 @@
 .idea
 app/Config/database.php
 app/tmp
+doc
 node_modules

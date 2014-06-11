@@ -6,7 +6,7 @@
 
 var RMS = RMS || {
   VERSION : '2.0.0'
-}
+};
 
 // data types for logging
 RMS.LOG_TYPE_STRING = 1;
@@ -53,7 +53,7 @@ RMS.verifyMjpegServer = function(host, port, id) {
   var img = new Image();
   img.onerror = function(a) {
     ele.html('<span class="icon red fa-thumbs-o-down"></span>');
-  }
+  };
   ele.html('<span class="icon green fa-thumbs-o-up"></span>');
   img.src = 'http://' + host + ':' + port + '/stream?topic=/';
 };
@@ -179,7 +179,7 @@ RMS.generateRosbridgeDiagnosticPanel = function(protocol, host, port, id) {
       });
     });
     setTimeout(getServices, 100);
-  }
+  };
 
   // get the services
   var getServices = function() {
@@ -223,7 +223,6 @@ RMS.generateMjpegDiagnosticPanel = function(host, port, topics, id) {
   var ele = $('#' + id);
 
   // check the topics
-  var html = '';
   if (topics.length === 0) {
     ele.html('<h2>No Associated Streams Found</h2>');
   } else {
@@ -231,7 +230,9 @@ RMS.generateMjpegDiagnosticPanel = function(host, port, topics, id) {
     // use unique topics
     var uniqueTopics = [];
     $.each(topics, function(i, el){
-      if($.inArray(el, uniqueTopics) === -1) uniqueTopics.push(el);
+      if ($.inArray(el, uniqueTopics) === -1) {
+        uniqueTopics.push(el);
+      }
     });
 
     // create the dropdown
@@ -266,7 +267,7 @@ RMS.generateMjpegDiagnosticPanel = function(host, port, topics, id) {
   var img = new Image();
   img.onerror = function(a) {
     ele.html('<h2>Server Currently Unavailable <span class="icon red fa-thumbs-o-down"></span></h2>');
-  }
+  };
   img.src = 'http://' + host + ':' + port + '/stream?topic=/';
 };
 
@@ -292,11 +293,11 @@ RMS.generateStream = function(host, port, topic, id, options) {
   var img = new Image();
   img.onerror = function(a) {
     ele.html('<h2>Stream Currently Unavailable <span class="icon red fa-thumbs-o-down"></span></h2>');
-  }
+  };
   img.onload = function() {
     ele.html('');
     ele.append(img);
-  }
+  };
 
   // setup the URL
   var url = 'http://' + host + ':' + port + '/stream?topic=' + topic;
@@ -313,7 +314,7 @@ RMS.generateStream = function(host, port, topic, id, options) {
     url += '?invert=true';
   }
   img.src = url;
-}
+};
 
 /**
  * Prettify the JSON object as formatted HTML.
@@ -332,15 +333,15 @@ RMS.prettyJson = function(json) {
       r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
     }
     if (pVal) {
-      r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+      r = r + (pVal[0] === '"' ? str : val) + pVal + '</span>';
     }
     return r + (pEnd || '');
   };
 
   // define what should be on a new line
-  var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+  var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+\-]*)?([,\[{])?$/mg;
   // return the HTML
-  return html = JSON.stringify(json, null, 3)
+  return JSON.stringify(json, null, 3)
     .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
     .replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(jsonLine, replacer);
