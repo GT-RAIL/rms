@@ -45,7 +45,7 @@ done
 
 ## Update and install the LAMP server
 echo
-echo "Setting up LAMP, PhpMyAdmin, and PEAR..."
+echo "Setting up LAMP and PEAR..."
 echo -e "\tupdating sources..."
 sudo apt-get update >> /dev/null
 echo -e "\tinstalling LAMP..."

@@ -38,14 +38,18 @@
 
 	// check for RWT libraries
 	if (isset($rwt)) {
-		if (isset($rwt['roslibjs']) && $rwt['roslibjs']) {
+		if (isset($rwt['roslibjs'])) {
 			echo $this->Html->script(array(
 				'//cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
-				'//cdn.robotwebtools.org/roslibjs/r7/roslib.min.js',
+				'//cdn.robotwebtools.org/roslibjs/' . h($rwt['roslibjs']) . '/roslib.min.js',
 			));
 		}
-		if (isset($rwt['keyboardteleopjs']) && $rwt['keyboardteleopjs']) {
-			echo $this->Html->script(array('//cdn.robotwebtools.org/keyboardteleopjs/current/keyboardteleop.min.js'));
+		if (isset($rwt['keyboardteleopjs'])) {
+			echo $this->Html->script(
+				array(
+					'//cdn.robotwebtools.org/keyboardteleopjs/' . h($rwt['keyboardteleopjs']) . '/keyboardteleop.min.js'
+				)
+			);
 		}
 	}
 	?>

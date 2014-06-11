@@ -516,7 +516,7 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Account');
 
 		// we will need some RWT libraries
-		$this->set('rwt', array('roslibjs' => true));
+		$this->set('rwt', array('roslibjs' => 'current'));
 	}
 
 	/**

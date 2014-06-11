@@ -35,7 +35,7 @@ class EnvironmentsController extends AppController {
 		// grab all the entries
 		$this->set('environments', $this->Environment->find('all', array('recursive' => 2)));
 		// we will need some RWT libraries
-		$this->set('rwt', array('roslibjs' => true));
+		$this->set('rwt', array('roslibjs' => 'current'));
 	}
 
 	/**
@@ -201,6 +201,6 @@ class EnvironmentsController extends AppController {
 		$this->set('environment', $environment);
 		$this->set('title_for_layout', $environment['Environment']['name']);
 		// we will need some RWT libraries
-		$this->set('rwt', array('roslibjs' => true));
+		$this->set('rwt', array('roslibjs' => 'current'));
 	}
 }

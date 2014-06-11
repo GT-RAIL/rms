@@ -22,6 +22,6 @@ class BasicInterfaceController extends InterfaceController {
 		// set the title of the HTML page
 		$this->set('title_for_layout', 'Basic Interface');
 		// we will need some RWT libraries
-		$this->set('rwt', array('roslibjs' => true, 'keyboardteleopjs' => true));
+		$this->set('rwt', array('roslibjs' => 'current', 'keyboardteleopjs' => 'current'));
 	}
 }
