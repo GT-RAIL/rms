@@ -15,18 +15,18 @@ App::uses('Security', 'Utility');
  */
 class Email extends AppModel {
 
-	/**
-	 * The default ID for the single SMTP email settings entry.
-	 *
-	 * @var int
-	 */
-	public static $DEFAULT_ID = 1;
+/**
+ * The default ID for the single SMTP email settings entry.
+ *
+ * @var int
+ */
+	public static $default = 1;
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -117,12 +117,12 @@ class Email extends AppModel {
 		),
 		'tls' => array(
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'TLS settings must be boolean.',
 				'allowEmpty' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'TLS settings must be boolean.',
 				'allowEmpty' => true
 			),
@@ -141,17 +141,17 @@ class Email extends AppModel {
 		)
 	);
 
-	/**
-	 * Check if a new password was provided. If so, hash the encrypt and store it.
-	 *
-	 * @param array $options Unused in this implementation.
-	 * @return bool If the save was successful.
-	 */
+/**
+ * Check if a new password was provided. If so, hash the encrypt and store it.
+ *
+ * @param array $options Unused in this implementation.
+ * @return bool If the save was successful.
+ */
 	public function beforeSave($options = array()) {
 		if (isset($this->data['Email']['password'])) {
 			// grab the only setting
 			$settingModel = ClassRegistry::init('Setting');
-			$setting = $settingModel->findById(Setting::$DEFAULT_ID);
+			$setting = $settingModel->findById(Setting::$default);
 			// encrypt the password
 			$pw = Security::encrypt($this->data['Email']['password'], $setting['Setting']['encrypt']);
 			$this->data['Email']['password'] = $pw;
@@ -159,17 +159,17 @@ class Email extends AppModel {
 		return true;
 	}
 
-	/**
-	 * Decrypt the password in any results.
-	 *
-	 * @param array $results The results to decrypt the password.
-	 * @param bool $primary Unused in this implementation.
-	 * @return array The results withe a decrypted password.
-	 */
+/**
+ * Decrypt the password in any results.
+ *
+ * @param array $results The results to decrypt the password.
+ * @param bool $primary Unused in this implementation.
+ * @return array The results withe a decrypted password.
+ */
 	public function afterFind($results = array(), $primary = false) {
 		// grab the only settings entry
 		$settingModel = ClassRegistry::init('Setting');
-		$setting = $settingModel->findById(Setting::$DEFAULT_ID);
+		$setting = $settingModel->findById(Setting::$default);
 		foreach ($results as $key => $val) {
 			if (isset($val['Email']['password'])) {
 				// decrypt the password
@@ -180,21 +180,21 @@ class Email extends AppModel {
 		return $results;
 	}
 
-	/**
-	 * Create the email settings array for a CakeEmail object.
-	 *
-	 * @return array The email settings array for CakeEmail.
-	 */
+/**
+ * Create the email settings array for a CakeEmail object.
+ *
+ * @return array The email settings array for CakeEmail.
+ */
 	public function getConfig() {
 		// grab the only email settings entry
-		$email = $this->findById(Email::$DEFAULT_ID);
+		$email = $this->findById(Email::$default);
 
 		// check what fields we have
 		$smtp = array();
 		$smtp['transport'] = 'Smtp';
 		$smtp['timeout'] = 30;
 		$smtp['log'] = false;
-		$smtp['client'] = NULL;
+		$smtp['client'] = null;
 		$smtp['emailFormat'] = 'html';
 		$smtp['template'] = 'default';
 		$smtp['layout'] = 'default';

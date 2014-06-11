@@ -14,11 +14,11 @@
  */
 class Iface extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -61,12 +61,12 @@ class Iface extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Anonymous settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Anonymous settings must be boolean.',
 				'required' => true
 			)
@@ -78,12 +78,12 @@ class Iface extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Unrestricted settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Unrestricted settings must be boolean.',
 				'required' => true
 			)
@@ -104,11 +104,11 @@ class Iface extends AppModel {
 		)
 	);
 
-	/**
-	 * Interfaces can have associated environments.
-	 *
-	 * @var array
-	 */
+/**
+ * Interfaces can have associated environments.
+ *
+ * @var array
+ */
 	public $hasAndBelongsToMany = array(
 		'Environment' =>
 			array(
@@ -120,10 +120,10 @@ class Iface extends AppModel {
 			)
 	);
 
-	/**
-	 * Interfaces can have many conditions.
-	 *
-	 * @var array
-	 */
+/**
+ * Interfaces can have many conditions.
+ *
+ * @var array
+ */
 	public $hasMany = array('Condition' => array('className' => 'Condition', 'dependent' => false));
 }

@@ -13,11 +13,11 @@
  */
 class Environment extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -83,39 +83,39 @@ class Environment extends AppModel {
 		)
 	);
 
-	/**
-	 * All environments have a rosbridge and MJPEG server.
-	 *
-	 * @var array
-	 */
+/**
+ * All environments have a rosbridge and MJPEG server.
+ *
+ * @var array
+ */
 	public $belongsTo = array(
 		'Rosbridge' => array('className' => 'Rosbridge'),
 		'Mjpeg' => array('className' => 'Mjpeg')
 	);
 
-	/**
-	 * Environments can have associated streams and topics as well as study conditions.
-	 *
-	 * @var array
-	 */
+/**
+ * Environments can have associated streams and topics as well as study conditions.
+ *
+ * @var array
+ */
 	public $hasMany = array(
 		'Stream' => array('className' => 'Stream', 'dependent' => true),
 		'Teleop' => array('className' => 'Teleop', 'dependent' => true),
 		'Condition' => array('className' => 'Condition', 'dependent' => false)
 	);
 
-	/**
-	 * Environments can have a single associated TF.
-	 *
-	 * @var string
-	 */
+/**
+ * Environments can have a single associated TF.
+ *
+ * @var string
+ */
 	public $hasOne = 'Tf';
 
-	/**
-	 * Environments can have associated interfaces.
-	 *
-	 * @var array
-	 */
+/**
+ * Environments can have associated interfaces.
+ *
+ * @var array
+ */
 	public $hasAndBelongsToMany = array(
 		'Iface' =>
 			array(

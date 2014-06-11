@@ -13,49 +13,55 @@
  */
 class StudiesController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('Study', 'Slot', 'Appointment', 'Condition');
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
 		$this->Auth->allow('otf');
 	}
 
-	/**
-	 * The admin index action lists information about all studies. This allows the admin to add, edit, or delete
-	 * entries.
-	 */
+/**
+ * The admin index action lists information about all studies. This allows the admin to add, edit, or delete
+ * entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab all the entries
 		$this->set('studies', $this->Study->find('all'));
 		$this->set('title_for_layout', 'User Studies');
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -75,12 +81,13 @@ class StudiesController extends AppController {
 		$this->set('title_for_layout', 'Add Study');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		if (!$id) {
 			// no ID provided
@@ -115,12 +122,13 @@ class StudiesController extends AppController {
 		$this->set('title_for_layout', __('Edit Study - %s', $study['Study']['name']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -134,14 +142,15 @@ class StudiesController extends AppController {
 		}
 	}
 
-	/**
-	 * Create a study appointment on-the-fly. This will validate that on-the-fly studies are enabled and the user is
-	 * allowed to participate at this time.
-	 *
-	 * @param int $id The study ID to create an appointment for.
-	 * @throws NotFoundException Thrown if an invalid study is given.
-	 * @throws ForbiddenException Thrown if the user is not allowed to access the study.
-	 */
+/**
+ * Create a study appointment on-the-fly. This will validate that on-the-fly studies are enabled and the user is
+ * allowed to participate at this time.
+ *
+ * @param int $id The study ID to create an appointment for.
+ * @throws NotFoundException Thrown if an invalid study is given.
+ * @throws ForbiddenException Thrown if the user is not allowed to access the study.
+ * @return null
+ */
 	public function otf($id = null) {
 		// check for the study
 		$study = $this->Study->findById($id);
@@ -160,13 +169,13 @@ class StudiesController extends AppController {
 		}
 
 		// check if we are free to complete the study
-		if(!$study['Study']['parallel']) {
+		if (!$study['Study']['parallel']) {
 			$slots = $this->Slot->find('all', array('recursive' => 2));
 			foreach ($slots as $slot) {
-				if ($slot['Condition']['Study']['id'] === $id && strtotime($slot['Slot']['end']) >  strtotime('now')) {
-					if (strtotime($slot['Slot']['start']) <=  strtotime('now')) {
+				if ($slot['Condition']['Study']['id'] === $id && strtotime($slot['Slot']['end']) > strtotime('now')) {
+					if (strtotime($slot['Slot']['start']) <= strtotime('now')) {
 						throw new ForbiddenException('Study Session Already in Progress');
-					} else if (strtotime($slot['Slot']['start']) <= strtotime('now') + $study['Study']['length'] * 60) {
+					} elseif (strtotime($slot['Slot']['start']) <= strtotime('now') + $study['Study']['length'] * 60) {
 						throw new ForbiddenException('Not Enough Free Time Before Next Scheduled Session');
 					}
 				}
@@ -191,9 +200,9 @@ class StudiesController extends AppController {
 		$conditions = $this->Condition->find('all', array('recursive' => 3, 'conditions' => array('Study.id' => $id)));
 		$toPick = array();
 		foreach ($conditions as $condition) {
-			if(count($toPick) === 0 || count($toPick[0]['Slot']) === count($condition['Slot'])) {
+			if (count($toPick) === 0 || count($toPick[0]['Slot']) === count($condition['Slot'])) {
 				$toPick[] = $condition;
-			} else if (count($toPick[0]['Slot']) < count($condition['Slot'])) {
+			} elseif (count($toPick[0]['Slot']) < count($condition['Slot'])) {
 				unset($toPick);
 				$toPick = array();
 				$toPick[] = $condition;
@@ -214,7 +223,7 @@ class StudiesController extends AppController {
 			)
 		);
 
-		if($this->Slot->save($slotData)) {
+		if ($this->Slot->save($slotData)) {
 			$appointmentData = array(
 				'Appointment' => array(
 					'slot_id' => $this->Slot->id,
@@ -223,7 +232,7 @@ class StudiesController extends AppController {
 					'modified' => date('Y-m-d H:i:s')
 				)
 			);
-			if($this->Appointment->save($appointmentData)) {
+			if ($this->Appointment->save($appointmentData)) {
 				// begin!
 				return $this->redirect(
 					array('controller' => 'appointments', 'action' => 'begin', $this->Appointment->id)

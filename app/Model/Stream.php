@@ -13,11 +13,11 @@
  */
 class Stream extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -93,12 +93,12 @@ class Stream extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Inversion setting must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Inversion setting must be boolean.',
 				'required' => true
 			)
@@ -131,10 +131,10 @@ class Stream extends AppModel {
 		)
 	);
 
-	/**
-	 * All streams belong to a single environment.
-	 *
-	 * @var string
-	 */
+/**
+ * All streams belong to a single environment.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Environment';
 }

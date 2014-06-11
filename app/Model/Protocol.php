@@ -14,10 +14,10 @@
  */
 class Protocol extends AppModel {
 
-	/**
-	 * Protocols can have many rosbridge servers.
-	 *
-	 * @var array
-	 */
+/**
+ * Protocols can have many rosbridge servers.
+ *
+ * @var array
+ */
 	public $hasMany = array('Rosbridge' => array('className' => 'Rosbridge', 'dependent' => true));
 }

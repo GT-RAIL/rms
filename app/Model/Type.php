@@ -14,10 +14,10 @@
  */
 class Type extends AppModel {
 
-	/**
-	 * Types can have many log entries.
-	 *
-	 * @var array
-	 */
+/**
+ * Types can have many log entries.
+ *
+ * @var array
+ */
 	public $hasMany = array('Log' => array('className' => 'Log', 'dependent' => true));
 }

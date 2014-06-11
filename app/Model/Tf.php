@@ -13,11 +13,11 @@
  */
 class Tf extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -102,10 +102,10 @@ class Tf extends AppModel {
 		)
 	);
 
-	/**
-	 * All TFs belong to a single environment.
-	 *
-	 * @var string
-	 */
+/**
+ * All TFs belong to a single environment.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Environment';
 }

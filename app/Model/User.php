@@ -16,11 +16,11 @@ App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
  */
 class User extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -159,33 +159,33 @@ class User extends AppModel {
 		)
 	);
 
-	/**
-	 * All users belong to a single role.
-	 *
-	 * @var string
-	 */
+/**
+ * All users belong to a single role.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Role';
 
-	/**
-	 * All users have a single subscription setting.
-	 *
-	 * @var array
-	 */
+/**
+ * All users have a single subscription setting.
+ *
+ * @var array
+ */
 	public $hasOne = array('Subscription' => array('className' => 'Subscription', 'dependent' => true));
 
-	/**
-	 * Users have multiple appointments.
-	 *
-	 * @var string
-	 */
+/**
+ * Users have multiple appointments.
+ *
+ * @var string
+ */
 	public $hasMany = 'Appointment';
 
-	/**
-	 * Check if a new password was provided. If so, hash the password and store it.
-	 *
-	 * @param array $options Unused in this implementation.
-	 * @return bool If the save was successful.
-	 */
+/**
+ * Check if a new password was provided. If so, hash the password and store it.
+ *
+ * @param array $options Unused in this implementation.
+ * @return bool If the save was successful.
+ */
 	public function beforeSave($options = array()) {
 		if (isset($this->data['User']['password'])) {
 			$passwordHasher = new SimplePasswordHasher(array('hashType' => 'sha256'));
@@ -196,13 +196,13 @@ class User extends AppModel {
 		return true;
 	}
 
-	/**
-	 * After saving a new user, create a subscription settings entry.
-	 *
-	 * @param bool $created If the save was a creation or update.
-	 * @param array $options Unused in this implementation.
-	 * @return bool If the save was successful.
-	 */
+/**
+ * After saving a new user, create a subscription settings entry.
+ *
+ * @param bool $created If the save was a creation or update.
+ * @param array $options Unused in this implementation.
+ * @return bool If the save was successful.
+ */
 	public function afterSave($created = false, $options = array()) {
 		if ($created) {
 			$subscriptionModel = ClassRegistry::init('Subscription');

@@ -13,11 +13,11 @@
  */
 class Study extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -96,12 +96,12 @@ class Study extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Anonymous settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Anonymous settings must be boolean.',
 				'required' => true
 			)
@@ -113,12 +113,12 @@ class Study extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'On-the-fly settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'On-the-fly settings must be boolean.',
 				'required' => true
 			)
@@ -130,12 +130,12 @@ class Study extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Parallel settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Parallel settings must be boolean.',
 				'required' => true
 			)
@@ -147,12 +147,12 @@ class Study extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Repeatable settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Repeatable settings must be boolean.',
 				'required' => true
 			)
@@ -173,10 +173,10 @@ class Study extends AppModel {
 		)
 	);
 
-	/**
-	 * Studies can have many conditions.
-	 *
-	 * @var array
-	 */
+/**
+ * Studies can have many conditions.
+ *
+ * @var array
+ */
 	public $hasMany = array('Condition' => array('className' => 'Condition', 'dependent' => true));
 }

@@ -14,11 +14,11 @@
  */
 class Appointment extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -72,11 +72,11 @@ class Appointment extends AppModel {
 		)
 	);
 
-	/**
-	 * All appointments have a slot and user.
-	 *
-	 * @var string
-	 */
+/**
+ * All appointments have a slot and user.
+ *
+ * @var string
+ */
 	public $belongsTo = array(
 		'User' => array('className' => 'User'), 'Slot' => array('className' => 'Slot')
 	);

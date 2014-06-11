@@ -13,11 +13,11 @@
  */
 class Log extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -95,10 +95,10 @@ class Log extends AppModel {
 		)
 	);
 
-	/**
-	 * All logs belong to a single appointment and type.
-	 *
-	 * @var array
-	 */
+/**
+ * All logs belong to a single appointment and type.
+ *
+ * @var array
+ */
 	public $belongsTo = array('Appointment', 'Type');
 }

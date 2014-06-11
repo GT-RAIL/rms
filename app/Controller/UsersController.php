@@ -16,25 +16,25 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class UsersController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Paginator', 'Time', 'Rms');
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('User', 'Role', 'Iface', 'Study', 'Appointment');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array(
 		'Paginator',
 		'Session',
@@ -48,34 +48,41 @@ class UsersController extends AppController {
 		)
 	);
 
-	/**
-	 * Define pagination criteria.
-	 *
-	 * @var array
-	 */
+/**
+ * Define pagination criteria.
+ *
+ * @var array
+ * @return null
+ */
 	public $paginate = array('limit' => 30, 'order' => array('User.role_id' => 'ASC', 'User.created' => 'ASC'));
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
 		$this->Auth->allow('signup', 'login', 'username', 'reset');
 	}
 
-	/**
-	 * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
-	 */
+/**
+ * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
 		$this->set('users', $this->Paginator->paginate('User'));
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// load the roles list
 		$roles = $this->User->Role->find('list');
@@ -95,7 +102,7 @@ class UsersController extends AppController {
 			// attempt to save the entry
 			if ($this->User->save($this->request->data)) {
 				// send the welcome email
-				$this->sendCreationEmail($this->User->id, $username, $password);
+				$this->__sendCreationEmail($this->User->id, $username, $password);
 				$this->Session->setFlash('The user has been saved.');
 				return $this->redirect(array('action' => 'index'));
 			}
@@ -105,12 +112,13 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Add User');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// load the roles list
 		$roles = $this->User->Role->find('list');
@@ -150,12 +158,13 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', __('Edit User - %s', $user['User']['username']));
 	}
 
-	/**
-	 * The admin message action. This allows the admin to send an email message to a given user.
-	 *
-	 * @param int $id The ID of the entry to message.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin message action. This allows the admin to send an email message to a given user.
+ *
+ * @param int $id The ID of the entry to message.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_message($id = null) {
 		if (!$id) {
 			// no ID provided
@@ -179,13 +188,14 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', __('Message User - %s', $user['User']['username']));
 	}
 
-	/**
-	 * Revoke admin privileges from the given user. An admin may not revoke themselves.
-	 *
-	 * @param int $id The entry ID to revoke admin privileges from.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Revoke admin privileges from the given user. An admin may not revoke themselves.
+ *
+ * @param int $id The entry ID to revoke admin privileges from.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_revoke($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -204,10 +214,10 @@ class UsersController extends AppController {
 		}
 
 		// make sure we can revoke
-		if($this->Auth->user('id') !== $user['User']['id']) {
+		if ($this->Auth->user('id') !== $user['User']['id']) {
 			// grab the basic ID
 			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'basic')));
-			if($user['User']['role_id'] !==  $role['Role']['id']) {
+			if ($user['User']['role_id'] !== $role['Role']['id']) {
 				// update the role
 				$this->User->read(null, $user['User']['id']);
 				$this->User->saveField('role_id', $role['Role']['id']);
@@ -219,13 +229,14 @@ class UsersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * Grant admin privileges to the given user.
-	 *
-	 * @param int $id The entry ID to grant admin privileges to.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Grant admin privileges to the given user.
+ *
+ * @param int $id The entry ID to grant admin privileges to.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_grant($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -245,26 +256,27 @@ class UsersController extends AppController {
 
 		// make sure we can grant
 		$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
-		if($user['User']['role_id'] !==  $role['Role']['id']) {
+		if ($user['User']['role_id'] !== $role['Role']['id']) {
 			// update the role
 			$this->User->read(null, $user['User']['id']);
 			$this->User->saveField('role_id', $role['Role']['id']);
 			$this->User->saveField('modified', date('Y-m-d H:i:s'));
 
 			// notify the user
-			$this->sendAdminGrantEmail($id);
+			$this->__sendAdminGrantEmail($id);
 		}
 
 		// return to the index
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry. An admin may not delete themselves.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry. An admin may not delete themselves.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -275,24 +287,28 @@ class UsersController extends AppController {
 		if ($this->Auth->user('id') === $id) {
 			$this->Session->setFlash('You many not delete yourself.');
 			return $this->redirect(array('action' => 'index'));
-		} else if ($this->User->delete($id)) {
+		} elseif ($this->User->delete($id)) {
 			$this->Session->setFlash('The user has been deleted.');
 			return $this->redirect(array('action' => 'index'));
 		}
 	}
 
-	/**
-	 * A redirect to the normal login. Admins do not need a separate login.
-	 */
+/**
+ * A redirect to the normal login. Admins do not need a separate login.
+ *
+ * @return null
+ */
 	public function admin_login() {
 		// no different login system for admins
 		unset($this->request->params['admin']);
 		$this->redirect(array('action' => 'login'));
 	}
 
-	/**
-	 * Log the user in if they are not already logged in. This will check the credentials provided in a POST request.
-	 */
+/**
+ * Log the user in if they are not already logged in. This will check the credentials provided in a POST request.
+ *
+ * @return null
+ */
 	public function login() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -334,18 +350,22 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Sign In');
 	}
 
-	/**
-	 * Log the logged in user out.
-	 */
+/**
+ * Log the logged in user out.
+ *
+ * @return null
+ */
 	public function logout() {
 		// simply log the user out and remove the cookie
 		$this->Cookie->delete('remember');
 		return $this->redirect($this->Auth->logout());
 	}
 
-	/**
-	 * The main sign up page. This will allow any user to register to the site with a basic user account.
-	 */
+/**
+ * The main sign up page. This will allow any user to register to the site with a basic user account.
+ *
+ * @return null
+ */
 	public function signup() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -366,7 +386,7 @@ class UsersController extends AppController {
 			if ($this->User->save($this->request->data)) {
 				$id = $this->User->id;
 				// try to send the welcome email
-				$this->sendWelcomeEmail($id);
+				$this->__sendWelcomeEmail($id);
 
 				// log the user in
 				$this->request->data['User'] = array_merge($this->request->data['User'], array('id' => $id));
@@ -379,9 +399,11 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Sign Up');
 	}
 
-	/**
-	 * Send a username reminder to a given user.
-	 */
+/**
+ * Send a username reminder to a given user.
+ *
+ * @return null
+ */
 	public function username() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -397,7 +419,7 @@ class UsersController extends AppController {
 			);
 			if ($user) {
 				// send the email
-				$this->sendUsernameReminderEmail($user['User']['id'], $user['User']['username']);
+				$this->__sendUsernameReminderEmail($user['User']['id'], $user['User']['username']);
 				$this->Session->setFlash(__('Username reminder sent to %s.', h($this->request->data['User']['email'])));
 				return $this->redirect(array('action' => 'login'));
 			}
@@ -407,9 +429,11 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Username Reminder');
 	}
 
-	/**
-	 * Send a password reset link to a given user.
-	 */
+/**
+ * Send a password reset link to a given user.
+ *
+ * @return null
+ */
 	public function reset() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -426,7 +450,7 @@ class UsersController extends AppController {
 			if ($user) {
 				$username = $user['User']['username'];
 				// create a new password
-				$pw = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0 ,10);
+				$pw = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10);
 
 				// update the user
 				$this->User->read(null, $user['User']['id']);
@@ -436,7 +460,7 @@ class UsersController extends AppController {
 				// attempt to save the entry
 				if ($this->User->save($this->User->data)) {
 					// send the email
-					$this->sendPasswordResetEmail($user['User']['id'], $username, $pw);
+					$this->__sendPasswordResetEmail($user['User']['id'], $username, $pw);
 					$this->Session->setFlash(__('New password sent to %s.', h($user['User']['email'])));
 					return $this->redirect(array('action' => 'login'));
 				}
@@ -448,18 +472,21 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Password Reset');
 	}
 
-	/**
-	 * The default index simply redirects to the view action.
-	 */
+/**
+ * The default index simply redirects to the view action.
+ *
+ * @return null
+ */
 	public function index() {
 		return $this->redirect(array('action' => 'view'));
 	}
 
-	/**
-	 * View the logged in user. A user may only view their own page.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 */
+/**
+ * View the logged in user. A user may only view their own page.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function view() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -519,11 +546,12 @@ class UsersController extends AppController {
 		$this->set('rwt', array('roslibjs' => 'current'));
 	}
 
-	/**
-	 * The default edit action. This allows the user to edit their entry.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 */
+/**
+ * The default edit action. This allows the user to edit their entry.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function edit() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -559,11 +587,12 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', __('Edit User - %s', $user['User']['username']));
 	}
 
-	/**
-	 * The password change action. This allows the user to edit their password entry.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 */
+/**
+ * The password change action. This allows the user to edit their password entry.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function password() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -599,12 +628,13 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', __('Change Password - %s', $user['User']['username']));
 	}
 
-	/**
-	 * The user delete action. This allows the user to delete their own account.
-	 *
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 */
+/**
+ * The user delete action. This allows the user to delete their own account.
+ *
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function delete() {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -628,15 +658,16 @@ class UsersController extends AppController {
 		}
 	}
 
-	/**
-	 * Send a welcome email if email is enabled in the site settings.
-	 *
-	 * @param int $id The user ID to send the welcome email to.
-	 */
-	private function sendWelcomeEmail($id = null) {
+/**
+ * Send a welcome email if email is enabled in the site settings.
+ *
+ * @param int $id The user ID to send the welcome email to.
+ * @return null
+ */
+	private function __sendWelcomeEmail($id = null) {
 		// create the subject
 		$this->loadModel('Setting');
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$subject = __('Welcome to %s', h($setting['Setting']['title']));
 
 		// generate the message
@@ -647,17 +678,18 @@ class UsersController extends AppController {
 		$this->sendEmail($id, $subject, $message);
 	}
 
-	/**
-	 * Send a welcome email if email is enabled in the site settings for an admin created user.
-	 *
-	 * @param int $id The user ID to send the welcome email to.
-	 * @param string $username The username send to the new user.
-	 * @param string $password The un-hashed password to send to the new user.
-	 */
-	private function sendCreationEmail($id = null, $username = '', $password = '') {
+/**
+ * Send a welcome email if email is enabled in the site settings for an admin created user.
+ *
+ * @param int $id The user ID to send the welcome email to.
+ * @param string $username The username send to the new user.
+ * @param string $password The un-hashed password to send to the new user.
+ * @return null
+ */
+	private function __sendCreationEmail($id = null, $username = '', $password = '') {
 		// create the subject
 		$this->loadModel('Setting');
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$subject = __('Account Created for %s', h($setting['Setting']['title']));
 
 		// generate the message
@@ -674,15 +706,16 @@ class UsersController extends AppController {
 		$this->sendEmail($id, $subject, $message);
 	}
 
-	/**
-	 * Send an email notifying a user they are now an admin.
-	 *
-	 * @param int $id The user ID to send the access email to.
-	 */
-	private function sendAdminGrantEmail($id = null) {
+/**
+ * Send an email notifying a user they are now an admin.
+ *
+ * @param int $id The user ID to send the access email to.
+ * @return null
+ */
+	private function __sendAdminGrantEmail($id = null) {
 		// create the subject
 		$this->loadModel('Setting');
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$subject = __('Admin Status for %s', h($setting['Setting']['title']));
 
 		// generate the message
@@ -694,16 +727,17 @@ class UsersController extends AppController {
 		$this->sendEmail($id, $subject, $message);
 	}
 
-	/**
-	 * Send an email with a username reminder.
-	 *
-	 * @param int $id The user ID to send the reminder email to.
-	 * @param string $username The username send to the user.
-	 */
-	private function sendUsernameReminderEmail($id = null, $username = '') {
+/**
+ * Send an email with a username reminder.
+ *
+ * @param int $id The user ID to send the reminder email to.
+ * @param string $username The username send to the user.
+ * @return null
+ */
+	private function __sendUsernameReminderEmail($id = null, $username = '') {
 		// create the subject
 		$this->loadModel('Setting');
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$subject = __('Username for %s', h($setting['Setting']['title']));
 
 		// generate the message
@@ -714,17 +748,18 @@ class UsersController extends AppController {
 		$this->sendEmail($id, $subject, $message);
 	}
 
-	/**
-	 * Send an email with a new password.
-	 *
-	 * @param int $id The user ID to send the reminder email to.
-	 * @param string $username The username send to the user.
-	 * @param string $password The un-hashed password to send to the user.
-	 */
-	private function sendPasswordResetEmail($id = null, $username = '', $password = '') {
+/**
+ * Send an email with a new password.
+ *
+ * @param int $id The user ID to send the reminder email to.
+ * @param string $username The username send to the user.
+ * @param string $password The un-hashed password to send to the user.
+ * @return null
+ */
+	private function __sendPasswordResetEmail($id = null, $username = '', $password = '') {
 		// create the subject
 		$this->loadModel('Setting');
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$subject = __('New Password for %s', h($setting['Setting']['title']));
 
 		// generate the message

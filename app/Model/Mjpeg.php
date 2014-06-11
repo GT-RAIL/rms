@@ -13,11 +13,11 @@
  */
 class Mjpeg extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -98,10 +98,10 @@ class Mjpeg extends AppModel {
 		)
 	);
 
-	/**
-	 * MJPEG servers may have many environments.
-	 *
-	 * @var array
-	 */
+/**
+ * MJPEG servers may have many environments.
+ *
+ * @var array
+ */
 	public $hasMany = array('Environment' => array('className' => 'Environment'));
 }

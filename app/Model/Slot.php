@@ -14,11 +14,11 @@
  */
 class Slot extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -79,17 +79,17 @@ class Slot extends AppModel {
 		)
 	);
 
-	/**
-	 * All slots belong to a single condition.
-	 *
-	 * @var string
-	 */
+/**
+ * All slots belong to a single condition.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Condition';
 
-	/**
-	 * Slots can have one appointments.
-	 *
-	 * @var array
-	 */
+/**
+ * Slots can have one appointments.
+ *
+ * @var array
+ */
 	public $hasOne = array('Appointment' => array('className' => 'Appointment', 'dependent' => true));
 }

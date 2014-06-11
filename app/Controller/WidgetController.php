@@ -14,31 +14,33 @@
  */
 class WidgetController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html');
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('Stream', 'Teleop', 'Tf');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin index action lists information about ROS topics and widgets. This allows the admin to add, edit, or
-	 * delete entries.
-	 */
+/**
+ * The admin index action lists information about ROS topics and widgets. This allows the admin to add, edit, or
+ * delete entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab all the entries we need.
 		$this->set('streams', $this->Stream->find('all', array('recursive' => 2)));

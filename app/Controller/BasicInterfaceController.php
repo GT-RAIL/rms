@@ -15,9 +15,11 @@ App::uses('InterfaceController', 'Controller');
  */
 class BasicInterfaceController extends InterfaceController {
 
-	/**
-	 * The basic view action. All necessary variables are set in the main interface controller.
-	 */
+/**
+ * The basic view action. All necessary variables are set in the main interface controller.
+ *
+ * @return null
+ */
 	public function view() {
 		// set the title of the HTML page
 		$this->set('title_for_layout', 'Basic Interface');

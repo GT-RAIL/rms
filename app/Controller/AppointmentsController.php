@@ -13,34 +13,37 @@
  */
 class AppointmentsController extends AppController {
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('Appointment', 'Slot');
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
 		$this->Auth->allow('begin');
 	}
 
-	/**
-	 * The book action allows a user to book a user study appointment.
-	 *
-	 * @throws MethodNotAllowedException Thrown if a post request is made.
-	 */
+/**
+ * The book action allows a user to book a user study appointment.
+ *
+ * @throws MethodNotAllowedException Thrown if a post request is made.
+ * @return null
+ */
 	public function book() {
 		// only work for POST requests
 		if ($this->request->is(array('appointment', 'post'))) {
@@ -57,7 +60,7 @@ class AppointmentsController extends AppController {
 			foreach ($appointments as $appointment) {
 				if ($appointment['Slot']['Condition']['Study']['id'] === $slot['Condition']['Study']['id']) {
 					// pick the latest
-					if(!$next || strtotime($slot['Slot']['start']) > strtotime($next['Slot']['start'])) {
+					if (!$next || strtotime($slot['Slot']['start']) > strtotime($next['Slot']['start'])) {
 						$next = $appointment;
 					}
 				}
@@ -66,7 +69,7 @@ class AppointmentsController extends AppController {
 			// verify that we can book this appointment
 			if ($next && strtotime($next['Slot']['end']) > strtotime('now')) {
 				$this->Session->setFlash('Error: you already booked this study.');
-			} else if ($next && !$slot['Condition']['Study']['repeatable']) {
+			} elseif ($next && !$slot['Condition']['Study']['repeatable']) {
 				$this->Session->setFlash('Error: you already completed this study.');
 			} else {
 				// create a new entry
@@ -90,12 +93,13 @@ class AppointmentsController extends AppController {
 		}
 	}
 
-	/**
-	 * The delete action. This allows the user to delete an existing appointment that they own.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The delete action. This allows the user to delete an existing appointment that they own.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -104,21 +108,22 @@ class AppointmentsController extends AppController {
 
 		// verify the entry
 		$appointment = $this->Appointment->findById($id);
-		if (!$appointment || $appointment['Appointment']['user_id'] !==  $this->Auth->user('id')) {
+		if (!$appointment || $appointment['Appointment']['user_id'] !== $this->Auth->user('id')) {
 			$this->Session->setFlash('Error: Unable to delete your appointment.');
-		} else if($this->Appointment->delete($id)) {
+		} elseif ($this->Appointment->delete($id)) {
 			$this->Session->setFlash('The appointment has been deleted.');
 		}
 		return $this->redirect(array('controller' => 'users', 'action' => 'view'));
 	}
 
-	/**
-	 * Begin the scheduled appointment. This will verify the appointment and redirect the user to the interface.
-	 *
-	 * @param int $id The ID of the appointment.
-	 * @throws NotFoundException Thrown if the appointment is not found.
-	 * @throws ForbiddenException Thrown if the user does not have access to the appointment at this time.
-	 */
+/**
+ * Begin the scheduled appointment. This will verify the appointment and redirect the user to the interface.
+ *
+ * @param int $id The ID of the appointment.
+ * @throws NotFoundException Thrown if the appointment is not found.
+ * @throws ForbiddenException Thrown if the user does not have access to the appointment at this time.
+ * @return null
+ */
 	public function begin($id = null) {
 		// find the appointment
 		$this->Appointment->recursive = 2;

@@ -14,42 +14,48 @@
  */
 class IfacesController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Rms');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// allow anyone to view an interface (interface authorization will check this better)
 		parent::beforeFilter();
 		$this->Auth->allow('view');
 	}
 
-	/**
-	 * The admin index action lists information about all interfaces. This allows the admin to add, edit, or delete
-	 * entries.
-	 */
+/**
+ * The admin index action lists information about all interfaces. This allows the admin to add, edit, or delete
+ * entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab all the entries
 		$this->set('ifaces', $this->Iface->find('all'));
 		$this->set('title_for_layout', 'Interfaces');
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// grab the list of environments
 		$this->set('environments', $this->Iface->Environment->find('list'));
@@ -72,12 +78,13 @@ class IfacesController extends AppController {
 		$this->set('title_for_layout', 'Add Interface');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// grab the list of environments
 		$this->set('environments', $this->Iface->Environment->find('list'));
@@ -115,12 +122,13 @@ class IfacesController extends AppController {
 		$this->set('title_for_layout', __('Edit Interface - %s', $iface['Iface']['name']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -134,13 +142,14 @@ class IfacesController extends AppController {
 		}
 	}
 
-	/**
-	 * Request to view the given interface with the given environment. This will make the correct redirect.
-	 *
-	 * @param int $id The ID of the interface to view.
-	 * @param int $environmentID The environment ID to use.
-	 * @throws NotFoundException Thrown if an entry with the given IDs is not found.
-	 */
+/**
+ * Request to view the given interface with the given environment. This will make the correct redirect.
+ *
+ * @param int $id The ID of the interface to view.
+ * @param int $environmentID The environment ID to use.
+ * @throws NotFoundException Thrown if an entry with the given IDs is not found.
+ * @return null
+ */
 	public function view($id = null, $environmentID = null) {
 		if (!$id) {
 			// no ID provided

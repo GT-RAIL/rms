@@ -13,16 +13,16 @@
  */
 class EmailConfig {
 
-	/**
-	 * The dynamic config variable (defined on creation).
-	 *
-	 * @var array
-	 */
+/**
+ * The dynamic config variable (defined on creation).
+ *
+ * @var array
+ */
 	public $dynamic;
 
-	/**
-	 * Create a new email config by loading settings from the RMS database.
-	 */
+/**
+ * Create a new email config by loading settings from the RMS database.
+ */
 	public function __construct() {
 		$this->dynamic = ClassRegistry::init('Email')->getConfig();
 	}

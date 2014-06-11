@@ -13,24 +13,26 @@
  */
 class RosbridgesController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Rms');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin index action lists information about all environments. This allows the admin to add, edit, or delete
-	 * entries.
-	 */
+/**
+ * The admin index action lists information about all environments. This allows the admin to add, edit, or delete
+ * entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab all the entries
 		$this->set('rosbridges', $this->Rosbridge->find('all'));
@@ -39,9 +41,11 @@ class RosbridgesController extends AppController {
 		$this->set('title_for_layout', 'rosbridge Servers');
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// load the protocols list
 		$protocols = $this->Rosbridge->Protocol->find('list');
@@ -53,7 +57,7 @@ class RosbridgesController extends AppController {
 			$this->Rosbridge->create();
 			// check for empty key
 			if (strlen($this->request->data['Rosbridge']['rosauth']) === 0) {
-				$this->request->data['Rosbridge']['rosauth'] = NULL;
+				$this->request->data['Rosbridge']['rosauth'] = null;
 			}
 			// set the current timestamp for creation and modification
 			$this->Rosbridge->data['Rosbridge']['created'] = date('Y-m-d H:i:s');
@@ -69,12 +73,13 @@ class RosbridgesController extends AppController {
 		$this->set('title_for_layout', 'Add rosbridge Server');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// load the protocols list
 		$protocols = $this->Rosbridge->Protocol->find('list');
@@ -97,7 +102,7 @@ class RosbridgesController extends AppController {
 			$this->Rosbridge->id = $id;
 			// check for empty key
 			if (strlen($this->request->data['Rosbridge']['rosauth']) === 0) {
-				$this->request->data['Rosbridge']['rosauth'] = NULL;
+				$this->request->data['Rosbridge']['rosauth'] = null;
 			}
 			// set the current timestamp for modification
 			$this->Rosbridge->data['Rosbridge']['modified'] = date('Y-m-d H:i:s');
@@ -117,12 +122,13 @@ class RosbridgesController extends AppController {
 		$this->set('title_for_layout', __('Edit rosbridge Server - %s', $rosbridge['Rosbridge']['name']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -136,12 +142,13 @@ class RosbridgesController extends AppController {
 		}
 	}
 
-	/**
-	 * View the given entry.
-	 *
-	 * @param int $id The ID of the entry to view.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * View the given entry.
+ *
+ * @param int $id The ID of the entry to view.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_view($id = null) {
 		if (!$id) {
 			// no ID provided

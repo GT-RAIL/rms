@@ -13,11 +13,11 @@
  */
 class Teleop extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -83,10 +83,10 @@ class Teleop extends AppModel {
 		)
 	);
 
-	/**
-	 * All teleops belong to a single environment.
-	 *
-	 * @var string
-	 */
+/**
+ * All teleops belong to a single environment.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Environment';
 }

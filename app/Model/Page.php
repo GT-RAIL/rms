@@ -14,11 +14,11 @@
  */
 class Page extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -104,10 +104,10 @@ class Page extends AppModel {
 		)
 	);
 
-	/**
-	 * Pages can have many articles.
-	 *
-	 * @var array
-	 */
+/**
+ * Pages can have many articles.
+ *
+ * @var array
+ */
 	public $hasMany = array('Article' => array('className' => 'Article', 'dependent' => true));
 }

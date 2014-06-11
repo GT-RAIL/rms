@@ -14,43 +14,47 @@
  */
 class SlotsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Paginator', 'Time');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Paginator', 'Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Define pagination criteria.
-	 *
-	 * @var array
-	 */
+/**
+ * Define pagination criteria.
+ *
+ * @var array
+ */
 	public $paginate = array('limit' => 25, 'order' => array('Slot.start' => 'DESC'), 'recursive' => 2);
 
-	/**
-	 * The admin index action lists information about all appointments. This allows the admin to add, edit, or delete
-	 * entries.
-	 */
+/**
+ * The admin index action lists information about all appointments. This allows the admin to add, edit, or delete
+ * entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
 		$this->set('slots', $this->Paginator->paginate('Slot'));
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// load the conditions
-		$this->setConditionsList();
+		$this->__setConditionsList();
 
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -60,8 +64,8 @@ class SlotsController extends AppController {
 			$this->Slot->data['Slot']['created'] = date('Y-m-d H:i:s');
 			$this->Slot->data['Slot']['modified'] = date('Y-m-d H:i:s');
 			// determine the end time based on session length
-			$this->setEndTime();
-			if (!$this->verifyTimeSlot()) {
+			$this->__setEndTime();
+			if (!$this->__verifyTimeSlot()) {
 				$this->Session->setFlash(
 					'Slot time overlaps existing slot and parallel slots are disabled for this study.'
 				);
@@ -78,15 +82,16 @@ class SlotsController extends AppController {
 		$this->set('title_for_layout', 'Add Study Session Slot');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// load the conditions
-		$this->setConditionsList();
+		$this->__setConditionsList();
 
 		if (!$id) {
 			// no ID provided
@@ -106,8 +111,8 @@ class SlotsController extends AppController {
 			// set the current timestamp for modification
 			$this->Slot->data['Slot']['modified'] = date('Y-m-d H:i:s');
 			// determine the end time based on session length
-			$this->setEndTime();
-			if (!$this->verifyTimeSlot()) {
+			$this->__setEndTime();
+			if (!$this->__verifyTimeSlot()) {
 				$this->Session->setFlash(
 					'Slot time overlaps existing slot and parallel slots are disabled for this study.'
 				);
@@ -129,12 +134,13 @@ class SlotsController extends AppController {
 		$this->set('title_for_layout', __('Edit Condition - %s', $slot['Condition']['name']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -148,10 +154,12 @@ class SlotsController extends AppController {
 		}
 	}
 
-	/**
-	 * Set the conditions list by adding the study name to the entry.
-	 */
-	private function setConditionsList() {
+/**
+ * Set the conditions list by adding the study name to the entry.
+ *
+ * @return null
+ */
+	private function __setConditionsList() {
 		$conditions = $this->Slot->Condition->find('all');
 		$conditionsList = array();
 		foreach ($conditions as $condition) {
@@ -162,10 +170,12 @@ class SlotsController extends AppController {
 		$this->set('conditions', $conditionsList);
 	}
 
-	/**
-	 * Set the end time based on the start time in a request.
-	 */
-	private function setEndTime() {
+/**
+ * Set the end time based on the start time in a request.
+ *
+ * @return null
+ */
+	private function __setEndTime() {
 		$condition = $this->Slot->Condition->findById($this->request->data['Slot']['condition_id']);
 		// length in minutes
 		$length = $condition['Study']['length'];
@@ -184,12 +194,12 @@ class SlotsController extends AppController {
 		$this->request->data['Slot']['start'] = date('Y-m-d H:i:s', $startDate);
 	}
 
-	/**
-	 * Verify that time slots do not overlap unless parallel sessions are allowed.
-	 *
-	 * @return bool If the time slot is valid.
-	 */
-	private function verifyTimeSlot() {
+/**
+ * Verify that time slots do not overlap unless parallel sessions are allowed.
+ *
+ * @return bool If the time slot is valid.
+ */
+	private function __verifyTimeSlot() {
 		$condition = $this->Slot->Condition->findById($this->request->data['Slot']['condition_id']);
 		$start = $this->request->data['Slot']['start'];
 		$end = $this->Slot->data['Slot']['end'];

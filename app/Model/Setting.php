@@ -13,18 +13,18 @@
  */
 class Setting extends AppModel {
 
-	/**
-	 * The default ID for the single settings entry.
-	 *
-	 * @var int
-	 */
-	public static $DEFAULT_ID = 1;
+/**
+ * The default ID for the single settings entry.
+ *
+ * @var int
+ */
+	public static $default = 1;
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -96,12 +96,12 @@ class Setting extends AppModel {
 				'required' => true
 			),
 			'geq' => array(
-				'rule' =>  array('comparison', '>=', 0),
+				'rule' => array('comparison', '>=', 0),
 				'message' => 'Email settings must be boolean.',
 				'required' => true
 			),
 			'leq' => array(
-				'rule' =>  array('comparison', '<=', 1),
+				'rule' => array('comparison', '<=', 1),
 				'message' => 'Email settings must be boolean.',
 				'required' => true
 			),

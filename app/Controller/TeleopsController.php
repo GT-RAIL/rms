@@ -13,30 +13,34 @@
  */
 class TeleopsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin index action redirects to the main widget index.
-	 */
+/**
+ * The admin index action redirects to the main widget index.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		return $this->redirect(array('controller' => 'widget', 'action' => 'index', '#' => 'teleops'));
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// load the environments list
 		$environments = $this->Teleop->Environment->find('list');
@@ -48,7 +52,7 @@ class TeleopsController extends AppController {
 			$this->Teleop->create();
 			// check for empty values
 			if (strlen($this->request->data['Teleop']['throttle']) === 0) {
-				$this->request->data['Teleop']['throttle'] = NULL;
+				$this->request->data['Teleop']['throttle'] = null;
 			}
 			// set the current timestamp for creation and modification
 			$this->Teleop->data['Teleop']['created'] = date('Y-m-d H:i:s');
@@ -64,12 +68,13 @@ class TeleopsController extends AppController {
 		$this->set('title_for_layout', 'Add Teleop');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// load the environments list
 		$environments = $this->Teleop->Environment->find('list');
@@ -92,7 +97,7 @@ class TeleopsController extends AppController {
 			$this->Teleop->id = $id;
 			// check for empty values
 			if (strlen($this->request->data['Teleop']['throttle']) === 0) {
-				$this->request->data['Teleop']['throttle'] = NULL;
+				$this->request->data['Teleop']['throttle'] = null;
 			}
 			// set the current timestamp for modification
 			$this->Teleop->data['Teleop']['modified'] = date('Y-m-d H:i:s');
@@ -112,12 +117,13 @@ class TeleopsController extends AppController {
 		$this->set('title_for_layout', __('Edit Teleop - %s', $teleop['Teleop']['topic']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {

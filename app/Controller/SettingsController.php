@@ -16,50 +16,56 @@ App::uses('File', 'Utility');
  */
 class SettingsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// only allow unauthenticated viewing of a single page
 		parent::beforeFilter();
 		$this->Auth->allow('logo');
 	}
 
-	/**
-	 * The admin index action lists all settings. This allows the admin to edit the settings.
-	 */
+/**
+ * The admin index action lists all settings. This allows the admin to edit the settings.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab the only entry
-		$this->set('setting', $this->Setting->findById(Setting::$DEFAULT_ID));
+		$this->set('setting', $this->Setting->findById(Setting::$default));
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit the site settings.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit the site settings.
+ *
+ * @return null
+ */
 	public function admin_edit() {
 		// only work for PUT requests
 		if ($this->request->is(array('setting', 'put'))) {
 			// set the ID
-			$this->Setting->id = Setting::$DEFAULT_ID;
+			$this->Setting->id = Setting::$default;
 			// set the current timestamp for modification
 			$this->Setting->data['Setting']['modified'] = date('Y-m-d H:i:s');
 			// check the analytics ID
 			if (strlen($this->request->data['Setting']['analytics']) === 0) {
-				$this->request->data['Setting']['analytics'] = NULL;
+				$this->request->data['Setting']['analytics'] = null;
 			}
 			// attempt to save the entry
 			if ($this->Setting->save($this->request->data)) {
@@ -72,16 +78,18 @@ class SettingsController extends AppController {
 		// store the entry data if it was not a PUT request
 		if (!$this->request->data) {
 			// grab the only entry
-			$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+			$setting = $this->Setting->findById(Setting::$default);
 			$this->request->data = $setting;
 		}
 
 		$this->set('title_for_layout', 'Edit Site Settings');
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit the site settings.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit the site settings.
+ *
+ * @return null
+ */
 	public function admin_uploadLogo() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -104,7 +112,7 @@ class SettingsController extends AppController {
 					}
 
 					// update the existing entry
-					$this->Setting->read(null, Setting::$DEFAULT_ID);
+					$this->Setting->read(null, Setting::$default);
 					// set the current timestamp for modification
 					$this->Setting->set('modified', date('Y-m-d H:i:s'));
 					// store the raw image data
@@ -131,12 +139,14 @@ class SettingsController extends AppController {
 		$this->set('title_for_layout', 'Upload Logo');
 	}
 
-	/**
-	 * Display the site logo. This will display a PNG image, not an HTML page.
-	 */
+/**
+ * Display the site logo. This will display a PNG image, not an HTML page.
+ *
+ * @return null
+ */
 	public function logo() {
 		// grab the only entry
-		$setting = $this->set('setting', $this->Setting->findById(Setting::$DEFAULT_ID));
+		$setting = $this->set('setting', $this->Setting->findById(Setting::$default));
 
 		// display a PNG image
 		$this->layout = false;

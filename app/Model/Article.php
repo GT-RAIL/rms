@@ -13,11 +13,11 @@
  */
 class Article extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -95,10 +95,10 @@ class Article extends AppModel {
 		)
 	);
 
-	/**
-	 * All articles belong to a single page.
-	 *
-	 * @var string
-	 */
+/**
+ * All articles belong to a single page.
+ *
+ * @var string
+ */
 	public $belongsTo = 'Page';
 }

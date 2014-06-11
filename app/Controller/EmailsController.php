@@ -14,73 +14,77 @@
  */
 class EmailsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('Email', 'Setting');
 
-	/**
-	 * The admin index action lists all SMTP settings. This allows the admin to edit the SMTP settings.
-	 */
+/**
+ * The admin index action lists all SMTP settings. This allows the admin to edit the SMTP settings.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab the only settings entry
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$this->set('setting', $setting);
 
 		// grab the only email settings entry
-		$email = $this->Email->findById(Email::$DEFAULT_ID);
+		$email = $this->Email->findById(Email::$default);
 		$this->set('email', $email);
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit the SMTP settings.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit the SMTP settings.
+ *
+ * @return null
+ */
 	public function admin_edit() {
 		// only work for PUT requests
 		if ($this->request->is(array('email', 'put'))) {
 			// set the ID
 			$this->loadModel('Email');
-			$this->Email->id = Email::$DEFAULT_ID;
+			$this->Email->id = Email::$default;
 			// set the current timestamp for modification
 			$this->Email->data['Email']['modified'] = date('Y-m-d H:i:s');
 
 			// check for empty fields
 			if (strlen($this->request->data['Email']['from']) === 0) {
-				$this->request->data['Email']['from'] = NULL;
+				$this->request->data['Email']['from'] = null;
 			}
 			if (strlen($this->request->data['Email']['alias']) === 0) {
-				$this->request->data['Email']['alias'] = NULL;
+				$this->request->data['Email']['alias'] = null;
 			}
 			if (strlen($this->request->data['Email']['host']) === 0) {
-				$this->request->data['Email']['host'] = NULL;
+				$this->request->data['Email']['host'] = null;
 			}
 			if (strlen($this->request->data['Email']['port']) === 0) {
-				$this->request->data['Email']['port'] = NULL;
+				$this->request->data['Email']['port'] = null;
 			}
 			if (strlen($this->request->data['Email']['username']) === 0) {
-				$this->request->data['Email']['username'] = NULL;
+				$this->request->data['Email']['username'] = null;
 			}
 			if (strlen($this->request->data['Email']['tls']) === 0 || !$this->request->data['Email']['tls']) {
-				$this->request->data['Email']['tls'] = NULL;
+				$this->request->data['Email']['tls'] = null;
 			}
 			if (strlen($this->request->data['Email']['password']) === 0) {
-				$this->request->data['Email']['password'] = NULL;
+				$this->request->data['Email']['password'] = null;
 			}
 
 			// attempt to save the entry
@@ -91,14 +95,14 @@ class EmailsController extends AppController {
 			$this->Session->setFlash('Unable to update the email settings.');
 		} else {
 			// grab the only email settings entry
-			$email = $this->Email->findById(Email::$DEFAULT_ID);
+			$email = $this->Email->findById(Email::$default);
 			$this->set('email', $email);
 		}
 
 		// store the entry data if it was not a PUT request
 		if (!$this->request->data) {
 			// grab the only entry
-			$email = $this->Email->findById(Email::$DEFAULT_ID);
+			$email = $this->Email->findById(Email::$default);
 			$this->request->data = $email;
 		}
 

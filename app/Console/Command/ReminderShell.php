@@ -16,19 +16,21 @@ App::uses('CakeEmail', 'Network/Email');
  */
 class ReminderShell extends AppShell {
 
-	/**
-	 * The used models for the shell.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the shell.
+ *
+ * @var array
+ */
 	public $uses = array('User', 'Appointment', 'Setting');
 
-	/**
-	 * The main function for the shell.
-	 */
+/**
+ * The main function for the shell.
+ *
+ * @return null
+ */
 	public function main() {
 		// load the site settings
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 
 		// load the studies for the next hour for people who want emails
 		$this->out('Loading studies for the next 30 minutes...');

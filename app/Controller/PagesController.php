@@ -15,40 +15,46 @@
  */
 class PagesController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Time');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		// only allow unauthenticated viewing of a single page
 		parent::beforeFilter();
 		$this->Auth->allow('view');
 	}
 
-	/**
-	 * The admin index action lists information about all pages. This allows the admin to add, edit, or delete entries.
-	 */
+/**
+ * The admin index action lists information about all pages. This allows the admin to add, edit, or delete entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// grab all the entries
 		$this->set('pages', $this->Page->find('all', array('order' => array('Page.index' => 'ASC'))));
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -71,14 +77,15 @@ class PagesController extends AppController {
 		$this->set('title_for_layout', 'Add Page');
 	}
 
-	/**
-	 * Increment the index of the given page ID. This assumes the database is in a consistent state and that all indexes
-	 * are sequential. This essentially swaps the entry after the given index with the target entry.
-	 *
-	 * @param int $id The entry ID to increment the index of.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Increment the index of the given page ID. This assumes the database is in a consistent state and that all indexes
+ * are sequential. This essentially swaps the entry after the given index with the target entry.
+ *
+ * @param int $id The entry ID to increment the index of.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_incrementIndex($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -101,7 +108,7 @@ class PagesController extends AppController {
 		$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
 
 		// make sure we can actually increment
-		if($index + 1 < count($pages)) {
+		if ($index + 1 < count($pages)) {
 			// place the target at the end temporarily
 			$target['Page']['index'] = count($pages);
 			$this->Page->save($target);
@@ -121,14 +128,15 @@ class PagesController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * Decrement the index of the given page ID. This assumes the database is in a consistent state and that all indexes
-	 * are sequential. This essentially swaps the entry before the given index with the target entry.
-	 *
-	 * @param int $id The entry ID to decrement the index of.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Decrement the index of the given page ID. This assumes the database is in a consistent state and that all indexes
+ * are sequential. This essentially swaps the entry before the given index with the target entry.
+ *
+ * @param int $id The entry ID to decrement the index of.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_decrementIndex($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -148,7 +156,7 @@ class PagesController extends AppController {
 		$index = $target['Page']['index'];
 
 		// make sure we can actually decrement
-		if($index > 0) {
+		if ($index > 0) {
 			// grab all pages
 			$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
 
@@ -171,12 +179,13 @@ class PagesController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		if (!$id) {
 			// no ID provided
@@ -211,12 +220,13 @@ class PagesController extends AppController {
 		$this->set('title_for_layout', __('Edit Page - %s', $page['Page']['title']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -227,7 +237,8 @@ class PagesController extends AppController {
 		if ($this->Page->delete($id)) {
 			// reindex the entries
 			$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
-			for ($i = 0; $i < count($pages); $i++) {
+			$numPages = count($pages);
+			for ($i = 0; $i < $numPages; $i++) {
 				$page = $pages[$i];
 				$page['Page']['index'] = $i;
 				$this->Page->save($page);
@@ -238,19 +249,22 @@ class PagesController extends AppController {
 		}
 	}
 
-	/**
-	 * The default index simply redirects to the homepage action.
-	 */
+/**
+ * The default index simply redirects to the homepage action.
+ *
+ * @return null
+ */
 	public function index() {
 		return $this->redirect(array('action' => 'view'));
 	}
 
-	/**
-	 * View the given page. If no page ID is given, the homepage is rendered.
-	 *
-	 * @param int|null $id The ID of the entry to view.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * View the given page. If no page ID is given, the homepage is rendered.
+ *
+ * @param int|null $id The ID of the entry to view.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function view($id = null) {
 		// get the homepage
 		$home = $this->Page->find('first', array('order' => array('Page.index' => 'ASC')));

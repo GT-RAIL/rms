@@ -17,24 +17,26 @@ App::uses('CakeEmail', 'Network/Email');
  */
 abstract class AppController extends Controller {
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('User', 'Setting', 'Page', 'Role', 'Appointment');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Cookie', 'Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the
-	 * `admin` flag for admin checking.
-	 */
+/**
+ * Set global flags and variables for views. This includes the 'pages' variable for the menu generation and the
+ * `admin` flag for admin checking.
+ *
+ * @return null
+ */
 	public function beforeFilter() {
 		parent::beforeFilter();
 
@@ -57,7 +59,7 @@ abstract class AppController extends Controller {
 		}
 
 		// grab site settings
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		$settingSubset = array(
 			'Setting' => array(
 				'title' => $setting['Setting']['title'],
@@ -69,7 +71,7 @@ abstract class AppController extends Controller {
 		$this->set('setting', $settingSubset);
 
 		// set the main menu for the pages
-		$pages =  $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
+		$pages = $this->Page->find('all', array('order' => array('Page.index' => 'ASC')));
 		$menu = array();
 		foreach ($pages as $page) {
 			$menu[] = array(
@@ -90,9 +92,9 @@ abstract class AppController extends Controller {
 
 		// set default admin flag and admin menu
 		$this->set('admin', false);
-		$this->set('adminMenu', NULL);
+		$this->set('adminMenu', null);
 
-		if($loggedIn) {
+		if ($loggedIn) {
 			// now check the admin flag
 			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'admin')));
 			$admin = AuthComponent::user('role_id') === $role['Role']['id'];
@@ -204,12 +206,12 @@ abstract class AppController extends Controller {
 		}
 	}
 
-	/**
-	 * The global authorization method. This will be automatically called and used if the authorize controller is an
-	 * an included component in the given controller.
-	 *
-	 * @return bool Returns if the user is authorized.
-	 */
+/**
+ * The global authorization method. This will be automatically called and used if the authorize controller is an
+ * an included component in the given controller.
+ *
+ * @return bool Returns if the user is authorized.
+ */
 	public function isAuthorized() {
 		// any registered user can access public functions
 		if (empty($this->request->params['admin'])) {
@@ -225,14 +227,15 @@ abstract class AppController extends Controller {
 		return false;
 	}
 
-	/**
-	 * Send an email message to a user. No effect is made if email is disabled.
-	 *
-	 * @param int $id The user ID to send the message email to.
-	 * @param string $subject The message subject.
-	 * @param string $message The message text.
-	 * @throws NotFoundException Thrown if an invalid user ID is given.
-	 */
+/**
+ * Send an email message to a user. No effect is made if email is disabled.
+ *
+ * @param int $id The user ID to send the message email to.
+ * @param string $subject The message subject.
+ * @param string $message The message text.
+ * @throws NotFoundException Thrown if an invalid user ID is given.
+ * @return null
+ */
 	public function sendEmail($id = null, $subject = '', $message = '') {
 		if (!$id) {
 			// no ID provided
@@ -246,7 +249,7 @@ abstract class AppController extends Controller {
 		}
 
 		// check if we are sending a welcome email
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		if ($setting['Setting']['email']) {
 			$email = new CakeEmail('dynamic');
 			$email->to($user['User']['email']);
@@ -260,16 +263,17 @@ abstract class AppController extends Controller {
 		}
 	}
 
-	/**
-	 * Send an email to a group of given users. No effect is made if email is disabled.
-	 *
-	 * @param array $bcc The email addresses to send to.
-	 * @param string $subject The message subject.
-	 * @param string $message The message text.
-	 */
+/**
+ * Send an email to a group of given users. No effect is made if email is disabled.
+ *
+ * @param array $bcc The email addresses to send to.
+ * @param string $subject The message subject.
+ * @param string $message The message text.
+ * @return null
+ */
 	public function sendBatchEmail($bcc = array(), $subject = '', $message = '') {
 		// check if we are sending a welcome email
-		$setting = $this->Setting->findById(Setting::$DEFAULT_ID);
+		$setting = $this->Setting->findById(Setting::$default);
 		if ($setting['Setting']['email']) {
 			$email = new CakeEmail('dynamic');
 			$email->bcc($bcc);

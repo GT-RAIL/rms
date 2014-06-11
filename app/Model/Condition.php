@@ -13,11 +13,11 @@
  */
 class Condition extends AppModel {
 
-	/**
-	 * The validation criteria for the model.
-	 *
-	 * @var array
-	 */
+/**
+ * The validation criteria for the model.
+ *
+ * @var array
+ */
 	public $validate = array(
 		'id' => array(
 			'notEmpty' => array(
@@ -105,21 +105,21 @@ class Condition extends AppModel {
 		)
 	);
 
-	/**
-	 * All conditions belong to a single study, interface, and environment.
-	 *
-	 * @var array
-	 */
+/**
+ * All conditions belong to a single study, interface, and environment.
+ *
+ * @var array
+ */
 	public $belongsTo = array(
 		'Study' => array('className' => 'Study'),
 		'Iface' => array('className' => 'Iface'),
 		'Environment' => array('className' => 'Environment')
 	);
 
-	/**
-	 * Conditions can have many sessions.
-	 *
-	 * @var array
-	 */
+/**
+ * Conditions can have many sessions.
+ *
+ * @var array
+ */
 	public $hasMany = array('Slot' => array('className' => 'Slot', 'dependent' => true));
 }

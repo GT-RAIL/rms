@@ -13,23 +13,25 @@
  */
 class ExperimentController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin index displays the relevant menu items.
-	 */
+/**
+ * The admin index displays the relevant menu items.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		$this->set('title_for_layout', 'Experiment Settings');
 	}

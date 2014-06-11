@@ -13,50 +13,56 @@
  */
 class LogsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Paginator', 'Time');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Paginator', 'Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Define pagination criteria.
-	 *
-	 * @var array
-	 */
+/**
+ * Define pagination criteria.
+ *
+ * @var array
+ */
 	public $paginate = array('limit' => 15, 'order' => array('Log.created' => 'DESC'), 'recursive' => 4);
 
-	/**
-	 * Define the actions which can be used by any user, authorized or not.
-	 */
+/**
+ * Define the actions which can be used by any user, authorized or not.
+ * 
+ * @return null
+ */
 	public function beforeFilter() {
 		// allow anyone to view an interface (interface authorization will check this better)
 		parent::beforeFilter();
 		$this->Auth->allow('add');
 	}
 
-	/**
-	 * The admin index action lists information about all logs. Further view options can be found from this action.
-	 */
+/**
+ * The admin index action lists information about all logs. Further view options can be found from this action.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
 		$this->set('logs', $this->Paginator->paginate('Log'));
 	}
 
-	/**
-	 * The log function allows any valid study session to log data.
-	 *
-	 * @throws MethodNotAllowedException Thrown if a POST request is not made.
-	 */
+/**
+ * The log function allows any valid study session to log data.
+ *
+ * @throws MethodNotAllowedException Thrown if a POST request is not made.
+ * @throws ForbiddenException Thrown if there is no valid study.
+ * @return null
+ */
 	public function add() {
 		if ($this->request->is('post')) {
 			// verify we are allowed to log
@@ -73,7 +79,7 @@ class LogsController extends AppController {
 						'modified' => date('Y-m-d H:i:s')
 					)
 				);
-				if($this->Log->save($logData)) {
+				if ($this->Log->save($logData)) {
 					// success, empty response
 					$this->layout = false;
 				} else {

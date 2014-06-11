@@ -16,14 +16,14 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
 
-	/**
-	 * Check if a field is equal to another. This is useful for password validations.
-	 *
-	 * @param string $check The name of the field to check.
-	 * @param $otherField The name of the other field to check with the first one.
-	 * @return bool Returns if the two fields have equal contents.
-	 */
-	function equalToField($check, $otherField) {
+/**
+ * Check if a field is equal to another. This is useful for password validations.
+ *
+ * @param string $check The name of the field to check.
+ * @param string $otherField The name of the other field to check with the first one.
+ * @return bool Returns if the two fields have equal contents.
+ */
+	public function equalToField($check, $otherField) {
 		$name = '';
 		foreach ($check as $key => $value) {
 			$name = $key;

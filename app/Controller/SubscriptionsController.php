@@ -13,23 +13,25 @@
  */
 class SubscriptionsController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin newsletter action. This allows the admin to send a newsletter to subscribers.
-	 */
+/**
+ * The admin newsletter action. This allows the admin to send a newsletter to subscribers.
+ *
+ * @return null
+ */
 	public function admin_newsletter() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -54,9 +56,11 @@ class SubscriptionsController extends AppController {
 		$this->set('title_for_layout', 'Send Newsletter');
 	}
 
-	/**
-	 * The admin study announcement action. This allows the admin to send an announcement to subscribers.
-	 */
+/**
+ * The admin study announcement action. This allows the admin to send an announcement to subscribers.
+ *
+ * @return null
+ */
 	public function admin_announcement() {
 		// only work for POST requests
 		if ($this->request->is('post')) {
@@ -81,18 +85,21 @@ class SubscriptionsController extends AppController {
 		$this->set('title_for_layout', 'Send Study Announcement');
 	}
 
-	/**
-	 * The default index simply redirects to the view action.
-	 */
+/**
+ * The default index simply redirects to the view action.
+ *
+ * @return null
+ */
 	public function index() {
 		return $this->redirect(array('action' => 'view'));
 	}
 
-	/**
-	 * View the subscription status for the logged in user.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 */
+/**
+ * View the subscription status for the logged in user.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function view() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -109,12 +116,12 @@ class SubscriptionsController extends AppController {
 		$this->set('title_for_layout', 'Email Subscriptions');
 	}
 
-	/**
-	 * Toggle the newsletter field for the logged in user.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Toggle the newsletter field for the logged in user.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function newsletters() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -134,12 +141,12 @@ class SubscriptionsController extends AppController {
 		return $this->redirect(array('action' => 'view'));
 	}
 
-	/**
-	 * Toggle the studies field for the logged in user.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Toggle the studies field for the logged in user.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function studies() {
 		// find the ID
 		$id = $this->Auth->user('id');
@@ -159,12 +166,12 @@ class SubscriptionsController extends AppController {
 		return $this->redirect(array('action' => 'view'));
 	}
 
-	/**
-	 * Toggle the reminders field for the logged in user.
-	 *
-	 * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Toggle the reminders field for the logged in user.
+ *
+ * @throws NotFoundException Thrown if an entry with the logged in user ID is not found.
+ * @return null
+ */
 	public function reminders() {
 		// find the ID
 		$id = $this->Auth->user('id');

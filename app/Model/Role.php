@@ -14,10 +14,10 @@
  */
 class Role extends AppModel {
 
-	/**
-	 * Roles can have many users.
-	 *
-	 * @var array
-	 */
+/**
+ * Roles can have many users.
+ *
+ * @var array
+ */
 	public $hasMany = array('User' => array('className' => 'User', 'dependent' => true));
 }

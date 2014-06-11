@@ -14,34 +14,35 @@
  */
 abstract class InterfaceController extends AppController {
 
-	/**
-	 * The used models for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used models for the controller.
+ *
+ * @var array
+ */
 	public $uses = array('Environment', 'Appointment');
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * Check for a valid interface request. This means that the user (if any) is authorized to view the interface.
-	 *
-	 * @throws NotFoundException Thrown if invalid arguments are passed.
-	 * @throws MethodNotAllowedException Thrown if a non-view request is made.
-	 * @throws ForbiddenException Thrown if a user is new authorized for the interface at the given time.
-	 */
+/**
+ * Check for a valid interface request. This means that the user (if any) is authorized to view the interface.
+ *
+ * @throws NotFoundException Thrown if invalid arguments are passed.
+ * @throws MethodNotAllowedException Thrown if a non-view request is made.
+ * @throws ForbiddenException Thrown if a user is new authorized for the interface at the given time.
+ * @return null
+ */
 	public function beforeFilter() {
 		parent::beforeFilter();
 		// allow anyone to view an interface (interface authorization will check this better)
@@ -113,9 +114,11 @@ abstract class InterfaceController extends AppController {
 		}
 	}
 
-	/**
-	 * Default view function. This method can be overwritten for custom controller functionality.
-	 */
+/**
+ * Default view function. This method can be overwritten for custom controller functionality.
+ *
+ * @return null
+ */
 	public function view() {
 	}
 }

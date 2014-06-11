@@ -13,24 +13,26 @@
  */
 class ArticlesController extends AppController {
 
-	/**
-	 * The used helpers for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used helpers for the controller.
+ *
+ * @var array
+ */
 	public $helpers = array('Html', 'Form', 'Time');
 
-	/**
-	 * The used components for the controller.
-	 *
-	 * @var array
-	 */
+/**
+ * The used components for the controller.
+ *
+ * @var array
+ */
 	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
 
-	/**
-	 * The admin index action lists information about all articles. This allows the admin to add, edit, or delete
-	 * entries.
-	 */
+/**
+ * The admin index action lists information about all articles. This allows the admin to add, edit, or delete
+ * entries.
+ *
+ * @return null
+ */
 	public function admin_index() {
 		// load the pages list
 		$pages = $this->Article->Page->find('all', array('order' => array('Page.index' => 'ASC')));
@@ -43,9 +45,11 @@ class ArticlesController extends AppController {
 		);
 	}
 
-	/**
-	 * The admin add action. This will allow the admin to create a new entry.
-	 */
+/**
+ * The admin add action. This will allow the admin to create a new entry.
+ *
+ * @return null
+ */
 	public function admin_add() {
 		// load the pages list
 		$pages = $this->Article->Page->find('list', array('order' => array('Page.index' => 'ASC')));
@@ -75,14 +79,15 @@ class ArticlesController extends AppController {
 		$this->set('title_for_layout', 'Add Article');
 	}
 
-	/**
-	 * Increment the index of the given article ID. This assumes the database is in a consistent state and that all
-	 * indexes are sequential. This essentially swaps the entry after the given index with the target entry.
-	 *
-	 * @param int $id The entry ID to increment the index of.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Increment the index of the given article ID. This assumes the database is in a consistent state and that all
+ * indexes are sequential. This essentially swaps the entry after the given index with the target entry.
+ *
+ * @param int $id The entry ID to increment the index of.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_incrementIndex($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -111,7 +116,7 @@ class ArticlesController extends AppController {
 		);
 
 		// make sure we can actually increment
-		if($index + 1 < count($articles)) {
+		if ($index + 1 < count($articles)) {
 			// place the target at the end temporarily
 			$target['Article']['index'] = count($articles);
 			$this->Article->save($target);
@@ -131,14 +136,15 @@ class ArticlesController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * Decrement the index of the given article ID. This assumes the database is in a consistent state and that all
-	 * indexes are sequential. This essentially swaps the entry before the given index with the target entry.
-	 *
-	 * @param int $id The entry ID to decrement the index of.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * Decrement the index of the given article ID. This assumes the database is in a consistent state and that all
+ * indexes are sequential. This essentially swaps the entry before the given index with the target entry.
+ *
+ * @param int $id The entry ID to decrement the index of.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_decrementIndex($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -158,7 +164,7 @@ class ArticlesController extends AppController {
 		$index = $target['Article']['index'];
 
 		// make sure we can actually decrement
-		if($index > 0) {
+		if ($index > 0) {
 			// grab all articles for the same page
 			$articles = $this->Article->find(
 				'all',
@@ -187,12 +193,13 @@ class ArticlesController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * The admin edit action. This allows the admin to edit an existing entry.
-	 *
-	 * @param int $id The ID of the entry to edit.
-	 * @throws NotFoundException Thrown if an entry with the given ID is not found.
-	 */
+/**
+ * The admin edit action. This allows the admin to edit an existing entry.
+ *
+ * @param int $id The ID of the entry to edit.
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @return null
+ */
 	public function admin_edit($id = null) {
 		// load the pages list
 		$pages = $this->Article->Page->find('list', array('order' => array('Page.index' => 'ASC')));
@@ -217,7 +224,7 @@ class ArticlesController extends AppController {
 			$this->Article->data['Article']['modified'] = date('Y-m-d H:i:s');
 
 			// check if we are changing pages
-			if($article['Article']['page_id'] !== $this->request->data['Article']['page_id']) {
+			if ($article['Article']['page_id'] !== $this->request->data['Article']['page_id']) {
 				// grab all articles for the same page
 				$index = $this->Article->find(
 					'count',
@@ -244,12 +251,13 @@ class ArticlesController extends AppController {
 		$this->set('title_for_layout', __('Edit Article - %s', $article['Article']['title']));
 	}
 
-	/**
-	 * The admin delete action. This allows the admin to delete an existing entry.
-	 *
-	 * @param int $id The ID of the entry to delete.
-	 * @throws MethodNotAllowedException Thrown if a GET request is made.
-	 */
+/**
+ * The admin delete action. This allows the admin to delete an existing entry.
+ *
+ * @param int $id The ID of the entry to delete.
+ * @throws MethodNotAllowedException Thrown if a GET request is made.
+ * @return null
+ */
 	public function admin_delete($id = null) {
 		// do not allow GET requests
 		if ($this->request->is('get')) {
@@ -269,7 +277,8 @@ class ArticlesController extends AppController {
 					'order' => array('Article.index' => 'ASC')
 				)
 			);
-			for ($i = 0; $i < count($articles); $i++) {
+			$numArticles = count($articles);
+			for ($i = 0; $i < $numArticles; $i++) {
 				$article = $articles[$i];
 				$article['Article']['index'] = $i;
 				$this->Article->save($article);
@@ -280,9 +289,11 @@ class ArticlesController extends AppController {
 		}
 	}
 
-	/**
-	 * The default index simply redirects to the page's homepage action.
-	 */
+/**
+ * The default index simply redirects to the page's homepage action.
+ *
+ * @return null
+ */
 	public function index() {
 		return $this->redirect(array('controller' => 'pages', 'action' => 'view'));
 	}
