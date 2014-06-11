@@ -1,0 +1,25 @@
+language:
+  - php
+  - node_js
+
+php:
+  - 5.3
+
+node_js:
+  - "0.10"
+
+branches:
+  only:
+    - master
+    - develop
+
+before_script:
+  - npm install -g grunt-cli
+  - pear channel-discover pear.phing.info
+  - pear channel-discover pear.cakephp.org
+  - pear install phing/phing PHP_CodeSniffer cakephp/CakePHP_CodeSniffer
+  - phpenv rehash
+  - cd utils
+
+script:
+  - phing build
