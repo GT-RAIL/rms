@@ -24,10 +24,13 @@ This script will do the following tasks:
 * Create a tmp folder
 * Setup the SQL server
 
-The RMS has been tested and developed on Ubuntu 14.04.
+The RMS has been tested and developed on Ubuntu 14.04 and Ubuntu 12.04.
+
+### Build
+Checkout [utils/README.md](utils/README.md) for details on building if you are contributing code.
 
 ### License
 rms is released with a BSD license. For full terms and conditions, see the [LICENSE](LICENSE) file.
 
 ### Authors
-See the [AUTHORS.md](AUTHORS) file for a full list of contributors.
+See the [AUTHORS](AUTHORS.md) file for a full list of contributors.
