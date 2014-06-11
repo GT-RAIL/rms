@@ -105,6 +105,13 @@ class Environment extends AppModel {
 	);
 
 	/**
+	 * Environments can have a single associated TF.
+	 *
+	 * @var string
+	 */
+	public $hasOne = 'Tf';
+
+	/**
 	 * Environments can have associated interfaces.
 	 *
 	 * @var array

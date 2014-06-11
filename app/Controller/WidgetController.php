@@ -26,7 +26,7 @@ class WidgetController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $uses = array('Stream', 'Teleop');
+	public $uses = array('Stream', 'Teleop', 'Tf');
 
 	/**
 	 * The used components for the controller.
@@ -43,6 +43,7 @@ class WidgetController extends AppController {
 		// grab all the entries we need.
 		$this->set('streams', $this->Stream->find('all', array('recursive' => 2)));
 		$this->set('teleops', $this->Teleop->find('all', array('recursive' => 2)));
+		$this->set('tfs', $this->Tf->find('all', array('recursive' => 2)));
 		$this->set('title_for_layout', 'ROS Topics and Widgets');
 	}
 }

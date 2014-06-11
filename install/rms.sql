@@ -230,6 +230,32 @@ INSERT INTO `teleops` (`id`, `topic`, `throttle`, `environment_id`, `created`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tfs`
+--
+
+CREATE TABLE IF NOT EXISTS `tfs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `frame` varchar(255) NOT NULL COMMENT 'Name of the fixed frame.',
+  `angular` float unsigned DEFAULT NULL COMMENT 'Angular threshold.',
+  `translational` float unsigned NOT NULL COMMENT 'Translational threshold.',
+  `rate` float unsigned NOT NULL COMMENT 'The rate to send the TFs.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this TF belongs to.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `environment_id` (`environment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='TF client settings.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `tfs`
+--
+
+INSERT INTO `tfs` (`id`, `frame`, `angular`, `translational`, `rate`, `environment_id`, `created`, `modified`) VALUES
+  (1, '/rotating_frame', 0.01, 0.01, 10.0, 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `environments`
 --
 
@@ -586,6 +612,12 @@ ADD CONSTRAINT `streams_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `envir
 --
 ALTER TABLE `teleops`
   ADD CONSTRAINT `teleops_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+
+--
+-- Constraints for table `teleops`
+--
+ALTER TABLE `tfs`
+  ADD CONSTRAINT `tfs_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
 
 --
 -- Constraints for table `environments`

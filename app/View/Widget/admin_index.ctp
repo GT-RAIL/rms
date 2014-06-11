@@ -28,11 +28,14 @@
 				</p>
 			</header>
 			<div class="row">
-				<section class="6u">
+				<section class="4u">
 					<a href="#streams" class="button special scrolly">MJPEG Streams</a>
 				</section>
-				<section class="6u">
+				<section class="4u">
 					<a href="#teleops" class="button special scrolly">Teleop Settings</a>
+				</section>
+				<section class="4u">
+					<a href="#tfs" class="button special scrolly">TF Client Settings</a>
 				</section>
 			</div>
 		</section>
@@ -175,6 +178,76 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($teleop['Environment']['name']); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
+
+<section id="tfs" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>TF Client Settings</h2>
+				<p>
+					TF client settings store information about a the fixed frame for an environment.
+				</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'tfs', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Frame</th>
+					<th>Angular Thresh.</th>
+					<th>Translational Thresh.</th>
+					<th>Rate</th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+				</tr>
+				<?php foreach ($tfs as $tf): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'tfs', 'action' => 'delete', $tf['Tf']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'tfs', 'action' => 'edit', $tf['Tf']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($tf['Tf']['id']); ?>
+						</td>
+						<td data-title="Frame">
+							<?php echo h($tf['Tf']['frame']); ?>
+						</td>
+						<td data-title="Angular">
+							<?php echo h($tf['Tf']['angular']); ?>
+						</td>
+						<td data-title="Translational">
+							<?php echo h($tf['Tf']['translational']); ?>
+						</td>
+						<td data-title="Rate">
+							<?php echo h($tf['Tf']['rate']); ?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($tf['Environment']['name']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
