@@ -250,6 +250,23 @@ class RmsHelper extends Helper {
 	}
 
 /**
+ * Add an interactive marker to the global ros3d scene.
+ *
+ * @param string $topic The interactive marker topic.
+ * @return string The HTML for the entire script block.
+ */
+	public function interactiveMarker($topic) {
+		$html = '<script>';
+		// create the ROS connection
+		$html .= 'new ROS3D.InteractiveMarkerClient({ros:_ROS,tfClient:_TF,';
+		$html .= 'camera:_VIEWER.camera,rootObject:_VIEWER.selectableObjects,';
+		$html .= __('topic:"%s"', h($topic));
+		$html .= '});';
+		$html .= '</script>';
+
+		return $html;
+	}
+/**
  * Create a keyboard teleoperation connection via keyboardteleopjs.
  *
  * @param string $topic The teleoperation topic to publish to.

@@ -253,6 +253,29 @@ INSERT INTO `markers` (`id`, `topic`, `environment_id`, `created`, `modified`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ims`
+--
+
+CREATE TABLE IF NOT EXISTS `ims` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `topic` varchar(255) NOT NULL COMMENT 'ROS topic for the interactive markers.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  KEY `environment_id` (`environment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='ROS interactive marker settings.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ims`
+--
+
+INSERT INTO `ims` (`id`, `topic`, `environment_id`, `created`, `modified`) VALUES
+  (1, '/basic_controls', 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tfs`
 --
 
@@ -641,6 +664,12 @@ ALTER TABLE `teleops`
 --
 ALTER TABLE `markers`
   ADD CONSTRAINT `markers_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+
+--
+-- Constraints for table `ims`
+--
+ALTER TABLE `ims`
+ADD CONSTRAINT `ims_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
 
 --
 -- Constraints for table `tfs`

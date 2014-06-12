@@ -32,15 +32,18 @@
 					<a href="#streams" class="button special scrolly">MJPEG Streams</a>
 				</section>
 				<section class="4u">
-					<a href="#teleops" class="button special scrolly">Teleop Settings</a>
+					<a href="#teleops" class="button special scrolly">Teleoperations</a>
 				</section>
 				<section class="4u">
-					<a href="#tfs" class="button special scrolly">TF Client Settings</a>
+					<a href="#tfs" class="button special scrolly">TF Clients</a>
 				</section>
 			</div>
 			<div class="row">
-				<section class="12u">
-					<a href="#markers" class="button special scrolly">Marker Settings</a>
+				<section class="6u">
+					<a href="#markers" class="button special scrolly">Markers</a>
+				</section>
+				<section class="6u">
+					<a href="#ims" class="button special scrolly">Interactive Markers</a>
 				</section>
 			</div>
 		</section>
@@ -314,6 +317,67 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($marker['Environment']['name']); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
+
+<section id="ims" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>Interactive Marker Settings</h2>
+				<p>Interactive marker settings store information about ROS interactive marker topics.</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'ims', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Topic</th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+				</tr>
+				<?php foreach ($ims as $im): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'ims', 'action' => 'delete', $im['Im']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'ims', 'action' => 'edit', $im['Im']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($im['Im']['id']); ?>
+						</td>
+						<td data-title="Topic">
+							<?php
+							echo $this->Html->link(
+								$im['Im']['topic'],
+								array('controller' => 'ims', 'action' => 'view', $im['Im']['id'])
+							);
+							?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($im['Environment']['name']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

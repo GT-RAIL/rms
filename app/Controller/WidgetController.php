@@ -26,7 +26,7 @@ class WidgetController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Stream', 'Teleop', 'Tf', 'Marker');
+	public $uses = array('Stream', 'Teleop', 'Tf', 'Marker', 'Im');
 
 /**
  * The used components for the controller.
@@ -46,6 +46,7 @@ class WidgetController extends AppController {
 		$this->set('streams', $this->Stream->find('all', array('recursive' => 2, 'order' => 'Stream.environment_id')));
 		$this->set('teleops', $this->Teleop->find('all', array('recursive' => 2, 'order' => 'Teleop.environment_id')));
 		$this->set('markers', $this->Marker->find('all', array('recursive' => 2, 'order' => 'Marker.environment_id')));
+		$this->set('ims', $this->Im->find('all', array('recursive' => 2, 'order' => 'Im.environment_id')));
 		$this->set('tfs', $this->Tf->find('all', array('recursive' => 2)));
 		$this->set('title_for_layout', 'ROS Topics and Widgets');
 	}
