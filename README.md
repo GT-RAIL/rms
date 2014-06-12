@@ -3,7 +3,7 @@ rms [![Build Status](https://api.travis-ci.org/WPI-RAIL/rms.png)](https://travis
 
 #### RMS (Robot Management System)
 
-RMS is a remote lab and user study management tool designed for use with controlling ROS enabled robots from the web.
+RMS is a remote lab and user study management tool designed for use with controlling ROS enabled robots from the web. RMS is built on-top of the popular [CakePHP](http://cakephp.org/) Model-View-Controller (MVC) framework.
 
 For full documentation, see [the ROS wiki](http://ros.org/wiki/rms) or check out some [tutorials](http://www.ros.org/wiki/rms/#Tutorials).
 
