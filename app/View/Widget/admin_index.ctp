@@ -38,6 +38,11 @@
 					<a href="#tfs" class="button special scrolly">TF Client Settings</a>
 				</section>
 			</div>
+			<div class="row">
+				<section class="12u">
+					<a href="#markers" class="button special scrolly">Marker Settings</a>
+				</section>
+			</div>
 		</section>
 	</div>
 </section>
@@ -248,6 +253,67 @@
 						</td>
 						<td data-title="Environment">
 							<?php echo h($tf['Environment']['name']); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
+
+<section id="markers" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>Marker Settings</h2>
+				<p>Marker settings store information about ROS 3D marker topics.</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'markers', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Topic</th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+				</tr>
+				<?php foreach ($markers as $marker): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'markers', 'action' => 'delete', $marker['Marker']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'markers', 'action' => 'edit', $marker['Marker']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($marker['Marker']['id']); ?>
+						</td>
+						<td data-title="Topic">
+							<?php
+							echo $this->Html->link(
+								$marker['Marker']['topic'],
+								array('controller' => 'markers', 'action' => 'view', $marker['Marker']['id'])
+							);
+							?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($marker['Environment']['name']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

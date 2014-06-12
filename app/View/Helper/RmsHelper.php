@@ -193,6 +193,63 @@ class RmsHelper extends Helper {
 	}
 
 /**
+ * Create a global ROS 3D scene. This will store the viewer object in a JavaScript variable called _VIEWER.
+ *
+ * @return string The HTML for the entire script block.
+ */
+	public function ros3d() {
+		$html = '<div id="viewer"></div>';
+		$html .= '<script>';
+		$html .= 'var w=Math.min($("#viewer").parent().width(), 5000000);';
+		// create the ROS connection
+		$html .= '_VIEWER = new ROS3D.Viewer(';
+		$html .= '{divID:"viewer",width:w,height:w*0.66,antialias:true});';
+		$html .= '</script>';
+
+		return $html;
+	}
+
+/**
+ * Create a global ROS TF client. This will store the client object in a JavaScript variable called _TF.
+ *
+ * @param string $frame The fixed frame.
+ * @param float $angular The angular publish threshold.
+ * @param float $translation The translational publish threshold.
+ * @param float $rate The publish rate.
+ * @return string The HTML for the entire script block.
+ */
+	public function tf($frame, $angular, $translation, $rate) {
+		$html = '<script>';
+		// create the ROS connection
+		$html .= '_TF = new ROSLIB.TFClient({ros:_ROS,';
+		$html .= __('angularThres:%f,', h($angular));
+		$html .= __('transThres:%f,', h($translation));
+		$html .= __('rate:%f,', h($rate));
+		$html .= __('fixedFrame:"%s"', h($frame));
+		$html .= '});';
+		$html .= '</script>';
+
+		return $html;
+	}
+
+/**
+ * Add a marker to the global ros3d scene.
+ *
+ * @param string $topic The marker topic.
+ * @return string The HTML for the entire script block.
+ */
+	public function marker($topic) {
+		$html = '<script>';
+		// create the ROS connection
+		$html .= 'new ROS3D.MarkerClient({ros:_ROS,tfClient:_TF,rootObject:_VIEWER.scene,';
+		$html .= __('topic:"%s"', h($topic));
+		$html .= '});';
+		$html .= '</script>';
+
+		return $html;
+	}
+
+/**
  * Create a keyboard teleoperation connection via keyboardteleopjs.
  *
  * @param string $topic The teleoperation topic to publish to.

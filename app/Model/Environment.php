@@ -101,15 +101,16 @@ class Environment extends AppModel {
 	public $hasMany = array(
 		'Stream' => array('className' => 'Stream', 'dependent' => true),
 		'Teleop' => array('className' => 'Teleop', 'dependent' => true),
+		'Marker' => array('className' => 'Marker', 'dependent' => true),
 		'Condition' => array('className' => 'Condition', 'dependent' => false)
 	);
 
 /**
  * Environments can have a single associated TF.
  *
- * @var string
+ * @var array
  */
-	public $hasOne = 'Tf';
+	public $hasOne = array('Tf' => array('className' => 'Tf', 'dependent' => true));
 
 /**
  * Environments can have associated interfaces.

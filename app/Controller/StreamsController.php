@@ -152,7 +152,7 @@ class StreamsController extends AppController {
 /**
  * View the given entry.
  *
- * @param intl $id The ID of the entry to view.
+ * @param int $id The ID of the entry to view.
  * @throws NotFoundException Thrown if an entry with the given ID is not found.
  * @return null
  */
