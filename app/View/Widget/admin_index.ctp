@@ -345,6 +345,7 @@
 					<th></th>
 					<th>ID</th>
 					<th>Topic</th>
+					<th>Collada</th>
 					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
 				</tr>
 				<?php foreach ($ims as $im): ?>
@@ -375,6 +376,9 @@
 								array('controller' => 'ims', 'action' => 'view', $im['Im']['id'])
 							);
 							?>
+						</td>
+						<td data-title="Collada">
+							<?php echo ($im['Collada']['name']) ? h($im['Collada']['name']) : 'None'; ?>
 						</td>
 						<td data-title="Environment">
 							<?php echo h($im['Environment']['name']); ?>

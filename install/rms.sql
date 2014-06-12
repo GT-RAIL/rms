@@ -259,6 +259,7 @@ INSERT INTO `markers` (`id`, `topic`, `environment_id`, `created`, `modified`) V
 CREATE TABLE IF NOT EXISTS `ims` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `topic` varchar(255) NOT NULL COMMENT 'ROS topic for the interactive markers.',
+  `collada_id` int(10) unsigned DEFAULT NULL COMMENT 'The Collada loader for this interactive marker.',
   `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
@@ -270,8 +271,8 @@ CREATE TABLE IF NOT EXISTS `ims` (
 -- Dumping data for table `ims`
 --
 
-INSERT INTO `ims` (`id`, `topic`, `environment_id`, `created`, `modified`) VALUES
-  (1, '/basic_controls', 1, NOW(), NOW());
+INSERT INTO `ims` (`id`, `topic`, `environment_id`, `collada_id`, `created`, `modified`) VALUES
+  (1, '/basic_controls', 1, NULL, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -493,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `types` (
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Log data types.' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Log data types.' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `types`
@@ -504,6 +505,29 @@ INSERT INTO `types` (`id`, `name`, `created`, `modified`) VALUES
   (2, 'numeric', NOW(), NOW()),
   (3, 'json', NOW(), NOW()),
   (4, 'score', NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `colladas`
+--
+
+CREATE TABLE IF NOT EXISTS `colladas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(16) NOT NULL COMMENT 'Name of the Collada loader.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Collada loader types.' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `types`
+--
+
+INSERT INTO `colladas` (`id`, `name`, `created`, `modified`) VALUES
+  (1, 'ColladaLoader', NOW(), NOW()),
+  (2, 'ColladaLoader2', NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -669,7 +693,8 @@ ALTER TABLE `markers`
 -- Constraints for table `ims`
 --
 ALTER TABLE `ims`
-ADD CONSTRAINT `ims_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`);
+  ADD CONSTRAINT `ims_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`),
+  ADD CONSTRAINT `ims_ibfk_2` FOREIGN KEY (`collada_id`) REFERENCES `colladas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;;
 
 --
 -- Constraints for table `tfs`

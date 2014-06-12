@@ -42,6 +42,8 @@ class ImsController extends AppController {
  * @return null
  */
 	public function admin_add() {
+		$this->__setCustomLists();
+
 		// load the environments list
 		$environments = $this->Im->Environment->find('list');
 		$this->set('environments', $environments);
@@ -50,6 +52,10 @@ class ImsController extends AppController {
 		if ($this->request->is('post')) {
 			// create a new entry
 			$this->Im->create();
+			// check for empty values
+			if ($this->request->data['Im']['collada_id'] === '-1') {
+				$this->request->data['Im']['collada_id'] = null;
+			}
 			// set the current timestamp for creation and modification
 			$this->Im->data['Im']['created'] = date('Y-m-d H:i:s');
 			$this->Im->data['Im']['modified'] = date('Y-m-d H:i:s');
@@ -72,6 +78,8 @@ class ImsController extends AppController {
  * @return null
  */
 	public function admin_edit($id = null) {
+		$this->__setCustomLists();
+
 		// load the environments list
 		$environments = $this->Im->Environment->find('list');
 		$this->set('environments', $environments);
@@ -92,8 +100,8 @@ class ImsController extends AppController {
 			// set the ID
 			$this->Im->id = $id;
 			// check for empty values
-			if (strlen($this->request->data['Im']['throttle']) === 0) {
-				$this->request->data['Im']['throttle'] = null;
+			if ($this->request->data['Im']['collada_id'] === '-1') {
+				$this->request->data['Im']['collada_id'] = null;
 			}
 			// set the current timestamp for modification
 			$this->Im->data['Im']['modified'] = date('Y-m-d H:i:s');
@@ -158,5 +166,20 @@ class ImsController extends AppController {
 		$this->set('title_for_layout', $im['Im']['topic']);
 		// we will need some RWT libraries
 		$this->set('rwt', array('roslibjs' => 'current', 'ros3djs' => 'current'));
+	}
+
+/**
+ * Set the custom Collada lists fields. This will be the name as well as a 'None' option.
+ *
+ * @return null
+ */
+	private function __setCustomLists() {
+		// load the lists
+		$colladas = $this->Im->Collada->find('all');
+		$colladasList = array(-1 => 'None');
+		foreach ($colladas as $collada) {
+			$colladasList[$collada['Collada']['id']] = h($collada['Collada']['name']);
+		}
+		$this->set('colladas', $colladasList);
 	}
 }

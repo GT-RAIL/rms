@@ -54,6 +54,8 @@
 		if (isset($rwt['ros3djs'])) {
 			echo $this->Html->script(array(
 				'//cdn.robotwebtools.org/threejs/current/three.min.js',
+				'//cdn.robotwebtools.org/threejs/current/ColladaLoader.min.js',
+				'//cdn.robotwebtools.org/ColladaAnimationCompress/current/ColladaLoader2.min.js',
 				'//cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}

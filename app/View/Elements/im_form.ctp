@@ -35,6 +35,14 @@
 				</section>
 			</div>
 			<div class="row">
+				<section class="8u">
+
+				</section>
+				<section class="4u">
+					<?php echo $this->Form->input('collada_id', array('label' => 'Collada Loader<br />')); ?>
+				</section>
+			</div>
+			<div class="row">
 				<section class="12u">
 					<?php echo $this->Form->end(array('label' => 'Save', 'class' => 'button special')); ?>
 				</section>

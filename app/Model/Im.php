@@ -60,6 +60,13 @@ class Im extends AppModel {
 				'required' => true
 			)
 		),
+		'collada_id' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Collada IDs must be greater than 0.',
+				'allowEmpty' => true
+			)
+		),
 		'created' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
@@ -77,9 +84,9 @@ class Im extends AppModel {
 	);
 
 /**
- * All interactive markers belong to a single environment.
+ * All interactive markers belong to a single environment and Collada loader type.
  *
- * @var string
+ * @var array
  */
-	public $belongsTo = 'Environment';
+	public $belongsTo = array('Environment', 'Collada');
 }
