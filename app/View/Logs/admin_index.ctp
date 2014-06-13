@@ -21,6 +21,10 @@
 <section class="wrapper style4 container">
 	<div class="content center">
 		<section>
+			<?php echo $this->Form->create('Study', array('action' => 'export')); ?>
+			<?php echo $this->Form->input('study_id', array('label' => 'Study: ')); ?>
+			<?php echo $this->Form->end(array('label' => 'Export Logs', 'class' => 'button small')); ?>
+			<br />
 			<header>
 				<p>Study log data is linked to a single appointment.</p>
 			</header>

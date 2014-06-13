@@ -28,6 +28,13 @@ class LogsController extends AppController {
 	public $components = array('Paginator', 'Session', 'Auth' => array('authorize' => 'Controller'));
 
 /**
+ * The used models for the controller.
+ *
+ * @var array
+ */
+	public $uses = array('Log', 'Study');
+
+/**
  * Define pagination criteria.
  *
  * @var array
@@ -54,6 +61,8 @@ class LogsController extends AppController {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
 		$this->set('logs', $this->Paginator->paginate('Log'));
+		// grab the experiments
+		$this->set('studies', $this->Study->find('list'));
 	}
 
 /**

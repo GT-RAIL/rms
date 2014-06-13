@@ -32,7 +32,7 @@ class StudiesController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Study', 'Slot', 'Appointment', 'Condition');
+	public $uses = array('Study', 'Slot', 'Appointment', 'Condition', 'Log');
 
 /**
  * Define the actions which can be used by any user, authorized or not.
@@ -244,5 +244,48 @@ class StudiesController extends AppController {
 		$this->Session->setFlash('Unable to create appointment.');
 		return ($this->Auth->user('id')) ?
 			$this->redirect(array('controller' => 'users', 'action' => 'view')) : $this->redirect('/');
+	}
+
+/**
+ * The admin export action. This allows the admin to export the study log data.
+ *
+ * @throws NotFoundException Thrown if an entry with the given ID is not found.
+ * @throws MethodNotAllowedException Thrown if a POST request is not made.
+ * @return null
+ */
+	public function admin_export() {
+		// only work for PUT requests
+		if ($this->request->is(array('study', 'post'))) {
+			// grab the study
+			$id = $this->request->data['Study']['study_id'];
+			$this->Study->recursive = 3;
+			$study = $this->Study->findById($id);
+			if (!$this->Study->findById($id)) {
+				// no valid entry found for the given ID
+				throw new NotFoundException('Invalid study.');
+			}
+
+			// find the logs
+			$list = array();
+			foreach ($study['Condition'] as $condition) {
+				foreach ($condition['Slot'] as $slot) {
+					if ($slot['Appointment']) {
+						$list[] = $slot['Appointment']['id'];
+					}
+				}
+			}
+			$logs = $this->Log->find(
+				'all', array('recursive' => 4, 'conditions' => array('Appointment.id IN' => $list))
+			);
+
+			// find the slots
+			$this->set('logs', $logs);
+
+			// no layout
+			$this->layout = false;
+			$this->response->type('csv');
+		} else {
+			throw new MethodNotAllowedException();
+		}
 	}
 }
