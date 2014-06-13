@@ -51,6 +51,6 @@ echo $this->Rms->tf(
 			?>
 		</strong>
 		<?php echo $this->Rms->ros3d(); ?>
-		<?php echo $this->Rms->interactiveMarker($im['Im']['topic']); ?>
+		<?php echo $this->Rms->interactiveMarker($im['Im']['topic'], $im['Collada']['id'], $im['Resource']['url']); ?>
 	</div>
 </section>

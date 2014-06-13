@@ -19,5 +19,5 @@ class Collada extends AppModel {
  *
  * @var array
  */
-	public $hasMany = array('Im' => array('className' => 'Im', 'dependent' => true));
+	public $hasMany = array('Im' => array('className' => 'Im', 'dependent' => false));
 }

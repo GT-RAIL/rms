@@ -39,11 +39,14 @@
 				</section>
 			</div>
 			<div class="row">
-				<section class="6u">
+				<section class="4u">
 					<a href="#markers" class="button special scrolly">Markers</a>
 				</section>
-				<section class="6u">
+				<section class="4u">
 					<a href="#ims" class="button special scrolly">Interactive Markers</a>
+				</section>
+				<section class="4u">
+					<a href="#resources" class="button special scrolly">Resource Servers</a>
 				</section>
 			</div>
 		</section>
@@ -346,6 +349,7 @@
 					<th>ID</th>
 					<th>Topic</th>
 					<th>Collada</th>
+					<th>Resources</th>
 					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
 				</tr>
 				<?php foreach ($ims as $im): ?>
@@ -380,8 +384,67 @@
 						<td data-title="Collada">
 							<?php echo ($im['Collada']['name']) ? h($im['Collada']['name']) : 'None'; ?>
 						</td>
+						<td data-title="Resources">
+							<?php echo ($im['Resource']['name']) ? h($im['Resource']['name']) : 'None'; ?>
+						</td>
 						<td data-title="Environment">
 							<?php echo h($im['Environment']['name']); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
+
+<section id="resources" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>Resource Server Settings</h2>
+				<p>Resource servers store information about Collada resource servers for ros3djs.</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'resources', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Base URL</th>
+				</tr>
+				<?php foreach ($resources as $resource): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'resources', 'action' => 'delete', $resource['Resource']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'resources', 'action' => 'edit', $resource['Resource']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($resource['Resource']['id']); ?>
+						</td>
+						<td data-title="Name">
+							<?php echo h($resource['Resource']['name']); ?>
+						</td>
+						<td data-title="Base URL">
+							<?php echo h($resource['Resource']['url']); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

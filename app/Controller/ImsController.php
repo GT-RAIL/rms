@@ -56,6 +56,9 @@ class ImsController extends AppController {
 			if ($this->request->data['Im']['collada_id'] === '-1') {
 				$this->request->data['Im']['collada_id'] = null;
 			}
+			if ($this->request->data['Im']['resource_id'] === '-1') {
+				$this->request->data['Im']['resource_id'] = null;
+			}
 			// set the current timestamp for creation and modification
 			$this->Im->data['Im']['created'] = date('Y-m-d H:i:s');
 			$this->Im->data['Im']['modified'] = date('Y-m-d H:i:s');
@@ -102,6 +105,9 @@ class ImsController extends AppController {
 			// check for empty values
 			if ($this->request->data['Im']['collada_id'] === '-1') {
 				$this->request->data['Im']['collada_id'] = null;
+			}
+			if ($this->request->data['Im']['resource_id'] === '-1') {
+				$this->request->data['Im']['resource_id'] = null;
 			}
 			// set the current timestamp for modification
 			$this->Im->data['Im']['modified'] = date('Y-m-d H:i:s');
@@ -181,5 +187,11 @@ class ImsController extends AppController {
 			$colladasList[$collada['Collada']['id']] = h($collada['Collada']['name']);
 		}
 		$this->set('colladas', $colladasList);
+		$resources = $this->Im->Resource->find('all');
+		$resourcesList = array(-1 => 'None');
+		foreach ($resources as $resource) {
+			$resourcesList[$resource['Resource']['id']] = h($resource['Resource']['url']);
+		}
+		$this->set('resources', $resourcesList);
 	}
 }

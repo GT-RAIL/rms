@@ -1,8 +1,8 @@
 <?php
 /**
- * Ims Model
+ * Resource Model
  *
- * Interactive markers represent ROS interactive marker settings. It contains information about the ROS topic.
+ * Resources represent Collada resource servers for use with ros3djs.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -11,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Im extends AppModel {
+class Resource extends AppModel {
 
 /**
  * The validation criteria for the model.
@@ -32,39 +32,42 @@ class Im extends AppModel {
 			),
 			'isUnique' => array(
 				'rule' => 'isUnique',
-				'message' => 'This user ID already exists.',
+				'message' => 'This resource ID already exists.',
 				'required' => 'update'
 			)
 		),
-		'topic' => array(
+		'name' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid ROS topic.',
+				'message' => 'Please enter a valid name.',
+				'required' => true
+			),
+			'maxLength' => array(
+				'rule' => array('maxLength', 64),
+				'message' => 'Names cannot be longer than 64 characters.',
+				'required' => true
+			),
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This name already exists.',
+				'required' => true
+			)
+		),
+		'url' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid base URL.',
 				'required' => true
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
-				'message' => 'Topics cannot be longer than 255 characters.',
-				'required' => true
-			)
-		),
-		'environment_id' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid environment.',
+				'message' => 'URLs cannot be longer than 255 characters.',
 				'required' => true
 			),
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Environment IDs must be greater than 0.',
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This URL already exists.',
 				'required' => true
-			)
-		),
-		'collada_id' => array(
-			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Collada IDs must be greater than 0.',
-				'allowEmpty' => true
 			)
 		),
 		'created' => array(
@@ -84,9 +87,9 @@ class Im extends AppModel {
 	);
 
 /**
- * All interactive markers belong to a single environment, resource server, and Collada loader type.
+ * Resources can have many interactive markers.
  *
  * @var array
  */
-	public $belongsTo = array('Environment', 'Resource', 'Collada');
+	public $hasMany = array('Im' => array('className' => 'Im', 'dependent' => false));
 }

@@ -36,7 +36,7 @@
 			</div>
 			<div class="row">
 				<section class="8u">
-
+					<?php echo $this->Form->input('resource_id', array('label' => 'Resource Server<br />')); ?>
 				</section>
 				<section class="4u">
 					<?php echo $this->Form->input('collada_id', array('label' => 'Collada Loader<br />')); ?>

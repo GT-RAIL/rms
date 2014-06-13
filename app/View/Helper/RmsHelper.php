@@ -253,13 +253,21 @@ class RmsHelper extends Helper {
  * Add an interactive marker to the global ros3d scene.
  *
  * @param string $topic The interactive marker topic.
+ * @param int $colladaLoader The Collada loader ID to use.
+ * @param string $resourceServer The base URL of the Collada resource server.
  * @return string The HTML for the entire script block.
  */
-	public function interactiveMarker($topic) {
+	public function interactiveMarker($topic, $colladaLoader = null, $resourceServer = null) {
 		$html = '<script>';
 		// create the ROS connection
 		$html .= 'new ROS3D.InteractiveMarkerClient({ros:_ROS,tfClient:_TF,';
 		$html .= 'camera:_VIEWER.camera,rootObject:_VIEWER.selectableObjects,';
+		if ($colladaLoader) {
+			$html .= __('loader:%d,', h($colladaLoader));
+		}
+		if ($resourceServer) {
+			$html .= __('path:"%s",', h($resourceServer));
+		}
 		$html .= __('topic:"%s"', h($topic));
 		$html .= '});';
 		$html .= '</script>';

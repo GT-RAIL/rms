@@ -260,10 +260,13 @@ CREATE TABLE IF NOT EXISTS `ims` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
   `topic` varchar(255) NOT NULL COMMENT 'ROS topic for the interactive markers.',
   `collada_id` int(10) unsigned DEFAULT NULL COMMENT 'The Collada loader for this interactive marker.',
+  `resource_id` int(10) unsigned DEFAULT NULL COMMENT 'The Collada resource server for this interactive marker.',
   `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
   `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
   PRIMARY KEY (`id`),
+  KEY `collada_id` (`collada_id`),
+  KEY `resource_id` (`resource_id`),
   KEY `environment_id` (`environment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='ROS interactive marker settings.' AUTO_INCREMENT=2 ;
 
@@ -271,8 +274,8 @@ CREATE TABLE IF NOT EXISTS `ims` (
 -- Dumping data for table `ims`
 --
 
-INSERT INTO `ims` (`id`, `topic`, `environment_id`, `collada_id`, `created`, `modified`) VALUES
-  (1, '/basic_controls', 1, NULL, NOW(), NOW());
+INSERT INTO `ims` (`id`, `topic`, `environment_id`, `collada_id`, `resource_id`, `created`, `modified`) VALUES
+  (1, '/basic_controls', 1, NULL, NULL, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -299,6 +302,30 @@ CREATE TABLE IF NOT EXISTS `tfs` (
 
 INSERT INTO `tfs` (`id`, `frame`, `angular`, `translational`, `rate`, `environment_id`, `created`, `modified`) VALUES
   (1, '/rotating_frame', 0.01, 0.01, 10.0, 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `resources`
+--
+
+CREATE TABLE IF NOT EXISTS `resources` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `name` varchar(64) NOT NULL COMMENT 'Name of the resource server.',
+  `url`  varchar(255) NOT NULL COMMENT 'Base URL of the resource server.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Collada resource servers.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `resources`
+--
+
+INSERT INTO `resources` (`id`, `name`, `url`, `created`, `modified`) VALUES
+  (1, 'Robot Web Tools', 'http://resources.robotwebtools.org/', NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -694,7 +721,8 @@ ALTER TABLE `markers`
 --
 ALTER TABLE `ims`
   ADD CONSTRAINT `ims_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`),
-  ADD CONSTRAINT `ims_ibfk_2` FOREIGN KEY (`collada_id`) REFERENCES `colladas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;;
+  ADD CONSTRAINT `ims_ibfk_2` FOREIGN KEY (`collada_id`) REFERENCES `colladas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `ims_ibfk_3` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tfs`
