@@ -40,23 +40,23 @@
 	if (isset($rwt)) {
 		if (isset($rwt['roslibjs'])) {
 			echo $this->Html->script(array(
-				'//cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
-				'//cdn.robotwebtools.org/roslibjs/' . h($rwt['roslibjs']) . '/roslib.min.js',
+				'//robotsfor.me/cdn/EventEmitter2/current/eventemitter2.min.js',
+				'//robotsfor.me/cdn/roslibjs/' . h($rwt['roslibjs']) . '/roslib.min.js',
 			));
 		}
 		if (isset($rwt['keyboardteleopjs'])) {
 			echo $this->Html->script(
 				array(
-					'//cdn.robotwebtools.org/keyboardteleopjs/' . h($rwt['keyboardteleopjs']) . '/keyboardteleop.min.js'
+					'//robotsfor.me/cdn/keyboardteleopjs/' . h($rwt['keyboardteleopjs']) . '/keyboardteleop.min.js'
 				)
 			);
 		}
 		if (isset($rwt['ros3djs'])) {
 			echo $this->Html->script(array(
-				'//cdn.robotwebtools.org/threejs/current/three.min.js',
-				'//cdn.robotwebtools.org/threejs/current/ColladaLoader.min.js',
-				'//cdn.robotwebtools.org/ColladaAnimationCompress/current/ColladaLoader2.min.js',
-				'//cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
+				'//robotsfor.me/cdn/threejs/current/three.min.js',
+				'//robotsfor.me/cdn/threejs/current/ColladaLoader.min.js',
+				'//robotsfor.me/cdn/ColladaAnimationCompress/current/ColladaLoader2.min.js',
+				'//robotsfor.me/cdn/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}
 	}
