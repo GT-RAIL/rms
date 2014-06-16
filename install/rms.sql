@@ -280,6 +280,33 @@ INSERT INTO `ims` (`id`, `topic`, `environment_id`, `collada_id`, `resource_id`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `urdfs`
+--
+
+CREATE TABLE IF NOT EXISTS `urdfs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the entry.',
+  `param` varchar(255) NOT NULL COMMENT 'ROS robot description parameter.',
+  `collada_id` int(10) unsigned DEFAULT NULL COMMENT 'The Collada loader for this URDF.',
+  `resource_id` int(10) unsigned DEFAULT NULL COMMENT 'The Collada resource server for this URDF.',
+  `environment_id` int(10) unsigned NOT NULL COMMENT 'The environment this stream belongs to.',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The time of entry creation.',
+  `modified` timestamp NULL DEFAULT NULL COMMENT 'The last edited time.',
+  PRIMARY KEY (`id`),
+  KEY `collada_id` (`collada_id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `environment_id` (`environment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='ROS URDF settings.' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `urdfs`
+--
+
+INSERT INTO `urdfs` (`id`, `param`, `environment_id`, `collada_id`, `resource_id`, `created`, `modified`) VALUES
+  (1, 'robot_description', 1, 1, 1, NOW(), NOW());
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tfs`
 --
 
@@ -301,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `tfs` (
 --
 
 INSERT INTO `tfs` (`id`, `frame`, `angular`, `translational`, `rate`, `environment_id`, `created`, `modified`) VALUES
-  (1, '/rotating_frame', 0.01, 0.01, 10.0, 1, NOW(), NOW());
+  (1, '/base_link', 0.01, 0.01, 10.0, 1, NOW(), NOW());
 
 -- --------------------------------------------------------
 
@@ -723,6 +750,14 @@ ALTER TABLE `ims`
   ADD CONSTRAINT `ims_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`),
   ADD CONSTRAINT `ims_ibfk_2` FOREIGN KEY (`collada_id`) REFERENCES `colladas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `ims_ibfk_3` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `urdfs`
+--
+ALTER TABLE `urdfs`
+  ADD CONSTRAINT `urdfs_ibfk_1` FOREIGN KEY (`environment_id`) REFERENCES `environments` (`id`),
+  ADD CONSTRAINT `urdfs_ibfk_2` FOREIGN KEY (`collada_id`) REFERENCES `colladas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `urdfs_ibfk_3` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tfs`

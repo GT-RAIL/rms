@@ -274,6 +274,32 @@ class RmsHelper extends Helper {
 
 		return $html;
 	}
+
+/**
+ * Add an URDF to the global ros3d scene.
+ *
+ * @param string $param The robot description parameter.
+ * @param int $colladaLoader The Collada loader ID to use.
+ * @param string $resourceServer The base URL of the Collada resource server.
+ * @return string The HTML for the entire script block.
+ */
+	public function urdf($param, $colladaLoader = null, $resourceServer = null) {
+		$html = '<script>';
+		// create the ROS connection
+		$html .= 'new ROS3D.UrdfClient({ros:_ROS,tfClient:_TF,rootObject:_VIEWER.scene,';
+		if ($colladaLoader) {
+			$html .= __('loader:%d,', h($colladaLoader));
+		}
+		if ($resourceServer) {
+			$html .= __('path:"%s",', h($resourceServer));
+		}
+		$html .= __('param:"%s"', h($param));
+		$html .= '});';
+		$html .= '</script>';
+
+		return $html;
+	}
+
 /**
  * Create a keyboard teleoperation connection via keyboardteleopjs.
  *

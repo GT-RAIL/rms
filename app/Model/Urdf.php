@@ -1,8 +1,8 @@
 <?php
 /**
- * Resource Model
+ * Urdfs Model
  *
- * Resources represent Collada resource servers for use with ros3djs.
+ * URDF settings. It contains information about the ROS parameters and Collada loaders.
  *
  * @author		Russell Toris - rctoris@wpi.edu
  * @copyright	2014 Worcester Polytechnic Institute
@@ -11,7 +11,7 @@
  * @version		2.0.0
  * @package		app.Model
  */
-class Resource extends AppModel {
+class Urdf extends AppModel {
 
 /**
  * The validation criteria for the model.
@@ -32,42 +32,39 @@ class Resource extends AppModel {
 			),
 			'isUnique' => array(
 				'rule' => 'isUnique',
-				'message' => 'This resource ID already exists.',
+				'message' => 'This user ID already exists.',
 				'required' => 'update'
 			)
 		),
-		'name' => array(
+		'param' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid name.',
-				'required' => true
-			),
-			'maxLength' => array(
-				'rule' => array('maxLength', 64),
-				'message' => 'Names cannot be longer than 64 characters.',
-				'required' => true
-			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This name already exists.',
-				'required' => true
-			)
-		),
-		'url' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Please enter a valid base URL.',
+				'message' => 'Please enter a valid ROS parameter.',
 				'required' => true
 			),
 			'maxLength' => array(
 				'rule' => array('maxLength', 255),
-				'message' => 'URLs cannot be longer than 255 characters.',
+				'message' => 'Parameters cannot be longer than 255 characters.',
+				'required' => true
+			)
+		),
+		'environment_id' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Please enter a valid environment.',
 				'required' => true
 			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This URL already exists.',
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Environment IDs must be greater than 0.',
 				'required' => true
+			)
+		),
+		'collada_id' => array(
+			'gt' => array(
+				'rule' => array('comparison', '>', 0),
+				'message' => 'Collada IDs must be greater than 0.',
+				'allowEmpty' => true
 			)
 		),
 		'created' => array(
@@ -87,12 +84,9 @@ class Resource extends AppModel {
 	);
 
 /**
- * Resources can have many interactive markers and URDFs.
+ * All URDFs belong to a single environment, resource server, and Collada loader type.
  *
  * @var array
  */
-	public $hasMany = array(
-		'Im' => array('className' => 'Im', 'dependent' => false),
-		'Urdf' => array('className' => 'Urdf', 'dependent' => false)
-	);
+	public $belongsTo = array('Environment', 'Resource', 'Collada');
 }

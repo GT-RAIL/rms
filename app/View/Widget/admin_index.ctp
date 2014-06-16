@@ -28,24 +28,29 @@
 				</p>
 			</header>
 			<div class="row">
-				<section class="4u">
+				<section class="6u">
 					<a href="#streams" class="button special scrolly">MJPEG Streams</a>
 				</section>
-				<section class="4u">
+				<section class="6u">
 					<a href="#teleops" class="button special scrolly">Teleoperations</a>
-				</section>
-				<section class="4u">
-					<a href="#tfs" class="button special scrolly">TF Clients</a>
 				</section>
 			</div>
 			<div class="row">
+				<section class="4u">
+					<a href="#tfs" class="button special scrolly">TF Clients</a>
+				</section>
 				<section class="4u">
 					<a href="#markers" class="button special scrolly">Markers</a>
 				</section>
 				<section class="4u">
 					<a href="#ims" class="button special scrolly">Interactive Markers</a>
 				</section>
-				<section class="4u">
+			</div>
+			<div class="row">
+				<section class="6u">
+					<a href="#urdfs" class="button special scrolly">URDFs</a>
+				</section>
+				<section class="6u">
 					<a href="#resources" class="button special scrolly">Resource Servers</a>
 				</section>
 			</div>
@@ -397,6 +402,74 @@
 	</div>
 </section>
 
+<section id="urdfs" class="wrapper style4 container">
+	<div class="content center">
+		<section>
+			<header>
+				<h2>URDF Settings</h2>
+				<p>URDF settings store information about ROS parameters and Collada resources.</p>
+			</header>
+			<?php
+			echo $this->Html->link(
+				'Create New Entry',
+				array('controller' => 'urdfs', 'action' => 'add'),
+				array('class' => 'button')
+			);
+			?>
+			<br /><br />
+			<table>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Param</th>
+					<th>Collada</th>
+					<th>Resources</th>
+					<th><?php echo $this->Html->link('Environment', array('controller' => 'environments')); ?></th>
+				</tr>
+				<?php foreach ($urdfs as $urdf): ?>
+					<tr>
+						<td>
+							<?php
+							echo $this->Form->postLink(
+								'',
+								array('controller' => 'urdfs', 'action' => 'delete', $urdf['Urdf']['id']),
+								array('class' => 'icon fa-trash-o', 'confirm' => 'Are you sure?')
+							);
+							?>
+							<?php
+							echo $this->Html->link(
+								'',
+								array('controller' => 'urdfs', 'action' => 'edit', $urdf['Urdf']['id']),
+								array('class' => 'icon fa-edit')
+							);
+							?>
+						</td>
+						<td data-title="ID">
+							<?php echo h($urdf['Urdf']['id']); ?>
+						</td>
+						<td data-title="Param">
+							<?php
+							echo $this->Html->link(
+								$urdf['Urdf']['param'],
+								array('controller' => 'urdfs', 'action' => 'view', $urdf['Urdf']['id'])
+							);
+							?>
+						</td>
+						<td data-title="Collada">
+							<?php echo ($urdf['Collada']['name']) ? h($urdf['Collada']['name']) : 'None'; ?>
+						</td>
+						<td data-title="Resources">
+							<?php echo ($urdf['Resource']['name']) ? h($urdf['Resource']['name']) : 'None'; ?>
+						</td>
+						<td data-title="Environment">
+							<?php echo h($urdf['Environment']['name']); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		</section>
+	</div>
+</section>
 <section id="resources" class="wrapper style4 container">
 	<div class="content center">
 		<section>
