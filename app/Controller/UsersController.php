@@ -694,7 +694,7 @@ class UsersController extends AppController {
 
 		// generate the message
 		$message = __('An admin has created you an account for use with %s! ', h($setting['Setting']['title']));
-		$message .= 'This email is to confirm your account. Below are you login credentials. ';
+		$message .= 'This email is to confirm your account. Below are your login credentials. ';
 		$message .= 'No additional action is required at this time. Welcome and have fun!\n\n';
 		$message .= __(
 			'<center><strong>Username:</strong> %s<br /><strong>Password:</strong> %s</center>',
