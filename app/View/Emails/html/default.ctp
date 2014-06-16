@@ -15,7 +15,7 @@
 
 <?php
 $settingModel = ClassRegistry::init('Setting');
-$setting = $settingModel->findById(Setting::$DEFAULT_ID);
+$setting = $settingModel->findById(Setting::$default);
 ?>
 
 <body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;color: #222222;font-family: &quot;Helvetica&quot;, &quot;Arial&quot;, sans-serif;font-weight: normal;text-align: left;line-height: 19px;font-size: 14px;width: 100% !important;">
