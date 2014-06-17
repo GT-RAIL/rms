@@ -109,5 +109,7 @@ class Page extends AppModel {
  *
  * @var array
  */
-	public $hasMany = array('Article' => array('className' => 'Article', 'dependent' => true));
+	public $hasMany = array(
+		'Article' => array('className' => 'Article', 'dependent' => true, 'order' => 'Article.index')
+	);
 }
