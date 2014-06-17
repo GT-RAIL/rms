@@ -26,6 +26,10 @@ This script will do the following tasks:
 
 The RMS has been tested and developed on Ubuntu 14.04 and Ubuntu 12.04.
 
+Note that your default username and password are the following:
+* Username: admin
+* Password: myremotelab
+
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building if you are contributing code.
 
