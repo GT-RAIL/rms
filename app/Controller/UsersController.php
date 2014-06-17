@@ -505,7 +505,7 @@ class UsersController extends AppController {
 			// only show the unrestricted interfaces
 			$ifaces = $this->Iface->find(
 				'all',
-				array('conditions' => array('Iface.unrestricted' => 1, 'recursive' => 3))
+				array('conditions' => array('Iface.unrestricted' => 1), 'recursive' => 3)
 			);
 			$this->set('ifaces', $ifaces);
 		}
