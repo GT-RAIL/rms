@@ -1,4 +1,4 @@
-SNAPSHOT **2.0.x**
+2014-06-17 **2.0.0**
  * RMS 2.0 - Migration to CakePHP framework
 
 2013-04-16 **0.3.0**

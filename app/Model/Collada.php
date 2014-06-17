@@ -15,9 +15,12 @@
 class Collada extends AppModel {
 
 /**
- * Colladas can have many log interactive markers.
+ * Colladas can have many interactive markers and URDFs.
  *
  * @var array
  */
-	public $hasMany = array('Im' => array('className' => 'Im', 'dependent' => false));
+	public $hasMany = array(
+		'Im' => array('className' => 'Im', 'dependent' => false),
+		'Urdf' => array('className' => 'Urdf', 'dependent' => false)
+	);
 }
