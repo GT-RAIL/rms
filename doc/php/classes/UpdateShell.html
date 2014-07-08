@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>    API Documentation &raquo; \Page
+    <title>    API Documentation &raquo; \UpdateShell
 </title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
@@ -117,9 +117,15 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                    <li class="method public inherited">
-        <a href="#method_equalToField" title="equalToField :: Check if a field is equal to another. This is useful for password validations.">
-            <span class="description">Check if a field is equal to another. This is useful for password validations.</span><pre>equalToField</pre>
+                                                                                                    <li class="method public">
+        <a href="#method_main" title="main :: The main function for the shell.">
+            <span class="description">The main function for the shell.</span><pre>main</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_update2_0_0" title="update2_0_0 :: Update from version 2.0.0 to version 2.0.1.">
+            <span class="description">Update from version 2.0.0 to version 2.0.1.</span><pre>update2_0_0</pre>
         </a>
     </li>
 
@@ -127,11 +133,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                </ul>
+                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                </ul>
+                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -145,15 +151,14 @@
 
         <div class="span8">
             <div class="element class">
-                <h1>Page</h1>
+                <h1>UpdateShell</h1>
                 <small style="display: block; text-align: right">
-                                            Extends <a href="../classes/AppModel.html">\AppModel</a>
+                                            Extends <a href="../classes/AppShell.html">\AppShell</a>
                                                         </small>
-                <p class="short_description">Pages Model</p>
+                <p class="short_description">RMS Update Shell</p>
                 <div class="details">
                     <div class="long_description">
-                        <p>Pages display a series of articles as content on the RMS. Each page has many articles. A page has a title and menu
-entry name.</p>
+                        <p>The update shell will update the RMS to the latest version.</p>
                     </div>
                     <table class="table table-bordered">
                                                                                     <tr>
@@ -189,7 +194,7 @@ entry name.</p>
                                                                             </th>
                                     <td>
                                                                                     
-                                                                                <p>RMS v 2.0.0</p>
+                                                                                <p>RMS v 2.0.1</p>
                                     </td>
                                 </tr>
                                                                                                                 <tr>
@@ -207,73 +212,71 @@ entry name.</p>
                                                                             </th>
                                     <td>
                                                                                     
-                                                                                <p>app.Model</p>
+                                                                                <p>app.Console.Command</p>
                                     </td>
                                 </tr>
                                                                                                                                                                                 </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_equalToField"></a>
-                        <div class="element clickable method public  method_equalToField inherited" data-toggle="collapse" data-target=".method_equalToField .collapse">
-                            <h2>Check if a field is equal to another. This is useful for password validations.</h2>
-                            <pre>equalToField(string $check, string $otherField) : bool</pre>
+                                                                <a id="method_main"></a>
+                        <div class="element clickable method public  method_main" data-toggle="collapse" data-target=".method_main .collapse">
+                            <h2>The main function for the shell.</h2>
+                            <pre>main() : null</pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
 
                                     <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$check</h4>
-                                                <code>string</code><p><p>The name of the field to check.</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$otherField</h4>
-                                                <code>string</code><p><p>The name of the other field to check with the first one.</p></p>
-                                            </div>
-                                                                            
+                                    
                                                                             <h3>Response</h3>
-                                        <code>bool</code><p><p>Returns if the two fields have equal contents.</p></p>
+                                        <code>null</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_update2_0_0"></a>
+                        <div class="element clickable method public  method_update2_0_0" data-toggle="collapse" data-target=".method_update2_0_0 .collapse">
+                            <h2>Update from version 2.0.0 to version 2.0.1.</h2>
+                            <pre>update2_0_0() : null</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>null</code><p></p>
                                                                     </div>
                             </div>
                         </div>
                     
                     
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
-                                                    <a id="property_validate"> </a>
-                            <div class="element clickable property  public property_validate" data-toggle="collapse" data-target=".property_validate .collapse">
-                                <h2>The validation criteria for the model.</h2>
-                                <pre>validate : array</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code>array</code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_hasMany"> </a>
-                            <div class="element clickable property  public property_hasMany" data-toggle="collapse" data-target=".property_hasMany .collapse">
-                                <h2>Pages can have many articles.</h2>
-                                <pre>hasMany : array</pre>
+                                                    <a id="property_uses"> </a>
+                            <div class="element clickable property  public property_uses" data-toggle="collapse" data-target=".property_uses .collapse">
+                                <h2>The used models for the shell.</h2>
+                                <pre>uses : array</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -298,14 +301,14 @@ entry name.</p>
                             </div>
                                                             </div>
             </div>
-            <a id="\Page"></a>
+            <a id="\UpdateShell"></a>
             <ul class="breadcrumb">
                 <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
                     
     
     <li><span class="divider">\</span><a href="../namespaces/default.html">\</a></li>
 
-                <li class="active"><span class="divider">\</span><a href="../classes/Page.html">Page</a></li>
+                <li class="active"><span class="divider">\</span><a href="../classes/UpdateShell.html">UpdateShell</a></li>
             </ul>
         </div>
     </div>
