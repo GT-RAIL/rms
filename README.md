@@ -30,6 +30,15 @@ Note that your default username and password are the following:
 * Username: admin
 * Password: myremotelab
 
+### Update
+To update your version of the RMS with the latest code, run the automated script in the [install](install) directory:
+
+```bash
+git pull origin master
+cd install
+./update.bash
+```
+
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building if you are contributing code.
 

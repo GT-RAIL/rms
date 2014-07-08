@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.0
+ * @version		2.0.1
  * @package		app.Controller
  */
 abstract class InterfaceController extends AppController {
@@ -60,12 +60,14 @@ abstract class InterfaceController extends AppController {
 				throw new NotFoundException('Invalid environment.');
 			}
 			// set the URI for ease of use
-			$environment['Rosbridge']['uri'] = __(
-				'%s://%s:%d',
-				$environment['Rosbridge']['Protocol']['name'],
-				$environment['Rosbridge']['host'],
-				$environment['Rosbridge']['port']
-			);
+			if (isset($environment['Rosbridge']['id'])) {
+				$environment['Rosbridge']['uri'] = __(
+					'%s://%s:%d',
+					$environment['Rosbridge']['Protocol']['name'],
+					$environment['Rosbridge']['host'],
+					$environment['Rosbridge']['port']
+				);
+			}
 			$this->set('environment', $environment);
 
 			// check the interface
@@ -101,7 +103,8 @@ abstract class InterfaceController extends AppController {
 			}
 
 			// no study -- check if we are authorized
-			if ($iface['anonymous'] || ($iface['unrestricted'] && $this->viewVars['loggedIn'])) {
+			if (($iface['unrestricted'] && ($iface['anonymous'] || $this->viewVars['loggedIn']))
+				|| $this->viewVars['admin']) {
 				// anyone can access
 				return;
 			}
