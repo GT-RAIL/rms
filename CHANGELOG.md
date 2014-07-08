@@ -1,4 +1,4 @@
-SNAPSHOT **2.0.1**
+2014-07-08 **2.0.1**
  * Added empty, no-style layout [(rctoris)](https://github.com/rctoris/)
  * Fixed various errors with non-rosbridge environments [(rctoris)](https://github.com/rctoris/)
  * Admins can now access all interfaces by default [(rctoris)](https://github.com/rctoris/)
