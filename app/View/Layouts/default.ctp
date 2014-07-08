@@ -18,6 +18,7 @@
 <!DOCTYPE html>
 <html>
 <?php echo $this->element('head'); ?>
+
 <body class="<?php echo ($home) ? 'index' : 'no-sidebar'; ?> loading">
 	<?php echo $this->element('menu', array('home' => $home)); ?>
 

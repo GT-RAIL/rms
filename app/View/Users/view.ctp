@@ -309,7 +309,7 @@
 							</section>
 							<section class="4u">
 								<strong>rosbridge Status:</strong>
-								<?php if (!$environment['Rosbridge']['id']): ?>
+								<?php if (!isset($environment['Rosbridge']['id'])): ?>
 									N/A
 								<?php else: ?>
 									<?php
@@ -323,7 +323,7 @@
 							</section>
 							<section class="4u">
 								<strong>MJPEG Status:</strong>
-								<?php if (!$environment['Mjpeg']['id']): ?>
+								<?php if (!isset($environment['Mjpeg']['id'])): ?>
 									N/A
 								<?php else: ?>
 									<?php
