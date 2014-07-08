@@ -29,14 +29,14 @@ class UpdateShell extends AppShell {
 	public function main() {
 		$complete = false;
 
-		while(!$complete) {
+		while (!$complete) {
 			// load the site settings
 			$setting = $this->Setting->findById(Setting::$default);
 			$this->out(__('Current RMS Version: %s', $setting['Setting']['version']));
 
 			// check the updater
 			$function = __('update%s', str_replace('.', '_', $setting['Setting']['version']));
-			if(method_exists($this, $function)) {
+			if (method_exists($this, $function)) {
 				$this->$function();
 			} else {
 				$complete = true;
