@@ -195,15 +195,21 @@ class RmsHelper extends Helper {
 /**
  * Create a global ROS 3D scene. This will store the viewer object in a JavaScript variable called _VIEWER.
  *
+ * @param string $background The background color of the viewer.
+ * @param float $intensity The lighting intensity.
  * @return string The HTML for the entire script block.
  */
-	public function ros3d() {
+	public function ros3d($background = '#111111', $intensity = 0.66) {
 		$html = '<div id="viewer"></div>';
 		$html .= '<script>';
 		$html .= 'var w=Math.min($("#viewer").parent().width(), 5000000);';
 		// create the ROS connection
 		$html .= '_VIEWER = new ROS3D.Viewer(';
-		$html .= '{divID:"viewer",width:w,height:w*0.66,antialias:true});';
+		$html .= __(
+			'{divID:"viewer",width:w,height:w*0.66,antialias:true,background:"%s",intensity:%f});',
+			$background,
+			$intensity
+		);
 		$html .= '</script>';
 
 		return $html;
