@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.1
+ * @version		2.0.2
  * @package		app.View.Elements
  */
 ?>
@@ -48,23 +48,34 @@
 	if (isset($rwt)) {
 		if (isset($rwt['roslibjs'])) {
 			echo $this->Html->script(array(
-				'//robotsfor.me/cdn/EventEmitter2/current/eventemitter2.min.js',
-				'//robotsfor.me/cdn/roslibjs/' . h($rwt['roslibjs']) . '/roslib.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/roslibjs/' . h($rwt['roslibjs']) . '/roslib.min.js',
 			));
 		}
 		if (isset($rwt['keyboardteleopjs'])) {
 			echo $this->Html->script(
 				array(
-					'//robotsfor.me/cdn/keyboardteleopjs/' . h($rwt['keyboardteleopjs']) . '/keyboardteleop.min.js'
+					'//s3.amazonaws.com/cdn.robotwebtools.org/keyboardteleopjs/' . h($rwt['keyboardteleopjs']) . '/keyboardteleop.min.js'
 				)
 			);
 		}
+		if (isset($rwt['ros2djs'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/EaselJS/current/easeljs.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/ros2djs/' . h($rwt['ros2djs']) . '/ros2d.min.js',
+			));
+		}
+		if (isset($rwt['nav2djs'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/nav2djs/' . h($rwt['nav2djs']) . '/nav2d.min.js',
+			));
+		}
 		if (isset($rwt['ros3djs'])) {
 			echo $this->Html->script(array(
-				'//robotsfor.me/cdn/threejs/current/three.min.js',
-				'//robotsfor.me/cdn/threejs/current/ColladaLoader.min.js',
-				'//robotsfor.me/cdn/ColladaAnimationCompress/current/ColladaLoader2.min.js',
-				'//robotsfor.me/cdn/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/threejs/current/three.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/threejs/current/ColladaLoader.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/ColladaAnimationCompress/current/ColladaLoader2.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}
 	}

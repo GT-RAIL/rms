@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.1
+ * @version		2.0.2
  * @package		app.View.Helper
  */
 class RmsHelper extends Helper {
@@ -193,17 +193,43 @@ class RmsHelper extends Helper {
 	}
 
 /**
- * Create a global ROS 3D scene. This will store the viewer object in a JavaScript variable called _VIEWER.
+ * Create a global ROS 2D scene. This will store the viewer object in a JavaScript variable called _VIEWER2D.
  *
+ * @param string $background The background color of the viewer.
  * @return string The HTML for the entire script block.
  */
-	public function ros3d() {
+	public function ros2d($background = '#111111') {
+		$html = '<div id="viewer2d"></div>';
+		$html .= '<script>';
+		$html .= 'var w=Math.min($("#viewer2d").parent().width(), 5000000);';
+		// create the viewer
+		$html .= '_VIEWER2D = new ROS2D.Viewer(';
+		$html .= __(
+			'{divID:"viewer2d",width:w,height:w*0.66,antialias:true,background:"%s"});', $background
+		);
+		$html .= '</script>';
+
+		return $html;
+	}
+
+/**
+ * Create a global ROS 3D scene. This will store the viewer object in a JavaScript variable called _VIEWER.
+ *
+ * @param string $background The background color of the viewer.
+ * @param float $intensity The lighting intensity.
+ * @return string The HTML for the entire script block.
+ */
+	public function ros3d($background = '#111111', $intensity = 0.66) {
 		$html = '<div id="viewer"></div>';
 		$html .= '<script>';
 		$html .= 'var w=Math.min($("#viewer").parent().width(), 5000000);';
-		// create the ROS connection
+		// create the viewer
 		$html .= '_VIEWER = new ROS3D.Viewer(';
-		$html .= '{divID:"viewer",width:w,height:w*0.66,antialias:true});';
+		$html .= __(
+			'{divID:"viewer",width:w,height:w*0.66,antialias:true,background:"%s",intensity:%f});',
+			$background,
+			$intensity
+		);
 		$html .= '</script>';
 
 		return $html;
