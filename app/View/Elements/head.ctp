@@ -59,6 +59,17 @@
 				)
 			);
 		}
+		if (isset($rwt['ros2djs'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/EaselJS/current/easeljs.min.js',
+				'//s3.amazonaws.com/cdn.robotwebtools.org/ros2djs/' . h($rwt['ros2djs']) . '/ros2d.min.js',
+			));
+		}
+		if (isset($rwt['nav2djs'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/nav2djs/' . h($rwt['nav2djs']) . '/nav2d.min.js',
+			));
+		}
 		if (isset($rwt['ros3djs'])) {
 			echo $this->Html->script(array(
 				'//s3.amazonaws.com/cdn.robotwebtools.org/threejs/current/three.min.js',
