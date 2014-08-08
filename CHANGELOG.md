@@ -1,3 +1,9 @@
+2014-08-08 **2.0.2**
+ * Color and lighting settings added to ros3d helper [(rctoris)](https://github.com/rctoris/)
+ * Switched to S3 CDN [(rctoris)](https://github.com/rctoris/)
+ * Added ros2djs and nav2djs to RWT library includes [(rctoris)](https://github.com/rctoris/)
+ * Ros2d viewer added to helper [(rctoris)](https://github.com/rctoris/)
+
 2014-07-08 **2.0.1**
  * Added empty, no-style layout [(rctoris)](https://github.com/rctoris/)
  * Fixed various errors with non-rosbridge environments [(rctoris)](https://github.com/rctoris/)
