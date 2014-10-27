@@ -1,3 +1,7 @@
+2014-10-27 **2.0.3**
+ * Height options added to ros3d and ros2d viewers [(rctoris)](https://github.com/rctoris/)
+ * Used correct version of stream URL format [(rctoris)](https://github.com/rctoris/)
+
 2014-08-08 **2.0.2**
  * Color and lighting settings added to ros3d helper [(rctoris)](https://github.com/rctoris/)
  * Switched to S3 CDN [(rctoris)](https://github.com/rctoris/)
