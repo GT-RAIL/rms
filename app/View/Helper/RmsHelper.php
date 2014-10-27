@@ -206,7 +206,7 @@ class RmsHelper extends Helper {
 		// create the viewer
 		$html .= '_VIEWER2D = new ROS2D.Viewer(';
 		$html .= __(
-			'{divID:"viewer2d",width:w,height:w*%f,antialias:true,background:"%s"});',  $heightScale, $background
+			'{divID:"viewer2d",width:w,height:w*%f,antialias:true,background:"%s"});', $heightScale, $background
 		);
 		$html .= '</script>';
 

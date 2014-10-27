@@ -302,16 +302,16 @@ RMS.generateStream = function(host, port, topic, id, options) {
   // setup the URL
   var url = 'http://' + host + ':' + port + '/stream?topic=' + topic;
   if (width) {
-    url += '?width=' + width;
+    url += '&width=' + width;
   }
   if (height) {
-    url += '?height=' + height;
+    url += '&height=' + height;
   }
   if (quality) {
-    url += '?quality=' + quality;
+    url += '&quality=' + quality;
   }
   if (invert) {
-    url += '?invert=true';
+    url += '&invert=true';
   }
   img.src = url;
 };
