@@ -56,15 +56,27 @@ class UpdateShell extends AppShell {
 		$this->Setting->save($data, false);
 	}
 
-/**
- * Update from version 2.0.1 to version 2.0.2.
- *
- * @return null
- */
+	/**
+	 * Update from version 2.0.1 to version 2.0.2.
+	 *
+	 * @return null
+	 */
 	public function update2_0_1() {
 		$this->out(' + Updating to RMS version 2.0.2...');
 		// no database changes, just tick the version
 		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.2'));
+		$this->Setting->save($data, false);
+	}
+
+/**
+ * Update from version 2.0.2 to version 2.0.3.
+ *
+ * @return null
+ */
+	public function update2_0_2() {
+		$this->out(' + Updating to RMS version 2.0.3...');
+		// no database changes, just tick the version
+		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.3'));
 		$this->Setting->save($data, false);
 	}
 }
