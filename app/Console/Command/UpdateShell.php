@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.1
- * @version		2.0.3
+ * @version		2.0.4
  * @package		app.Console.Command
  */
 class UpdateShell extends AppShell {
