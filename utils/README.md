@@ -11,7 +11,7 @@ rms Build Setup
 
  1. Install Phing and PHP CodeSniffer
    * `sudo pear channel-discover pear.phing.info`
-   * `sudo pear install phing/phing PHP_CodeSniffer cakephp/CakePHP_CodeSniffer`
+   * `sudo pear install phing/phing PHP_CodeSniffer-1.5.6 cakephp/CakePHP_CodeSniffer`
  2. Install Node.js and its package manager, NPM
    * `sudo apt-get install nodejs npm`
    * `sudo ln -s /usr/bin/nodejs /usr/bin/node`
@@ -29,7 +29,7 @@ rms Build Setup
 
  1. Install Phing and PHP CodeSniffer
    * `sudo pear channel-discover pear.phing.info`
-   * `sudo pear install phing/phing PHP_CodeSniffer cakephp/CakePHP_CodeSniffer`
+   * `sudo pear install phing/phing PHP_CodeSniffer-1.5.6 cakephp/CakePHP_CodeSniffer`
  2. Install Node.js and its package manager, NPM
    * `sudo apt-get install python-software-properties`
    * `sudo add-apt-repository ppa:chris-lea/node.js`
