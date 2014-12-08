@@ -202,7 +202,7 @@ class StudiesController extends AppController {
 		foreach ($conditions as $condition) {
 			if (count($toPick) === 0 || count($toPick[0]['Slot']) === count($condition['Slot'])) {
 				$toPick[] = $condition;
-			} elseif (count($toPick[0]['Slot']) < count($condition['Slot'])) {
+			} elseif (count($toPick[0]['Slot']) > count($condition['Slot'])) {
 				unset($toPick);
 				$toPick = array();
 				$toPick[] = $condition;

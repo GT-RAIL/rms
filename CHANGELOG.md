@@ -1,3 +1,6 @@
+2014-12-08 **2.0.4**
+ * Has many relationship added to Appointment [(rctoris)](https://github.com/rctoris/)
+
 2014-10-27 **2.0.3**
  * Height options added to ros3d and ros2d viewers [(rctoris)](https://github.com/rctoris/)
  * Used correct version of stream URL format [(rctoris)](https://github.com/rctoris/)
