@@ -80,4 +80,11 @@ class Appointment extends AppModel {
 	public $belongsTo = array(
 		'User' => array('className' => 'User'), 'Slot' => array('className' => 'Slot')
 	);
+
+/**
+ * Appointments can have many logs.
+ *
+ * @var array
+ */
+	public $hasMany = array('Log' => array('className' => 'Log', 'dependent' => true));
 }
