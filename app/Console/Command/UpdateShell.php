@@ -88,7 +88,7 @@ class UpdateShell extends AppShell {
 	public function update2_0_3() {
 		$this->out(' + Updating to RMS version 2.0.4...');
 		// no database changes, just tick the version
-		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.3'));
+		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.4'));
 		$this->Setting->save($data, false);
 	}
 }
