@@ -30,7 +30,7 @@ fi
 ## Setup CakePHP
 echo
 echo "Updating CakePHP..."
-sudo pear install cakephp/CakePHP-2.5.5 >> /dev/null
+sudo pear install cakephp/CakePHP-2.5.6 >> /dev/null
 
 # Run the RMS updater
 sudo ../app/Console/cake update

@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.3
+ * @version		2.0.4
  * @package		app.Model
  */
 class Appointment extends AppModel {
@@ -80,4 +80,11 @@ class Appointment extends AppModel {
 	public $belongsTo = array(
 		'User' => array('className' => 'User'), 'Slot' => array('className' => 'Slot')
 	);
+
+/**
+ * Appointments can have many logs.
+ *
+ * @var array
+ */
+	public $hasMany = array('Log' => array('className' => 'Log', 'dependent' => true));
 }

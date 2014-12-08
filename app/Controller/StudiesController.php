@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.3
+ * @version		2.0.4
  * @package		app.Controller
  */
 class StudiesController extends AppController {
@@ -202,7 +202,7 @@ class StudiesController extends AppController {
 		foreach ($conditions as $condition) {
 			if (count($toPick) === 0 || count($toPick[0]['Slot']) === count($condition['Slot'])) {
 				$toPick[] = $condition;
-			} elseif (count($toPick[0]['Slot']) < count($condition['Slot'])) {
+			} elseif (count($toPick[0]['Slot']) > count($condition['Slot'])) {
 				unset($toPick);
 				$toPick = array();
 				$toPick[] = $condition;
