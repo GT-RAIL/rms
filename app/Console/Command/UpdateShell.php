@@ -68,11 +68,11 @@ class UpdateShell extends AppShell {
 		$this->Setting->save($data, false);
 	}
 
-	/**
-	 * Update from version 2.0.2 to version 2.0.3.
-	 *
-	 * @return null
-	 */
+/**
+ * Update from version 2.0.2 to version 2.0.3.
+ *
+ * @return null
+ */
 	public function update2_0_2() {
 		$this->out(' + Updating to RMS version 2.0.3...');
 		// no database changes, just tick the version
@@ -80,11 +80,11 @@ class UpdateShell extends AppShell {
 		$this->Setting->save($data, false);
 	}
 
-	/**
-	 * Update from version 2.0.3 to version 2.0.4.
-	 *
-	 * @return null
-	 */
+/**
+ * Update from version 2.0.3 to version 2.0.4.
+ *
+ * @return null
+ */
 	public function update2_0_3() {
 		$this->out(' + Updating to RMS version 2.0.4...');
 		// no database changes, just tick the version
