@@ -519,6 +519,8 @@ class UsersController extends AppController {
 			)
 		);
 		$this->set('studies', $studies);
+		// do NOT attempt to load all of the logs
+		$this->Appointment->hasMany = array();
 		$appointments = $this->Appointment->find(
 			'all',
 			array(
