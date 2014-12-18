@@ -46,7 +46,7 @@
 							<?php echo h($log['Log']['id']); ?>
 						</td>
 						<td data-title="Study">
-							<?php echo h($log['Appointment']['Slot']['Condition']['Study']['name']); ?>
+							<?php echo h($log['Study']['name']); ?>
 						</td>
 						<td data-title="Type">
 							<?php echo h($log['Type']['name']); ?>
