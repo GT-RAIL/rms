@@ -1,3 +1,8 @@
+2014-12-18 **2.0.5**
+ * Fixed memory leak when viewing a user (ignores logs) [(rctoris)](https://github.com/rctoris/)
+ * Fixed memory leak when viewing logs (smarter recursion) [(rctoris)](https://github.com/rctoris/)
+ * Fixed SQL bug in study export [(rctoris)](https://github.com/rctoris/)
+
 2014-12-08 **2.0.4**
  * Has many relationship added to Appointment [(rctoris)](https://github.com/rctoris/)
  * Fixed bug in OTF condition selection [(rctoris)](https://github.com/rctoris/)

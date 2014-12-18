@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.4
+ * @version		2.0.5
  * @package		app.Controller
  */
 class StudiesController extends AppController {
@@ -275,7 +275,7 @@ class StudiesController extends AppController {
 				}
 			}
 			$logs = $this->Log->find(
-				'all', array('recursive' => 4, 'conditions' => array('Appointment.id IN' => $list))
+				'all', array('recursive' => 4, 'conditions' => array('Appointment.id' => $list))
 			);
 
 			// find the slots

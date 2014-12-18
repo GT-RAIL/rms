@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.4
+ * @version		2.0.5
  * @package		app.Controller
  */
 class LogsController extends AppController {
@@ -39,7 +39,7 @@ class LogsController extends AppController {
  *
  * @var array
  */
-	public $paginate = array('limit' => 15, 'order' => array('Log.created' => 'DESC'), 'recursive' => 4);
+	public $paginate = array('limit' => 15, 'order' => array('Log.created' => 'DESC'), 'recursive' => 1);
 
 /**
  * Define the actions which can be used by any user, authorized or not.
@@ -60,7 +60,15 @@ class LogsController extends AppController {
 	public function admin_index() {
 		$this->Paginator->settings = $this->paginate;
 		// grab all the fetched entries
-		$this->set('logs', $this->Paginator->paginate('Log'));
+		$logs = $this->Paginator->paginate('Log');
+		foreach ($logs as &$log) {
+			$this->Appointment->recursive = -1;
+			$appointment = $this->Appointment->findById($log['Log']['appointment_id']);
+			$slot = $this->Appointment->Slot->findById($appointment['Appointment']['slot_id']);
+			$study = $this->Appointment->Slot->Condition->Study->findById($slot['Condition']['study_id']);
+			$log['Study'] = $study['Study'];
+		}
+		$this->set('logs', $logs);
 		// grab the experiments
 		$this->set('studies', $this->Study->find('list'));
 	}

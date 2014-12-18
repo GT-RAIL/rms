@@ -11,7 +11,7 @@ App::uses('CakeEmail', 'Network/Email');
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.4
+ * @version		2.0.5
  * @package		app.Controller
  */
 class UsersController extends AppController {
@@ -519,6 +519,8 @@ class UsersController extends AppController {
 			)
 		);
 		$this->set('studies', $studies);
+		// do NOT attempt to load all of the logs
+		$this->Appointment->hasMany = array();
 		$appointments = $this->Appointment->find(
 			'all',
 			array(

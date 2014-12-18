@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.4
+ * @version		2.0.5
  * @package		app.View.Logs
  */
 ?>
@@ -46,7 +46,7 @@
 							<?php echo h($log['Log']['id']); ?>
 						</td>
 						<td data-title="Study">
-							<?php echo h($log['Appointment']['Slot']['Condition']['Study']['name']); ?>
+							<?php echo h($log['Study']['name']); ?>
 						</td>
 						<td data-title="Type">
 							<?php echo h($log['Type']['name']); ?>
