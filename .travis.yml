@@ -17,9 +17,9 @@ before_script:
   - npm install -g grunt-cli
   - pear channel-discover pear.phing.info
   - pear channel-discover pear.cakephp.org
-  - pear install phing/phing-2.8.2
-  - pear install PHP_CodeSniffer-1.5.0
-  - pear install cakephp/CakePHP_CodeSniffer
+  - pear install phing/phing
+  - pear install PHP_CodeSniffer-1.5.6
+  - pear install cakephp/CakePHP_CodeSniffer-0.1.30
   - phpenv rehash
   - cd utils
 
