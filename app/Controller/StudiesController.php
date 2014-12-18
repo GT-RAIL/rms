@@ -275,7 +275,7 @@ class StudiesController extends AppController {
 				}
 			}
 			$logs = $this->Log->find(
-				'all', array('recursive' => 4, 'conditions' => array('Appointment.id IN' => $list))
+				'all', array('recursive' => 4, 'conditions' => array('Appointment.id' => $list))
 			);
 
 			// find the slots
