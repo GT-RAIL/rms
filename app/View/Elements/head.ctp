@@ -78,6 +78,11 @@
 				'//s3.amazonaws.com/cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}
+		if (isset($rwt['mjpeg'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js'
+			));
+		}
 	}
 	?>
 
