@@ -60,8 +60,8 @@ class Study extends AppModel {
 				'required' => 'update'
 			),
 			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Lengths must be greater than 0.',
+				'rule' => array('comparison', '>=', 0),
+				'message' => 'Lengths must be greater than 0 (or 0 for no limit).',
 				'required' => 'update'
 			)
 		),

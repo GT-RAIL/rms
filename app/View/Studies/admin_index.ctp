@@ -70,7 +70,13 @@
 							<?php echo __('%s - %s', h($study['Study']['start']), h($study['Study']['end'])); ?>
 						</td>
 						<td data-title="Length">
-							<?php echo __('%d min.', h($study['Study']['length'])); ?>
+							<?php
+								if ($study['Study']['length'] > 0) {
+									echo __('%d min.', h($study['Study']['length']));
+								} else {
+									echo '&infin;';
+								}
+							?>
 						</td>
 						<td data-title="Anonymous">
 							<?php echo ($study['Study']['anonymous']) ? 'Yes' : 'No'; ?>
