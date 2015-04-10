@@ -5,7 +5,7 @@
  */
 
 var RMS = RMS || {
-  VERSION : '2.0.0'
+  VERSION : '2.0.6'
 };
 
 // data types for logging

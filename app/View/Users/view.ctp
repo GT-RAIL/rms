@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.5
+ * @version		2.0.6
  * @package		app.View.Users
  */
 ?>
@@ -134,9 +134,13 @@
 					echo '<hr />';
 					echo '<div class="row">';
 					echo '<section class="5u">';
-					echo __(
-						'<strong>%s</strong> (%d min.)', h($study['Study']['name']), h($study['Study']['length'])
-					);
+					if ($study['Study']['length'] > 0) {
+						echo __(
+							'<strong>%s</strong> (%d min.)', h($study['Study']['name']), h($study['Study']['length'])
+						);
+					} else {
+						echo __('<strong>%s</strong>', h($study['Study']['name']));
+					}
 					echo '</section>';
 
 					// check if we have an appointment
@@ -180,7 +184,7 @@
 						echo '<section class="2u">';
 						echo $this->Form->end(array('label' => 'Book', 'class' => 'button small'));
 						echo '</section>';
-					} else {
+					} else if (!$study['Study']['otf']) {
 						echo '<section class="6u">';
 						echo '<strong>No Free Reservation Slots Available</strong>';
 						echo '</section>';
@@ -235,7 +239,9 @@
 					<div class="row">
 						<section class="6u">
 							<strong><?php echo $appointment['Slot']['Condition']['Study']['name']; ?></strong>
-							(<?php echo $appointment['Slot']['Condition']['Study']['length']; ?> Minute Study)
+							<?php if ($appointment['Slot']['Condition']['Study']['length'] > 0): ?>
+								(<?php echo $appointment['Slot']['Condition']['Study']['length']; ?> Minute Study)
+							<?php endif; ?>
 						</section>
 						<?php if (strtotime($appointment['Slot']['start']) <=  strtotime('now') &&
 							strtotime($appointment['Slot']['end']) >  strtotime('now')): ?>

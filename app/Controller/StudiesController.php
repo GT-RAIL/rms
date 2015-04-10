@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.5
+ * @version		2.0.6
  * @package		app.Controller
  */
 class StudiesController extends AppController {
@@ -168,6 +168,9 @@ class StudiesController extends AppController {
 			throw new ForbiddenException('Anonymous Study is Disabled');
 		}
 
+		// check the length for "infinite" time
+		$endTime = ($study['Study']['length'] > 0) ? strtotime('now') + $study['Study']['length'] * 60 : 2147483647;
+
 		// check if we are free to complete the study
 		if (!$study['Study']['parallel']) {
 			$slots = $this->Slot->find('all', array('recursive' => 2));
@@ -175,7 +178,7 @@ class StudiesController extends AppController {
 				if ($slot['Condition']['Study']['id'] === $id && strtotime($slot['Slot']['end']) > strtotime('now')) {
 					if (strtotime($slot['Slot']['start']) <= strtotime('now')) {
 						throw new ForbiddenException('Study Session Already in Progress');
-					} elseif (strtotime($slot['Slot']['start']) <= strtotime('now') + $study['Study']['length'] * 60) {
+					} elseif (strtotime($slot['Slot']['start']) <= $endTime) {
 						throw new ForbiddenException('Not Enough Free Time Before Next Scheduled Session');
 					}
 				}
@@ -216,7 +219,7 @@ class StudiesController extends AppController {
 		$slotData = array(
 			'Slot' => array(
 				'start' => date('Y-m-d H:i:s'),
-				'end' => date('Y-m-d H:i:s', strtotime('now') + $study['Study']['length'] * 60),
+				'end' => date('Y-m-d H:i:s', $endTime),
 				'condition_id' => $conditionID,
 				'created' => date('Y-m-d H:i:s'),
 				'modified' => date('Y-m-d H:i:s')
