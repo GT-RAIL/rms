@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.6
+ * @version		2.0.5
  * @package		app.View.Elements
  */
 ?>
@@ -81,6 +81,11 @@
 		if (isset($rwt['mjpeg'])) {
 			echo $this->Html->script(array(
 				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js'
+			));
+		}
+		if (isset($rwt['rosqueuejs'])) {
+			echo $this->Html->script(array(
+				'http://localhost/js/rosqueue.min.js'
 			));
 		}
 	}
