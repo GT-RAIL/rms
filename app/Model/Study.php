@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.5
+ * @version		2.0.6
  * @package		app.Model
  */
 class Study extends AppModel {
@@ -60,8 +60,8 @@ class Study extends AppModel {
 				'required' => 'update'
 			),
 			'gt' => array(
-				'rule' => array('comparison', '>', 0),
-				'message' => 'Lengths must be greater than 0.',
+				'rule' => array('comparison', '>=', 0),
+				'message' => 'Lengths must be greater than 0 (or 0 for no limit).',
 				'required' => 'update'
 			)
 		),

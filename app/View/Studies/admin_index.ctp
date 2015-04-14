@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.5
+ * @version		2.0.6
  * @package		app.View.Studies
  */
 ?>
@@ -70,7 +70,13 @@
 							<?php echo __('%s - %s', h($study['Study']['start']), h($study['Study']['end'])); ?>
 						</td>
 						<td data-title="Length">
-							<?php echo __('%d min.', h($study['Study']['length'])); ?>
+							<?php
+								if ($study['Study']['length'] > 0) {
+									echo __('%d min.', h($study['Study']['length']));
+								} else {
+									echo '&infin;';
+								}
+							?>
 						</td>
 						<td data-title="Anonymous">
 							<?php echo ($study['Study']['anonymous']) ? 'Yes' : 'No'; ?>

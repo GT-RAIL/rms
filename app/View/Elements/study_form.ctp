@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.5
+ * @version		2.0.6
  * @package		app.View.Elements
  */
 ?>
@@ -36,7 +36,7 @@
 			</div>
 			<div class="row">
 				<section class="4u">
-					<?php echo $this->Form->input('length', array('label' => 'Session Length (minutes)')); ?>
+					<?php echo $this->Form->input('length', array('label' => 'Session Length (minutes) 0=&infin;')); ?>
 				</section>
 				<section class="4u">
 					<?php echo $this->Form->input('anonymous', array('label' => 'Anonymous Access')); ?>

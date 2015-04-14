@@ -1,3 +1,6 @@
+2015-04-10 **2.0.6**
+ * Added infinite study times [(rctoris)](https://github.com/rctoris/)
+
 2014-12-18 **2.0.5**
  * Fixed memory leak when viewing a user (ignores logs) [(rctoris)](https://github.com/rctoris/)
  * Fixed memory leak when viewing logs (smarter recursion) [(rctoris)](https://github.com/rctoris/)
