@@ -9,7 +9,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.1
- * @version		2.0.6
+ * @version		2.0.7
  * @package		app.Console.Command
  */
 class UpdateShell extends AppShell {
@@ -92,11 +92,11 @@ class UpdateShell extends AppShell {
 		$this->Setting->save($data, false);
 	}
 
-	/**
-	 * Update from version 2.0.4 to version 2.0.5.
-	 *
-	 * @return null
-	 */
+/**
+ * Update from version 2.0.4 to version 2.0.5.
+ *
+ * @return null
+ */
 	public function update2_0_4() {
 		$this->out(' + Updating to RMS version 2.0.5...');
 		// no database changes, just tick the version
@@ -113,6 +113,18 @@ class UpdateShell extends AppShell {
 		$this->out(' + Updating to RMS version 2.0.6...');
 		// no database changes, just tick the version
 		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.6'));
+		$this->Setting->save($data, false);
+	}
+
+/**
+ * Update from version 2.0.6 to version 2.0.7.
+ *
+ * @return null
+ */
+	public function update2_0_6() {
+		$this->out(' + Updating to RMS version 2.0.7...');
+		// no database changes, just tick the version
+		$data = array('Setting' => array('id' => Setting::$default, 'version' => '2.0.7'));
 		$this->Setting->save($data, false);
 	}
 }
