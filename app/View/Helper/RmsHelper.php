@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.6
+ * @version		2.0.7
  * @package		app.View.Helper
  */
 class RmsHelper extends Helper {
@@ -179,13 +179,18 @@ class RmsHelper extends Helper {
  * Create a global ROS connection. This will store the connection object in a JavaScript variable called _ROS.
  *
  * @param string $uri The complete rosbridge connection URI.
+ * @param bool $groovy If groovy compatibility should be used.
  * @param null|string $rosauth The optional rosauth connection key.
  * @return string The HTML for the entire script block.
  */
-	public function ros($uri, $rosauth = null) {
+	public function ros($uri, $groovy = false, $rosauth = null) {
 		$html = '<script>';
 		// create the ROS connection
-		$html .= __('_ROS = new ROSLIB.Ros({url:"%s"});', h($uri));
+		if ($groovy) {
+			$html .= __('_ROS = new ROSLIB.Ros({url:"%s"});', h($uri));
+		} else {
+			$html .= __('_ROS = new ROSLIB.Ros({url:"%s", groovyCompatibility:false});', h($uri));
+		}
 		// do next: rosauth
 		$html .= '</script>';
 

@@ -1,3 +1,6 @@
+2015-04-28 **2.0.7**
+ * Added flag for groovy mode (defaults to false) [(rctoris)](https://github.com/rctoris/)
+
 2015-04-10 **2.0.6**
  * Added infinite study times [(rctoris)](https://github.com/rctoris/)
 
