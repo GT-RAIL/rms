@@ -85,7 +85,7 @@
 		}
 		if (isset($rwt['rosqueuejs'])) {
 			echo $this->Html->script(array(
-				'http://localhost/js/rosqueue.min.js'
+				'http://rail-airbrake/js/rosqueue.min.js'
 			));
 		}
 	}
