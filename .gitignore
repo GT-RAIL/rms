@@ -1,9 +1,9 @@
 .idea
 app/Config/database.php
 app/tmp
+doc
 node_modules
 Carl*
-doc*
 InteractiveWorld*
 Iwmodel*
 Tutorial*
