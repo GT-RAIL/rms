@@ -85,7 +85,7 @@
 		}
 		if (isset($rwt['rosqueuejs'])) {
 			echo $this->Html->script(array(
-				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/current/rosqueue.min.js'
+				'http://s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/current/rosqueue.min.js'
 			));
 		}
 	}
