@@ -85,7 +85,7 @@
 		}
 		if (isset($rwt['rosqueuejs'])) {
 			echo $this->Html->script(array(
-				'http://rail-airbrake/js/rosqueue.min.js'
+				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/current/rosqueue.min.js'
 			));
 		}
 	}
