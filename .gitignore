@@ -3,6 +3,7 @@ app/Config/database.php
 app/tmp
 node_modules
 Carl*
+doc*
 InteractiveWorld*
 Iwmodel*
 Tutorial*
