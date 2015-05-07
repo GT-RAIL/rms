@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.7
+ * @version		2.0.8
  * @package		app.View.Elements
  */
 ?>
@@ -78,9 +78,18 @@
 				'//s3.amazonaws.com/cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}
+		if (isset($rwt['mjpegcanvasjs'])) {
+			echo $this->Html->script(array(
+				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/' . h($rwt['mjpegcanvasjs']) . '/mjpegcanvas.min.js'
+			));
+		}
+		if (isset($rwt['rosqueuejs'])) {
+			echo $this->Html->script(array(
+				'http://s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/' . h($rwt['rosqueuejs']) . '/rosqueue.min.js'
+			));
+		}
 	}
 	?>
-
 
 	<?php if(!isset($style) || $style): ?>
 		<noscript>

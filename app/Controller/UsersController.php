@@ -11,7 +11,7 @@ App::uses('CakeEmail', 'Network/Email');
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.7
+ * @version		2.0.8
  * @package		app.Controller
  */
 class UsersController extends AppController {
@@ -525,7 +525,11 @@ class UsersController extends AppController {
 			'all',
 			array(
 				'recursive' => 3,
-				'conditions' => array('Appointment.user_id' => $id, 'Slot.end >= NOW()'),
+				'conditions' => array(
+					'Appointment.user_id' => $id,
+					'Slot.end >= NOW()',
+					'Slot.end < "2038-01-18 22:14:07"'
+				),
 				'order' => array('Slot.start'),
 			)
 		);
@@ -534,7 +538,7 @@ class UsersController extends AppController {
 			'all',
 			array(
 				'recursive' => 3,
-				'conditions' => array('Appointment.user_id' => $id),
+				'conditions' => array('Appointment.user_id' => $id, 'Slot.end < "2038-01-18 22:14:07"'),
 				'order' => array('Slot.start'),
 			)
 		);
