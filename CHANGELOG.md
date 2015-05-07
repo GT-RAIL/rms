@@ -1,3 +1,7 @@
+2015-05-07 **2.0.8**
+ * Added mjpegcanvasjs and rosqueujs to head element [(petermitrano)](https://github.com/petermitrano)
+ * Does not display multiple OTF appointments for infinite studies [(rctoris)](https://github.com/rctoris/)
+
 2015-04-28 **2.0.7**
  * Added flag for groovy mode (defaults to false) [(rctoris)](https://github.com/rctoris/)
 

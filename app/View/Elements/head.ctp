@@ -78,19 +78,18 @@
 				'//s3.amazonaws.com/cdn.robotwebtools.org/ros3djs/' . h($rwt['ros3djs']) . '/ros3d.min.js',
 			));
 		}
-		if (isset($rwt['mjpeg'])) {
+		if (isset($rwt['mjpegcanvasjs'])) {
 			echo $this->Html->script(array(
-				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js'
+				'//s3.amazonaws.com/cdn.robotwebtools.org/mjpegcanvasjs/' . h($rwt['mjpegcanvasjs']) . '/mjpegcanvas.min.js'
 			));
 		}
 		if (isset($rwt['rosqueuejs'])) {
 			echo $this->Html->script(array(
-				'http://s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/current/rosqueue.min.js'
+				'http://s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/' . h($rwt['rosqueuejs']) . '/rosqueue.min.js'
 			));
 		}
 	}
 	?>
-
 
 	<?php if(!isset($style) || $style): ?>
 		<noscript>
