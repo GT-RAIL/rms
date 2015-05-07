@@ -62,7 +62,7 @@ echo "Setting up CakePHP..."
 echo -e "\tadding CakePHP channel to PEAR..."
 sudo pear channel-discover pear.cakephp.org >> /dev/null
 echo -e "\tinstalling CakePHP via PEAR..."
-sudo pear install -Z cakephp/CakePHP-2.5.6
+sudo pear install -Z cakephp/CakePHP-2.5.8
 
 ## Install the app
 echo
