@@ -1,5 +1,8 @@
+2015-05-08 **2.0.9**
+ * Fixes secure access to rosqueuejs [(rctoris)](https://github.com/rctoris/)
+
 2015-05-07 **2.0.8**
- * Added mjpegcanvasjs and rosqueujs to head element [(petermitrano)](https://github.com/petermitrano)
+ * Added mjpegcanvasjs and rosqueuejs to head element [(petermitrano)](https://github.com/petermitrano)
  * Does not display multiple OTF appointments for infinite studies [(rctoris)](https://github.com/rctoris/)
 
 2015-04-28 **2.0.7**
