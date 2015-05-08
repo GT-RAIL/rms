@@ -8,7 +8,7 @@
  * @copyright	2014 Worcester Polytechnic Institute
  * @link		https://github.com/WPI-RAIL/rms
  * @since		RMS v 2.0.0
- * @version		2.0.8
+ * @version		2.0.9
  * @package		app.View.Elements
  */
 ?>
@@ -85,7 +85,7 @@
 		}
 		if (isset($rwt['rosqueuejs'])) {
 			echo $this->Html->script(array(
-				'http://s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/' . h($rwt['rosqueuejs']) . '/rosqueue.min.js'
+				'//s3.amazonaws.com/cdn.robotwebtools.org/rosqueuejs/' . h($rwt['rosqueuejs']) . '/rosqueue.min.js'
 			));
 		}
 	}
