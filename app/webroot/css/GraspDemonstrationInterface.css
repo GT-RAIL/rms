@@ -1,0 +1,113 @@
+html, body{
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+#queue-status {
+	margin-top: -40px;
+	font-size: 30px;
+}
+
+#main-content {
+	margin-top: -20px;
+}
+
+#important-feedback {
+	font-size: 26px;
+	text-transform: uppercase;
+}
+
+#fatal-feedback {
+	font-size: 26px;
+	text-transform: uppercase;
+}
+
+#feedback{
+	overflow-y: scroll;
+	overflow-x: hidden;
+	word-wrap: break-word;
+	height: 120px;
+	border-top: solid 2px #f1f1f1;
+	border-bottom: solid 2px #f1f1f1;
+	border-left: solid 5px #f1f1f1;
+	margin-bottom: 10px;
+	background-color: #ffffff;
+	color: #000000;
+	text-align: left;
+	font-size: 14px;
+	line-height: 1em;
+}
+
+.feedback-overlay {
+	background-color: #ed6d13;
+	margin-left: -10px;
+	padding-top: 10px;
+	color: #ffffff;
+	position: absolute;
+	width: 100%;
+	opacity: 0.9;
+	padding-bottom: 10px;
+	z-index: 3;
+
+}
+
+.feedback-overlay.hidden {
+	display: none;
+}
+
+
+.feedback-overlay.fatal {
+	opacity: 0.9;
+	padding-top: 100px;
+	padding-bottom: 10px;
+	z-index: 2;
+	background-color: #c41230;
+	color: #ffffff;
+}
+
+.feedback-overlay.fatal.hidden {
+	display: none;
+}
+
+#tutorial {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background: rgba(255,255,255,1);
+	background: -moz-radial-gradient(center,ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+	background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+	background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+	color: black;
+	display: none;
+}
+
+#next {
+	bottom: 10px;
+	float: right;
+	right: 10px;
+	position: fixed;
+	display: none;
+}
+
+
+.highlight {
+	display: none;
+	position: absolute;
+	width: 100%;
+	font-size: 24px;
+	text-align: center;
+	top: 180px;
+}
+
+#welcome-highlight {
+	top: 110px;
+	font-size: 30px;
+
+}
+
+#feedback-highlight {
+	top: 400px;
+}
