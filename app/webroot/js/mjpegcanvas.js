@@ -51,21 +51,6 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
   document.getElementsByTagName('body')[0].appendChild(menu);
 
 
-  // button for the editing 
-  var buttonHeight = height / 8;
-  var buttonPadding = 10;
-  var button = new MJPEGCANVAS.Button({
-    text : 'Edit',
-    height : buttonHeight,
-    topics:topics,
-    currentTopic:topics[defaultStream],
-    labels:labels
-
-  });
-
-
-
-  var buttonWidth = button.width;
 
   // use a regular viewer internally
   var viewer = new MJPEGCANVAS.Viewer({
@@ -91,6 +76,21 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
 
 
 
+  // button for the editing 
+  var buttonHeight = height / 8;
+  var buttonPadding = 10;
+  var button = new MJPEGCANVAS.Button({
+    text : 'Edit',
+    height : buttonHeight,
+    topics:topics,
+    currentTopic:topics[defaultStream],
+    labels:labels,
+    viewer: viewer
+  });
+
+
+
+  var buttonWidth = button.width;
   /**
    * Fades the stream by putting an overlay on it.
    */
@@ -299,10 +299,10 @@ MJPEGCANVAS.Viewer = function(options) {
     }
 
     // silly firefox...
-    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-      var aux = that.image.src.split('?killcache=');
-      that.image.src = aux[0] + '?killcache=' + Math.random(42);
-    }
+    // if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+    //   var aux = that.image.src.split('?killcache=');
+    //   that.image.src = aux[0] + '?killcache=' + Math.random(42);
+    // }
   }
 
 
@@ -440,6 +440,25 @@ MJPEGCANVAS.Viewer = function(options) {
     that.markers.push({data:data,type:type,frame_id:frame_id})
   }
 
+  this.changeStream = function(topic) {
+    console.log(topic)
+    this.image = new Image();
+    // create the image to hold the stream
+    var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
+    // add various options
+    src += '&width=' + this.width;
+    src += '&height=' + this.height;
+    if (this.quality > 0) {
+      src += '&quality=' + this.quality;
+    }
+    if (this.invert) {
+      src += '&invert=' + this.invert;
+    }
+    this.image.src = src;
+    // emit an event for the change
+    this.emit('change', topic);
+  };
+  
   // grab the initial stream
   this.changeStream(topic);
 
@@ -455,23 +474,7 @@ MJPEGCANVAS.Viewer.prototype.__proto__ = EventEmitter2.prototype;
  *
  * @param topic - the topic to stream, like '/wide_stereo/left/image_color'
  */
-MJPEGCANVAS.Viewer.prototype.changeStream = function(topic) {
-  this.image = new Image();
-  // create the image to hold the stream
-  var src = 'http://' + this.host + ':' + this.port + '/stream?topic=' + topic;
-  // add various options
-  src += '&width=' + this.width;
-  src += '&height=' + this.height;
-  if (this.quality > 0) {
-    src += '&quality=' + this.quality;
-  }
-  if (this.invert) {
-    src += '&invert=' + this.invert;
-  }
-  this.image.src = src;
-  // emit an event for the change
-  this.emit('change', topic);
-};
+
 
 /**
  * @author Carl Saldanha csaldanha3@gatech.edu
@@ -538,7 +541,7 @@ MJPEGCANVAS.Button.prototype.redraw = function(options) {
     var topic = streamMenu.options[streamMenu.selectedIndex].value;
     // make sure it is a new stream
     if (topic !== options.currentTopic) {
-      MJPEGCANVAS.Viewer.changeStream(topic);
+      options.viewer.changeStream(topic);
     }
   }, false);
  

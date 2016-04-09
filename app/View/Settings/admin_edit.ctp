@@ -40,6 +40,22 @@
 				</section>
 			</div>
 			<div class="row">
+				<section class="6u">
+					<?php echo $this->Form->input('loginRedirect_controller'); ?>
+				</section>
+				<section class="6u">
+					<?php echo $this->Form->input('loginRedirect_view'); ?>
+				</section>
+			</div>
+			<div class="row">
+				<section class="6u">
+					<?php echo $this->Form->input('logoutRedirect_controller'); ?>
+				</section>
+				<section class="6u">
+					<?php echo $this->Form->input('logoutRedirect_view'); ?>
+				</section>
+			</div>
+			<div class="row">
 				<section class="12u">
 					<?php echo $this->Form->end(array('label' => 'Save', 'class' => 'button special')); ?>
 				</section>

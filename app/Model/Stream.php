@@ -86,6 +86,13 @@ class Stream extends AppModel {
 				'allowEmpty' => true
 			)
 		),
+		// 'tf_frame' => array(
+		// 	'notEmpty' => array(
+		// 		'rule' => 'notEmpty',
+		// 		'message' => 'Please enter a valid name.',
+		// 		'required' => true
+		// 	)
+		// ),
 		'invert' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',

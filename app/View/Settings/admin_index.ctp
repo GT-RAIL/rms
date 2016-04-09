@@ -59,6 +59,28 @@
 				</section>
 			</div>
 			<div class="row">
+				<section class="3u">
+				<strong>Login Redirect Controller</strong>
+				<br />
+					<?php echo ($setting['Setting']['loginRedirect_controller'])  ?>
+				</section>
+				<section class="3u">
+				<strong>Logout Redirect Controller</strong>
+				<br />
+					<?php echo ($setting['Setting']['logoutRedirect_controller'])  ?>
+				</section>
+				<section class="3u">
+				<strong>Login Redirect View</strong>
+				<br />
+					<?php echo ($setting['Setting']['loginRedirect_view'])  ?>
+				</section>
+				<section class="3u">
+				<strong>Logout Redirect View</strong>
+				<br />
+					<?php echo ($setting['Setting']['logoutRedirect_view'])  ?>
+				</section>
+			</div>
+			<div class="row">
 				<section class="12u" id="logo-preview">
 					<strong><u>Site Logo</u></strong>
 					<br />

@@ -15,12 +15,14 @@ App::uses('InterfaceController', 'Controller');
  */
 class TrainsInterfaceController extends InterfaceController {
 
+
 /**
  * The basic view action. All necessary variables are set in the main interface controller.
  *
  * @return null
  */
 	public function view() {
+		
 		// set the title of the HTML page
 		$this->set('title_for_layout', 'CARL (Crowdsourcing for Autonomous Robot Learning)');
 

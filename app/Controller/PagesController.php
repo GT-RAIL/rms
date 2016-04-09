@@ -22,6 +22,7 @@ class PagesController extends AppController {
  */
 	public $helpers = array('Html', 'Form', 'Time');
 
+	public $uses  = array('Settings' );
 /**
  * The used components for the controller.
  *
@@ -37,7 +38,7 @@ class PagesController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated viewing of a single page
 		parent::beforeFilter();
-		$this->Auth->allow('view');
+		$this->Auth->allow('view','logout_redirect');
 	}
 
 /**
@@ -258,6 +259,37 @@ class PagesController extends AppController {
 		return $this->redirect(array('action' => 'view'));
 	}
 
+	public function login_redirect(){
+		$settings= $this->Setting->findById(Setting::$default)['Setting'];
+		$controller='pages';
+		$view='view';
+		if(isset($settings)){
+			if(isset($settings['loginRedirect_controller'])){
+				$controller=$settings['loginRedirect_controller'];
+			}
+			if(isset($settings['loginRedirect_view'])){
+				$view=$settings['loginRedirect_view'];
+			}
+
+		}
+		return $this->redirect(array('controller'=>$controller,'action' => $view));
+	}
+
+	public function logout_redirect(){
+		$settings= $this->Setting->findById(Setting::$default)['Setting'];
+		$controller='user';
+		$view='view';
+		if(isset($settings)){
+			if(isset($settings['logoutRedirect_controller'])){
+				$controller=$settings['logoutRedirect_controller'];
+			}
+			if(isset($settings['logoutRedirect_view'])){
+				$view=$settings['logoutRedirect_view'];
+			}
+
+		}
+		return $this->redirect(array('controller'=>$controller,'action' => $view));
+	}
 /**
  * View the given page. If no page ID is given, the homepage is rendered.
  *

@@ -40,8 +40,8 @@ class UsersController extends AppController {
 		'Session',
 		'Auth' => array(
 			'authorize' => 'Controller',
-			'loginRedirect' => array('controller' => 'users', 'action' => 'view'),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view'),
+			'loginRedirect' => array('controller' => 'pages', 'action' => 'login_redirect'),
+			'logoutRedirect' => array('controller' => 'pages', 'action' => 'logout_redirect'),
 			'authenticate' => array(
 				'Form' => array('passwordHasher' => array('className' => 'Simple', 'hashType' => 'sha256'))
 			)
@@ -64,7 +64,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
-		$this->Auth->allow('signup', 'login', 'username', 'reset');
+		$this->Auth->allow('signup', 'login', 'username', 'reset','anonymousSignup');
 	}
 
 /**
@@ -399,6 +399,44 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Sign Up');
 	}
 
+
+	public function anonymousSignup() {
+		// check if we are already logged in
+		if ($this->Auth->user('id')) {
+			return $this->redirect($this->Auth->redirectUrl());
+		}
+		// only work for POST requests
+		if ($this->request->is('post')) {
+			// create a new entry
+			$this->User->create();
+			if(!isset($this->request->data['User']['email'])){
+				$this->User->data['User']['email']='anonymous@doesnotwork.com';
+			}
+			else if($this->request->data['User']['email']==''){
+				$this->User->data['User']['email']='anonymous@doesnotwork.com';
+			}
+			// set the current timestamp for creation and modification
+			$this->User->data['User']['created'] = date('Y-m-d H:i:s');
+			$this->User->data['User']['modified'] = date('Y-m-d H:i:s');
+			// default to the basic user type
+			$role = $this->Role->find('first', array('conditions' => array('Role.name' => 'basic')));
+			$this->request->data['User']['role_id'] = $role['Role']['id'];
+			// attempt to save the entry
+			if ($this->User->save($this->request->data)) {
+				$id = $this->User->id;
+				// log the user in
+				$this->request->data['User'] = array_merge($this->request->data['User'], array('id' => $id));
+				$this->Auth->login($this->request->data['User']);
+				return $this->redirect($this->Auth->redirectUrl());
+			}
+			else{
+				$this->set('campaign',$this->User->data['User']['email']);
+			}
+			$this->Session->setFlash(__('The user could not be created. Please, try again.'));
+		} 
+		//$this->set('campaign',$_GET['campaign']);
+		$this->set('title_for_layout', 'Anonymous Sign Up');
+	}
 /**
  * Send a username reminder to a given user.
  *

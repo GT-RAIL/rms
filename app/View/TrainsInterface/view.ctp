@@ -71,6 +71,7 @@ $(function() {
 		$streamTopics .= ']';
 		$streamNames .= ']';
 	?>
+
     
     var mjpegcanvas=new MJPEGCANVAS.MultiStreamViewer({
 		divID: 'mjpeg',
@@ -78,9 +79,9 @@ $(function() {
 		port: <?php echo $environment['Mjpeg']['port']; ?>,
 		width: size,
 		height: size * 0.85,
-		quality: <?php echo ($environment['Stream'][0]['quality']) ? $environment['Stream'][0]['quality'] : '90'; ?>,
-		topics: <?php echo $streamTopics; ?>,
-		labels: <?php echo $streamNames; ?>,
+		quality: "<?php echo $environment['Stream']?(($environment['Stream'][0]['quality']) ? $environment['Stream'][0]['quality'] : '90'):''; ?>",
+		topics: "<?php echo $streamTopics; ?>",
+		labels: "<?php echo $streamNames; ?>",
         tfObject:_TF,
         tf:'arm_mount_plate_link'
 	});
@@ -129,7 +130,21 @@ $(function() {
 		showFeedback(0,false,message.feedback.message);
 	});
 
-
+    $.ajax({
+        type: "POST",
+        url: '/Analytics/add',
+        data: {
+            'Analytics':{
+                'os':navigator.oscpu,
+                'browser':navigator.userAgent,
+                'screen_size':$(window).width()+"x"+$(window).height(),
+                'user_id':"<?php echo $userId?>"
+            }
+        },
+        success: function(){
+            console.log('as')
+        },
+    });
 
 
 	/**
@@ -184,20 +199,26 @@ $(function() {
 </script>
 
 <script>
-
 	var enabled = true;
 	var rosQueue = new ROSQUEUE.Queue({
 		ros: _ROS,
 		studyTime: 10,
 		chatEnabled: true,
-		userId: <?php
+		userId: "<?php
 			if (isset($appointment['Appointment']['user_id'])){
 				echo $appointment['Appointment']['user_id'];
 			}
-			else {
-                echo $_GET['name'];
+
+            else if(isset($userId)){
+                echo $userId;
+            }
+			else if(isset($_GET['userid'])){
+                echo $_GET['userid'];
 			}
-		?>
+           else{
+                echo '';
+            }
+		?>"
 	});
 
 	/*
@@ -211,10 +232,13 @@ $(function() {
 	rosQueue.on('activate', function () {
 		//slight pause helps with loading the webpage
 		//setTimeout(tutorial, 1000);
+        if(rosQueue.userId!=''){
+
+        }
+
+        $('.wrapper').show();
+        $('.queue').hide();
         //$('.wrapper').show()
-        console.log('activate')
-        $('.wrapper').hide();
-        $('.queue').show();
 	});
 
 	/**
@@ -246,6 +270,8 @@ $(function() {
 	 * @param message Int32 message, the id of the user to remove
 	 */
 	rosQueue.on('disabled', function () {
+        $('.wrapper').hide();
+        $('.queue').show();
 		enabled = false;
 //		document.getElementById('segment').className = 'button fit';
 //		document.getElementById('ready').className = 'button fit';
@@ -256,10 +282,7 @@ $(function() {
 	 * when the user is dequeued, send them back to their account
 	 */
 	rosQueue.on('dequeue', function () {
-		//location.reload();
-        console.log('deactivate')
-        $('.wrapper').show();
-        $('.queue').hide();
+		location.reload();
 	});
     rosQueue.updateQueueClient.advertise();
 
@@ -343,6 +366,7 @@ $(function() {
     <h3>Hi, Welcome to the GT RAIL lab experiment</h3>
     <p>You are in the queue for the experiment</p>
     <div id='queue-status' ></div>
+    <div id='chat-display' ></div>
 </section>
 <section class="wrapper style4 container">
 
@@ -470,7 +494,7 @@ $(function() {
         </div>
          <div class='row'>
             <div class='col-lg-12'>           
-            <button type="button" class="btn btn-primary btn-large" id="finish-task-btn">Finish Task</button>
+            <button type="button" class="btn btn-primary btn-large button special" id="finish-task-btn">Finish Task</button>
             </div>  
         </div>
 
