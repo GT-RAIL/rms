@@ -123,81 +123,6 @@ MJPEGCANVAS.MultiStreamViewer = function(options) {
   return viewer;
 };
 
-
-/**
- * @author Carl Saldanha - csaldanha3@gatech.edu
- */
-
-/**
- * The Overlay is used to project labels on top of the MJPEGCanvas
- *
- * @param markers - possible keys include:
- *   * This is an array of visualization_msgs/InteractiveMarkerInit markers
- *   * This is emitted by the /tablebot_interactive_manipulation/update_full topic
- *   * Theretically any topic with InteractiveMarkerInit can send markers to this for an updates
- */
-// MJPEGCANVAS.MultiStreamViewer.prototype.overlay_marker = function(markers){
-//   //this.context.clearRect(0,0,this.options.width,this.options.height)
-//   for(var i =0; i<markers.markers.length;i++){
-//     var controls=markers.markers[i].controls;
-//     for(var j =0; j<controls.length;j++){
-//       var marks=controls[j].markers;
-//       for(var k =0; k<marks.length;k++){
-//         var m=marks[k]
-//         if(m!==null){
-//           if(m.text!=''){
-//             var pos=marks[k].pose.position;
-//             var position=convertWorldCoordinatesToImageCoordinates(pos.x,pos.y,this.options.width,this.options.height);
-//             drawMarkerOnCanvas(this.context,m.text,position.x,position.y,pos.z)
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-
-/**
- * @author Carl Saldanha - csaldanha3@gatech.edu
- */
-
-/**
- * This function draws a marker on the canvas
- *
- * @param canvas_context: The 2d context of an HTML Canvas
- *     *  text - the text that is to be drawn on the canvas
- *     *  x - the X position in Canvas co-ordinates
- *     *  y - the Y position in Canvas co-ordinates
- *     *  z - the Z position in Canvas co-ordinates
- */
-
-// function drawMarkerOnCanvas(canvas_context,text,x,y,z){
-//   var fontSize= (z+1)*10;
-//   canvas_context.font = fontSize+"px Arial";  
-//   canvas_context.fillText(text,x-fontSize,y-fontSize);
-// }
-
-/**
- * @author Carl Saldanha - csaldanha3@gatech.edu
- */
-
-/**
- * This function is used to convert Image co-ordinates to real world ones
- *
- * @param x - the X position in Real World Co-ordinates (acutally % of real world so x/max_x)
- *     *  y - the Y position in Real World Co-ordinates (acutally % of real world so y/max_y)
- *     *  width - the total width of the image world 
- *     *  height - the total height of the image world
- * @return The x,y coordinates stored in an object {x,y}
- */
-// var max_x=1;
-// var max_y=1;
-// function convertWorldCoordinatesToImageCoordinates(x,y,width,height){
-
-//   return {x:(1+(x/max_x))*(width/2),y:(height)*(1-(y/max_y))}
-
-// }
-
 MJPEGCANVAS.MultiStreamViewer.prototype.__proto__ = EventEmitter2.prototype;
 
 /**
@@ -313,10 +238,6 @@ MJPEGCANVAS.Viewer = function(options) {
   /**
    * We have to draw a collection of markers saved in markers at an interval
    *
-   * @param markers - possible keys include:
-   *   * This is an array of visualization_msgs/Marker markers
-   *   * This is emitted by the /tablebot_interactive_manipulation/update topic
-   *   * Theretically any topic with Marker can send markers to this for an updates
    */
   function drawOverlay(){
     // clear the canvas
@@ -358,6 +279,8 @@ MJPEGCANVAS.Viewer = function(options) {
     }
   }
 
+  //this is a helper function that takes in a co-ordinate frame and transforms the co-ordinates to 
+  //another frame system
   function convertWorldCoordinatesToImageCoordinates(transform,x,y,z,width,height){
 
     x=x+transform.translation.x;
@@ -376,10 +299,19 @@ MJPEGCANVAS.Viewer = function(options) {
     canvas_context.fillText(text,x-2*fontSize,y-2*fontSize);
   }
 
+  /* we pick the type of marker and react accordingly
+   * @param markers - possible keys include:
+   *   * This is an array of visualization_msgs/Marker markers
+   *   * This is emitted by the /tablebot_interactive_manipulation/update topic
+   *   * Theretically any topic with Marker can send markers to this for an updates
+   */
   function drawMarkerOnCanvas(overlay,messageType,data){
     if(messageType=='visualization_msgs/InteractiveMarkerInit'){
       
         drawInteractiveMarkerInit(overlay,that.markers)
+    }
+    else if(messageType=='visualization_msgs/InteractiveMarkerInit'){
+      
     }
   }
 

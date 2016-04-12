@@ -79,9 +79,9 @@ $(function() {
 		port: <?php echo $environment['Mjpeg']['port']; ?>,
 		width: size,
 		height: size * 0.85,
-		quality: "<?php echo $environment['Stream']?(($environment['Stream'][0]['quality']) ? $environment['Stream'][0]['quality'] : '90'):''; ?>",
-		topics: "<?php echo $streamTopics; ?>",
-		labels: "<?php echo $streamNames; ?>",
+		quality: <?php echo $environment['Stream']?(($environment['Stream'][0]['quality']) ? $environment['Stream'][0]['quality'] : '90'):''; ?>,
+		topics: <?php echo $streamTopics; ?>,
+		labels: <?php echo $streamNames; ?>,
         tfObject:_TF,
         tf:'arm_mount_plate_link'
 	});
@@ -130,6 +130,7 @@ $(function() {
 		showFeedback(0,false,message.feedback.message);
 	});
 
+    //this function is called to give the analytics back to the user
     $.ajax({
         type: "POST",
         url: '/Analytics/add',
@@ -356,9 +357,8 @@ $(function() {
 
 <header class="special container">
 	<span class="icon fa-cloud"></span>
-<!--
-	<h2>TRAINS Interface</h2>
--->
+
+	<!--<h2>TRAINS Intewwrface</h2>-->
 </header>
 
 <!--hidden section at first-->
