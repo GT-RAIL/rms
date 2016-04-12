@@ -32,7 +32,7 @@ class LogsController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Log', 'Study');
+	public $uses = array('Log', 'Study','Type');
 
 /**
  * Define pagination criteria.
@@ -82,30 +82,30 @@ class LogsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-			// verify we are allowed to log
-			if ($this->Session->read('appointment_id') > 0) {
-				// create the entry
-				$this->Log->create();
-				$logData = array(
-					'Log' => array(
-						'appointment_id' => $this->Session->read('appointment_id'),
-						'type_id' => h($this->request->data('type')),
-						'label' => h($this->request->data('label')),
-						'entry' => h($this->request->data('entry')),
-						'created' => date('Y-m-d H:i:s'),
-						'modified' => date('Y-m-d H:i:s')
-					)
-				);
-				if ($this->Log->save($logData)) {
-					// success, empty response
-					$this->layout = false;
-				} else {
-					// invalid data sent
-					throw new ForbiddenException();
-				}
-			} else {
-				// no study
+			// create the entry
+			$this->Log->create();
+			$type = $this->Type->find('first',array('name'=>h($this->request->data('type'))));
+			if($type==null){
 				throw new ForbiddenException();
+			}
+				
+			$logData = array(
+				'Log' => array(
+					'appointment_id' => $this->Session->read('appointment_id'),
+					'type_id' =>$type['Type']['id'],
+					'label' => h($this->request->data('label')),
+					'entry' => h($this->request->data('entry')),
+					'created' => date('Y-m-d H:i:s'),
+					'modified' => date('Y-m-d H:i:s')
+				)
+			);
+
+			if ($this->Log->save($logData)) {
+				// success, empty response
+				$this->layout = false;
+			} else {
+				// invalid data sent
+				throw new ForbiddenException();;
 			}
 		} else {
 			throw new MethodNotAllowedException();

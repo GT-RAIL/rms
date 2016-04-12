@@ -130,7 +130,7 @@ $(function() {
 		showFeedback(0,false,message.feedback.message);
 	});
 
-    //this function is called to give the analytics back to the user
+    //this function is called to give the analytics back to the user 
     $.ajax({
         type: "POST",
         url: '/Analytics/add',
@@ -143,8 +143,22 @@ $(function() {
             }
         },
         success: function(){
-            console.log('as')
+            console.log('Analytics Complete!')
         },
+    });
+
+
+    $.ajax({
+        'type':'POST',
+        'url':"/Logs/add",
+        'data':{
+            'type' :'string',//'string', //options: string json numeric score
+            'label':'trains',
+            'entry' :'starting study'
+        },
+        success: function () {
+          console.log('Logging Started!')
+        }
     });
 
 

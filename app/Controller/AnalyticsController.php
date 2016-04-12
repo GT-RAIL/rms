@@ -30,23 +30,7 @@ class AnalyticsController extends AppController {
  */
 	public $uses = array('User', 'Analytics');
 
-// /**
-//  * The used components for the controller.
-//  *
-//  * @var array
-//  */
-// 	public $components = array(
-		
-// 		'Session',
-// 		'Auth' => array(
-// 			'authorize' => 'Controller',
-// 			'loginRedirect' => array('controller' => 'pages', 'action' => 'login_redirect'),
-// 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'logout_redirect'),
-// 			'authenticate' => array(
-// 				'Form' => array('passwordHasher' => array('className' => 'Simple', 'hashType' => 'sha256'))
-// 			)
-// 		)
-// 	);
+
 
 /**
  * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
