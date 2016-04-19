@@ -4,8 +4,7 @@ html, body{
 }
 
 #queue-status {
-	margin-top: 0px;
-	font-size: 20px;
+	font-size: 30px;
 }
 
 #main-content {
@@ -141,4 +140,8 @@ input.form-control {
 /*Overriding higher level sibling row contol*/
 .row+.row>*,.row>*{
 	padding: 0px;
+}
+
+#mjpeg {
+    padding-left: 10px;
 }

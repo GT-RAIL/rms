@@ -443,7 +443,7 @@ MJPEGCANVAS.Button = function(options) {
  *   * topics - the streams available
  */
 MJPEGCANVAS.Button.prototype.redraw = function(options) {
-  this.rootElement.innerHTML = '<h3>Camera</h3><hr />';
+  //this.rootElement.innerHTML = '<h3>Camera</h3><hr />';
   var streamLabel = document.createElement('label');
   streamLabel.setAttribute('for', 'stream');
   streamLabel.innerHTML = 'Streams: ';

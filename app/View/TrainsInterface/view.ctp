@@ -14,6 +14,23 @@
 ?>
 
 <?php
+// user id
+if (isset($appointment['Appointment']['user_id'])){
+    $user_id = $appointment['Appointment']['user_id'];
+}
+
+else if(isset($userId)) {
+    $user_id = $userId;
+} else if(isset($_GET['userid'])){
+    $user_id = $_GET['userid'];
+}
+else{
+    $user_id = '';
+}
+?>;
+
+
+<?php
 // bootstrap
 echo $this->Html->script('bootstrap.min');
 echo $this->Html->css('bootstrap.min');
@@ -31,6 +48,8 @@ echo $this->Html->script(array(
 			'//cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js'));
 echo $this->Html->css(array(
 			'//cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.css'));
+echo $this->Html->css(array(
+			'//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'));
 echo $this->Html->css('TrainsInterface');
 ?>
 
@@ -51,11 +70,98 @@ echo $this->Rms->tf(
     $environment['Tf']['translational'],
     $environment['Tf']['rate']
 );
-//$appointment = $environment['Condition'][0]['Slot'][0];
 //$is_anonymous = $environment['Iface'][ $environment['Condition'][0]['iface_id'] ]['anonymous'];
+$appointment = $environment['Condition'][0]['Slot'][0];
 ?>
 
 <script>
+function fadeAndDisableAll() {
+    $("#htn-task-frm").fadeTo(500, 0.4);
+    $("#htn-task-complete").attr('disabled', 'disabled');
+    $("#htn-action-select").attr('disabled', 'disabled');
+    $("#htn-learned-action-select").attr('disabled', 'disabled');
+}
+
+function fadeAndEnableAll() {
+    $("#htn-task-frm").fadeTo(500, 1.0);
+    $("#htn-task-complete").prop('disabled', false);
+    $("#htn-action-select").prop('disabled', false);
+    $("#htn-learned-action-select").prop('disabled', false);
+}
+
+// htn-action-select-div: div with a select element with primitive and learned actions
+// current-task-div: A label and paragraph displaying the current task being edited
+// teach-task-div: Add a Step/Done buttons
+// cancel-div: A cancel button
+
+            function get_inputs_for_action(action_name) {
+                // get inputs for the 
+                var current_action = actions.filter(function(obj) {
+                    return obj.action === action_name;
+                });
+                if( current_action.length > 0 ) {
+                    return current_action[0].inputs;
+                } else {
+                    return new Array();
+                }
+            }
+
+            // an array of names of taught tasks so we can easily scan for duplicates
+            // without a ROS service call
+            var learned_task_names = [];
+
+            function update_actions() {
+                $("#htn-action-select").empty();
+                $("#htn-action-select").append('<option disabled selected>Select a built-in action:</option>');
+
+                // Get a list of primitive actions and add options to action select
+                get_primitive_actions(function(result) {
+                    for(var i = 0; i < result.Actions.length; i++) {
+                        $("#htn-action-select").append('<option>'+result.Actions[i].ActionType+'</option>');
+                        actions.push({ 
+                            action: result.Actions[i].ActionType, 
+                                inputs: result.Actions[i].Inputs
+                        });
+                    }
+                    return actions;
+                });
+            }
+
+            function update_learned_actions() {
+                $("#htn-learned-action-select").empty();
+                $("#htn-learned-action-select").append('<option disabled selected>Select a learned action:</option>');
+
+                // Get a list of learned actions and add options to action select
+                get_learned_actions(function(result) {
+                    // Remove the current task from the list so that
+                    // it can't be used until after it's defined
+                    var learned_tasks = [];
+                    if( result.Actions != null && result.Actions.length > 0 ) {
+                        for(var i = 0; i < result.Actions.length; i++) {
+                            console.log("Current task: " + $("#htn-task-name").val());
+                            console.log("Array item: " + result.Actions[i].ActionType);
+                            if( result.Actions[i].ActionType != $("#htn-task-name").val() ) {
+                                learned_tasks.push( result.Actions[i] );
+                            }
+                        }
+                    }
+
+                    if ( learned_tasks != null && learned_tasks.length > 0 ) {
+                        for(var i = 0; i < learned_tasks.length; i++) {
+                            $("#htn-learned-action-select").append('<option>'+learned_tasks[i].ActionType+'</option>');
+                            actions.push({ 
+                                action: learned_tasks[i].ActionType, 
+                                inputs: learned_tasks[i].Inputs
+                            });
+                        }
+                    }
+                    return actions;
+                });
+            }
+
+
+
+
 $(function() {
 	var size = Math.min(((window.innerWidth / 2) - 120), window.innerHeight * 0.60);
 	<?php
@@ -94,37 +200,43 @@ $(function() {
                 name : '/rail_segmentation/segment',
                 serviceType : 'std_srvs/Empty'
     });
-    var segmentation_interval =5000;
-    setInterval(function(){
-        mjpegcanvas.updateOverlay=false;
-        segmentation_service.callService({},function(val){
-            mjpegcanvas.updateOverlay=true;
-        })
-    },20000);
+    var segmentation_interval = 5000;
+//    setInterval(function(){
+//        mjpegcanvas.updateOverlay=false;
+//        segmentation_service.callService({},function(val){
+//            mjpegcanvas.updateOverlay=true;
+//        })
+//    },20000);
 
     // Feedback div
-	var safety_feedback = new ROSLIB.Topic({
+	var pickup_feedback = new ROSLIB.Topic({
 		ros: _ROS,
-		name: 'carl_safety/error',
-		messageType: 'carl_safety/Error'
+		name: '/tablebot_moveit/common_actions/pickup/feedback',
+		messageType: 'rail_manipulation_msgs/PickupActionFeedback'
 	});
-	safety_feedback.subscribe(function (message){
-		showFeedback(message.severity,message.resolved, message.message);
+	pickup_feedback.subscribe(function (message){
+		showFeedback(0,false,message.feedback.message);
 	});
 
-	var nav_feedback = new ROSLIB.Topic({
+    // Action execution feedback from tablebot_heres_how_action_executor
+	var execute_action_feedback = new ROSLIB.Topic({
 		ros: _ROS,
-		name: 'create_parking_spots/status',
-		messageType: 'carl_safety/Error'
+		name: '/web_interface/execute_action_feedback',
+		messageType: 'std_msgs/Bool'
 	});
-	nav_feedback.subscribe(function (message){
-		showFeedback(message.severity,message.resolved,message.message);
+	execute_action_feedback.subscribe(function (message){
+        if(message.data) { // action executed successfully
+            showFeedback(0, false, "Action executed successfully");
+        } else {
+            showFeedback(2, false, "Action failed to execute. Please try again or try another action.");
+        }
+        fadeAndEnableAll();
 	});
 
 	var pickup_feedback = new ROSLIB.Topic({
 		ros: _ROS,
-		name: '/carl_moveit_wrapper/common_actions/pickup/feedback',
-		messageType: 'carl_moveit/PickupActionFeedback'
+		name: '/tablebot_moveit/common_actions/pickup/feedback',
+		messageType: 'rail_manipulation_msgs/PickupActionFeedback'
 	});
 	pickup_feedback.subscribe(function (message){
 		showFeedback(0,false,message.feedback.message);
@@ -214,27 +326,15 @@ $(function() {
 </script>
 
 <script>
+        var user_id =  <?php echo $user_id;?>
+
 	var enabled = true;
 	var rosQueue = new ROSQUEUE.Queue({
 		ros: _ROS,
 		studyTime: 10,
 		chatEnabled: true,
-		userId: "<?php
-			if (isset($appointment['Appointment']['user_id'])){
-				echo $appointment['Appointment']['user_id'];
-			}
-
-            else if(isset($userId)){
-                echo $userId;
-            }
-			else if(isset($_GET['userid'])){
-                echo $_GET['userid'];
-			}
-           else{
-                echo '';
-            }
-		?>"
-	});
+		userId: user_id
+ 	});
 
 	/*
 	 * notify user if I receive a now_active message
@@ -251,9 +351,10 @@ $(function() {
 
         }
 
-        $('.wrapper').show();
-        $('.queue').hide();
-        //$('.wrapper').show()
+        console.log('activate')
+        $('#study-page').show();
+        $('#queue-waiting').hide();
+        $('#experiment-intro').hide();
 	});
 
 	/**
@@ -263,8 +364,8 @@ $(function() {
 		var d = new Date();
 		d.setSeconds(message.sec);
 		d.setMinutes(message.min);
-        
-		$('#queue-status').html('Time Remaining ' + d.toLocaleTimeString().substring(3, 8));
+        $('#experiment-intro').hide();
+		$('#queue-status').html('Estimated time Remaining ' + d.toLocaleTimeString().substring(3, 8));
         
 	});
 
@@ -277,7 +378,7 @@ $(function() {
 		d.setSeconds(data.sec);
 		d.setMinutes(data.min);
 		//substring removes hours and AM/PM
-		$('#queue-status').html('Your waiting time is ' + d.toLocaleTimeString().substring(3, 8));
+		$('#queue-status').html('Your approximate wait time is ' + d.toLocaleTimeString().substring(3, 8));
 	});
 
 	/*
@@ -285,8 +386,9 @@ $(function() {
 	 * @param message Int32 message, the id of the user to remove
 	 */
 	rosQueue.on('disabled', function () {
-        $('.wrapper').hide();
-        $('.queue').show();
+        $('#experiment-intro').hide();
+        $('#study-page').hide();
+        $('#queue-waiting').show();
 		enabled = false;
 //		document.getElementById('segment').className = 'button fit';
 //		document.getElementById('ready').className = 'button fit';
@@ -318,7 +420,6 @@ $(function() {
 		$('#queue-status').html('robot active!');
 	}
 </script>
-
 <!-- chat css - TODO: move to widget -->
 <style>
 .chat-container {
@@ -375,140 +476,164 @@ $(function() {
 	<!--<h2>TRAINS Intewwrface</h2>-->
 </header>
 
+<!-- intro section -->
+<section class="style4 container queue" id="experiment-intro">
+    <h3>Hi, Welcome to the GT RAIL Lab Crowd-sourced Robot Experiment</h3>
+    <div>
+        <p>Connecting...&nbsp; <i class="fa fa-spinner fa-spin" style="font-size:24px"></i> </p>
+    </div>
+</section>
+
 <!--hidden section at first-->
-<section class=" style4 container queue" style="display: none">
-    <h3>Hi, Welcome to the GT RAIL lab experiment</h3>
-    <p>You are in the queue for the experiment</p>
-    <div id='queue-status' ></div>
+<section class="style4 container" style="display: none" id="queue-waiting">
+    <h3>Hi, Welcome to the GT RAIL Lab Crowd-sourced Robot Experiment</h3>
+    <div>
+        <p>You are in the queue for the experiment.</p>
+    </div>
+    <div id="queue-status"></div>
     <div id='chat-display' ></div>
 </section>
-<section class="wrapper style4 container">
+<section class="wrapper style4 container" id="study-page" style="display: none">
 
         <!-- left side has form controls for task specification -->
-        <div class="col-lg-6">
-            <h3>Teach a new task</h3> 
-            <form id="htn-task-frm" name="htn-task-frm" class="form-horizontal">
-                <div class="alert alert-info">
-                    <div class="form-group" id="teach-task-name-div">
-                        <label class="col-sm-3 control-label" for="htn-action-select">Task Name</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="htn-task-name" name="htn-task-name" class="form-control" placeholder="PackLunch" value="PackLunch"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="teach-task-div">
-                        <label class="col-sm-3 control-label" for="htn-action-select"></label>
-                        <div class="col-sm-3">
-                            <button id="htn-teach-task" name="htn-teach-task" class="btn btn-success">Teach</button>
-                        </div>
-                        <div class="col-sm-3">
-                            <button id="htn-task-complete" name="htn-task-complete" class="btn btn-danger">Task Complete</button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="alert alert-info" id="htn-action-select-div">
-                    <div class="row">
-                        <p>Select an action to add to execute and add to the current task:</p>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="htn-action-select">Built-in Actions</label>
-                        <div class="col-sm-6">
-                            <select id="htn-action-select" name="htn-action-select" class="form-control">
-                                <option disabled selected>Select an action...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="htn-learned-action-select">Learned Actions</label>
-                        <div class="col-sm-6">
-                            <select id="htn-learned-action-select" name="htn-learned-action-select" class="form-control">
-                                <option disabled selected>Select an action to execute</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="alert alert-info" id="current-task-div">
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <label for="current-task" class="col-sm-3 control-label" style="padding-top: 7px;">Current Action:</label>
-                            <div class="col-sm-9" style="text-align: left">
-                              <p class="form-control-static" id="current-task"></p>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <label class="col-sm-3 control-label" style="padding-top: 7px;">Select input(s):</label>
+        <div class="row">
+            <div class="col-lg-6" id="study-controls">
+                <h3>Teach a new task</h3> 
+                <form id="htn-task-frm" name="htn-task-frm" class="form-horizontal">
+                    <div class="alert alert-info">
+                        <div class="form-group" id="teach-task-name-div">
+                            <label class="col-sm-3 control-label" for="htn-task-name">Task Name</label>
                             <div class="col-sm-6">
-                                <div id="htn-input-select-div">
-                                </div>
-                                <button id="htn-execute-btn" class="btn btn-primary" type="button">Execute</button>
+                                <input type="text" id="htn-task-name" name="htn-task-name" class="form-control" placeholder="PackLunch" value="PackLunch"/>
                             </div>
                         </div>
+
+                        <div class="form-group" id="teach-task-div">
+                            <label class="col-sm-3 control-label" for="htn-teach-task"></label>
+                            <div class="col-sm-3">
+                                <button id="htn-teach-task" name="htn-teach-task" class="btn btn-success">Teach</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="htn-task-complete" name="htn-task-complete" class="btn btn-danger">Task Complete</button>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="form-group" id="teach-subtask-div">
+                    <div class="alert alert-info" id="htn-action-select-div">
                         <div class="row">
+                            <p>Select an action to add to execute and add to the current task:</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="htn-action-select">Built-in Actions</label>
                             <div class="col-sm-6">
-                                <button id="htn-add-step-btn" type="button" class="btn btn-primary">Add a Step</button>
+                                <select id="htn-action-select" name="htn-action-select" class="form-control">
+                                    <option disabled selected value="default">Select an action...</option>
+                                </select>
                             </div>
-                            <div class="col-sm-6">
-                                <button id="htn-add-step-done-btn" type="button" class="btn btn-success">Done</button>
+                        </div>
+
+                        <div>Or</div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="htn-learned-action-select">Learned Actions</label> <div class="col-sm-6">
+                                <select id="htn-learned-action-select" name="htn-learned-action-select" class="form-control">
+                                    <option disabled selected value="default">Select an action to execute</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group" id="cancel-div">
-                    <span>
-                        <button id="htn-cancel-btn" type="button" class="btn btn-warning">Cancel</button>
-                    </span>
-                </div>
+                    <div class="alert alert-info" id="current-task-div">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label for="current-task" class="col-sm-3 control-label" style="padding-top: 7px;">Selected Action:</label>
+                                <div class="col-sm-9" style="text-align: left">
+                                  <p class="form-control-static" id="current-task"></p>
+                                </div>
+                            </div>
 
+                            <div class="col-sm-12">
+                                <label class="col-sm-3 control-label" style="padding-top: 7px;">Select input(s):</label>
+                                <div class="col-sm-6">
+                                    <div id="htn-input-select-div">
+                                    </div>
+                                    <button id="htn-execute-btn" class="btn btn-primary" type="button">Execute</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="row text-left">
+                        <div class="form-group" id="teach-subtask-div">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button id="htn-add-step-btn" type="button" class="btn btn-primary">Add a Step</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button id="htn-add-step-done-btn" type="button" class="btn btn-success">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="cancel-div">
+                        <span>
+                            <button id="htn-cancel-btn" type="button" class="btn btn-warning">Cancel</button>
+                        </span>
+                    </div>
+                </form>
+
+                <div class="text-left">
                     <h4>Task Tree</h4>
                     <div class="col-lg-12">
                         <div id="jstree_loading_div" class="alert alert-info">Loading...</div>
-                    	<div id="jstree_div"></div>
+                        <div id="jstree_div"></div>
                     </div>
                 </div>
-            </form>
-        </div>
 
-        <div class="col-lg-6">
-            <div id="mjpeg">
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-6">
+                <div id="mjpeg">
+                </div>
+                <h4>System Status</h4>
+                <div id="feedback" class="col-lg-12">
+            Ready
+                </div>
+                <div id="feedback" class="col-lg-12 feedback-overlay hidden">
+            ERROR:
+                </div>
+            </div>
+        
+
+        </div>
+
 <!--
-                <div id="chat-container" class="chat-container">
-                    <h4 class="chat-title">Chat</h4>
-                    <div id="chat-display" class="chat-display"> 
+                <div class="col-lg-4">
+                    <div id="chat-container" class="chat-container">
+                        <h4 class="chat-title">Chat</h4>
+                        <div id="chat-display" class="chat-display"> 
+                        </div>
+                        <span>
+                            <textarea id="chat-text-input" class="chat-text-input" placeholder="Begin typing to chat..."  ></textarea>
+                        </span>
                     </div>
-                    <span>
-                        <textarea id="chat-text-input" class="chat-text-input" placeholder="Begin typing to chat..."  ></textarea>
-                    </span>
                 </div>
 -->
 
-            </div>
 
-        </div>
-
-        <div class="row">
-            <h4>System Status</h4>
-            <div id="feedback" class="col-lg-12">
-		Ready
-            </div>
-        </div>
+<!--
          <div class='row'>
-            <div class='col-lg-12'>           
-            <button type="button" class="btn btn-primary btn-large button special" id="finish-task-btn">Finish Task</button>
+            <div class='col-lg-6'>
+            </div>
+            
+            <div class='col-lg-6'>           
+            </div>
+        </div>
+-->
+
+         <div class='row'>
+            <div class='col-lg-12'style="text-align: center">           
+                <button type="button" class="btn btn-primary btn-large button special" id="finish-task-btn">All Done</button>
             </div>  
         </div>
 
@@ -671,7 +796,12 @@ $(function() {
                     question: question,
                     answer: response
                 });
+
                 response_topic.publish(response_msg);
+
+                setTimeout(function(){
+                    update_learned_actions();
+                }, 1000);
             });
 
 
@@ -779,78 +909,6 @@ $(function() {
 
         <script>
         $(function(){
-
-// htn-action-select-div: div with a select element with primitive and learned actions
-// current-task-div: A label and paragraph displaying the current task being edited
-// teach-task-div: Add a Step/Done buttons
-// cancel-div: A cancel button
-
-            function get_inputs_for_action(action_name) {
-                // get inputs for the 
-                var current_action = actions.filter(function(obj) {
-                    return obj.action === action_name;
-                });
-                if( current_action.length > 0 ) {
-                    return current_action[0].inputs;
-                } else {
-                    return new Array();
-                }
-            }
-
-            // an array of names of taught tasks so we can easily scan for duplicates
-            // without a ROS service call
-            var learned_task_names = [];
-
-            function update_actions() {
-                $("#htn-action-select").empty();
-                $("#htn-action-select").append('<option disabled selected>Select a built-in action:</option>');
-
-                // Get a list of primitive actions and add options to action select
-                get_primitive_actions(function(result) {
-                    for(var i = 0; i < result.Actions.length; i++) {
-                        $("#htn-action-select").append('<option>'+result.Actions[i].ActionType+'</option>');
-                        actions.push({ 
-                            action: result.Actions[i].ActionType, 
-                                inputs: result.Actions[i].Inputs
-                        });
-                    }
-                    return actions;
-                });
-            }
-
-            function update_learned_actions() {
-                $("#htn-learned-action-select").empty();
-                $("#htn-learned-action-select").append('<option disabled selected>Select a learned action:</option>');
-
-                // Get a list of learned actions and add options to action select
-                get_learned_actions(function(result) {
-                    // Remove the current task from the list so that
-                    // it can't be used until after it's defined
-                    var learned_tasks = [];
-                    if( result.Actions != null && result.Actions.length > 0 ) {
-                        for(var i = 0; i < result.Actions.length; i++) {
-                            console.log("Current task: " + $("#htn-task-name").val());
-                            console.log("Array item: " + result.Actions[i].ActionType);
-                            if( result.Actions[i].ActionType != $("#htn-task-name").val() ) {
-                                learned_tasks.push( result.Actions[i] );
-                            }
-                        }
-                    }
-
-                    if ( learned_tasks != null && learned_tasks.length > 0 ) {
-                        for(var i = 0; i < learned_tasks.length; i++) {
-                            $("#htn-learned-action-select").append('<option>'+learned_tasks[i].ActionType+'</option>');
-                            actions.push({ 
-                                action: learned_tasks[i].ActionType, 
-                                inputs: learned_tasks[i].Inputs
-                            });
-                        }
-                    }
-                    return actions;
-                });
-            }
-
-
             // Initial setup
             var selected_action_name = "";
 
@@ -943,13 +1001,14 @@ $(function() {
                 button_topic.publish(button_msg);
 
                 //TODO: Something happens on Finish
-                location.reload(); 
-            })
+                //location.reload(); 
+                window.location = "http://localhost";
+            });
 
             // Execute button: publishes execute action msg with action name and array of inputs
             $("#htn-execute-btn").click(function(event) {
                 event.preventDefault();
-                //alert('action_name: '+selected_action_name);
+                fadeAndDisableAll();
 
                 // hide input selection during execution
                 $("#current-task-div").hide();
@@ -971,7 +1030,21 @@ $(function() {
 
             // Action selected from dropdown
             // Refresh inputs and show input selection div
-            $("#htn-action-select,#htn-learned-action-select").on("change", function() {
+            $("#htn-action-select").on("change", function() {
+                selected_action_name = $("option:selected", this).html();
+                var selected_action_inputs = get_inputs_for_action(selected_action_name);
+
+                $("#htn-input-select-div").empty();
+                inputs = get_parameters(selected_action_name);
+
+                // Unselect any selected learned actions
+                $("#htn-learned-action-select").val('default');
+
+            });
+            $("#htn-learned-action-select").on("change", function() {
+                // Unselect any selected primitive actions
+                $("#htn-action-select").val('default');
+
                 selected_action_name = $("option:selected", this).html();
                 var selected_action_inputs = get_inputs_for_action(selected_action_name);
 
@@ -987,7 +1060,8 @@ $(function() {
                     button: "updateHTN"
                 });
                 button_topic.publish(button_msg);
-            }
+            };
+            
 
             // Load tree on page load
             $(document).ready(function() {
@@ -995,22 +1069,21 @@ $(function() {
                 // unregistering and publish bug 
                 // TODO: verify problem and find a better solution
                 // https://github.com/RobotWebTools/rosbridge_suite/issues/138
-//                window.setTimeout(update_htn, 2000);
+                //                window.setTimeout(update_htn, 2000);
             });
 
 
             // Reload tree after btn or selection changes
-//            $(".btn, #htn-action-select, #htn-input-select").click(function() {
-//            	get_htn(function(htn) {	// Anonymous function to generate the visuals from the HTN
-//            		jstree_data = populate_jstree(htn);
-//            	});
-//            });
+            //            $(".btn, #htn-action-select, #htn-input-select").click(function() {
+            //            	get_htn(function(htn) {	// Anonymous function to generate the visuals from the HTN
+            //            		jstree_data = populate_jstree(htn);
+            //            	});
+            //            });
         });
         </script>
 
         <!-- Queue and Chat -->
         <script>
-
             var chat_topic = new ROSLIB.Topic({
                 ros: _ROS,
                 name: '/web_interface/chat',
