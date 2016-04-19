@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="rms" default="build">
+    <property name="src.dir" value="../app" />
+    <property name="doc.dir" value="../doc" />
+    <property name="php-doc.dir" value="../doc/php" />
+    <property name="js-doc.dir" value="../doc/js" />
+
+    <!-- Run a basic, simple linter -->
+    <target name="lint">
+        <phplint haltonfailure="true" deprecatedAsError="true">
+            <fileset dir="${src.dir}">
+                <include name="*.php" />
+                <include name="**/*.php" />
+            </fileset>
+        </phplint>
+    </target>
+
+    <!-- Code quality checks -->
+    <target name="quality">
+        <phpcodesniffer standard="CakePHP" showSources="true" haltonerror="true" haltonwarning="true">
+            <fileset dir="${src.dir}">
+                <include name="*.php" />
+                <include name="**/*.php" />
+            </fileset>
+            <formatter type="full" usefile="false" />
+        </phpcodesniffer>
+    </target>
+
+    <!-- Install npm packages -->
+    <target name="npm">
+        <exec command="npm install ." passthru="true" checkreturn="true" />
+    </target>
+
+    <!-- JS/CSS checks via Grunt -->
+    <target name="grunt">
+        <exec command="npm install ." passthru="true" checkreturn="true" />
+        <exec command="grunt build" passthru="true" checkreturn="true" />
+    </target>
+
+    <!-- Clean old docs -->
+    <target name="clean-doc">
+        <delete dir="${doc.dir}" />
+        <mkdir dir="${php-doc.dir}" />
+        <mkdir dir="${js-doc.dir}" />
+    </target>
+
+    <!-- PHP docs -->
+    <target name="php-doc">
+        <phpdoc2 destdir="${php-doc.dir}">
+            <fileset dir="${src.dir}">
+                <include name="*.php" />
+                <include name="**/*.php" />
+            </fileset>
+        </phpdoc2>
+    </target>
+	
+	<!-- JS docs via Grunt -->
+    <target name="grunt-doc">
+        <exec command="grunt doc" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="build" depends="lint,quality,npm,grunt" />
+    <target name="doc" depends="clean-doc,php-doc,npm,grunt-doc" />
+</project>

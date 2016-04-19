@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<script type="text/javascript" src="http://cdn.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/nav2djs/current/nav2d.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/rosqueuejs/current/rosqueue.js"></script>
+
+<script type="text/javascript">
+  /**
+   * Setup all GUI elements when the page is loaded.
+   */
+  function init() {
+    // Connect to ROS.
+    var ros = new ROSLIB.Ros({
+      url : 'ws://localhost:9090'
+    });
+
+    // Create the main viewer.
+    var viewer = new ROS2D.Viewer({
+      divID : 'nav',
+      width : 750,
+      height : 800
+    });
+
+    // Setup the nav client.
+    var nav = NAV2D.OccupancyGridClientNav({
+      ros : ros,
+      rootObject : viewer.scene,
+      viewer : viewer,
+      serverName : '/pr2_move_base'
+    });
+  }
+</script>
+</head>
+
+<body onload="init()">
+  <h1>Queue Widget and Chat Test</h1>
+  <div id="nav"></div>
+</body>
+</html>

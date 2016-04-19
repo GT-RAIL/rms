@@ -1,13 +1,10 @@
-# CakePHP 3
-
-/vendor/*
-/config/app.php
-/tmp/*
-/logs/*
-
-# CakePHP 2
-
-/app/tmp/*
-/app/Config/core.php
-/app/Config/database.php
-/vendors/*
+.idea
+app/Config/database.php
+app/tmp
+node_modules
+Carl*
+InteractiveWorld*
+CrowdManipulation*
+Iwmodel*
+Tutorial*
+app/webroot/resources
