@@ -34,7 +34,7 @@ else{
 // bootstrap
 echo $this->Html->script('bootstrap.min');
 echo $this->Html->css('bootstrap.min');
-echo $this->Html->css('CrowdManipulationInterface');
+//echo $this->Html->css('CrowdManipulationInterface');
 
 // jstree for collapsible tree view of HTN
 echo $this->Html->script('jstree.min');
@@ -483,7 +483,6 @@ $(function() {
         <p>Connecting...&nbsp; <i class="fa fa-spinner fa-spin" style="font-size:24px"></i> </p>
     </div>
 </section>
-
 <!--hidden section at first-->
 <section class="style4 container" style="display: none" id="queue-waiting">
     <h3>Hi, Welcome to the GT RAIL Lab Crowd-sourced Robot Experiment</h3>
@@ -723,8 +722,8 @@ $(function() {
             // modal div to have the correct question text and buttons
             // then shows the modal
             function updateQuestionModal(message) {
-                $("#question-answer-div").empty();
                 $("#question-text").empty();
+                $("#question-answer-div").empty()
                 current_question = '';
                 $("#question-text").text(message.question);
                 current_question = message.question;
@@ -738,7 +737,12 @@ $(function() {
                     $("#question-answer-div").append('<button type="button" class="btn btn-success" data-dismiss="modal">Rename</button>');
                     $("#question-answer-div").append('<button type="button" class="btn btn-warning" data-dismiss="modal">No Change</button>');
                     
-                } else { // Otherwise, it's a multiple choice question 
+                }
+                //no options .. just information from disco
+                else if(message.answers.length==0){
+                    $("#question-answer-div").append('<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>');
+                }
+                else { // Otherwise, it's a multiple choice question 
                     // add buttons
                     for(var i = 0; i < message.answers.length; ++i) {
                         var answer = message.answers[i];
@@ -986,7 +990,7 @@ $(function() {
                 $("#htn-task-name").prop('disabled', false);
                 $("#htn-teach-task").show();
                 $("#htn-task-complete").hide();
-
+                $("#current-task-div").hide();
                 //update the action list and reselect the "select an action..." option
                 update_actions();
                 update_learned_actions();
@@ -1008,7 +1012,7 @@ $(function() {
             // Execute button: publishes execute action msg with action name and array of inputs
             $("#htn-execute-btn").click(function(event) {
                 event.preventDefault();
-                fadeAndDisableAll();
+                fadeAndDisableAll(); 
 
                 // hide input selection during execution
                 $("#current-task-div").hide();
