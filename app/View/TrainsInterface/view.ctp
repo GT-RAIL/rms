@@ -34,7 +34,7 @@ else{
 // bootstrap
 echo $this->Html->script('bootstrap.min');
 echo $this->Html->css('bootstrap.min');
-echo $this->Html->css('CrowdManipulationInterface');
+
 
 // jstree for collapsible tree view of HTN
 echo $this->Html->script('jstree.min');
@@ -379,6 +379,10 @@ $(function() {
 		d.setMinutes(data.min);
 		//substring removes hours and AM/PM
 		$('#queue-status').html('Your approximate wait time is ' + d.toLocaleTimeString().substring(3, 8));
+        if(data.min<1){
+            id(data.sec>0)
+                window.document.title=d.toLocaleTimeString().substring(3, 8)+' to study'
+        }
 	});
 
 	/*
@@ -896,7 +900,7 @@ $(function() {
 
 			// Populate the jstree nodes with the incoming data
 			function populate_jstree(htn) {
-				var data = create_jstree_data(htn);
+				var data = create_jstree_data(htn.data);
                 $("#jstree_div").jstree('destroy');
 				$("#jstree_div").jstree({
 					core: {
@@ -1002,7 +1006,7 @@ $(function() {
 
                 //TODO: Something happens on Finish
                 //location.reload(); 
-                window.location = "http://localhost";
+                 window.location.href = "/";
             });
 
             // Execute button: publishes execute action msg with action name and array of inputs

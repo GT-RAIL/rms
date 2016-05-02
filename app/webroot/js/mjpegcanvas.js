@@ -165,10 +165,10 @@ MJPEGCANVAS.Viewer = function(options) {
   this.topics= [] //the topics that the system can subscribe to, to get messages
   this.tf_frames = [] // the frames which we are visualizing with            {} CONNECTED
   this.tf_frame_transforms= [] //the latest transform for each of the frames {} CONNECTED
-  this.tfObject = options.tfObject //TODO
+  this.tfObject = options.tfObject 
   this.updateOverlay = true;
   var tf = options.tf || 'arm_mount_plate_link'; // this is the base frame of the whole system
-  this.base_frame={rotation:[0,0,0],translation:[0,0,0]}
+  this.base_frame={'rotation':{'x':0,'y':0,'z':0},'translation':{'x':0,'y':0,'z':0}}
   var topic = options.topic;
 
   // create no image initially
@@ -193,6 +193,7 @@ MJPEGCANVAS.Viewer = function(options) {
 
   //handle the TF from here
   this.tfObject.subscribe(tf, function(transform) {
+    
     this.base_frame=transform;
   });
 
@@ -219,7 +220,7 @@ MJPEGCANVAS.Viewer = function(options) {
     // check for an overlay
     if (overlay) {
       if(that.updateOverlay)
-      drawOverlay();
+        drawOverlay();
       context.drawImage(overlay, 0, 0);
     }
 
@@ -249,7 +250,7 @@ MJPEGCANVAS.Viewer = function(options) {
   }
 
   function drawInteractiveMarkerInit(context,markerLists){
-    var transform={'rotation':[0,0,0],'translation':[0,0,0]}
+    var transform={'rotation':{'x':0,'y':0,'z':0},'translation':{'x':0,'y':0,'z':0}}
     
     for(var i =0; i<markerLists.length;i++){
       var markers=markerLists[i].data.markers;
@@ -266,10 +267,13 @@ MJPEGCANVAS.Viewer = function(options) {
           var marks=controls[j].markers;
           for(var k =0; k<marks.length;k++){
             var m=marks[k]
+
             if(m!==null){
               if(m.text!=''){
+
                 var pos=marks[k].pose.position;
                 var position=convertWorldCoordinatesToImageCoordinates(transform,pos.x,pos.y,pos.z,that.width,that.height);
+
                 drawText(context,m.text,position.x,position.y,position.z)
               }
             }
@@ -282,7 +286,6 @@ MJPEGCANVAS.Viewer = function(options) {
   //this is a helper function that takes in a co-ordinate frame and transforms the co-ordinates to 
   //another frame system
   function convertWorldCoordinatesToImageCoordinates(transform,x,y,z,width,height){
-
     x=x+transform.translation.x;
     y=y+transform.translation.y;
     z=z+transform.translation.z;
