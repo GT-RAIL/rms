@@ -23,10 +23,11 @@
 		<section>
 			<header>
 				<h3>Please Fill Out the Following Form</h3>
+				<p>This is the sign-up page for the TRAINS study. If you would like to participate, please sign up. </p>
 			</header>
 			<?php echo $this->Form->create('User'); ?>
 			<div class="row">
-				<section class="12u">
+				<section class="6u">
 					<?php
 					echo $this->Form->input('username');
 					echo $this->Form->input('password');

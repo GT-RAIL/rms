@@ -366,7 +366,9 @@ $(function() {
 		d.setMinutes(message.min);
         $('#experiment-intro').hide();
 		$('#queue-status').html('Estimated time Remaining ' + d.toLocaleTimeString().substring(3, 8));
-        
+        if(message.min <2){
+            window.document.title="(1 min start) "+window.document.title
+        }
 	});
 
 	/**
@@ -482,6 +484,7 @@ $(function() {
     <div>
         <p>Connecting...&nbsp; <i class="fa fa-spinner fa-spin" style="font-size:24px"></i> </p>
     </div>
+    <div id="queue-status"></div>
 </section>
 <!--hidden section at first-->
 <section class="style4 container" style="display: none" id="queue-waiting">
@@ -880,6 +883,7 @@ $(function() {
         <!-- Make a tree view -->
         <script type="text/javascript">
 			function create_jstree_data(htn) {
+                console.log(htn)
 				var data = htn.map(function(node) {
 					var treeNode = {
 						text: node.name + ((!!node.defined) ? "" : "?"),
@@ -900,7 +904,7 @@ $(function() {
 
 			// Populate the jstree nodes with the incoming data
 			function populate_jstree(htn) {
-				var data = create_jstree_data(htn);
+                var data=(create_jstree_data(htn.data));
                 $("#jstree_div").jstree('destroy');
 				$("#jstree_div").jstree({
 					core: {
@@ -1012,7 +1016,7 @@ $(function() {
             // Execute button: publishes execute action msg with action name and array of inputs
             $("#htn-execute-btn").click(function(event) {
                 event.preventDefault();
-                fadeAndDisableAll(); 
+               // fadeAndDisableAll(); 
 
                 // hide input selection during execution
                 $("#current-task-div").hide();
@@ -1073,7 +1077,7 @@ $(function() {
                 // unregistering and publish bug 
                 // TODO: verify problem and find a better solution
                 // https://github.com/RobotWebTools/rosbridge_suite/issues/138
-                //                window.setTimeout(update_htn, 2000);
+                window.setTimeout(update_htn, 2000);
             });
 
 

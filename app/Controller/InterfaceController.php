@@ -109,8 +109,10 @@ abstract class InterfaceController extends AppController {
 				return;
 			}
 
+			//instead of showing them forbidden, redirect to login
+			return $this->redirect(array('controller' => 'users', 'action' => 'anonymousSignup'));
 			// this means we don't have access
-			throw new ForbiddenException();
+			#throw new ForbiddenException();
 		} else {
 			// invalid request
 			throw new MethodNotAllowedException();
