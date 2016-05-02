@@ -41,7 +41,7 @@ cd install
 
 ###Trains RMS
 
-Trains RMS is a fork of the [https://github.com/GT-RAIL/rms](original RMS)
+Trains RMS is a fork of the [original RMS](https://github.com/GT-RAIL/rms)
 
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building if you are contributing code.
