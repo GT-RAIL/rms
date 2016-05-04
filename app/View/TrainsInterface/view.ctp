@@ -76,10 +76,10 @@ $appointment = $environment['Condition'][0]['Slot'][0];
 
 <script>
 function fadeAndDisableAll() {
-    $("#htn-task-frm").fadeTo(500, 0.4);
-    $("#htn-task-complete").attr('disabled', 'disabled');
-    $("#htn-action-select").attr('disabled', 'disabled');
-    $("#htn-learned-action-select").attr('disabled', 'disabled');
+    // $("#htn-task-frm").fadeTo(500, 0.4);
+    // $("#htn-task-complete").attr('disabled', 'disabled');
+    // $("#htn-action-select").attr('disabled', 'disabled');
+    // $("#htn-learned-action-select").attr('disabled', 'disabled');
 }
 
 function fadeAndEnableAll() {
@@ -742,7 +742,11 @@ $(function() {
                     $("#question-answer-div").append('<button type="button" class="btn btn-success" data-dismiss="modal">Rename</button>');
                     $("#question-answer-div").append('<button type="button" class="btn btn-warning" data-dismiss="modal">No Change</button>');
                     
-                } else { // Otherwise, it's a multiple choice question 
+                }
+                else if (message.answers.length ==0){
+                    $("#question-answer-div").append('<button type="button" class="btn btn-success" data-dismiss="modal">Got it</button>');
+                }
+                 else { // Otherwise, it's a multiple choice question 
                     // add buttons
                     for(var i = 0; i < message.answers.length; ++i) {
                         var answer = message.answers[i];
@@ -754,6 +758,8 @@ $(function() {
                         } else if( answer == 'No' ) {
                             button_color = 'btn-warning';
                         }
+
+
 
                         $("#question-answer-div").append('<button type="button" class="btn ' + button_color + '" data-dismiss="modal">' + answer + '</button>');
                     }
@@ -990,6 +996,8 @@ $(function() {
                 $("#htn-task-name").prop('disabled', false);
                 $("#htn-teach-task").show();
                 $("#htn-task-complete").hide();
+                $("#current-task-div").hide();
+                
 
                 //update the action list and reselect the "select an action..." option
                 update_actions();
