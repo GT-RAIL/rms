@@ -76,10 +76,10 @@ $appointment = $environment['Condition'][0]['Slot'][0];
 
 <script>
 function fadeAndDisableAll() {
-    // $("#htn-task-frm").fadeTo(500, 0.4);
-    // $("#htn-task-complete").attr('disabled', 'disabled');
-    // $("#htn-action-select").attr('disabled', 'disabled');
-    // $("#htn-learned-action-select").attr('disabled', 'disabled');
+    $("#htn-task-frm").fadeTo(500, 0.4);
+    $("#htn-task-complete").attr('disabled', 'disabled');
+    $("#htn-action-select").attr('disabled', 'disabled');
+    $("#htn-learned-action-select").attr('disabled', 'disabled');
 }
 
 function fadeAndEnableAll() {
