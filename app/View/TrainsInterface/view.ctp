@@ -1120,7 +1120,7 @@ $(function() {
             function update_htn() {
                 var button_msg = new ROSLIB.Message({
                     button: "start",
-                    "parameters":['<?php echo  $user_id?>']
+                    "parameters":[<?php echo  $user_id?>]
                 });
                 button_topic.publish(button_msg);
             };
@@ -1132,7 +1132,7 @@ $(function() {
                 // unregistering and publish bug 
                 // TODO: verify problem and find a better solution
                 // https://github.com/RobotWebTools/rosbridge_suite/issues/138
-                 window.setTimeout(update_htn, 2000);
+                 window.setTimeout(update_htn, 3000);
             });
         });
         </script>
