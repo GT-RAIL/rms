@@ -760,7 +760,9 @@ $(function() {
                 $("#question-text").html(message.question);
                 current_question = message.question;
 
-
+                if(message.question=='User End'){
+                    window.location.href = "/";
+                }
                 // Check for an AskForTaskName question and add a textbox for task name 
                 if(message.answers.length > 0 && message.answers[0] == "AskForTaskName") {
                     $("#question-text").append('<div class="form-group">');
@@ -1064,7 +1066,6 @@ $(function() {
 
                 //TODO: Something happens on Finish
                 //location.reload(); 
-                 window.location.href = "/";
             });
 
             // Execute button: publishes execute action msg with action name and array of inputs

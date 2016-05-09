@@ -132,6 +132,9 @@ var user_id =  <?php echo $user_id;?>
         <div id="jstree_loading_div" class="alert alert-info">Loading...</div>
         <div id="jstree_div"></div>
     </div>
+    <div class='col-lg-12'>
+    <button id="remove-user" name="remove-user" class="btn btn-primary">Remove Currently Active User</button>
+    </div>
 </div>
 <div class="col-lg-6">
     <div id="mjpeg">
@@ -255,6 +258,36 @@ var user_id =  <?php echo $user_id;?>
                 chat_topic.publish(new ROSLIB.Message({data:$('#chat-text-input').val()}));
                 $('#chat-text-input').val('');
             });
+
+            //Finish Task Button. Resets the Java Interface
+            $("#remove-user").click(function(event){
+                event.preventDefault();
+                var button_msg = new ROSLIB.Message({
+                    button: "finishTask"
+                });
+                button_topic.publish(button_msg);
+
+                //TODO: Something happens on Finish
+                //location.reload(); 
+            });
+
+            function update_htn() {
+                var button_msg = new ROSLIB.Message({
+                    button: "updateHTN"
+                });
+                button_topic.publish(button_msg);
+            };
+            
+
+            // Load tree on page load
+            $(document).ready(function() {
+                // This has a wait due to an issue with page refresh
+                // unregistering and publish bug 
+                // TODO: verify problem and find a better solution
+                // https://github.com/RobotWebTools/rosbridge_suite/issues/138
+                 window.setTimeout(update_htn, 3000);
+            });
+            
         </script>
 	</div>
 </section>
