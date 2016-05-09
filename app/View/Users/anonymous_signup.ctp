@@ -43,7 +43,7 @@
 				<section class="6u">
 					<p><input type='checkbox' id='continue'  value="continue"/>Would you like to continue to hear about new studies from us?</p>
 					<div id='email'>
-						<?php echo $this->Form->input('email',array('id'=>'emailinput'));?>
+						<?php echo $this->Form->input('email',array('id'=>'emailinput','value'=>'anonymous@doesnotwork.com'));?>
 					</div>
 			</div>
 			<div class="row">

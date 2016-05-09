@@ -27,7 +27,7 @@ else if(isset($userId)) {
 else{
     $user_id = '';
 }
-?>;
+?>
 
 
 <?php
@@ -911,7 +911,7 @@ $(function() {
             }
 
             function load_instructions(){
-                var message={'question':'<h3>Welcome to the TRAINS Study.</h3><p>This is a Lunch Packing task. Please use the actions to complete the task.</p><p> You have 2 lunchboxes given to you. Please put one main item (soup or tuna), one snack (raisins or beverage) and one fruit (peaches, apple or lemon) in each one of the lunchboxes</p><p>You can use any of the actions given to you to acheive this. The robot will learn complex actions along the way, which you can make use of</p>','answers':[]}
+                var message={'question':'<h3>Welcome to the TRAINS Study.</h3><p>This is a Lunch Packing task. Please use the actions to complete the task.</p><p> You have 2 lunchboxes given to you. Please put one main item (soup or tuna), one snack (raisins, cookies or Cheezits), one beverage (Coffee, Milk, Chocolate Milk) and one fruit (peaches, apple or lemon) in each one of the lunchboxes</p><p>You can use any of the actions given to you to acheive this. The robot will learn complex actions along the way, which you can make use of</p>','answers':[]}
                 updateQuestionModal(message);
             }
 
@@ -977,7 +977,7 @@ $(function() {
             update_learned_actions();
 
             // Load HTN tree view
-            update_htn();
+            //update_htn();
 
             $("#htn-action-select-div").hide();
             $("#current-task-div").hide();
@@ -1120,7 +1120,7 @@ $(function() {
             function update_htn() {
                 var button_msg = new ROSLIB.Message({
                     button: "start",
-                    "parameters":[<?php echo  $user_id?>]
+                    "parameters":['<?php echo  $user_id?>']
                 });
                 button_topic.publish(button_msg);
             };
