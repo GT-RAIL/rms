@@ -24,7 +24,27 @@ class TrainsInterfaceController extends InterfaceController {
 	public function view() {
 		
 		// set the title of the HTML page
-		$this->set('title_for_layout', 'CARL (Crowdsourcing for Autonomous Robot Learning)');
+		$this->set('title_for_layout', 'TRAINS Study');
+
+		// we will need some RWT libraries
+		$this->set('rwt',
+			array(
+				'roslibjs' => 'current',
+				'ros2djs' => 'current',
+				'nav2djs' => 'current',
+				'ros3djs' => 'current',
+				'keyboardteleopjs' => 'current',
+				'mjpegcanvasjs' => 'current',
+				'rosqueuejs' => 'current'
+			)
+		);
+
+		$this->set('userId', $this->Auth->user('id'));
+	}
+
+	public function admin(){
+		// set the title of the HTML page
+		$this->set('title_for_layout', 'TRAINS Study');
 
 		// we will need some RWT libraries
 		$this->set('rwt',

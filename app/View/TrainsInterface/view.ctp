@@ -75,7 +75,9 @@ $appointment = $environment['Condition'][0]['Slot'][0];
 ?>
 
 <script>
+var environment_faded=false;
 function fadeAndDisableAll() {
+    environment_faded=true;
     $("#htn-task-frm").fadeTo(500, 0.4);
     $("#htn-task-complete").attr('disabled', 'disabled');
     $("#htn-action-select").attr('disabled', 'disabled');
@@ -83,6 +85,7 @@ function fadeAndDisableAll() {
 }
 
 function fadeAndEnableAll() {
+    environment_faded=false;
     $("#htn-task-frm").fadeTo(500, 1.0);
     $("#htn-task-complete").prop('disabled', false);
     $("#htn-action-select").prop('disabled', false);
@@ -321,6 +324,24 @@ $(function() {
 		document.getElementById('feedback').innerHTML = '';
 	});
 
+    $("#undo-btn").click(function(e){
+        e.preventDefault()
+        $('#current-task-div').hide()
+
+        //you cannot undo while in the environment mode
+        if(!environment_faded){
+            var message=new ROSLIB.Message({
+                'button':'undo',
+                'parameters':[]  
+            });
+            button_topic.publish(message);
+
+        }
+        else{
+            alert("You cannot undo when a task is executing.")
+        }
+    })
+
 
 });
 </script>
@@ -331,7 +352,7 @@ $(function() {
 	var enabled = true;
 	var rosQueue = new ROSQUEUE.Queue({
 		ros: _ROS,
-		studyTime: 10,
+		studyTime: 10000,
 		chatEnabled: true,
 		userId: user_id
  	});
@@ -350,8 +371,9 @@ $(function() {
         if(rosQueue.userId!=''){
 
         }
-
-        console.log('activate')
+        load_instructions();
+        window.title=window.title+' ACTIVE'
+        console.log('queue activated')
         $('#study-page').show();
         $('#queue-waiting').hide();
         $('#experiment-intro').hide();
@@ -516,9 +538,13 @@ $(function() {
                             <label class="col-sm-3 control-label" for="htn-teach-task"></label>
                             <div class="col-sm-3">
                                 <button id="htn-teach-task" name="htn-teach-task" class="btn btn-success">Teach</button>
+                                
                             </div>
                             <div class="col-sm-3">
                                 <button id="htn-task-complete" name="htn-task-complete" class="btn btn-danger">Task Complete</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="task-instructions" name="task-instructions" class="btn btn-primary">Instructions</button>
                             </div>
                         </div>
 
@@ -588,6 +614,7 @@ $(function() {
 
                 <div class="text-left">
                     <h4>Task Tree</h4>
+                    Latest task was not completed successfully:<a href="#" id='undo-btn'>Click to Remove it from task tree </a>
                     <div class="col-lg-12">
                         <div id="jstree_loading_div" class="alert alert-info">Loading...</div>
                         <div id="jstree_div"></div>
@@ -636,8 +663,8 @@ $(function() {
 -->
 
          <div class='row'>
-            <div class='col-lg-12'style="text-align: center">           
-                <button type="button" class="btn btn-primary btn-large button special" id="finish-task-btn">All Done</button>
+            <div class='col-lg-12'>           
+                <button type="button" class="btn btn-primary btn-large " id="finish-task-btn">Finished. Both Lunches Packed</button>
             </div>  
         </div>
 
@@ -730,8 +757,9 @@ $(function() {
                 $("#question-answer-div").empty();
                 $("#question-text").empty();
                 current_question = '';
-                $("#question-text").text(message.question);
+                $("#question-text").html(message.question);
                 current_question = message.question;
+
 
                 // Check for an AskForTaskName question and add a textbox for task name 
                 if(message.answers.length > 0 && message.answers[0] == "AskForTaskName") {
@@ -743,8 +771,10 @@ $(function() {
                     $("#question-answer-div").append('<button type="button" class="btn btn-warning" data-dismiss="modal">No Change</button>');
                     
                 }
+                //this is information enable the div. We have executed and failed
                 else if (message.answers.length ==0){
                     $("#question-answer-div").append('<button type="button" class="btn btn-success" data-dismiss="modal">Got it</button>');
+                    fadeAndEnableAll();
                 }
                  else { // Otherwise, it's a multiple choice question 
                     // add buttons
@@ -764,7 +794,7 @@ $(function() {
                         $("#question-answer-div").append('<button type="button" class="btn ' + button_color + '" data-dismiss="modal">' + answer + '</button>');
                     }
                 }
-
+                
                 // show modal
                 $("#question-modal").modal({backdrop: 'static', show: true});
                 response_modal_open = true;
@@ -801,6 +831,14 @@ $(function() {
                     }
                 } else {
                     response = $(this).text();
+                }
+
+                //if it is a substitution then block & none until execution over
+                if(current_question.startsWith('Substitution:')){
+                    answer=$(this).text().toLowerCase().trim()
+                    //if the answer is not none block it.
+                    if(!(answer=="none. undo!" || answer=='no alternatives detected, okay.'))
+                        fadeAndDisableAll();
                 }
                 var response_msg = new ROSLIB.Message({
                     question: question,
@@ -855,13 +893,15 @@ $(function() {
                     var input_num = 0;
                     for(var i = 0; i < result.inputs.length; i++) {
                         var objs = result.inputs[i].objects; 
+                        //if there are no objects then the robot has to pick up something to execute this (probably)
+                        var injectable=objs.length>0?'':'changeable'
                         // Add a new <select> element to the htn-input-select div to 
                         // allow for selecting objects of each input type
-                        var newElement = '<div class="form-group"><label for="htn-input-select' + input_num + '" class="col-sm-2 control-label">' + result.inputs[i].type + '</label><select id="htn-input-select1" name="htn-input-select' + input_num + '" class="form-control">';
+                        var newElement = '<div class="form-group"><label for="htn-input-select' + input_num + '" class="col-sm-2 control-label">' + result.inputs[i].type + '</label><select id="htn-input-select'+i +'"'+'name="htn-input-select' + input_num + '" class="form-control htn-input-select '+injectable+'">';
                         for(var j = 0; j < objs.length; j++) {
                             newElement += "<option>"+objs[j]+"</option>";
                         }
-                        newElement += '</select>';
+                        newElement += '</select></div>';
                         $("#htn-input-select-div").append(newElement);
                         input_num += 1;
                     }
@@ -870,17 +910,27 @@ $(function() {
                 });
             }
 
+            function load_instructions(){
+                var message={'question':'<h3>Welcome to the TRAINS Study.</h3><p>This is a Lunch Packing task. Please use the actions to complete the task.</p><p> You have 2 lunchboxes given to you. Please put one main item (soup or tuna), one snack (raisins or beverage) and one fruit (peaches, apple or lemon) in each one of the lunchboxes</p><p>You can use any of the actions given to you to acheive this. The robot will learn complex actions along the way, which you can make use of</p>','answers':[]}
+                updateQuestionModal(message);
+            }
 
-//            var htn_tree = new Array(); // Global store of the HTN
-//            function get_htn(post_fetch_func) {
-//            	var req = new ROSLIB.ServiceRequest({
-//            		Request: 'sendHTN'
-//            	});
-//				htn_srv.callService(req, function(result) {
-//					htn_tree = JSON.parse(result.HTN.replace(/'/g, '"'));
-//					post_fetch_func(htn_tree);
-//				});
-//			}
+            $('#task-instructions').click(function(e){
+                e.preventDefault();
+                load_instructions();
+            })
+
+            //adding a special case when the object will pick something up for the first input 
+            //and then use it in the second input of the second task
+            $('#htn-input-select-div').on('change','.htn-input-select',function(){
+                text=$(this).find('option:selected').text();
+                
+                var nextSelect=$(this).parent().next().find('.htn-input-select.changeable')
+                if(nextSelect.length!=0){
+                    nextSelect.find('option').remove().end().append('<option value="'+text+'">'+text+'</option>').val(text)                    
+                }
+            })
+  
         </script>
 
         <!-- Make a tree view -->
@@ -1069,7 +1119,8 @@ $(function() {
 
             function update_htn() {
                 var button_msg = new ROSLIB.Message({
-                    button: "updateHTN"
+                    button: "start",
+                    "parameters":[<?php echo  $user_id?>]
                 });
                 button_topic.publish(button_msg);
             };
@@ -1081,16 +1132,8 @@ $(function() {
                 // unregistering and publish bug 
                 // TODO: verify problem and find a better solution
                 // https://github.com/RobotWebTools/rosbridge_suite/issues/138
-                //                window.setTimeout(update_htn, 2000);
+                 window.setTimeout(update_htn, 2000);
             });
-
-
-            // Reload tree after btn or selection changes
-            //            $(".btn, #htn-action-select, #htn-input-select").click(function() {
-            //            	get_htn(function(htn) {	// Anonymous function to generate the visuals from the HTN
-            //            		jstree_data = populate_jstree(htn);
-            //            	});
-            //            });
         });
         </script>
 
