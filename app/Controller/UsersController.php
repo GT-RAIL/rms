@@ -64,7 +64,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated account creation
 		parent::beforeFilter();
-		$this->Auth->allow('signup', 'login', 'username', 'reset','anonymousSignup');
+		$this->Auth->allow('signup', 'login', 'username', 'reset', 'anonymousSignup');
 	}
 
 /**
@@ -399,7 +399,12 @@ class UsersController extends AppController {
 		$this->set('title_for_layout', 'Sign Up');
 	}
 
-
+/**
+ * This is a special sign up page for anonymous user. Only allows them to enter the username, email and if they want to participate 
+ * in more studies
+ *
+ * @return null
+ */
 	public function anonymousSignup() {
 		// check if we are already logged in
 		if ($this->Auth->user('id')) {
@@ -409,11 +414,10 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			// create a new entry
 			$this->User->create();
-			if(!isset($this->request->data['User']['email'])){
-				$this->User->data['User']['email']='anonymous@doesnotwork.com';
-			}
-			else if($this->request->data['User']['email']==''){
-				$this->User->data['User']['email']='anonymous@doesnotwork.com';
+			if (!isset($this->request->data['User']['email'])) {
+				$this->User->data['User']['email'] = 'anonymous@doesnotwork.com';
+			} elseif ($this->request->data['User']['email'] == '') {
+				$this->User->data['User']['email'] = 'anonymous@doesnotwork.com';
 			}
 			// set the current timestamp for creation and modification
 			$this->User->data['User']['created'] = date('Y-m-d H:i:s');
@@ -428,12 +432,11 @@ class UsersController extends AppController {
 				$this->request->data['User'] = array_merge($this->request->data['User'], array('id' => $id));
 				$this->Auth->login($this->request->data['User']);
 				return $this->redirect($this->Auth->redirectUrl());
-			}
-			else{
-				$this->set('campaign',$this->User->data['User']['email']);
+			} else {
+				$this->set('campaign', $this->User->data['User']['email']);
 			}
 			$this->Session->setFlash(__('The user could not be created. Please, try again.'));
-		} 
+		}
 		//$this->set('campaign',$_GET['campaign']);
 		$this->set('title_for_layout', 'Anonymous Sign Up');
 	}
