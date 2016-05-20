@@ -12,6 +12,7 @@ branches:
   only:
     - master
     - develop
+    - travis-test
 
 before_script:
   - npm install -g grunt-cli
