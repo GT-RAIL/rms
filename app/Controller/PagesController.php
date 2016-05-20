@@ -259,6 +259,12 @@ class PagesController extends AppController {
 		return $this->redirect(array('action' => 'view'));
 	}
 
+/**
+ * This redirects from the login page, to the page of a study that you want to redirect to.
+ * By default, it resets to the home page
+ *
+ * @return null
+ */
 	public function login_redirect(){
 		$settings= $this->Setting->findById(Setting::$default)['Setting'];
 		$controller='pages';
@@ -275,6 +281,13 @@ class PagesController extends AppController {
 		return $this->redirect(array('controller'=>$controller,'action' => $view));
 	}
 
+
+/**
+ * This redirects from the logout page to a particular page of your choosing 
+ * By default, it resets to the home page
+ *
+ * @return null
+ */
 	public function logout_redirect(){
 		$settings= $this->Setting->findById(Setting::$default)['Setting'];
 		$controller='user';
