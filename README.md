@@ -1,4 +1,4 @@
-TRAINS rms [![Build Status](https://api.travis-ci.org/WPI-RAIL/rms.png)](https://travis-ci.org/GT-RAIL/rms)
+TRAINS rms [![Build Status](https://api.travis-ci.org/GT-RAIL/rms.png)](https://travis-ci.org/GT-RAIL/rms)
 ===
 
 #### RMS (Robot Management System)
