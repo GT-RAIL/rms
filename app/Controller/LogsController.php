@@ -84,7 +84,7 @@ class LogsController extends AppController {
 		if ($this->request->is('post')) {
 			// create the entry
 			$this->Log->create();
-			$type = $this->Type->find('first',array('name' => h($this->request->data('type'))));
+			$type = $this->Type->find('first', array('name' => h($this->request->data('type'))));
 			if ($type == null) {
 				throw new ForbiddenException();
 			}

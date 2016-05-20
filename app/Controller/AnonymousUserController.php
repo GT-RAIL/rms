@@ -28,7 +28,7 @@ class AnonymousUserController extends AppController {
  *
  * @var array
  */
-	public $uses = array('User', 'Role', 'Iface', 'Study', 'Appointment','AnonymousUser');
+	public $uses = array('User', 'Role', 'Iface', 'Study', 'Appointment', 'AnonymousUser');
 
 /**
  * The used components for the controller.
@@ -84,13 +84,10 @@ class AnonymousUserController extends AppController {
  * @return null
  */
 	public function admin_add() {
-
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// store the original password and username
-			
-			$this->request->data['AnonymousUser']['used']=false;
-
+			$this->request->data['AnonymousUser']['used'] = false;
 			// create a new entry
 			$this->AnonymousUser->create();
 			// set the current timestamp for creation and modification
@@ -161,7 +158,6 @@ class AnonymousUserController extends AppController {
 		if ($this->request->is('get')) {
 			throw new MethodNotAllowedException();
 		}
-
 		// check the ID
 		if ($this->Auth->user('id') === $id) {
 			$this->Session->setFlash('You many not delete yourself.');
@@ -172,19 +168,17 @@ class AnonymousUserController extends AppController {
 		}
 	}
 
-
 /**
  * This allows the anonymous user to use the token that has been given to him
  *
  * @return null
  */
 	public function usetoken() {
-
 		// only work for POST requests
 		if ($this->request->is('post')) {
 			// default to the basic user type
-			$user = $this->AnonymousUser->find('first', array('conditions' => array('AnonymousUser.token' =>$this->request->data['AnonymousUser']['token'] )));
-			$this->request->data['AnonymousUser']['used']=true;
+			$user = $this->AnonymousUser->find('first', array('conditions' => array('AnonymousUser.token' => $this->request->data['AnonymousUser']['token'] )));
+			$this->request->data['AnonymousUser']['used'] = true;
 			// attempt to save the entry
 			if ($this->AnonymousUser->save($this->request->data)) {
 				$id = $this->User->id;

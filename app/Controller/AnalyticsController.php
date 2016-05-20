@@ -29,10 +29,9 @@ class AnalyticsController extends AppController {
  */
 	public $uses = array('User', 'Analytics');
 
-
-
 /**
  * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
+ *
  * @return null
  */
 	public function admin_index() {
@@ -43,6 +42,7 @@ class AnalyticsController extends AppController {
 
 /**
  * The admin edit action. This allows the admin to edit an existing entry.
+ *
  * @param int $id The ID of the entry to edit.
  * @throws NotFoundException Thrown if an entry with the given ID is not found.
  * @return null
@@ -111,6 +111,7 @@ class AnalyticsController extends AppController {
 
 /**
  * Post call to allow usesrs to add Analytics to the system
+ *
  * @return success false or true
  */
 	public function add() {
