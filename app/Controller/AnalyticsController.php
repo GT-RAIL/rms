@@ -5,7 +5,6 @@
  *
  * The analytics gets data about the user when they are performing an experiment.
  * Currently the only experiment that uses it is Trains view.ctp
- *  @TODO functions for admin
  *
  * @author		Carl Saldanha - csaldanh3@gatech.edu
  * @copyright	2016 Georgia Institute Of Technology
@@ -34,7 +33,6 @@ class AnalyticsController extends AppController {
 
 /**
  * The admin index action lists information about all users. This allows the admin to add, edit, or delete entries.
- *
  * @return null
  */
 	public function admin_index() {
@@ -42,11 +40,9 @@ class AnalyticsController extends AppController {
 		// grab all the fetched entries
 		$this->set('users', $this->Paginator->paginate('Analytics'));
 	}
-   
 
 /**
  * The admin edit action. This allows the admin to edit an existing entry.
- *
  * @param int $id The ID of the entry to edit.
  * @throws NotFoundException Thrown if an entry with the given ID is not found.
  * @return null
@@ -114,9 +110,10 @@ class AnalyticsController extends AppController {
 	}
 
 /**
-* Post call to allow usesrs to add Analytics to the system
-**/
-	public function add(){
+ * Post call to allow usesrs to add Analytics to the system
+ * @return success false or true
+ */
+	public function add() {
 		if ($this->request->is('post')) {
 			// create a new entry
 			$this->Analytics->create();
@@ -127,7 +124,7 @@ class AnalyticsController extends AppController {
 			if ($this->Analytics->save($this->request->data)) {
 				return '[success=>"true"]';
 			}
-		}	
+		}
 		return '[success=>"false"]';
 	}
 }

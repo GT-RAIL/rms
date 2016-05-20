@@ -38,7 +38,7 @@ class AnonymousUser extends AppModel {
 				'required' => 'update'
 			)
 		),
-		'token' =>  array(
+		'token' => array(
 			'notEmpty' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Please enter a valid ID.',
@@ -67,4 +67,3 @@ class AnonymousUser extends AppModel {
 	);
 
 }
-?>

@@ -32,7 +32,7 @@ class LogsController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Log', 'Study','Type');
+	public $uses = array('Log', 'Study', 'Type');
 
 /**
  * Define pagination criteria.
@@ -84,15 +84,15 @@ class LogsController extends AppController {
 		if ($this->request->is('post')) {
 			// create the entry
 			$this->Log->create();
-			$type = $this->Type->find('first',array('name'=>h($this->request->data('type'))));
-			if($type==null){
+			$type = $this->Type->find('first',array('name' => h($this->request->data('type'))));
+			if ($type == null) {
 				throw new ForbiddenException();
 			}
-				
+
 			$logData = array(
 				'Log' => array(
 					'appointment_id' => $this->Session->read('appointment_id'),
-					'type_id' =>$type['Type']['id'],
+					'type_id' => $type['Type']['id'],
 					'label' => h($this->request->data('label')),
 					'entry' => h($this->request->data('entry')),
 					'created' => date('Y-m-d H:i:s'),
@@ -105,7 +105,7 @@ class LogsController extends AppController {
 				$this->layout = false;
 			} else {
 				// invalid data sent
-				throw new ForbiddenException();;
+				throw new ForbiddenException();
 			}
 		} else {
 			throw new MethodNotAllowedException();

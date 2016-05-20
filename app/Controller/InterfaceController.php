@@ -40,7 +40,6 @@ abstract class InterfaceController extends AppController {
  *
  * @throws NotFoundException Thrown if invalid arguments are passed.
  * @throws MethodNotAllowedException Thrown if a non-view request is made.
- * @throws ForbiddenException Thrown if a user is new authorized for the interface at the given time.
  * @return null
  */
 	public function beforeFilter() {
@@ -112,7 +111,6 @@ abstract class InterfaceController extends AppController {
 			//instead of showing them forbidden, redirect to login
 			return $this->redirect(array('controller' => 'users', 'action' => 'anonymousSignup'));
 			// this means we don't have access
-			#throw new ForbiddenException();
 		} else {
 			// invalid request
 			throw new MethodNotAllowedException();
