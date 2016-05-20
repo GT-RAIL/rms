@@ -266,7 +266,8 @@ class PagesController extends AppController {
  * @return null
  */
 	public function login_redirect(){
-		$settings= $this->Setting->findById(Setting::$default)['Setting'];
+		$settings= $this->Setting->findById(Setting::$default)
+		$settings=$settings['Setting'];
 		$controller='pages';
 		$view='view';
 		if(isset($settings)){
