@@ -1,4 +1,5 @@
 .idea
+.DS_Store
 app/Config/database.php
 app/tmp
 node_modules
