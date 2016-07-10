@@ -201,7 +201,7 @@ textarea {
 	border: solid 1px rgba(124, 128, 129, 0.2);
 	color: inherit;
 	display: block;
-	padding: 0.75em;
+/*	padding: 0.75em;*/
 	text-decoration: none;
 	width: 100%;
 	outline: 0;

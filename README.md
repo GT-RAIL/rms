@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 rms [![Build Status](https://api.travis-ci.org/GT-RAIL/rms.png)](https://travis-ci.org/GT-RAIL/rms)
+=======
+TRAINS rms [![Build Status](https://api.travis-ci.org/GT-RAIL/rms.png)](https://travis-ci.org/GT-RAIL/rms)
+>>>>>>> 8a19d233fe6763250ce5f0a31c881ad416267084
 ===
 
 #### RMS (Robot Management System)
@@ -38,6 +42,10 @@ git pull origin master
 cd install
 ./update.bash
 ```
+
+###Trains RMS
+
+Trains RMS is a fork of the [original RMS](https://github.com/GT-RAIL/rms)
 
 ### Build
 Checkout [utils/README.md](utils/README.md) for details on building if you are contributing code.

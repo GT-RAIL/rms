@@ -93,12 +93,12 @@ class User extends AppModel {
 				'rule' => array('email', true),
 				'message' => 'Please supply a valid email address.',
 				'on' => array('signup', 'edit', 'add')
-			),
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This email already exists.',
-				'on' => array('signup', 'edit', 'add')
-			)
+			)//,
+			// 'isUnique' => array(
+			// 	'rule' => 'isUnique',
+			// 	'message' => 'This email already exists.',
+			// 	'on' => array('signup', 'edit', 'add')
+			// )
 		),
 		'fname' => array(
 			'notEmpty' => array(

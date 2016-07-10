@@ -22,12 +22,14 @@ class PagesController extends AppController {
  */
 	public $helpers = array('Html', 'Form', 'Time');
 
+	public $uses = array('Settings');
+
 /**
  * The used components for the controller.
  *
  * @var array
  */
-	public $components = array('Session', 'Auth' => array('authorize' => 'Controller'));
+	public $components = array('Session', 'Auth' => array( 'authorize' => 'Controller'));
 
 /**
  * Define the actions which can be used by any user, authorized or not.
@@ -37,7 +39,7 @@ class PagesController extends AppController {
 	public function beforeFilter() {
 		// only allow unauthenticated viewing of a single page
 		parent::beforeFilter();
-		$this->Auth->allow('view');
+		$this->Auth->allow('view', 'logout_redirect');
 	}
 
 /**
@@ -258,6 +260,50 @@ class PagesController extends AppController {
 		return $this->redirect(array('action' => 'view'));
 	}
 
+/**
+ * This redirects from the login page, to the page of a study that you want to redirect to.
+ * By default, it resets to the home page
+ *
+ * @return null
+ */
+	public function login_redirect() {
+		$settings = $this->Setting->findById(Setting::$default);
+		$settings = $settings['Setting'];
+		$controller = 'pages';
+		$view = 'view';
+		if (isset($settings)) {
+			if (isset($settings['loginRedirect_controller'])) {
+				$controller = $settings['loginRedirect_controller'];
+			}
+			if (isset($settings['loginRedirect_view'])) {
+				$view = $settings['loginRedirect_view'];
+			}
+		}
+		return $this->redirect(array('controller' => $controller, 'action' => $view));
+	}
+
+/**
+ * This redirects from the logout page to a particular page of your choosing 
+ * By default, it resets to the home page
+ *
+ * @return null
+ */
+	public function logout_redirect() {
+		$settings = $this->Setting->findById(Setting::$default);
+		$settings = $settings['Setting'];
+		$controller = 'user';
+		$view = 'view';
+		if (isset($settings)) {
+			if (isset($settings['logoutRedirect_controller'])) {
+				$controller = $settings['logoutRedirect_controller'];
+			}
+			if (isset($settings['logoutRedirect_view'])) {
+				$view = $settings['logoutRedirect_view'];
+			}
+
+		}
+		return $this->redirect(array('controller' => $controller, 'action' => $view));
+	}
 /**
  * View the given page. If no page ID is given, the homepage is rendered.
  *
